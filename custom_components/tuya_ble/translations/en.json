@@ -14,7 +14,7 @@
                 "data": {
                     "address": "Tuya BLE device"
                 },
-                "description": "Select Tuya BLE device to setup. Device must be registered in the cloud using the mobile application. It's better to unbind the device from Tuya Bluetooth gateway, if any."
+                "description": "Hola!! Select Tuya BLE device to setup. Device must be registered in the cloud using the mobile application. It's better to unbind the device from Tuya Bluetooth gateway, if any."
             },
             "login": {
                 "data": {
