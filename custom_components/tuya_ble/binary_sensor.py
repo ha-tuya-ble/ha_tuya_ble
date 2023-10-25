@@ -67,6 +67,21 @@ mapping: dict[str, TuyaBLECategoryBinarySensorMapping] = {
             ],
         },
     ),
+     "ms": TuyaBLECategorySwitchMapping(
+        products={
+            **dict.fromkeys(
+                ["okkyfgfs"], # Smart Lock
+                [
+                    TuyaBLESwitchMapping(
+                        dp_id=47,
+                        description=SwitchEntityDescription(
+                            key="lock_motor_state",
+                        ),
+                    ),
+                ]
+            ),
+        }
+    ),
 }
 
 
