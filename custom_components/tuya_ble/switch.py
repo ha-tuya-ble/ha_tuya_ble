@@ -177,6 +177,12 @@ mapping: dict[str, TuyaBLECategorySwitchMapping] = {
                             key="bluetooth_unlock",
                         ),
                     ),
+                    TuyaBLESwitchMapping(
+                        dp_id=46,
+                        description=SwitchEntityDescription(
+                            key="remote_locking",
+                        ),
+                    ),
                 ]
             ),
         }
