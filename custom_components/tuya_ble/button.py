@@ -119,6 +119,12 @@ mapping: dict[str, TuyaBLECategoryButtonMapping] = {
                             key="bluetooth_unlock",
                         ),
                     ),
+                    TuyaBLEButtonMapping(
+                        dp_id=12,
+                        description=ButtonEntityDescription(
+                            key="unlock_fingerprint",
+                        ),
+                    ),
                 ]
             ),
         }
