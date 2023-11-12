@@ -375,6 +375,29 @@ mapping: dict[str, TuyaBLECategoryNumberMapping] = {
             ),
         },
     ),
+    "ms": TuyaBLECategoryNumberMapping(
+        products={
+            **dict.fromkeys(
+                [
+                    "okkyfgfs",
+                ],  # Smart lock
+                [
+                    TuyaBLENumberMapping(
+                        dp_id=12,
+                        description=NumberEntityDescription(
+                            key="unlock_fingerprint",
+                            icon="mdi:thermometer-lines",
+                            native_max_value=200,
+                            native_min_value=100,
+                            #native_unit_of_measurement=UnitOfTemperature.CELSIUS,
+                            native_step=1,
+                            entity_category=EntityCategory.CONFIG,
+                        ),
+                    ),
+                ],
+            ),
+        },
+    ),
     "wsdcg": TuyaBLECategoryNumberMapping(
         products={
             "ojzlzzsw": [  # Soil moisture sensor
