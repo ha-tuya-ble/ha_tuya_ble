@@ -1,3 +1,4 @@
+"""https://github.com/PlusPlus-ua/ha_tuya_ble/pull/96/commits/e6d021826f205bc38ade297177251d426c58d5a3"""
 """Config flow for Tuya BLE integration."""
 
 from __future__ import annotations
