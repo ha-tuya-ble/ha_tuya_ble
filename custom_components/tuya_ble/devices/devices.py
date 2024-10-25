@@ -8,7 +8,6 @@ from homeassistant.const import CONF_ADDRESS, CONF_DEVICE_ID
 from homeassistant.core import CALLBACK_TYPE, HomeAssistant, callback
 from homeassistant.helpers import device_registry as dr
 from homeassistant.helpers.entity import (
-    DeviceInfo,
     EntityDescription,
     generate_entity_id,
 )
@@ -18,13 +17,12 @@ from homeassistant.helpers.update_coordinator import (
     DataUpdateCoordinator,
 )
 
-from home_assistant_bluetooth import BluetoothServiceInfoBleak
 from ..tuya_ble import (
-    AbstaractTuyaBLEDeviceManager,
     TuyaBLEDataPoint,
     TuyaBLEDevice,
-
 )
+
+from ..devices import get_device_info, get_device_product_info
 
 from ..cloud import HASSTuyaBLEDeviceManager
 from ..const import (
@@ -33,9 +31,6 @@ from ..const import (
     FINGERBOT_BUTTON_EVENT,
     SET_DISCONNECTED_DELAY,
 )
-
-from .devices import TuyaBLEProductInfo, devices_database
-
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -175,80 +170,164 @@ class TuyaBLECategoryInfo:
     products: dict[str, TuyaBLEProductInfo]
     info: TuyaBLEProductInfo | None = None
 
-
-def get_product_info_by_ids(
-    category: str, product_id: str
-) -> TuyaBLEProductInfo | None:
-    category_info = devices_database.get(category)
-    if category_info is not None:
-        product_info = category_info.products.get(product_id)
-        if product_info is not None:
-            return product_info
-        return category_info.info
-    else:
-        return None
-
-
-def get_device_product_info(device: TuyaBLEDevice) -> TuyaBLEProductInfo | None:
-    return get_product_info_by_ids(device.category, device.product_id)
-
-
-def get_short_address(address: str) -> str:
-    results = address.replace("-", ":").upper().split(":")
-    return f"{results[-3]}{results[-2]}{results[-1]}"[-6:]
-
-
-async def get_device_readable_name(
-    discovery_info: BluetoothServiceInfoBleak,
-    manager: AbstaractTuyaBLEDeviceManager | None,
-) -> str:
-    credentials: TuyaBLEDeviceCredentials | None = None
-    product_info: TuyaBLEProductInfo | None = None
-    if manager:
-        credentials = await manager.get_device_credentials(discovery_info.address)
-        if credentials:
-            product_info = get_product_info_by_ids(
-                credentials.category,
-                credentials.product_id,
+devices_database: dict[str, TuyaBLECategoryInfo] = {
+    "co2bj": TuyaBLECategoryInfo(
+        products={
+            "59s19z5m": TuyaBLEProductInfo(  # device product_id
+                name="CO2 Detector",
+            ),
+        },
+    ),
+    "ms": TuyaBLECategoryInfo(
+        products={
+            **dict.fromkeys(
+                [
+                    "ludzroix",
+                    "isk2p555"
+                ],
+                    TuyaBLEProductInfo(  # device product_id
+                    name="Smart Lock",
+                ),
+            ),
+        },
+    ),
+    "szjqr": TuyaBLECategoryInfo(
+        products={
+            "3yqdo5yt": TuyaBLEProductInfo(  # device product_id
+                name="CUBETOUCH 1s",
+                fingerbot=TuyaBLEFingerbotInfo(
+                    switch=1,
+                    mode=2,
+                    up_position=5,
+                    down_position=6,
+                    hold_time=3,
+                    reverse_positions=4,
+                ),
+            ),
+            "xhf790if": TuyaBLEProductInfo(  # device product_id
+                name="CubeTouch II",
+                fingerbot=TuyaBLEFingerbotInfo(
+                    switch=1,
+                    mode=2,
+                    up_position=5,
+                    down_position=6,
+                    hold_time=3,
+                    reverse_positions=4,
+                ),
+            ),
+            **dict.fromkeys(
+                [
+                    "blliqpsj",
+                    "ndvkgsrm",
+                    "yiihr7zh",
+                    "neq16kgd"
+                ],  # device product_ids
+                TuyaBLEProductInfo(
+                    name="Fingerbot Plus",
+                    fingerbot=TuyaBLEFingerbotInfo(
+                        switch=2,
+                        mode=8,
+                        up_position=15,
+                        down_position=9,
+                        hold_time=10,
+                        reverse_positions=11,
+                        manual_control=17,
+                        program=121,
+                    ),
+                ),
+            ),
+            **dict.fromkeys(
+                [
+                    "ltak7e1p",
+                    "y6kttvd6",
+                    "yrnk7mnn",
+                    "nvr2rocq",
+                    "bnt7wajf",
+                    "rvdceqjh",
+                    "5xhbk964",
+                ],  # device product_ids
+                TuyaBLEProductInfo(
+                    name="Fingerbot",
+                    fingerbot=TuyaBLEFingerbotInfo(
+                        switch=2,
+                        mode=8,
+                        up_position=15,
+                        down_position=9,
+                        hold_time=10,
+                        reverse_positions=11,
+                        program=121,
+                    ),
+                ),
+            ),
+        },
+    ),
+    "wk": TuyaBLECategoryInfo(
+        products={
+            **dict.fromkeys(
+            [
+            "drlajpqc",
+            "nhj2j7su",
+            ],  # device product_id
+            TuyaBLEProductInfo(
+                name="Thermostatic Radiator Valve",
+                ),
+            ),
+        },
+    ),
+    "wsdcg": TuyaBLECategoryInfo(
+        products={
+            "ojzlzzsw": TuyaBLEProductInfo(  # device product_id
+                name="Soil moisture sensor",
+            ),
+            "iv7hudlj": TuyaBLEProductInfo(  # device product_id
+                name="Bluetooth Temperature Humidity Sensor",
+            ),
+        },
+    ),
+    "znhsb": TuyaBLECategoryInfo(
+        products={
+            "cdlandip": # device product_id
+            TuyaBLEProductInfo(
+                name="Smart water bottle",
+            ),
+        },
+    ),
+    "ggq": TuyaBLECategoryInfo(
+        products={
+            **dict.fromkeys(
+                [
+                    "6pahkcau", 
+                    "hfgdqhho",
+                ],  # device product_id
+                TuyaBLEProductInfo( 
+                    name="Irrigation computer",
+                ),
             )
-    short_address = get_short_address(discovery_info.address)
-    if product_info:
-        return "%s %s" % (product_info.name, short_address)
-    if credentials:
-        return "%s %s" % (credentials.device_name, short_address)
-    return "%s %s" % (discovery_info.device.name, short_address)
+        },
+    ),
+    "sfkzq": TuyaBLECategoryInfo(
+        products={
+            "nxquc5lb": # device product_id
+            TuyaBLEProductInfo( 
+                name="Water valve controller",
+            ),
+        },
+    ),
+    "dd": TuyaBLECategoryInfo(
+        products={
+            **dict.fromkeys(
+            [
+              "nvfrtxlq",
+            ],  # device product_id
+            TuyaBLEProductInfo(
+                name="LGB102 Magic Strip Lights",
+                manufacturer="Magiacous",
+		),
+            ),
+        },
+        info = TuyaBLEProductInfo(
+                name="Strip Lights",
+		),
 
-
-def get_device_info(device: TuyaBLEDevice) -> DeviceInfo | None:
-    product_info = None
-    if device.category and device.product_id:
-        product_info = get_product_info_by_ids(device.category, device.product_id)
-    product_name: str
-    if product_info:
-        product_name = product_info.name
-    else:
-        product_name = device.name
-    result = DeviceInfo(
-        connections={(dr.CONNECTION_BLUETOOTH, device.address)},
-        hw_version=device.hardware_version,
-        identifiers={(DOMAIN, device.address)},
-        manufacturer=(
-            product_info.manufacturer if product_info else DEVICE_DEF_MANUFACTURER
-        ),
-        model=("%s (%s)")
-        % (
-            device.product_model or product_name,
-            device.product_id,
-        ),
-        name=("%s %s")
-        % (
-            product_name,
-            get_short_address(device.address),
-        ),
-        sw_version=("%s (protocol %s)")
-        % (
-            device.device_version,
-            device.protocol_version,
-        ),
-    )
-    return result
+    ),
+}

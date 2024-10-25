@@ -41,7 +41,7 @@ from .tuya_ble import SERVICE_UUID, TuyaBLEDeviceCredentials
 from .const import (
     DOMAIN,
 )
-from .devices import TuyaBLEData, get_device_readable_name
+from .devices.devices import TuyaBLEData, get_device_readable_name
 from .cloud import HASSTuyaBLEDeviceManager
 
 _LOGGER = logging.getLogger(__name__)

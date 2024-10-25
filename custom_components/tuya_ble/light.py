@@ -34,7 +34,7 @@ from homeassistant.helpers.update_coordinator import DataUpdateCoordinator
 from .const import DOMAIN
 from .base import IntegerTypeData
 from .util import remap_value
-from .devices import TuyaBLEData, TuyaBLEEntity, TuyaBLEProductInfo
+from .devices.devices import TuyaBLEData, TuyaBLEEntity, TuyaBLEProductInfo
 from .tuya_ble import (
     TuyaBLEDevice, 
     TuyaBLEEntityDescription,

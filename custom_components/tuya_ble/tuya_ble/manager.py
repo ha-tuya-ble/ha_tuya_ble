@@ -55,6 +55,7 @@ class AbstaractTuyaBLEDeviceManager(ABC):
         category: str | None,
         product_id: str | None,
         device_name: str | None,
+        product_model: str | None,
         product_name: str | None,
     ) -> TuyaBLEDeviceCredentials | None:
         """Checks and creates credentials of the Tuya BLE device."""
@@ -72,6 +73,7 @@ class AbstaractTuyaBLEDeviceManager(ABC):
                 category,
                 product_id,
                 device_name,
+                product_model,
                 product_name,
             )
         else:
