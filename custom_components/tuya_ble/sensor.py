@@ -254,8 +254,8 @@ mapping: dict[str, TuyaBLECategorySensorMapping] = {
                 TuyaBLESensorMapping(
                     dp_id=3,
                     description=SensorEntityDescription(
-                        key="humidity",
-                        device_class=SensorDeviceClass.HUMIDITY,
+                        key="moisture",
+                        device_class=SensorDeviceClass.MOISTURE,
                         native_unit_of_measurement=PERCENTAGE,
                         state_class=SensorStateClass.MEASUREMENT,
                     ),
