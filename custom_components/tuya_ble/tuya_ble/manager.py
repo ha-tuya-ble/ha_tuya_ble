@@ -3,6 +3,7 @@ from __future__ import annotations
 from abc import ABC, abstractmethod
 from dataclasses import dataclass
 
+
 @dataclass
 class TuyaBLEDeviceCredentials:
     uuid: str
@@ -13,8 +14,6 @@ class TuyaBLEDeviceCredentials:
     device_name: str | None
     product_model: str | None
     product_name: str | None
-    functions: List | None
-    status_range: List | None
 
     def __str__(self):
         return (
@@ -26,17 +25,14 @@ class TuyaBLEDeviceCredentials:
             "device_name: %s, "
             "product_model: %s, "
             "product_name: %s"
-            "functions: %s"
-            "status_range: %s"
         ) % (
             self.category,
             self.product_id,
             self.device_name,
             self.product_model,
             self.product_name,
-            self.functions,
-            self.status_range,
         )
+
 
 class AbstaractTuyaBLEDeviceManager(ABC):
     """Abstaract manager of the Tuya BLE devices credentials."""
@@ -60,19 +56,10 @@ class AbstaractTuyaBLEDeviceManager(ABC):
         category: str | None,
         product_id: str | None,
         device_name: str | None,
-        product_model: str | None,
         product_name: str | None,
-        functions: List | None,
-        status_range: List | None,
     ) -> TuyaBLEDeviceCredentials | None:
         """Checks and creates credentials of the Tuya BLE device."""
-        if (
-            uuid and 
-            local_key and 
-            device_id and
-            category and
-            product_id
-        ):
+        if uuid and local_key and device_id and category and product_id:
             return TuyaBLEDeviceCredentials(
                 uuid,
                 local_key,
@@ -80,10 +67,7 @@ class AbstaractTuyaBLEDeviceManager(ABC):
                 category,
                 product_id,
                 device_name,
-                product_model,
                 product_name,
-                functions,
-                status_range,
             )
         else:
             return None

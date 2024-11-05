@@ -1,10 +1,10 @@
 """The Tuya BLE integration."""
+
 from __future__ import annotations
 
 import logging
 
-from bleak_retry_connector import BLEAK_RETRY_EXCEPTIONS as BLEAK_EXCEPTIONS, get_device
-
+from bleak_retry_connector import get_device
 from homeassistant.components import bluetooth
 from homeassistant.components.bluetooth.match import ADDRESS, BluetoothCallbackMatcher
 from homeassistant.config_entries import ConfigEntry
@@ -12,11 +12,10 @@ from homeassistant.const import CONF_ADDRESS, EVENT_HOMEASSISTANT_STOP, Platform
 from homeassistant.core import Event, HomeAssistant, callback
 from homeassistant.exceptions import ConfigEntryNotReady
 
-from .tuya_ble import TuyaBLEDevice
-
 from .cloud import HASSTuyaBLEDeviceManager
 from .const import DOMAIN
-from .devices.devices import TuyaBLECoordinator, TuyaBLEData, get_device_product_info
+from .devices import TuyaBLECoordinator, TuyaBLEData, get_device_product_info
+from .tuya_ble import TuyaBLEDevice
 
 PLATFORMS: list[Platform] = [
     Platform.BUTTON,
@@ -24,7 +23,6 @@ PLATFORMS: list[Platform] = [
     Platform.NUMBER,
     Platform.SENSOR,
     Platform.BINARY_SENSOR,
-    Platform.LIGHT,
     Platform.SELECT,
     Platform.SWITCH,
     Platform.TEXT,
@@ -50,14 +48,14 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
 
     coordinator = TuyaBLECoordinator(hass, device)
 
-    '''
+    """
     try:
         await device.update()
     except BLEAK_EXCEPTIONS as ex:
         raise ConfigEntryNotReady(
             f"Could not communicate with Tuya BLE device with address {address}"
         ) from ex
-    '''
+    """
     hass.add_job(device.update())
 
     @callback

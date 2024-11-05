@@ -3,31 +3,14 @@
 from __future__ import annotations
 
 import logging
-import pycountry
 from typing import Any
 
+import pycountry
 import voluptuous as vol
-from tuya_iot import AuthType
-
-from homeassistant.config_entries import (
-    ConfigEntry,
-    ConfigFlow,
-    OptionsFlowWithConfigEntry,
-)
 from homeassistant.components.bluetooth import (
     BluetoothServiceInfoBleak,
     async_discovered_service_info,
 )
-from homeassistant.const import (
-    CONF_ADDRESS, 
-    CONF_DEVICE_ID,
-    CONF_COUNTRY_CODE,
-    CONF_PASSWORD,
-    CONF_USERNAME,
-)
-from homeassistant.core import callback
-from homeassistant.data_entry_flow import FlowHandler, FlowResult
-
 from homeassistant.components.tuya.const import (
     CONF_APP_TYPE,
     CONF_ENDPOINT,
@@ -35,19 +18,33 @@ from homeassistant.components.tuya.const import (
     TUYA_RESPONSE_MSG,
     TUYA_RESPONSE_SUCCESS,
 )
-from .tuya_ble import SERVICE_UUID, TuyaBLEDeviceCredentials
+from homeassistant.config_entries import (
+    ConfigEntry,
+    ConfigFlow,
+    OptionsFlowWithConfigEntry,
+)
+from homeassistant.const import (
+    CONF_ADDRESS,
+    CONF_COUNTRY_CODE,
+    CONF_PASSWORD,
+    CONF_USERNAME,
+)
+from homeassistant.core import callback
+from homeassistant.data_entry_flow import FlowHandler, FlowResult
+from tuya_iot import AuthType
 
+from .cloud import HASSTuyaBLEDeviceManager
 from .const import (
-    DOMAIN,
     CONF_ACCESS_ID,
     CONF_ACCESS_SECRET,
     CONF_AUTH_TYPE,
+    DOMAIN,
     SMARTLIFE_APP,
+    TUYA_COUNTRIES,
     TUYA_SMART_APP,
-    TUYA_COUNTRIES
 )
 from .devices import TuyaBLEData, get_device_readable_name
-from .cloud import HASSTuyaBLEDeviceManager
+from .tuya_ble import SERVICE_UUID, TuyaBLEDeviceCredentials
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -318,7 +315,7 @@ class TuyaBLEConfigFlow(ConfigFlow, domain=DOMAIN):
                     discovery.address in current_addresses
                     or discovery.address in self._discovered_devices
                     or discovery.service_data is None
-                    or not SERVICE_UUID in discovery.service_data.keys()
+                    or SERVICE_UUID not in discovery.service_data.keys()
                 ):
                     continue
                 self._discovered_devices[discovery.address] = discovery
