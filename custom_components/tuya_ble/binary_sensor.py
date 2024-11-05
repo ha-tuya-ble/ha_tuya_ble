@@ -1,9 +1,9 @@
 """The Tuya BLE integration."""
+
 from __future__ import annotations
 
-from dataclasses import dataclass
-
 import logging
+from dataclasses import dataclass
 from typing import Callable
 
 from homeassistant.components.binary_sensor import (
@@ -20,7 +20,7 @@ from homeassistant.helpers.update_coordinator import DataUpdateCoordinator
 from .const import (
     DOMAIN,
 )
-from .devices.devices import TuyaBLEData, TuyaBLEEntity, TuyaBLEProductInfo
+from .devices import TuyaBLEData, TuyaBLEEntity, TuyaBLEProductInfo
 from .tuya_ble import TuyaBLEDataPointType, TuyaBLEDevice
 
 _LOGGER = logging.getLogger(__name__)
@@ -40,8 +40,8 @@ class TuyaBLEBinarySensorMapping:
     force_add: bool = True
     dp_type: TuyaBLEDataPointType | None = None
     getter: Callable[[TuyaBLEBinarySensor], None] | None = None
-    #coefficient: float = 1.0
-    #icons: list[str] | None = None
+    # coefficient: float = 1.0
+    # icons: list[str] | None = None
     is_available: TuyaBLEBinarySensorIsAvailable = None
 
 
@@ -59,7 +59,7 @@ mapping: dict[str, TuyaBLECategoryBinarySensorMapping] = {
                     dp_id=105,
                     description=BinarySensorEntityDescription(
                         key="battery",
-                        #icon="mdi:battery-alert",
+                        # icon="mdi:battery-alert",
                         device_class=BinarySensorDeviceClass.BATTERY,
                         entity_category=EntityCategory.DIAGNOSTIC,
                     ),
@@ -107,7 +107,7 @@ class TuyaBLEBinarySensor(TuyaBLEEntity, BinarySensorEntity):
             datapoint = self._device.datapoints[self._mapping.dp_id]
             if datapoint:
                 self._attr_is_on = bool(datapoint.value)
-                '''
+                """
                 if datapoint.type == TuyaBLEDataPointType.DT_ENUM:
                     if self.entity_description.options is not None:
                         if datapoint.value >= 0 and datapoint.value < len(
@@ -129,7 +129,7 @@ class TuyaBLEBinarySensor(TuyaBLEEntity, BinarySensorEntity):
                     )
                 else:
                     self._attr_native_value = datapoint.value
-                '''
+                """
         self.async_write_ha_state()
 
     @property

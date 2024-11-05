@@ -1,32 +1,30 @@
 """The Tuya BLE integration."""
+
 from __future__ import annotations
 
-from dataclasses import dataclass, field
-
 import logging
-from typing import Any, Callable
+from dataclasses import dataclass, field
+from typing import Callable
 
 from homeassistant.components.number import (
-    NumberEntityDescription,
     NumberEntity,
+    NumberEntityDescription,
 )
 from homeassistant.components.number.const import NumberDeviceClass, NumberMode
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import (
     CONCENTRATION_PARTS_PER_MILLION,
     PERCENTAGE,
-    VOLUME_MILLILITERS,
+    EntityCategory,
     UnitOfTemperature,
     UnitOfTime,
 )
-from homeassistant.core import HomeAssistant, callback
-from homeassistant.helpers.entity import EntityCategory
+from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
-from homeassistant.helpers.restore_state import RestoreEntity
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator
 
 from .const import DOMAIN
-from .devices.devices import TuyaBLEData, TuyaBLEEntity, TuyaBLEProductInfo
+from .devices import TuyaBLEData, TuyaBLEEntity, TuyaBLEProductInfo
 from .tuya_ble import TuyaBLEDataPointType, TuyaBLEDevice
 
 _LOGGER = logging.getLogger(__name__)
@@ -36,9 +34,7 @@ TuyaBLENumberGetter = (
 )
 
 
-TuyaBLENumberIsAvailable = (
-    Callable[["TuyaBLENumber", TuyaBLEProductInfo], bool] | None
-)
+TuyaBLENumberIsAvailable = Callable[["TuyaBLENumber", TuyaBLEProductInfo], bool] | None
 
 
 TuyaBLENumberSetter = (
@@ -135,10 +131,7 @@ def set_fingerbot_program_repeat_count(
     if product.fingerbot and product.fingerbot.program:
         datapoint = self._device.datapoints[product.fingerbot.program]
         if datapoint and type(datapoint.value) is bytes:
-            new_value = (
-                int.to_bytes(int(value), 2, "big") +
-                datapoint.value[2:]
-            )
+            new_value = int.to_bytes(int(value), 2, "big") + datapoint.value[2:]
             self._hass.create_task(datapoint.set_value(new_value))
 
 
@@ -268,12 +261,7 @@ mapping: dict[str, TuyaBLECategoryNumberMapping] = {
                 ],
             ),
             **dict.fromkeys(
-                [
-                    "blliqpsj",
-                    "ndvkgsrm",
-                    "yiihr7zh",
-                    "neq16kgd"
-                ],  # Fingerbot Plus
+                ["blliqpsj", "ndvkgsrm", "yiihr7zh", "neq16kgd"],  # Fingerbot Plus
                 [
                     TuyaBLENumberMapping(
                         dp_id=9,
@@ -454,7 +442,7 @@ mapping: dict[str, TuyaBLECategoryNumberMapping] = {
     ),
     "sfkzq": TuyaBLECategoryNumberMapping(
         products={
-            "nxquc5lb": # Smart water timer - SOP10
+            "nxquc5lb":  # Smart water timer - SOP10
             [
                 TuyaBLENumberMapping(
                     dp_id=11,
@@ -476,7 +464,7 @@ mapping: dict[str, TuyaBLECategoryNumberMapping] = {
                         icon="mdi:timer",
                         native_max_value=1440,
                         native_min_value=1,
-                        native_unit_of_measurement=TIME_MINUTES,
+                        native_unit_of_measurement=UnitOfTime.MINUTES,
                         native_step=1,
                     ),
                 ),
@@ -484,24 +472,6 @@ mapping: dict[str, TuyaBLECategoryNumberMapping] = {
                     dp_id=103,
                     description=NumberEntityDescription(
                         key="countdown_duration_z2",
-                        icon="mdi:timer",
-                        native_max_value=1440,
-                        native_min_value=1,
-                        native_unit_of_measurement=UnitOfTime.MINUTES,
-                        native_step=1,
-                    ),
-                ),
-            ],
-        },
-    ),
-    "sfkzq": TuyaBLECategoryNumberMapping(
-        products={
-            "nxquc5lb": # Smart water timer - SOP10
-            [
-                TuyaBLENumberMapping(
-                    dp_id=11,
-                    description=NumberEntityDescription(
-                        key="countdown_duration",
                         icon="mdi:timer",
                         native_max_value=1440,
                         native_min_value=1,
