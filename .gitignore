@@ -155,3 +155,7 @@ cython_debug/
 .idea/
 
 .vscode
+
+# Home Assistant configuration
+config/*
+!config/configuration.yaml
