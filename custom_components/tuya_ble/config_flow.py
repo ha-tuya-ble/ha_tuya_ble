@@ -29,23 +29,22 @@ from homeassistant.core import callback
 from homeassistant.data_entry_flow import FlowHandler, FlowResult
 
 from homeassistant.components.tuya.const import (
-    CONF_ACCESS_ID,
-    CONF_ACCESS_SECRET,
     CONF_APP_TYPE,
-    CONF_AUTH_TYPE,
     CONF_ENDPOINT,
-    SMARTLIFE_APP,
-    TUYA_COUNTRIES,
     TUYA_RESPONSE_CODE,
     TUYA_RESPONSE_MSG,
     TUYA_RESPONSE_SUCCESS,
-    TUYA_SMART_APP,
 )
-
 from .tuya_ble import SERVICE_UUID, TuyaBLEDeviceCredentials
 
 from .const import (
     DOMAIN,
+    CONF_ACCESS_ID,
+    CONF_ACCESS_SECRET,
+    CONF_AUTH_TYPE,
+    SMARTLIFE_APP,
+    TUYA_SMART_APP,
+    TUYA_COUNTRIES
 )
 from .devices import TuyaBLEData, get_device_readable_name
 from .cloud import HASSTuyaBLEDeviceManager

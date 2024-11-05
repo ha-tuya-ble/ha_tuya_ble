@@ -26,7 +26,7 @@ from homeassistant.helpers.restore_state import RestoreEntity
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator
 
 from .const import DOMAIN
-from .devices import TuyaBLEData, TuyaBLEEntity, TuyaBLEProductInfo
+from .devices.devices import TuyaBLEData, TuyaBLEEntity, TuyaBLEProductInfo
 from .tuya_ble import TuyaBLEDataPointType, TuyaBLEDevice
 
 _LOGGER = logging.getLogger(__name__)
@@ -435,6 +435,48 @@ mapping: dict[str, TuyaBLECategoryNumberMapping] = {
                         native_max_value=1440,
                         native_min_value=1,
                         native_unit_of_measurement=UnitOfTime.MINUTES,
+                        native_step=1,
+                    ),
+                ),
+                TuyaBLENumberMapping(
+                    dp_id=103,
+                    description=NumberEntityDescription(
+                        key="countdown_duration_z2",
+                        icon="mdi:timer",
+                        native_max_value=1440,
+                        native_min_value=1,
+                        native_unit_of_measurement=UnitOfTime.MINUTES,
+                        native_step=1,
+                    ),
+                ),
+            ],
+        },
+    ),
+    "sfkzq": TuyaBLECategoryNumberMapping(
+        products={
+            "nxquc5lb": # Smart water timer - SOP10
+            [
+                TuyaBLENumberMapping(
+                    dp_id=11,
+                    description=NumberEntityDescription(
+                        key="countdown_duration",
+                        icon="mdi:timer",
+                        native_max_value=1440,
+                        native_min_value=1,
+                        native_unit_of_measurement=UnitOfTime.MINUTES,
+                        native_step=1,
+                    ),
+                ),
+            ],
+            "hfgdqhho": [  # Irrigation computer - SGW02
+                TuyaBLENumberMapping(
+                    dp_id=106,
+                    description=NumberEntityDescription(
+                        key="countdown_duration_z1",
+                        icon="mdi:timer",
+                        native_max_value=1440,
+                        native_min_value=1,
+                        native_unit_of_measurement=TIME_MINUTES,
                         native_step=1,
                     ),
                 ),

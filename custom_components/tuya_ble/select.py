@@ -22,7 +22,7 @@ from .const import (
     FINGERBOT_MODE_PUSH,
     FINGERBOT_MODE_SWITCH,
 )
-from .devices import TuyaBLEData, TuyaBLEEntity, TuyaBLEProductInfo
+from .devices.devices import TuyaBLEData, TuyaBLEEntity, TuyaBLEProductInfo
 from .tuya_ble import TuyaBLEDataPointType, TuyaBLEDevice
 
 _LOGGER = logging.getLogger(__name__)
@@ -51,7 +51,7 @@ class TuyaBLEFingerbotModeMapping(TuyaBLESelectMapping):
             entity_category=EntityCategory.CONFIG,
             options=
                 [
-                    FINGERBOT_MODE_PUSH, 
+                    FINGERBOT_MODE_PUSH,
                     FINGERBOT_MODE_SWITCH,
                     FINGERBOT_MODE_PROGRAM,
                 ],
@@ -116,7 +116,7 @@ mapping: dict[str, TuyaBLECategorySelectMapping] = {
                 [
                     "blliqpsj",
                     "ndvkgsrm",
-                    "yiihr7zh", 
+                    "yiihr7zh",
                     "neq16kgd"
                 ],  # Fingerbot Plus
                 [
@@ -136,6 +136,19 @@ mapping: dict[str, TuyaBLECategorySelectMapping] = {
     "wsdcg": TuyaBLECategorySelectMapping(
         products={
             "ojzlzzsw":  # Soil moisture sensor
+            [
+                TuyaBLESelectMapping(
+                    dp_id=9,
+                    description=TemperatureUnitDescription(
+                        options=[
+                            UnitOfTemperature.CELSIUS,
+                            UnitOfTemperature.FAHRENHEIT,
+                        ],
+                        entity_registry_enabled_default=False,
+                    )
+                ),
+            ],
+            "iv7hudlj":  # Bluetooth Temperature Humidity Sensor
             [
                 TuyaBLESelectMapping(
                     dp_id=9,
