@@ -53,6 +53,13 @@ from .const import (
     TUYA_API_DEVICES_URL,
     TUYA_API_FACTORY_INFO_URL,
     TUYA_FACTORY_INFO_MAC,
+    TUYA_API_DEVICES_URL,
+    TUYA_API_FACTORY_INFO_URL,
+    TUYA_FACTORY_INFO_MAC,
+    CONF_ACCESS_ID,
+    CONF_ACCESS_SECRET,
+    CONF_AUTH_TYPE,
+    SMARTLIFE_APP,
 )
 
 _LOGGER = logging.getLogger(__name__)
@@ -199,34 +206,6 @@ class HASSTuyaBLEDeviceManager(AbstaractTuyaBLEDeviceManager):
                                 CONF_PRODUCT_MODEL: device.get("model"),
                                 CONF_PRODUCT_NAME: device.get("product_name"),
                             }
-
-                            spec_response = await self._hass.async_add_executor_job(
-                                    item.api.get,
-                                    TUYA_API_DEVICE_SPECIFICATION % device.get("id")
-                            )
-
-                            spec_response_result = spec_response.get(TUYA_RESPONSE_RESULT)
-                            if spec_response_result:
-                                functions = spec_response_result.get("functions")
-                                if functions:
-                                    item.credentials[mac][CONF_FUNCTIONS] = functions
-                                status = spec_response_result.get("status")
-                                if status:
-                                    item.credentials[mac][CONF_STATUS_RANGE] = status
-
-                            spec_response = await self._hass.async_add_executor_job(
-                                    item.api.get,
-                                    TUYA_API_DEVICE_SPECIFICATION % device.get("id")
-                            )
-
-                            spec_response_result = spec_response.get(TUYA_RESPONSE_RESULT)
-                            if spec_response_result:
-                                functions = spec_response_result.get("functions")
-                                if functions:
-                                    item.credentials[mac][CONF_FUNCTIONS] = functions
-                                status = spec_response_result.get("status")
-                                if status:
-                                    item.credentials[mac][CONF_STATUS_RANGE] = status
 
     async def build_cache(self) -> None:
         global _cache

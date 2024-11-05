@@ -14,9 +14,10 @@ from homeassistant.const import (
     CONCENTRATION_PARTS_PER_MILLION,
     PERCENTAGE,
     SIGNAL_STRENGTH_DECIBELS_MILLIWATT,
+    TEMP_CELSIUS,
+    VOLUME_MILLILITERS,
     UnitOfTemperature,
-    UnitOfTime,
-    UnitOfVolume,
+    UnitOfTime
 )
 from homeassistant.core import HomeAssistant, callback
 from homeassistant.helpers.entity import EntityCategory
@@ -33,7 +34,7 @@ from .const import (
     CO2_LEVEL_NORMAL,
     DOMAIN,
 )
-from .devices.devices import TuyaBLEData, TuyaBLEEntity, TuyaBLEProductInfo
+from .devices import TuyaBLEData, TuyaBLEEntity, TuyaBLEProductInfo
 from .tuya_ble import TuyaBLEDataPointType, TuyaBLEDevice
 _LOGGER = logging.getLogger(__name__)
 SIGNAL_STRENGTH_DP_ID = -1
