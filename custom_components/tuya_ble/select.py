@@ -177,26 +177,19 @@ mapping: dict[str, TuyaBLECategorySelectMapping] = {
             ],
         },
     ),
-    "znhsb": TuyaBLECategorySelectMapping(
+    "cl": TuyaBLECategorySelectMapping(
         products={
-            "cdlandip":  # Smart water bottle
+            "4pbr8eig":  # Bluetooth Rope Motor
             [
                 TuyaBLESelectMapping(
-                    dp_id=106,
-                    description=TemperatureUnitDescription(
-                        options=[
-                            UnitOfTemperature.CELSIUS,
-                            UnitOfTemperature.FAHRENHEIT,
-                        ],
-                    ),
-                ),
-                TuyaBLESelectMapping(
-                    dp_id=107,
+                    dp_id=1,
                     description=SelectEntityDescription(
-                        key="reminder_mode",
+                        key="control_mode",
                         options=[
-                            "interval_reminder",
-                            "alarm_reminder",
+                            "open",
+                            "stop",
+                            "close",
+                            "continue",
                         ],
                         entity_category=EntityCategory.CONFIG,
                     ),

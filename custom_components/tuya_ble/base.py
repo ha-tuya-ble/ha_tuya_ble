@@ -1,17 +1,9 @@
 """Tuya Home Assistant Base Device Model."""
+
 from __future__ import annotations
 
-import base64
-from dataclasses import dataclass
 import json
-import struct
-from typing import Any, Literal, Self, overload
-
-from tuya_iot import TuyaDevice, TuyaDeviceManager
-
-from homeassistant.helpers.device_registry import DeviceInfo
-from homeassistant.helpers.dispatcher import async_dispatcher_connect
-from homeassistant.helpers.entity import Entity
+from dataclasses import dataclass
 
 from homeassistant.components.tuya.const import (
     DPCode,
@@ -78,7 +70,7 @@ class IntegerTypeData:
     @classmethod
     def from_json(cls, dpcode: DPCode, data: str | dict) -> IntegerTypeData | None:
         """Load JSON string and return a IntegerTypeData object."""
-    
+
         if isinstance(data, str):
             parsed = json.loads(data)
         else:
@@ -114,6 +106,7 @@ class IntegerTypeData:
             type=dict.get("type"),
         )
 
+
 @dataclass
 class EnumTypeData:
     """Enum Type Data."""
@@ -127,4 +120,3 @@ class EnumTypeData:
         if not (parsed := json.loads(data)):
             return None
         return cls(dpcode, **parsed)
-

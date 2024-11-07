@@ -321,6 +321,18 @@ devices_database: dict[str, TuyaBLECategoryInfo] = {
             name="Strip Lights",
         ),
     ),
+    "cl": TuyaBLECategoryInfo(
+        products={
+            **dict.fromkeys(
+                [
+                    "4pbr8eig",
+                ],  # device product_id
+                TuyaBLEProductInfo(
+                    name="Rope Blind Motor",
+                ),
+            )
+        },
+    ),
 }
 
 

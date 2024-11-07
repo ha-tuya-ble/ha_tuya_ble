@@ -20,6 +20,7 @@ from .tuya_ble import TuyaBLEDevice
 PLATFORMS: list[Platform] = [
     Platform.BUTTON,
     Platform.CLIMATE,
+    Platform.COVER,
     Platform.NUMBER,
     Platform.SENSOR,
     Platform.BINARY_SENSOR,

@@ -590,7 +590,7 @@ class TuyaBLEDevice:
                         "%s: communication failed", self.address, exc_info=True
                     )
                     continue
-                except:
+                except BleakNotFoundError:
                     _LOGGER.debug("%s: unexpected error", self.address, exc_info=True)
                     continue
 
@@ -601,7 +601,7 @@ class TuyaBLEDevice:
                         await self._client.start_notify(
                             CHARACTERISTIC_NOTIFY, self._notification_handler
                         )
-                    except:  # [BLEAK_EXCEPTIONS, BleakNotFoundError]:
+                    except BleakNotFoundError:
                         self._client = None
                         _LOGGER.error(
                             "%s: starting notifications failed",
@@ -627,7 +627,7 @@ class TuyaBLEDevice:
                                 self.address,
                             )
                             continue
-                    except:  # [BLEAK_EXCEPTIONS, BleakNotFoundError]:
+                    except BleakNotFoundError:
                         self._client = None
                         _LOGGER.error(
                             "%s: Sending device info request failed",
@@ -653,7 +653,7 @@ class TuyaBLEDevice:
                                 self.address,
                             )
                             continue
-                    except:  # [BLEAK_EXCEPTIONS, BleakNotFoundError]:
+                    except BleakNotFoundError:
                         self._client = None
                         _LOGGER.error(
                             "%s: Sending pairing request failed",
@@ -959,7 +959,7 @@ class TuyaBLEDevice:
                         packet,
                         False,
                     )
-                except:
+                except BleakNotFoundError:
                     _LOGGER.error(
                         "%s: Error during sending packet",
                         self.address,
