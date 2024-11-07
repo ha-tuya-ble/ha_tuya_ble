@@ -12,7 +12,6 @@ from homeassistant.components.cover import (
 )
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
-from homeassistant.helpers.entity import EntityCategory
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator
 
@@ -53,26 +52,7 @@ class TuyaBLECategoryCoverMapping:
     mapping: list[TuyaBLECoverMapping] | None = None
 
 
-mapping: dict[str, TuyaBLECategoryCoverMapping] = {
-    "szjqr": TuyaBLECategoryCoverMapping(
-        products={
-            **dict.fromkeys(
-                ["blliqpsj", "ndvkgsrm", "yiihr7zh", "neq16kgd"],  # Fingerbot Plus
-                [
-                    TuyaBLECoverMapping(
-                        dp_id=121,
-                        description=CoverEntityDescription(
-                            key="program",
-                            icon="mdi:repeat",
-                            pattern="^((\d{1,2}|100)(\/\d{1,2})?)(;((\d{1,2}|100)(\/\d{1,2})?))+$",
-                            entity_category=EntityCategory.CONFIG,
-                        ),
-                    ),
-                ],
-            ),
-        },
-    ),
-}
+mapping: dict[str, TuyaBLECategoryCoverMapping] = {}
 
 
 def get_mapping_by_device(device: TuyaBLEDevice) -> list[TuyaBLECoverMapping]:
