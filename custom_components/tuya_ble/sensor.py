@@ -30,9 +30,6 @@ from .const import (
     BATTERY_CHARGED,
     BATTERY_CHARGING,
     BATTERY_NOT_CHARGING,
-    BATTERY_STATE_HIGH,
-    BATTERY_STATE_LOW,
-    BATTERY_STATE_NORMAL,
     CO2_LEVEL_ALARM,
     CO2_LEVEL_NORMAL,
     DOMAIN,
@@ -222,30 +219,11 @@ mapping: dict[str, TuyaBLECategorySensorMapping] = {
                 TuyaBLESensorMapping(
                     dp_id=2,
                     description=SensorEntityDescription(
-                        key="moisture",
-                        device_class=SensorDeviceClass.MOISTURE,
+                        key="humidity",
+                        device_class=SensorDeviceClass.HUMIDITY,
                         native_unit_of_measurement=PERCENTAGE,
                         state_class=SensorStateClass.MEASUREMENT,
                     ),
-                ),
-                TuyaBLESensorMapping(
-                    dp_id=3,
-                    description=SensorEntityDescription(
-                        key="battery_state",
-                        icon="mdi:battery",
-                        device_class=SensorDeviceClass.ENUM,
-                        entity_category=EntityCategory.DIAGNOSTIC,
-                        options=[
-                            BATTERY_STATE_LOW,
-                            BATTERY_STATE_NORMAL,
-                            BATTERY_STATE_HIGH,
-                        ],
-                    ),
-                    icons=[
-                        "mdi:battery-alert",
-                        "mdi:battery-50",
-                        "mdi:battery-check",
-                    ],
                 ),
                 TuyaBLEBatteryMapping(dp_id=4),
             ],
@@ -254,6 +232,15 @@ mapping: dict[str, TuyaBLECategorySensorMapping] = {
     "zwjcy": TuyaBLECategorySensorMapping(
         products={
             "gvygg3m8": [  # Smartlife Plant Sensor SGS01
+                TuyaBLESensorMapping(
+                    dp_id=3,
+                    description=SensorEntityDescription(
+                        key="humidity",
+                        device_class=SensorDeviceClass.HUMIDITY,
+                        native_unit_of_measurement=PERCENTAGE,
+                        state_class=SensorStateClass.MEASUREMENT,
+                    ),
+                ),
                 TuyaBLETemperatureMapping(
                     dp_id=5,
                     coefficient=10.0,
@@ -265,41 +252,13 @@ mapping: dict[str, TuyaBLECategorySensorMapping] = {
                     ),
                 ),
                 TuyaBLESensorMapping(
-                    dp_id=3,
-                    description=SensorEntityDescription(
-                        key="moisture",
-                        device_class=SensorDeviceClass.MOISTURE,
-                        native_unit_of_measurement=PERCENTAGE,
-                        state_class=SensorStateClass.MEASUREMENT,
-                    ),
-                ),
-                TuyaBLESensorMapping(
-                    dp_id=4,
-                    description=SensorEntityDescription(
-                        key="battery_state",
-                        icon="mdi:battery",
-                        device_class=SensorDeviceClass.ENUM,
-                        entity_category=EntityCategory.DIAGNOSTIC,
-                        options=[
-                            BATTERY_STATE_LOW,
-                            BATTERY_STATE_NORMAL,
-                            BATTERY_STATE_HIGH,
-                        ],
-                    ),
-                    icons=[
-                        "mdi:battery-alert",
-                        "mdi:battery-50",
-                        "mdi:battery-check",
-                    ],
-                ),
-                TuyaBLEBatteryMapping(
-                    dp_id=5,
+                    dp_id=15,
                     description=SensorEntityDescription(
                         key="battery_percentage",
                         device_class=SensorDeviceClass.BATTERY,
                         native_unit_of_measurement=PERCENTAGE,
-                        entity_category=EntityCategory.DIAGNOSTIC,
                         state_class=SensorStateClass.MEASUREMENT,
+                        entity_category=EntityCategory.DIAGNOSTIC,
                     ),
                 ),
             ],
@@ -342,9 +301,7 @@ mapping: dict[str, TuyaBLECategorySensorMapping] = {
                     description=SensorEntityDescription(
                         key="battery",
                         device_class=SensorDeviceClass.BATTERY,
-                        native_unit_of_measurement=PERCENTAGE,
                         entity_category=EntityCategory.DIAGNOSTIC,
-                        state_class=SensorStateClass.MEASUREMENT,
                     ),
                     getter=battery_enum_getter,
                 ),
