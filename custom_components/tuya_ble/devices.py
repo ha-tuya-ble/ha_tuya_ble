@@ -264,12 +264,10 @@ devices_database: dict[str, TuyaBLECategoryInfo] = {
             ),
         },
     ),
-    "wk": TuyaBLECategoryInfo(
+    "wkf": TuyaBLECategoryInfo(
         products={
             **dict.fromkeys(
             [
-            "drlajpqc", 
-            "nhj2j7su",
             "llflaywg",
             ],  # device product_id
             TuyaBLEProductInfo(  

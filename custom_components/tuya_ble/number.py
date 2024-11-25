@@ -351,12 +351,10 @@ mapping: dict[str, TuyaBLECategoryNumberMapping] = {
             ),
         },
     ),
-    "wk": TuyaBLECategoryNumberMapping(
+    "wkf": TuyaBLECategoryNumberMapping(
         products={
             **dict.fromkeys(
                 [
-                    "drlajpqc",
-                    "nhj2j7su",
                     "llflaywg",
                 ],  # Thermostatic Radiator Valve
                 [

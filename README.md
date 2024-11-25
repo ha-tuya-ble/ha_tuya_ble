@@ -49,7 +49,7 @@ The integration works locally, but connection to Tuya BLE device requires device
 
 - Climate (category_id 'wk')
 
-  - Thermostatic Radiator Valve (product_ids 'drlajpqc', 'nhj2j7su', 'llflaywg').
+  - Thermostatic Radiator Valve (product_ids 'llflaywg').
 
 - Smart water bottle (category_id 'znhsb')
 

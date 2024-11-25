@@ -66,12 +66,10 @@ class TuyaBLECategoryClimateMapping:
 
 
 mapping: dict[str, TuyaBLECategoryClimateMapping] = {
-    "wk": TuyaBLECategoryClimateMapping(
+    "wkf": TuyaBLECategoryClimateMapping(
         products={
             **dict.fromkeys(
                 [
-                "drlajpqc", 
-                "nhj2j7su",
                 "llflaywg",
                 ],  # Thermostatic Radiator Valve
                 [

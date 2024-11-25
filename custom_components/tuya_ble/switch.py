@@ -240,12 +240,10 @@ mapping: dict[str, TuyaBLECategorySwitchMapping] = {
             ),
         },
     ),
-    "wk": TuyaBLECategorySwitchMapping(
+    "wkf": TuyaBLECategorySwitchMapping(
         products={
             **dict.fromkeys(
                 [
-                    "drlajpqc",
-                    "nhj2j7su",
                     "llflaywg",
                 ],  # Thermostatic Radiator Valve
                 [

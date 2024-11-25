@@ -52,7 +52,7 @@ class TuyaBLECategoryBinarySensorMapping:
 
 
 mapping: dict[str, TuyaBLECategoryBinarySensorMapping] = {
-    "wk": TuyaBLECategoryBinarySensorMapping(
+    "wkf": TuyaBLECategoryBinarySensorMapping(
         products={
             "drlajpqc": [  # Thermostatic Radiator Valve
                 TuyaBLEBinarySensorMapping(
