@@ -357,6 +357,7 @@ mapping: dict[str, TuyaBLECategoryNumberMapping] = {
                 [
                     "drlajpqc",
                     "nhj2j7su",
+                    "llflaywg",
                 ],  # Thermostatic Radiator Valve
                 [
                     TuyaBLENumberMapping(

@@ -72,6 +72,7 @@ mapping: dict[str, TuyaBLECategoryClimateMapping] = {
                 [
                 "drlajpqc", 
                 "nhj2j7su",
+                "llflaywg",
                 ],  # Thermostatic Radiator Valve
                 [
                 # Thermostatic Radiator Valve

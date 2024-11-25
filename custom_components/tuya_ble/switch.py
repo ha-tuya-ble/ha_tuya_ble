@@ -246,6 +246,7 @@ mapping: dict[str, TuyaBLECategorySwitchMapping] = {
                 [
                     "drlajpqc",
                     "nhj2j7su",
+                    "llflaywg",
                 ],  # Thermostatic Radiator Valve
                 [
                     TuyaBLESwitchMapping(
