@@ -2,8 +2,10 @@
 
 from __future__ import annotations
 
+import asyncio
 from dataclasses import dataclass
 
+from datetime import datetime, timezone
 from enum import IntEnum
 import logging
 
@@ -166,13 +168,16 @@ class TuyaBLECover(TuyaBLEEntity, CoverEntity):
         if self._mapping.cover_state_dp_id != 0:
             datapoint = self._device.datapoints[self._mapping.cover_state_dp_id]
             if datapoint:
-                if datapoint.value == 0:
-                    self._attr_is_opening = True
-                if datapoint.value == 1:
-                    self._attr_is_opening = False
-                    self._attr_is_closing = False
-                if datapoint.value == 2:
-                    self._attr_is_closing = True
+                self._attr_is_opening = False
+                self._attr_is_closing = False
+                match datapoint.value:
+                    case 0:
+                        self._attr_is_opening = True
+                    case 1:
+                        # Do nothing as it stopped
+                        pass
+                    case 2:
+                        self._attr_is_closing = True
 
         if self._mapping.cover_position_dp_id != 0:
             datapoint = self._device.datapoints[self._mapping.cover_position_dp_id]
@@ -205,6 +210,21 @@ class TuyaBLECover(TuyaBLEEntity, CoverEntity):
 
     async def _update_cover_state(self, state: TuyaCoverState) -> None:
         if self._mapping.cover_state_dp_id != 0:
+            # In some circumstances (presumably due to a communication error in between where packets were lost)
+            # It can be the case that the device does not update the state of the cover and does not accept new commands.
+            # This is why a timer is here to verify that the state is updated and to manually request the status update
+            # if no new data has come in within 1 second as it points to a communication error (as happened in tests with
+            # the kcy0x4pi product).
+            self._hass.add_job(
+                self._validate_data_update_from_device_and_reconnect_if_needed(
+                    state=state, time_now=datetime.now(timezone.utc)
+                )
+            )
+            self._update_cover_state_without_validation(state)
+            self._update_ha_state_for_cover_state(state)
+
+    def _update_cover_state_without_validation(self, state: TuyaCoverState) -> None:
+        if self._mapping.cover_state_dp_id != 0:
             datapoint = self._device.datapoints.get_or_create(
                 self._mapping.cover_state_dp_id,
                 TuyaBLEDataPointType.DT_VALUE,
@@ -212,7 +232,25 @@ class TuyaBLECover(TuyaBLEEntity, CoverEntity):
             )
             if datapoint:
                 self._hass.create_task(datapoint.set_value(state.value))
-            self._update_ha_state_for_cover_state(state)
+
+    async def _validate_data_update_from_device_and_reconnect_if_needed(
+        self,
+        state: TuyaCoverState,
+        sleep_ms: int = 1000,
+        time_now: datetime | None = None,
+    ) -> None:
+        time_now = time_now or datetime.now(timezone.utc)
+        await asyncio.sleep(sleep_ms / 1000.0)
+        if self._device._is_paired and (
+            not self._device.last_data_received
+            or self._device.last_data_received < time_now
+        ):
+            _LOGGER.warning(
+                "No data received from device (cover) %s within %dms, manually requesting status update",
+                self._device.name,
+                sleep_ms,
+            )
+            await self._device.update()
 
     def _update_ha_state_for_cover_state(self, state: TuyaCoverState) -> None:
         # sometimes the device does not update DP 1 so force the current state
