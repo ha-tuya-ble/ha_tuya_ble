@@ -15,10 +15,9 @@ from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import (
     CONCENTRATION_PARTS_PER_MILLION,
     PERCENTAGE,
-    TIME_MINUTES,
-    TIME_SECONDS,
-    VOLUME_MILLILITERS,
+    UnitOfVolume,
     UnitOfTemperature,
+    UnitOfTime,
 )
 from homeassistant.core import HomeAssistant, callback
 from homeassistant.helpers.entity import EntityCategory
@@ -197,7 +196,7 @@ class TuyaBLEHoldTimeDescription(NumberEntityDescription):
     icon: str = "mdi:timer"
     native_max_value: float = 10
     native_min_value: float = 0
-    native_unit_of_measurement: str = TIME_SECONDS
+    native_unit_of_measurement: str = UnitOfTime.SECONDS
     native_step: float = 1
     entity_category: EntityCategory = EntityCategory.CONFIG
 
@@ -351,12 +350,65 @@ mapping: dict[str, TuyaBLECategoryNumberMapping] = {
             ),
         },
     ),
+    "kg": TuyaBLECategoryNumberMapping(
+        products={
+            **dict.fromkeys(
+                [
+                    "mknd4lci",
+                    "riecov42"
+                ],  # Fingerbot Plus
+                [
+                    TuyaBLENumberMapping(
+                        dp_id=102,
+                        description=TuyaBLEDownPositionDescription(),
+                        is_available=is_fingerbot_not_in_program_mode,
+                    ),
+                    TuyaBLEHoldTimeMapping(dp_id=103),
+                    TuyaBLENumberMapping(
+                        dp_id=106,
+                        description=TuyaBLEUpPositionDescription(),
+                        is_available=is_fingerbot_not_in_program_mode,
+                    ),
+                    TuyaBLENumberMapping(
+                        dp_id=109,
+                        description=NumberEntityDescription(
+                            key="program_repeats_count",
+                            icon="mdi:repeat",
+                            native_max_value=0xFFFE,
+                            native_min_value=1,
+                            native_step=1,
+                            entity_category=EntityCategory.CONFIG,
+                        ),
+                        is_available=is_fingerbot_repeat_count_available,
+                        getter=get_fingerbot_program_repeat_count,
+                        setter=set_fingerbot_program_repeat_count,
+                    ),
+                    TuyaBLENumberMapping(
+                        dp_id=109,
+                        description=NumberEntityDescription(
+                            key="program_idle_position",
+                            icon="mdi:repeat",
+                            native_max_value=100,
+                            native_min_value=0,
+                            native_step=1,
+                            native_unit_of_measurement=PERCENTAGE,
+                            entity_category=EntityCategory.CONFIG,
+                        ),
+                        is_available=is_fingerbot_in_program_mode,
+                        getter=get_fingerbot_program_position,
+                        setter=set_fingerbot_program_position,
+                    ),
+                ],
+            ),
+        },
+    ),
     "wk": TuyaBLECategoryNumberMapping(
         products={
             **dict.fromkeys(
                 [
                     "drlajpqc",
                     "nhj2j7su",
+                    "zmachryv",
                 ],  # Thermostatic Radiator Valve
                 [
                     TuyaBLENumberMapping(
@@ -375,29 +427,6 @@ mapping: dict[str, TuyaBLECategoryNumberMapping] = {
             ),
         },
     ),
-    #"ms": TuyaBLECategoryNumberMapping(
-    #    products={
-    #        **dict.fromkeys(
-    #            [
-    #                "okkyfgfs",
-    #            ],  # Smart lock
-    #            [
-    #                TuyaBLENumberMapping(
-    #                    dp_id=12,
-    #                    description=NumberEntityDescription(
-    #                        key="unlock_fingerprint",
-    #                        icon="mdi:thermometer-lines",
-    #                        native_max_value=200,
-    #                        native_min_value=100,
-    #                        #native_unit_of_measurement=UnitOfTemperature.CELSIUS,
-    #                        native_step=1,
-    #                        entity_category=EntityCategory.CONFIG,
-    #                    ),
-    #                ),
-    #            ],
-    #        ),
-    #    },
-    #),
     "wsdcg": TuyaBLECategoryNumberMapping(
         products={
             "ojzlzzsw": [  # Soil moisture sensor
@@ -408,7 +437,7 @@ mapping: dict[str, TuyaBLECategoryNumberMapping] = {
                         icon="mdi:timer",
                         native_max_value=120,
                         native_min_value=1,
-                        native_unit_of_measurement=TIME_MINUTES,
+                        native_unit_of_measurement=UnitOfTime.MINUTES,
                         native_step=1,
                         entity_category=EntityCategory.CONFIG,
                     ),
@@ -427,7 +456,7 @@ mapping: dict[str, TuyaBLECategoryNumberMapping] = {
                         device_class=NumberDeviceClass.WATER,
                         native_max_value=5000,
                         native_min_value=0,
-                        native_unit_of_measurement=VOLUME_MILLILITERS,
+                        native_unit_of_measurement=UnitOfVolume.MILLILITERS,
                         native_step=1,
                         entity_category=EntityCategory.CONFIG,
                     ),
@@ -437,7 +466,7 @@ mapping: dict[str, TuyaBLECategoryNumberMapping] = {
     ),
     "ggq": TuyaBLECategoryNumberMapping(
         products={
-            "6pahkcau": [  # Irrigation computer
+            "6pahkcau": [  # Irrigation computer PARKSIDE PPB A1
                 TuyaBLENumberMapping(
                     dp_id=5,
                     description=NumberEntityDescription(
@@ -445,7 +474,57 @@ mapping: dict[str, TuyaBLECategoryNumberMapping] = {
                         icon="mdi:timer",
                         native_max_value=1440,
                         native_min_value=1,
-                        native_unit_of_measurement=TIME_MINUTES,
+                        native_unit_of_measurement=UnitOfTime.MINUTES,
+                        native_step=1,
+                    ),
+                ),
+            ],
+            "hfgdqhho": [  # Irrigation computer SGW08
+                TuyaBLENumberMapping(
+                    dp_id=106,
+                    description=NumberEntityDescription(
+                        key="countdown_duration_1",
+                        name="CH1 Countdown",
+                        icon="mdi:timer",
+                        native_max_value=1440,
+                        native_min_value=1,
+                        native_unit_of_measurement=UnitOfTime.MINUTES,
+                        native_step=1,
+                    ),
+                ),
+                TuyaBLENumberMapping(
+                    dp_id=103,
+                    description=NumberEntityDescription(
+                        key="countdown_duration_2",
+                        name="CH2 Countdown",
+                        icon="mdi:timer",
+                        native_max_value=1440,
+                        native_min_value=1,
+                        native_unit_of_measurement=UnitOfTime.MINUTES,
+                        native_step=1,
+                    ),
+                ),
+            ],
+            "hfgdqhho": [  # Irrigation computer - SGW02
+                TuyaBLENumberMapping(
+                    dp_id=106,
+                    description=NumberEntityDescription(
+                        key="countdown_duration_z1",
+                        icon="mdi:timer",
+                        native_max_value=1440,
+                        native_min_value=1,
+                        native_unit_of_measurement=UnitOfTime.MINUTES,
+                        native_step=1,
+                    ),
+                ),
+                TuyaBLENumberMapping(
+                    dp_id=103,
+                    description=NumberEntityDescription(
+                        key="countdown_duration_z2",
+                        icon="mdi:timer",
+                        native_max_value=1440,
+                        native_min_value=1,
+                        native_unit_of_measurement=UnitOfTime.MINUTES,
                         native_step=1,
                     ),
                 ),
