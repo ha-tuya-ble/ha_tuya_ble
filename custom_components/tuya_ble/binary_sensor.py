@@ -2,9 +2,9 @@
 
 from __future__ import annotations
 
-import logging
+from collections.abc import Callable
 from dataclasses import dataclass
-from typing import Callable
+import logging
 
 from homeassistant.components.binary_sensor import (
     BinarySensorDeviceClass,
@@ -17,9 +17,7 @@ from homeassistant.helpers.entity import EntityCategory
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator
 
-from .const import (
-    DOMAIN,
-)
+from .const import DOMAIN
 from .devices import TuyaBLEData, TuyaBLEEntity, TuyaBLEProductInfo
 from .tuya_ble import TuyaBLEDataPointType, TuyaBLEDevice
 
@@ -78,10 +76,8 @@ def get_mapping_by_device(device: TuyaBLEDevice) -> list[TuyaBLEBinarySensorMapp
             return product_mapping
         if category.mapping is not None:
             return category.mapping
-        else:
-            return []
-    else:
         return []
+    return []
 
 
 class TuyaBLEBinarySensor(TuyaBLEEntity, BinarySensorEntity):

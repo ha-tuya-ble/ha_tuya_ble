@@ -2,9 +2,9 @@
 
 from __future__ import annotations
 
-import logging
+from collections.abc import Callable
 from dataclasses import dataclass, field
-from typing import Callable
+import logging
 
 from homeassistant.components.sensor import (
     SensorDeviceClass,
@@ -390,10 +390,8 @@ def get_mapping_by_device(device: TuyaBLEDevice) -> list[TuyaBLESensorMapping]:
             return product_mapping
         if category.mapping is not None:
             return category.mapping
-        else:
-            return []
-    else:
         return []
+    return []
 
 
 class TuyaBLESensor(TuyaBLEEntity, SensorEntity):

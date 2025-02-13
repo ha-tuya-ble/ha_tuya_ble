@@ -2,24 +2,19 @@
 
 from __future__ import annotations
 
-import logging
+from collections.abc import Callable
 from dataclasses import dataclass
+import logging
 from struct import pack, unpack
-from typing import Callable
 
-from homeassistant.components.text import (
-    TextEntity,
-    TextEntityDescription,
-)
+from homeassistant.components.text import TextEntity, TextEntityDescription
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity import EntityCategory
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator
 
-from .const import (
-    DOMAIN,
-)
+from .const import DOMAIN
 from .devices import TuyaBLEData, TuyaBLEEntity, TuyaBLEProductInfo
 from .tuya_ble import TuyaBLEDataPointType, TuyaBLEDevice
 
@@ -62,8 +57,7 @@ def get_fingerbot_program(
                 step_pos = 4 + step * 3
                 step_data = datapoint.value[step_pos : step_pos + 3]
                 position, delay = unpack(">BH", step_data)
-                if delay > 9999:
-                    delay = 9999
+                delay = min(delay, 9999)
                 result += (
                     (";" if step > 0 else "")
                     + str(position)
@@ -142,10 +136,8 @@ def get_mapping_by_device(device: TuyaBLEDevice) -> list[TuyaBLETextMapping]:
             return product_mapping
         if category.mapping is not None:
             return category.mapping
-        else:
-            return []
-    else:
         return []
+    return []
 
 
 class TuyaBLEText(TuyaBLEEntity, TextEntity):

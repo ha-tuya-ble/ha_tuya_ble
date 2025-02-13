@@ -1,12 +1,12 @@
 from __future__ import annotations
 
 import asyncio
+from collections.abc import Callable
 import hashlib
 import logging
 import secrets
-import time
-from collections.abc import Callable
 from struct import pack, unpack
+import time
 
 from bleak.backends.device import BLEDevice
 from bleak.backends.scanner import AdvertisementData
@@ -19,7 +19,7 @@ from bleak_retry_connector import (
     BleakNotFoundError,
     establish_connection,
 )
-from Crypto.Cipher import AES
+from Cryptodome.Cipher import AES
 
 from .const import (
     CHARACTERISTIC_NOTIFY,
@@ -47,6 +47,37 @@ BLEAK_EXCEPTIONS = (*BLEAK_RETRY_EXCEPTIONS, OSError)
 
 
 class TuyaBLEDataPoint:
+    """Represents a Tuya BLE data point that encapsulates the state and behavior of a specific BLE data value.
+
+    This class stores and manages the state of a Tuya BLE data point, including its identifier, timestamp,
+    flags, type, and value. It provides functionality for updating the data point from both the device side
+    (automatically) and the user side (asynchronously), ensuring proper type conversion and state tracking.
+
+    Parameters:
+        owner (TuyaBLEDataPoints): The owner or manager responsible for this data point.
+        id (int): The unique identifier for the data point.
+        timestamp (float): The timestamp when the data point was last updated.
+        flags (int): Flags associated with the current update, providing additional context.
+        type (TuyaBLEDataPointType): The type of the data point which defines the format of its value.
+        value (bytes | bool | int | str): The initial value of the data point.
+
+    Attributes:
+        id (int): Read-only property that returns the unique identifier of the data point.
+        timestamp (float): Read-only property that returns the last update timestamp.
+        flags (int): Read-only property that returns the associated flags with the data point.
+        type (TuyaBLEDataPointType): Read-only property that returns the type of the data point.
+        value (bytes | bool | int | str): Read-only property that returns the current value of the data point.
+        changed_by_device (bool): Read-only property that indicates whether the value has been changed by the device.
+
+    Methods:
+        _update_from_device(timestamp, flags, type, value):
+            Updates internal state based on new data received from the device.
+        set_value(value):
+            Asynchronously sets a new value for the data point, converting it based on the data point type,
+            and notifies the owner of the change.
+
+    """
+
     def __init__(
         self,
         owner: TuyaBLEDataPoints,
@@ -56,6 +87,7 @@ class TuyaBLEDataPoint:
         type: TuyaBLEDataPointType,
         value: bytes | bool | int | str,
     ) -> None:
+        """Init the TuyaBLEDataPoint."""
         self._owner = owner
         self._id = id
         self._value = value
@@ -86,10 +118,9 @@ class TuyaBLEDataPoint:
             case TuyaBLEDataPointType.DT_ENUM:
                 if self._value > 0xFFFF:
                     return pack(">I", self._value)
-                elif self._value > 0xFF:
+                if self._value > 0xFF:
                     return pack(">H", self._value)
-                else:
-                    return pack(">B", self._value)
+                return pack(">B", self._value)
             case TuyaBLEDataPointType.DT_STRING:
                 return self._value.encode()
 
@@ -140,19 +171,25 @@ class TuyaBLEDataPoint:
 
 
 class TuyaBLEDataPoints:
+    """Representation of a Tuya BLE device datapoints."""
+
     def __init__(self, owner: TuyaBLEDevice) -> None:
+        """Init the TuyaBLEDataPoints."""
         self._owner = owner
         self._datapoints: dict[int, TuyaBLEDataPoint] = {}
         self._update_started: int = 0
         self._updated_datapoints: list[int] = []
 
     def __len__(self) -> int:
+        """Return the number of datapoints."""
         return len(self._datapoints)
 
     def __getitem__(self, key: int) -> TuyaBLEDataPoint | None:
+        """Get the datapoint by id."""
         return self._datapoints.get(key)
 
     def has_id(self, id: int, type: TuyaBLEDataPointType | None = None) -> bool:
+        """Check if the datapoint with id exists."""
         return (id in self._datapoints) and (
             (type is None) or (self._datapoints[id].type == type)
         )
@@ -163,6 +200,7 @@ class TuyaBLEDataPoints:
         type: TuyaBLEDataPointType,
         value: bytes | bool | int | str | None = None,
     ) -> TuyaBLEDataPoint:
+        """Get or create the datapoint by id."""
         datapoint = self._datapoints.get(id)
         if datapoint:
             return datapoint
@@ -171,9 +209,11 @@ class TuyaBLEDataPoints:
         return datapoint
 
     def begin_update(self) -> None:
+        """Begin update of datapoints."""
         self._update_started += 1
 
     async def end_update(self) -> None:
+        """End update of datapoints."""
         if self._update_started > 0:
             self._update_started -= 1
             if self._update_started == 0 and len(self._updated_datapoints) > 0:
@@ -205,10 +245,9 @@ class TuyaBLEDataPoints:
             await self._owner._send_datapoints([dp_id])
 
 
-global_connect_lock = asyncio.Lock()
-
-
 class TuyaBLEDevice:
+    """Representation of a Tuya BLE device."""
+
     def __init__(
         self,
         device_manager: AbstaractTuyaBLEDeviceManager,
@@ -279,10 +318,9 @@ class TuyaBLEDevice:
         return result
 
     async def pair(self) -> None:
-        """
-        _LOGGER.debug("%s: Sending pairing request: %s",
+        """_LOGGER.debug("%s: Sending pairing request: %s",
             self.address, data.hex()
-        )
+        ).
         """
         await self._send_packet(
             TuyaBLECode.FUN_SENDER_PAIR, self._build_pairing_request()
@@ -290,7 +328,7 @@ class TuyaBLEDevice:
 
     async def update(self) -> None:
         _LOGGER.debug("%s: Updating", self.address)
-        await self._send_packet(TuyaBLECode.FUN_SENDER_DEVICE_STATUS, bytes())
+        await self._send_packet(TuyaBLECode.FUN_SENDER_DEVICE_STATUS, b"")
 
     async def _update_device_info(self) -> bool:
         if self._device_info is None:
@@ -342,8 +380,7 @@ class TuyaBLEDevice:
         """Get the name of the device."""
         if self._device_info:
             return self._device_info.device_name
-        else:
-            return self._ble_device.name or self._ble_device.address
+        return self._ble_device.name or self._ble_device.address
 
     @property
     def rssi(self) -> int | None:
@@ -356,50 +393,43 @@ class TuyaBLEDevice:
     def uuid(self) -> str:
         if self._device_info is not None:
             return self._device_info.uuid
-        else:
-            return ""
+        return ""
 
     @property
     def local_key(self) -> str:
         if self._device_info is not None:
             return self._device_info.local_key
-        else:
-            return ""
+        return ""
 
     @property
     def category(self) -> str:
         if self._device_info is not None:
             return self._device_info.category
-        else:
-            return ""
+        return ""
 
     @property
     def device_id(self) -> str:
         if self._device_info is not None:
             return self._device_info.device_id
-        else:
-            return ""
+        return ""
 
     @property
     def product_id(self) -> str:
         if self._device_info is not None:
             return self._device_info.product_id
-        else:
-            return ""
+        return ""
 
     @property
     def product_model(self) -> str:
         if self._device_info is not None:
             return self._device_info.product_model
-        else:
-            return ""
+        return ""
 
     @property
     def product_name(self) -> str:
         if self._device_info is not None:
             return self._device_info.product_name
-        else:
-            return ""
+        return ""
 
     @property
     def device_version(self) -> str:
@@ -741,8 +771,7 @@ class TuyaBLEDevice:
                 break
         if offset > 4:
             raise TuyaBLEDataFormatError()
-        else:
-            return (result, start_pos + offset)
+        return (result, start_pos + offset)
 
     def _build_packets(
         self,
@@ -866,7 +895,7 @@ class TuyaBLEDevice:
         if future:
             try:
                 await asyncio.wait_for(future, RESPONSE_WAIT_TIMEOUT)
-            except asyncio.TimeoutError:
+            except TimeoutError:
                 _LOGGER.error(
                     "%s: timeout receiving response, RSSI: %s",
                     self.address,
@@ -981,10 +1010,8 @@ class TuyaBLEDevice:
             return self._auth_key
         if security_flag == 4:
             return self._login_key
-        elif security_flag == 5:
+        if security_flag == 5:
             return self._session_key
-        else:
-            pass
 
     def _parse_timestamp(self, data: bytes, start_pos: int) -> tuple(float, int):
         timestamp: float
@@ -1000,13 +1027,11 @@ class TuyaBLEDevice:
                 if end_pos > len(data):
                     raise TuyaBLEDataLengthError()
                 timestamp = int(data[pos:end_pos].decode()) / 1000
-                pass
             case 1:
                 end_pos += 4
                 if end_pos > len(data):
                     raise TuyaBLEDataLengthError()
                 timestamp = int.from_bytes(data[pos:end_pos], "big") * 1.0
-                pass
             case _:
                 raise TuyaBLEDataFormatError()
 
@@ -1248,7 +1273,7 @@ class TuyaBLEDevice:
 
         if packet_num < self._input_expected_packet_num:
             _LOGGER.error(
-                "%s: Unexpcted packet (number %s) in notifications, " "expected %s",
+                "%s: Unexpcted packet (number %s) in notifications, expected %s",
                 self.address,
                 packet_num,
                 self._input_expected_packet_num,
@@ -1282,7 +1307,7 @@ class TuyaBLEDevice:
             )
             self._clean_input()
             return
-        elif len(self._input_buffer) == self._input_expected_length:
+        if len(self._input_buffer) == self._input_expected_length:
             self._parse_input()
 
     async def _send_datapoints_v3(self, datapoint_ids: list[int]) -> None:
@@ -1309,3 +1334,31 @@ class TuyaBLEDevice:
             await self._send_datapoints_v3(datapoint_ids)
         else:
             raise TuyaBLEDeviceError(0)
+
+
+class TuyaBLEEntityDescription:
+    """Description of a Tuya BLE entity."""
+
+    def __init__(
+        self,
+        id: int,
+        type: TuyaBLEDataPointType,
+        name: str,
+        unit: str | None = None,
+        icon: str | None = None,
+        device_class: str | None = None,
+        state_class: str | None = None,
+        required: bool = False,
+    ) -> None:
+        """Initialize the entity description."""
+        self.id = id
+        self.type = type
+        self.name = name
+        self.unit = unit
+        self.icon = icon
+        self.device_class = device_class
+        self.state_class = state_class
+        self.required = required
+
+
+global_connect_lock = asyncio.Lock()

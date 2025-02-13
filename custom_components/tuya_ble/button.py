@@ -2,14 +2,11 @@
 
 from __future__ import annotations
 
-import logging
+from collections.abc import Callable
 from dataclasses import dataclass, field
-from typing import Callable
+import logging
 
-from homeassistant.components.button import (
-    ButtonEntity,
-    ButtonEntityDescription,
-)
+from homeassistant.components.button import ButtonEntity, ButtonEntityDescription
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
@@ -114,10 +111,8 @@ def get_mapping_by_device(device: TuyaBLEDevice) -> list[TuyaBLECategoryButtonMa
             return product_mapping
         if category.mapping is not None:
             return category.mapping
-        else:
-            return []
-    else:
         return []
+    return []
 
 
 class TuyaBLEButton(TuyaBLEEntity, ButtonEntity):

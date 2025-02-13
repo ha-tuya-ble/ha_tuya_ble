@@ -2,10 +2,11 @@
 
 from __future__ import annotations
 
-import logging
 from dataclasses import dataclass
+import logging
 
 from home_assistant_bluetooth import BluetoothServiceInfoBleak
+
 from homeassistant.const import CONF_ADDRESS, CONF_DEVICE_ID
 from homeassistant.core import CALLBACK_TYPE, HomeAssistant, callback
 from homeassistant.helpers import device_registry as dr
@@ -345,8 +346,7 @@ def get_product_info_by_ids(
         if product_info is not None:
             return product_info
         return category_info.info
-    else:
-        return None
+    return None
 
 
 def get_device_product_info(device: TuyaBLEDevice) -> TuyaBLEProductInfo | None:

@@ -2,13 +2,10 @@
 
 from __future__ import annotations
 
-import logging
 from dataclasses import dataclass, field
+import logging
 
-from homeassistant.components.select import (
-    SelectEntity,
-    SelectEntityDescription,
-)
+from homeassistant.components.select import SelectEntity, SelectEntityDescription
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import UnitOfTemperature
 from homeassistant.core import HomeAssistant
@@ -208,10 +205,8 @@ def get_mapping_by_device(device: TuyaBLEDevice) -> list[TuyaBLECategorySelectMa
             return product_mapping
         if category.mapping is not None:
             return category.mapping
-        else:
-            return []
-    else:
         return []
+    return []
 
 
 class TuyaBLESelect(TuyaBLEEntity, SelectEntity):
@@ -239,8 +234,7 @@ class TuyaBLESelect(TuyaBLEEntity, SelectEntity):
             value = datapoint.value
             if value >= 0 and value < len(self._attr_options):
                 return self._attr_options[value]
-            else:
-                return value
+            return value
         return None
 
     def select_option(self, value: str) -> None:
