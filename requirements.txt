@@ -1,0 +1,4 @@
+tuya-iot-py-sdk==0.6.6
+pycountry==24.6.1
+colorutils==0.3.0
+pycryptodomex==3.21.0

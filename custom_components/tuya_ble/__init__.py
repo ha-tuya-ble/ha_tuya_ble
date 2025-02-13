@@ -5,7 +5,6 @@ from __future__ import annotations
 import logging
 
 from bleak_retry_connector import get_device
-
 from homeassistant.components import bluetooth
 from homeassistant.components.bluetooth.match import ADDRESS, BluetoothCallbackMatcher
 from homeassistant.config_entries import ConfigEntry

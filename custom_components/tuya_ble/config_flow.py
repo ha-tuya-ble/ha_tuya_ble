@@ -6,9 +6,7 @@ import logging
 from typing import Any
 
 import pycountry
-from tuya_iot import AuthType
 import voluptuous as vol
-
 from homeassistant.components.bluetooth import (
     BluetoothServiceInfoBleak,
     async_discovered_service_info,
@@ -33,6 +31,7 @@ from homeassistant.const import (
 )
 from homeassistant.core import callback
 from homeassistant.data_entry_flow import FlowHandler, FlowResult
+from tuya_iot import AuthType
 
 from .cloud import HASSTuyaBLEDeviceManager
 from .const import (
@@ -203,9 +202,10 @@ class TuyaBLEOptionsFlow(OptionsFlowWithConfigEntry):
         return _show_login_form(self, user_input, errors, placeholders)
 
 
-class TuyaBLEConfigFlow(ConfigFlow, domain=DOMAIN):
+class TuyaBLEConfigFlow(ConfigFlow):
     """Handle a config flow for Tuya BLE."""
 
+    domain = DOMAIN
     VERSION = 1
 
     def __init__(self) -> None:
@@ -253,6 +253,8 @@ class TuyaBLEConfigFlow(ConfigFlow, domain=DOMAIN):
         placeholders: dict[str, Any] = {}
 
         if user_input is not None:
+            if self._manager is None:
+                self._manager = HASSTuyaBLEDeviceManager(self.hass, self._data)
             data = await _try_login(
                 self._manager,
                 user_input,
@@ -266,12 +268,16 @@ class TuyaBLEConfigFlow(ConfigFlow, domain=DOMAIN):
         if user_input is None:
             user_input = {}
             if self._discovery_info:
+                if self._manager is None:
+                    self._manager = HASSTuyaBLEDeviceManager(self.hass, self._data)
                 await self._manager.get_device_credentials(
                     self._discovery_info.address,
                     False,
                     True,
                 )
             if self._data is None or len(self._data) == 0:
+                if self._manager is None:
+                    self._manager = HASSTuyaBLEDeviceManager(self.hass, self._data)
                 self._manager.get_login_from_cache()
             if self._data is not None and len(self._data) > 0:
                 user_input.update(self._data)
