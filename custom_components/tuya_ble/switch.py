@@ -2,14 +2,12 @@
 
 from __future__ import annotations
 
-import logging
+from collections.abc import Callable
 from dataclasses import dataclass, field
-from typing import Any, Callable
+import logging
+from typing import Any
 
-from homeassistant.components.switch import (
-    SwitchEntity,
-    SwitchEntityDescription,
-)
+from homeassistant.components.switch import SwitchEntity, SwitchEntityDescription
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity import EntityCategory
@@ -358,10 +356,8 @@ def get_mapping_by_device(device: TuyaBLEDevice) -> list[TuyaBLECategorySwitchMa
             return product_mapping
         if category.mapping is not None:
             return category.mapping
-        else:
-            return []
-    else:
         return []
+    return []
 
 
 class TuyaBLESwitch(TuyaBLEEntity, SwitchEntity):

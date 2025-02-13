@@ -2,13 +2,10 @@
 
 from __future__ import annotations
 
-import logging
 from dataclasses import dataclass
+import logging
 
-from homeassistant.components.climate import (
-    ClimateEntity,
-    ClimateEntityDescription,
-)
+from homeassistant.components.climate import ClimateEntity, ClimateEntityDescription
 from homeassistant.components.climate.const import (
     PRESET_AWAY,
     PRESET_NONE,
@@ -104,10 +101,8 @@ def get_mapping_by_device(device: TuyaBLEDevice) -> list[TuyaBLECategoryClimateM
             return product_mapping
         if category.mapping is not None:
             return category.mapping
-        else:
-            return []
-    else:
         return []
+    return []
 
 
 class TuyaBLEClimate(TuyaBLEEntity, ClimateEntity):
@@ -289,18 +284,17 @@ class TuyaBLEClimate(TuyaBLEEntity, ClimateEntity):
                         bool_value,
                     )
                     break
-            else:
-                if self._mapping.preset_mode_dp_ids:
-                    for (
-                        dp_preset_mode,
+            elif self._mapping.preset_mode_dp_ids:
+                for (
+                    dp_preset_mode,
+                    dp_id,
+                ) in self._mapping.preset_mode_dp_ids.items():
+                    bool_value = dp_preset_mode == preset_mode
+                    datapoint = self._device.datapoints.get_or_create(
                         dp_id,
-                    ) in self._mapping.preset_mode_dp_ids.items():
-                        bool_value = dp_preset_mode == preset_mode
-                        datapoint = self._device.datapoints.get_or_create(
-                            dp_id,
-                            TuyaBLEDataPointType.DT_BOOL,
-                            bool_value,
-                        )
+                        TuyaBLEDataPointType.DT_BOOL,
+                        bool_value,
+                    )
             if datapoint:
                 self._hass.create_task(datapoint.set_value(bool_value))
 

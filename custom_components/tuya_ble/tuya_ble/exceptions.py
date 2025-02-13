@@ -9,6 +9,10 @@ class TuyaBLEEnumValueError(TuyaBLEError):
     """Raised when value assigned to DP_ENUM datapoint has unexpected type."""
 
     def __init__(self) -> None:
+        """Initialize the exception with a predefined message.
+
+        The value of DP_ENUM datapoint must be an unsigned integer.
+        """
         super().__init__("Value of DP_ENUM datapoint must be unsigned integer")
 
 
@@ -37,4 +41,4 @@ class TuyaBLEDeviceError(TuyaBLEError):
     """Raised when Tuya BLE device returned error in response to command."""
 
     def __init__(self, code: int) -> None:
-        super().__init__(("BLE deice returned error code %s") % (code))
+        super().__init__(f"BLE deice returned error code {code}")

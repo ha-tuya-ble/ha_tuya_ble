@@ -3,9 +3,15 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
+from typing import Final
 
 from tuya_iot import TuyaCloudOpenAPIEndpoint
-from typing_extensions import Final
+
+CONF_APP_TYPE = "tuya_app_type"
+CONF_ENDPOINT = "endpoint"
+TUYA_DOMAIN = "tuya"
+TUYA_RESPONSE_RESULT = "result"
+TUYA_RESPONSE_SUCCESS = "success"
 
 DOMAIN: Final = "tuya_ble"
 

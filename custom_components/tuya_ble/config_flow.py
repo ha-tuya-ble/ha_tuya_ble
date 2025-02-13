@@ -6,7 +6,9 @@ import logging
 from typing import Any
 
 import pycountry
+from tuya_iot import AuthType
 import voluptuous as vol
+
 from homeassistant.components.bluetooth import (
     BluetoothServiceInfoBleak,
     async_discovered_service_info,
@@ -31,7 +33,6 @@ from homeassistant.const import (
 )
 from homeassistant.core import callback
 from homeassistant.data_entry_flow import FlowHandler, FlowResult
-from tuya_iot import AuthType
 
 from .cloud import HASSTuyaBLEDeviceManager
 from .const import (
@@ -193,8 +194,7 @@ class TuyaBLEOptionsFlow(OptionsFlowWithConfigEntry):
                             title=self.config_entry.title,
                             data=entry.manager.data,
                         )
-                    else:
-                        errors["base"] = "device_not_registered"
+                    errors["base"] = "device_not_registered"
 
         if user_input is None:
             user_input = {}

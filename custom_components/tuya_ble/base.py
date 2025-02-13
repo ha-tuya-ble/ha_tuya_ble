@@ -2,12 +2,10 @@
 
 from __future__ import annotations
 
-import json
 from dataclasses import dataclass
+import json
 
-from homeassistant.components.tuya.const import (
-    DPCode,
-)
+from homeassistant.components.tuya.const import DPCode
 
 from .util import remap_value
 
@@ -39,19 +37,19 @@ class IntegerTypeData:
         """Return the step scaled."""
         return self.step / (10**self.scale)
 
-    def scale_value(self, value: float | int) -> float:
+    def scale_value(self, value: float) -> float:
         """Scale a value."""
         return value / (10**self.scale)
 
-    def scale_value_back(self, value: float | int) -> int:
+    def scale_value_back(self, value: float) -> int:
         """Return raw value for scaled."""
         return int(value * (10**self.scale))
 
     def remap_value_to(
         self,
         value: float,
-        to_min: float | int = 0,
-        to_max: float | int = 255,
+        to_min: float = 0,
+        to_max: float = 255,
         reverse: bool = False,
     ) -> float:
         """Remap a value from this range to a new range."""
@@ -60,8 +58,8 @@ class IntegerTypeData:
     def remap_value_from(
         self,
         value: float,
-        from_min: float | int = 0,
-        from_max: float | int = 255,
+        from_min: float = 0,
+        from_max: float = 255,
         reverse: bool = False,
     ) -> float:
         """Remap a value from its current range to this range."""
@@ -77,7 +75,7 @@ class IntegerTypeData:
             parsed = data
 
         if parsed is None:
-            return
+            return None
 
         return cls(
             dpcode,

@@ -2,14 +2,11 @@
 
 from __future__ import annotations
 
-import logging
+from collections.abc import Callable
 from dataclasses import dataclass, field
-from typing import Callable
+import logging
 
-from homeassistant.components.number import (
-    NumberEntity,
-    NumberEntityDescription,
-)
+from homeassistant.components.number import NumberEntity, NumberEntityDescription
 from homeassistant.components.number.const import NumberDeviceClass, NumberMode
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import (
@@ -512,10 +509,8 @@ def get_mapping_by_device(device: TuyaBLEDevice) -> list[TuyaBLECategoryNumberMa
             return product_mapping
         if category.mapping is not None:
             return category.mapping
-        else:
-            return []
-    else:
         return []
+    return []
 
 
 class TuyaBLENumber(TuyaBLEEntity, NumberEntity):

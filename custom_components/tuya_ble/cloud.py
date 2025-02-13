@@ -2,59 +2,46 @@
 
 from __future__ import annotations
 
+from collections.abc import Iterable
+from dataclasses import dataclass
 import json
 import logging
-from dataclasses import dataclass
-from typing import Any, Iterable
+from typing import Any
 
-from homeassistant.components.tuya.const import (
-    CONF_APP_TYPE,
-    CONF_ENDPOINT,
-    TUYA_RESPONSE_RESULT,
-    TUYA_RESPONSE_SUCCESS,
-)
-from homeassistant.components.tuya.const import (
-    DOMAIN as TUYA_DOMAIN,
-)
-from homeassistant.const import (
-    CONF_ADDRESS,
-    CONF_COUNTRY_CODE,
-    CONF_DEVICE_ID,
-    CONF_PASSWORD,
-    CONF_USERNAME,
-)
+from tuya_iot import AuthType, TuyaOpenAPI
+
+from homeassistant.const import CONF_COUNTRY_CODE, CONF_PASSWORD, CONF_USERNAME
 from homeassistant.core import HomeAssistant
-from tuya_iot import (
-    AuthType,
-    TuyaOpenAPI,
-)
 
 from .const import (
     CONF_ACCESS_ID,
     CONF_ACCESS_SECRET,
+    CONF_APP_TYPE,
     CONF_AUTH_TYPE,
     CONF_CATEGORY,
     CONF_DEVICE_NAME,
+    CONF_ENDPOINT,
     CONF_LOCAL_KEY,
     CONF_PRODUCT_ID,
     CONF_PRODUCT_MODEL,
     CONF_PRODUCT_NAME,
     CONF_UUID,
-    DOMAIN,
+    DOMAIN as TUYA_DOMAIN,
     TUYA_API_DEVICES_URL,
     TUYA_API_FACTORY_INFO_URL,
     TUYA_FACTORY_INFO_MAC,
+    TUYA_RESPONSE_RESULT,
+    TUYA_RESPONSE_SUCCESS,
 )
-from .tuya_ble import (
-    AbstaractTuyaBLEDeviceManager,
-    TuyaBLEDeviceCredentials,
-)
+from .tuya_ble import AbstaractTuyaBLEDeviceManager, TuyaBLEDeviceCredentials
 
 _LOGGER = logging.getLogger(__name__)
 
 
 @dataclass
 class TuyaCloudCacheItem:
+    """Cache item for Tuya cloud credentials."""
+
     api: TuyaOpenAPI | None
     login: dict[str, Any]
     credentials: dict[str, dict[str, Any]]
@@ -65,16 +52,12 @@ CONF_TUYA_LOGIN_KEYS = [
     CONF_ACCESS_ID,
     CONF_ACCESS_SECRET,
     CONF_AUTH_TYPE,
-    CONF_USERNAME,
-    CONF_PASSWORD,
-    CONF_COUNTRY_CODE,
     CONF_APP_TYPE,
 ]
 
 CONF_TUYA_DEVICE_KEYS = [
     CONF_UUID,
     CONF_LOCAL_KEY,
-    CONF_DEVICE_ID,
     CONF_CATEGORY,
     CONF_PRODUCT_ID,
     CONF_DEVICE_NAME,
@@ -104,21 +87,14 @@ class HASSTuyaBLEDeviceManager(AbstaractTuyaBLEDeviceManager):
 
     @staticmethod
     def _has_login(data: dict[Any, Any]) -> bool:
-        for key in CONF_TUYA_LOGIN_KEYS:
-            if data.get(key) is None:
-                return False
-        return True
+        return all(data.get(key) is not None for key in CONF_TUYA_LOGIN_KEYS)
 
     @staticmethod
     def _has_credentials(data: dict[Any, Any]) -> bool:
-        for key in CONF_TUYA_DEVICE_KEYS:
-            if data.get(key) is None:
-                return False
-        return True
+        return all(data.get(key) is not None for key in CONF_TUYA_DEVICE_KEYS)
 
     async def _login(self, data: dict[str, Any], add_to_cache: bool) -> dict[Any, Any]:
         """Login into Tuya cloud using credentials from data dictionary."""
-        global _cache
 
         if len(data) == 0:
             return {}
@@ -157,9 +133,10 @@ class HASSTuyaBLEDeviceManager(AbstaractTuyaBLEDeviceManager):
 
     def _check_login(self) -> bool:
         cache_key = self._get_cache_key(self._data)
-        return _cache.get(cache_key) != None
+        return _cache.get(cache_key) is not None
 
     async def login(self, add_to_cache: bool = False) -> dict[Any, Any]:
+        """Login into Tuya cloud."""
         return await self._login(self._data, add_to_cache)
 
     async def _fill_cache_item(self, item: TuyaCloudCacheItem) -> None:
@@ -196,7 +173,7 @@ class HASSTuyaBLEDeviceManager(AbstaractTuyaBLEDeviceManager):
                             }
 
     async def build_cache(self) -> None:
-        global _cache
+        """Build cache of the Tuya BLE devices credentials."""
         data = {}
         tuya_config_entries = self._hass.config_entries.async_entries(TUYA_DOMAIN)
         for config_entry in tuya_config_entries:
@@ -223,7 +200,7 @@ class HASSTuyaBLEDeviceManager(AbstaractTuyaBLEDeviceManager):
                         await self._fill_cache_item(item)
 
     def get_login_from_cache(self) -> None:
-        global _cache
+        """Get login data from cache."""
         for cache_item in _cache.values():
             self._data.update(cache_item.login)
             break
@@ -247,7 +224,7 @@ class HASSTuyaBLEDeviceManager(AbstaractTuyaBLEDeviceManager):
             if self._has_login(self._data):
                 cache_key = self._get_cache_key(self._data)
             else:
-                for key in _cache.keys():
+                for key in _cache:
                     if _cache[key].credentials.get(address) is not None:
                         cache_key = key
                         break
