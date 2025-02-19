@@ -1,0 +1,33 @@
+comment: false
+codecov:
+  branch: main
+
+coverage:
+  precision: 2
+  round: down
+  range: "60...100"
+
+  status:
+    patch: off
+    project:
+      default:
+        target: 50%
+      validate:
+        target: 100%
+        paths:
+          - custom_components/hacs/validate/
+      repositories:
+        target: 50%
+        paths:
+          - custom_components/hacs/repositories/
+
+parsers:
+  gcov:
+    branch_detection:
+      conditional: yes
+      loop: yes
+      method: no
+      macro: no
+
+ignore:
+  - "tests"

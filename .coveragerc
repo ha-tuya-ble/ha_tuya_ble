@@ -1,0 +1,13 @@
+[run]
+source = custom_components
+
+omit =
+    # omit tests
+    tests/*
+
+    # omit scripts
+    scripts/update/*
+
+[report]
+exclude_lines =
+    if TYPE_CHECKING:

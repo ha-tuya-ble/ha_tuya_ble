@@ -4,4 +4,19 @@ set -e
 
 cd "$(dirname "$0")/.."
 
-python3 -m pip install --requirement requirements.txt
+scripts/install/pip_packages "pip>=25.0.1"
+scripts/install/pip_packages setuptools wheel
+scripts/install/pip_packages \
+    --requirement requirements_all.txt \
+    --requirement requirements_core_min.txt \
+    --requirement requirements_test.txt
+scripts/install/frontend
+
+apt-get install -y --no-install-recommends \
+    ffmpeg
+
+curl -L https://github.com/AlexxIT/go2rtc/releases/download/v1.9.8/go2rtc_linux_arm64 --output /bin/go2rtc \
+    && chmod +x /bin/go2rtc \
+    && go2rtc --version
+
+pre-commit install --config .github/pre-commit-config.yaml
