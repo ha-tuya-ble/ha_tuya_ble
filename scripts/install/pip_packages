@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+set -e
+
+python3 -m pip \
+    install \
+    --upgrade \
+    --disable-pip-version-check \
+    --constraint constraints.txt \
+    "${@}"
+

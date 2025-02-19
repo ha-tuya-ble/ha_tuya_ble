@@ -1,6 +1,9 @@
-
-# Loads default set of integrations. Do not remove.
-default_config:
+homeassistant:
+  name: Test Home
+  latitude: 32.87336
+  longitude: -117.22743
+  elevation: 430
+  unit_system: metric
 
 # Load frontend themes from the themes folder
 frontend:
