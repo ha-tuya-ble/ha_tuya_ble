@@ -17,20 +17,14 @@ from .const import DOMAIN
 from .devices import TuyaBLECoordinator, TuyaBLEData, get_device_product_info
 from .tuya_ble import TuyaBLEDevice
 
-PLATFORMS: list[Platform] = [
-    Platform.BINARY_SENSOR,
-    Platform.BUTTON,
-    Platform.CLIMATE,
-    Platform.COVER,
-    Platform.NUMBER,
-    Platform.SELECT,
+PLATFORMS = [
     Platform.SENSOR,
+    Platform.BINARY_SENSOR,
+    Platform.LIGHT,
     Platform.SWITCH,
-    Platform.TEXT,
 ]
 
 _LOGGER = logging.getLogger(__name__)
-
 
 async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     """Set up Tuya BLE from a config entry."""
