@@ -16,11 +16,7 @@ from .const import DOMAIN
 from .devices import TuyaBLEData, TuyaBLEEntity, TuyaBLEProductInfo
 from .tuya_ble import TuyaBLEDataPointType, TuyaBLEDevice
 
-_LOGGER = logging.getLogger(__name__)
-
-
 TuyaBLEButtonIsAvailable = Callable[["TuyaBLEButton", TuyaBLEProductInfo], bool] | None
-
 
 @dataclass
 class TuyaBLEButtonMapping:

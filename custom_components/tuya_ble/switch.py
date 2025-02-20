@@ -18,19 +18,13 @@ from .const import DOMAIN
 from .devices import TuyaBLEData, TuyaBLEEntity, TuyaBLEProductInfo
 from .tuya_ble import TuyaBLEDataPointType, TuyaBLEDevice
 
-_LOGGER = logging.getLogger(__name__)
-
-
 TuyaBLESwitchGetter = (
     Callable[["TuyaBLESwitch", TuyaBLEProductInfo], bool | None] | None
 )
 
-
 TuyaBLESwitchIsAvailable = Callable[["TuyaBLESwitch", TuyaBLEProductInfo], bool] | None
 
-
 TuyaBLESwitchSetter = Callable[["TuyaBLESwitch", TuyaBLEProductInfo, bool], None] | None
-
 
 @dataclass
 class TuyaBLESwitchMapping:

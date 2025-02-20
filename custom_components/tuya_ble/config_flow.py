@@ -2,14 +2,13 @@
 
 from __future__ import annotations
 
-import logging
-from typing import Any, cast
+from typing import Any, cast, TYPE_CHECKING
 
 import pycountry
 import voluptuous as vol
 from tuya_iot import AuthType
 
-from homeassistant import config_entries
+from homeassistant.config_entries import ConfigFlow, OptionsFlow
 from homeassistant.components.bluetooth import (
     BluetoothServiceInfoBleak,
     async_discovered_service_info,
@@ -43,115 +42,17 @@ from .const import (
 from .devices import TuyaBLEData, get_device_readable_name
 from .tuya_ble import SERVICE_UUID, TuyaBLEDeviceCredentials
 
-_LOGGER = logging.getLogger(__name__)
+if TYPE_CHECKING:
+    from homeassistant.core import HomeAssistant
 
-async def _try_login(
-    manager: HASSTuyaBLEDeviceManager,
-    user_input: dict[str, Any],
-    errors: dict[str, str],
-    placeholders: dict[str, Any],
-) -> dict[str, Any] | None:
-    response: dict[Any, Any] | None
-    data: dict[str, Any]
 
-    country = [
-        country
-        for country in TUYA_COUNTRIES
-        if country.name == user_input[CONF_COUNTRY_CODE]
-    ][0]
-
-    data = {
-        CONF_ENDPOINT: country.endpoint,
-        CONF_AUTH_TYPE: AuthType.CUSTOM,
-        CONF_ACCESS_ID: user_input[CONF_ACCESS_ID],
-        CONF_ACCESS_SECRET: user_input[CONF_ACCESS_SECRET],
-        CONF_USERNAME: user_input[CONF_USERNAME],
-        CONF_PASSWORD: user_input[CONF_PASSWORD],
-        CONF_COUNTRY_CODE: country.country_code,
-    }
-
-    for app_type in (TUYA_SMART_APP, SMARTLIFE_APP, ""):
-        data[CONF_APP_TYPE] = app_type
-        if app_type == "":
-            data[CONF_AUTH_TYPE] = AuthType.CUSTOM
-        else:
-            data[CONF_AUTH_TYPE] = AuthType.SMART_HOME
-
-        response = await manager._login(data, True)
-
-        if response.get(TUYA_RESPONSE_SUCCESS, False):
-            return data
-
-    errors["base"] = "login_error"
-    if response:
-        placeholders.update(
-            {
-                TUYA_RESPONSE_CODE: response.get(TUYA_RESPONSE_CODE),
-                TUYA_RESPONSE_MSG: response.get(TUYA_RESPONSE_MSG),
-            }
-        )
-
-    return None
-
-def _show_login_form(
-    flow,
-    user_input: dict[str, Any],
-    errors: dict[str, str],
-    placeholders: dict[str, Any],
-) -> FlowResult:
-    """Shows the Tuya IOT platform login form."""
-    if user_input is not None and user_input.get(CONF_COUNTRY_CODE) is not None:
-        for country in TUYA_COUNTRIES:
-            if country.country_code == user_input[CONF_COUNTRY_CODE]:
-                user_input[CONF_COUNTRY_CODE] = country.name
-                break
-
-    def_country_name: str | None = None
-    try:
-        def_country = pycountry.countries.get(alpha_2=flow.hass.config.country)
-        if def_country:
-            def_country_name = def_country.name
-    except Exception:
-        pass
-
-    return flow.async_show_form(
-        step_id="login",
-        data_schema=vol.Schema(
-            {
-                vol.Required(
-                    CONF_COUNTRY_CODE,
-                    default=user_input.get(CONF_COUNTRY_CODE, def_country_name),
-                ): vol.In(
-                    # We don't pass a dict {code:name} because country codes can be duplicate.
-                    [country.name for country in TUYA_COUNTRIES]
-                ),
-                vol.Required(
-                    CONF_ACCESS_ID, default=user_input.get(CONF_ACCESS_ID, "")
-                ): str,
-                vol.Required(
-                    CONF_ACCESS_SECRET,
-                    default=user_input.get(CONF_ACCESS_SECRET, ""),
-                ): str,
-                vol.Required(
-                    CONF_USERNAME, default=user_input.get(CONF_USERNAME, "")
-                ): str,
-                vol.Required(
-                    CONF_PASSWORD, default=user_input.get(CONF_PASSWORD, "")
-                ): str,
-            }
-        ),
-        errors=errors,
-        description_placeholders=placeholders,
-    )
-
-@config_entries.HANDLERS.register("tuya_ble")
-class TuyaBLEConfigFlow(config_entries.ConfigFlow):
-    """Handle a config flow for Tuya BLE."""
+class TuyaBLEFlowHandler(ConfigFlow, domain=DOMAIN):
+    """Config flow for Tuya BLE."""
 
     domain = DOMAIN
     VERSION = 1
 
-    def __init__(self) -> None:
+    def __init__(self, config_entry):
         """Initialize the config flow."""
         super().__init__()
         self._discovery_info: BluetoothServiceInfoBleak | None = None
@@ -159,10 +60,9 @@ class TuyaBLEConfigFlow(config_entries.ConfigFlow):
         self._data: dict[str, Any] = {}
         self._manager: HASSTuyaBLEDeviceManager | None = None
         self._get_device_info_error = False
+        self.config_entry = config_entry
 
-    async def async_step_bluetooth(
-        self, discovery_info: BluetoothServiceInfoBleak
-    ) -> FlowResult:
+    async def async_step_bluetooth(self, discovery_info: BluetoothServiceInfoBleak):
         """Handle the bluetooth discovery step."""
         await self.async_set_unique_id(discovery_info.address)
         self._abort_if_unique_id_configured()
@@ -178,18 +78,14 @@ class TuyaBLEConfigFlow(config_entries.ConfigFlow):
         }
         return await self.async_step_login()
 
-    async def async_step_user(
-        self, user_input: dict[str, Any] | None = None
-    ) -> FlowResult:
+    async def async_step_user(self, user_input: dict[str, Any] | None = None):
         """Handle the user step."""
         if self._manager is None:
             self._manager = HASSTuyaBLEDeviceManager(self.hass, self._data)
         await self._manager.build_cache()
         return await self.async_step_login()
 
-    async def async_step_login(
-        self, user_input: dict[str, Any] | None = None
-    ) -> FlowResult:
+    async def async_step_login(self, user_input: dict[str, Any] | None = None):
         """Handle the Tuya IOT platform login step."""
         data: dict[str, Any] | None = None
         errors: dict[str, str] = {}
@@ -228,9 +124,7 @@ class TuyaBLEConfigFlow(config_entries.ConfigFlow):
 
         return _show_login_form(self, user_input, errors, placeholders)
 
-    async def async_step_device(
-        self, user_input: dict[str, Any] | None = None
-    ) -> FlowResult:
+    async def async_step_device(self, user_input: dict[str, Any] | None = None):
         """Handle the user step to pick discovered device."""
         errors: dict[str, str] = {}
 
@@ -302,28 +196,21 @@ class TuyaBLEConfigFlow(config_entries.ConfigFlow):
 
     @staticmethod
     @callback
-    def async_get_options_flow(
-        config_entry: config_entries.ConfigEntry,
-    ) -> TuyaBLEOptionsFlow:
-        """Get the options flow for this handler."""
-        return TuyaBLEOptionsFlow(config_entry)
+    def async_get_options_flow(config_entry):
+        return TuyaBLEOptionsFlowHandler(config_entry)
 
-class TuyaBLEOptionsFlow(config_entries.OptionsFlowWithConfigEntry):
-    """Handle a Tuya BLE options flow."""
+class TuyaBLEOptionsFlowHandler(OptionsFlow):
+    """Config flow options handler for Tuya BLE."""
 
-    def __init__(self, config_entry: config_entries.ConfigEntry) -> None:
+    def __init__(self, config_entry):
         """Initialize options flow."""
         super().__init__(config_entry)
 
-    async def async_step_init(
-        self, user_input: dict[str, Any] | None = None
-    ) -> FlowResult:
+    async def async_step_init(self, user_input: dict[str, Any] | None = None):
         """Manage the options."""
         return await self.async_step_login(user_input)
 
-    async def async_step_login(
-        self, user_input: dict[str, Any] | None = None
-    ) -> FlowResult:
+    async def async_step_login(self, user_input: dict[str, Any] | None = None):
         """Handle the Tuya IOT platform login step."""
         errors: dict[str, str] = {}
         placeholders: dict[str, Any] = {}
@@ -361,3 +248,91 @@ class TuyaBLEOptionsFlow(config_entries.OptionsFlowWithConfigEntry):
             user_input.update(self.config_entry.options)
 
         return _show_login_form(self, user_input, errors, placeholders)
+
+async def _try_login(manager: HASSTuyaBLEDeviceManager, user_input: dict[str, Any], errors: dict[str, str], placeholders: dict[str, Any]) -> dict[str, Any] | None:
+    response: dict[Any, Any] | None
+    data: dict[str, Any]
+
+    country = [
+        country
+        for country in TUYA_COUNTRIES
+        if country.name == user_input[CONF_COUNTRY_CODE]
+    ][0]
+
+    data = {
+        CONF_ENDPOINT: country.endpoint,
+        CONF_AUTH_TYPE: AuthType.CUSTOM,
+        CONF_ACCESS_ID: user_input[CONF_ACCESS_ID],
+        CONF_ACCESS_SECRET: user_input[CONF_ACCESS_SECRET],
+        CONF_USERNAME: user_input[CONF_USERNAME],
+        CONF_PASSWORD: user_input[CONF_PASSWORD],
+        CONF_COUNTRY_CODE: country.country_code,
+    }
+
+    for app_type in (TUYA_SMART_APP, SMARTLIFE_APP, ""):
+        data[CONF_APP_TYPE] = app_type
+        if app_type == "":
+            data[CONF_AUTH_TYPE] = AuthType.CUSTOM
+        else:
+            data[CONF_AUTH_TYPE] = AuthType.SMART_HOME
+
+        response = await manager._login(data, True)
+
+        if response.get(TUYA_RESPONSE_SUCCESS, False):
+            return data
+
+    errors["base"] = "login_error"
+    if response:
+        placeholders.update(
+            {
+                TUYA_RESPONSE_CODE: response.get(TUYA_RESPONSE_CODE),
+                TUYA_RESPONSE_MSG: response.get(TUYA_RESPONSE_MSG),
+            }
+        )
+
+    return None
+
+def _show_login_form(flow, user_input: dict[str, Any], errors: dict[str, str], placeholders: dict[str, Any]):
+    """Shows the Tuya IOT platform login form."""
+    if user_input is not None and user_input.get(CONF_COUNTRY_CODE) is not None:
+        for country in TUYA_COUNTRIES:
+            if country.country_code == user_input[CONF_COUNTRY_CODE]:
+                user_input[CONF_COUNTRY_CODE] = country.name
+                break
+
+    def_country_name: str | None = None
+    try:
+        def_country = pycountry.countries.get(alpha_2=flow.hass.config.country)
+        if def_country:
+            def_country_name = def_country.name
+    except Exception:
+        pass
+
+    return flow.async_show_form(
+        step_id="login",
+        data_schema=vol.Schema(
+            {
+                vol.Required(
+                    CONF_COUNTRY_CODE,
+                    default=user_input.get(CONF_COUNTRY_CODE, def_country_name),
+                ): vol.In(
+                    [country.name for country in TUYA_COUNTRIES]
+                ),
+                vol.Required(
+                    CONF_ACCESS_ID, default=user_input.get(CONF_ACCESS_ID, "")
+                ): str,
+                vol.Required(
+                    CONF_ACCESS_SECRET,
+                    default=user_input.get(CONF_ACCESS_SECRET, ""),
+                ): str,
+                vol.Required(
+                    CONF_USERNAME, default=user_input.get(CONF_USERNAME, "")
+                ): str,
+                vol.Required(
+                    CONF_PASSWORD, default=user_input.get(CONF_PASSWORD, "")
+                ): str,
+            }
+        ),
+        errors=errors,
+        description_placeholders=placeholders,
+    )

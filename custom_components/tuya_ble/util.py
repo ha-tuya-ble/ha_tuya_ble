@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-
 def remap_value(
     value: float,
     from_min: float = 0,

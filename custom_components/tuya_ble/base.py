@@ -9,7 +9,6 @@ from homeassistant.components.tuya.const import DPCode
 
 from .util import remap_value
 
-
 @dataclass
 class IntegerTypeData:
     """Integer Type Data."""
