@@ -245,6 +245,25 @@ class TuyaBLEDataPoints:
             await self._owner._send_datapoints([dp_id])
 
 
+class DummyDataPoints:
+    """A dummy datapoints class that has the necessary methods."""
+    
+    def __init__(self):
+        self._datapoints = {}
+    
+    def __getitem__(self, key):
+        """Return None for any key."""
+        return None
+    
+    def has_id(self, dp_id, dp_type=None):
+        """Return False for any ID."""
+        return False
+    
+    def get_or_create(self, dp_id, dp_type, value):
+        """Return None for any creation attempt."""
+        return None
+
+
 class TuyaBLEDevice:
     """Representation of a Tuya BLE device."""
 

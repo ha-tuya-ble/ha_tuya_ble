@@ -6,12 +6,13 @@ import logging
 
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
-from homeassistant.const import Platform
+from homeassistant.const import Platform, CONF_ADDRESS
 
 from .const import DOMAIN
 from .cloud import HASSTuyaBLEDeviceManager
 from .devices import TuyaBLEData
 from .tuya_ble import TuyaBLEDevice
+from .tuya_ble.tuya_ble import DummyDataPoints
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -36,11 +37,22 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     # Create a dummy device to avoid None errors during setup
     # This will be replaced with the real device later if/when it connects
     dummy_device = TuyaBLEDevice(None, None) 
+    dummy_device.address = entry.data.get(CONF_ADDRESS, "unknown")
+    dummy_device.category = ""
+    dummy_device.product_id = ""
+    dummy_device.name = "Initializing..."
+    dummy_device.hardware_version = ""
+    dummy_device.device_version = ""
+    dummy_device.protocol_version = ""
+    dummy_device.product_model = "Unknown"
+    
+    # Create a dummy datapoints property to avoid NoneType errors
+    dummy_device._datapoints = DummyDataPoints()
     
     # Store the entry data with manager for proper handling
     hass.data[DOMAIN][entry.entry_id] = TuyaBLEData(
         title=entry.title,
-        device=dummy_device,  # Use dummy device instead of None
+        device=dummy_device,
         product=None,  # Will be initialized later
         manager=manager,
         coordinator=None,  # Will be initialized later

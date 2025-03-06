@@ -379,36 +379,23 @@ async def get_device_readable_name(
     return "%s %s" % (discovery_info.device.name, short_address)
 
 
-def get_device_info(device: TuyaBLEDevice) -> DeviceInfo | None:
-    product_info = None
-    if device.category and device.product_id:
-        product_info = get_product_info_by_ids(device.category, device.product_id)
-    product_name: str
-    if product_info:
-        product_name = product_info.name
-    else:
-        product_name = device.name
-    result = DeviceInfo(
-        connections={(dr.CONNECTION_BLUETOOTH, device.address)},
-        hw_version=device.hardware_version,
-        identifiers={(DOMAIN, device.address)},
-        manufacturer=(
-            product_info.manufacturer if product_info else DEVICE_DEF_MANUFACTURER
-        ),
-        model=("%s (%s)")
-        % (
-            device.product_model or product_name,
-            device.product_id,
-        ),
-        name=("%s %s")
-        % (
-            product_name,
-            get_short_address(device.address),
-        ),
-        sw_version=("%s (protocol %s)")
-        % (
-            device.device_version,
-            device.protocol_version,
-        ),
+def get_device_info(device: TuyaBLEDevice) -> DeviceInfo:
+    """Get device info for the device."""
+    if device is None:
+        return DeviceInfo(
+            name="Unknown Tuya Device",
+            manufacturer=DEVICE_DEF_MANUFACTURER,
+            identifiers={(DOMAIN, "unknown")},
+        )
+    
+    product_name = getattr(device, 'name', None) or "Unknown Tuya Device"
+    address = getattr(device, 'address', "unknown")
+    
+    return DeviceInfo(
+        name=product_name,
+        manufacturer=DEVICE_DEF_MANUFACTURER,
+        model=getattr(device, 'product_model', "Unknown"),
+        sw_version=getattr(device, 'device_version', None),
+        hw_version=getattr(device, 'hardware_version', None),
+        identifiers={(DOMAIN, address)},
     )
-    return result
