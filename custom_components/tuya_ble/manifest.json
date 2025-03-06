@@ -3,8 +3,8 @@
   "name": "Tuya BLE",
   "config_flow": true,
   "documentation": "https://github.com/dylanmazurek/ha-tuya-ble",
-  "requirements": ["tuya-iot-py-sdk", "pycountry", "tuya-sharing-sdk"],
-  "dependencies": ["bluetooth", "tuya"],
+  "requirements": ["tuya-iot-py-sdk", "pycountry"],
+  "dependencies": ["bluetooth"],
   "codeowners": ["@dylanmazurek"],
   "bluetooth": [
     {

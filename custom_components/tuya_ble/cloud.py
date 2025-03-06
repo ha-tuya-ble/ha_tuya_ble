@@ -10,23 +10,26 @@ from typing import Any
 
 from tuya_iot import AuthType, TuyaOpenAPI
 
-from homeassistant.const import CONF_COUNTRY_CODE, CONF_PASSWORD, CONF_USERNAME
 from homeassistant.core import HomeAssistant
 
 from .const import (
-    CONF_ACCESS_ID,
-    CONF_ACCESS_SECRET,
-    CONF_APP_TYPE,
-    CONF_AUTH_TYPE,
     CONF_CATEGORY,
     CONF_DEVICE_NAME,
-    CONF_ENDPOINT,
     CONF_LOCAL_KEY,
     CONF_PRODUCT_ID,
     CONF_PRODUCT_MODEL,
     CONF_PRODUCT_NAME,
     CONF_UUID,
-    DOMAIN as TUYA_DOMAIN,
+)
+from .tuya_constants import (
+    CONF_ACCESS_ID,
+    CONF_ACCESS_SECRET,
+    CONF_APP_TYPE,
+    CONF_AUTH_TYPE,
+    CONF_COUNTRY_CODE,
+    CONF_ENDPOINT,
+    CONF_PASSWORD,
+    CONF_USERNAME,
     TUYA_API_DEVICES_URL,
     TUYA_API_FACTORY_INFO_URL,
     TUYA_FACTORY_INFO_MAC,
@@ -37,6 +40,8 @@ from .tuya_ble import AbstaractTuyaBLEDeviceManager, TuyaBLEDeviceCredentials
 
 _LOGGER = logging.getLogger(__name__)
 
+# Define these constants here since they're no longer imported from tuya component
+TUYA_DOMAIN = "tuya_ble"  # Changed to use this integration's domain instead
 
 @dataclass
 class TuyaCloudCacheItem:
@@ -175,18 +180,8 @@ class HASSTuyaBLEDeviceManager(AbstaractTuyaBLEDeviceManager):
     async def build_cache(self) -> None:
         """Build cache of the Tuya BLE devices credentials."""
         data = {}
-        tuya_config_entries = self._hass.config_entries.async_entries(TUYA_DOMAIN)
-        for config_entry in tuya_config_entries:
-            data.clear()
-            data.update(config_entry.data)
-            key = self._get_cache_key(data)
-            item = _cache.get(key)
-            if item is None or len(item.credentials) == 0:
-                if self._is_login_success(await self._login(data, True)):
-                    item = _cache.get(key)
-                    if item and len(item.credentials) == 0:
-                        await self._fill_cache_item(item)
-
+        # No longer look for Tuya domain entries
+        # Just use our own domain's entries
         ble_config_entries = self._hass.config_entries.async_entries(DOMAIN)
         for config_entry in ble_config_entries:
             data.clear()
