@@ -1,7 +1,12 @@
 {
   "domain": "tuya_ble",
   "name": "Tuya BLE",
-    "bluetooth": [
+  "config_flow": true,
+  "documentation": "https://github.com/dylanmazurek/ha-tuya-ble",
+  "requirements": [],
+  "dependencies": ["bluetooth"],
+  "codeowners": ["@dylanmazurek"],
+  "bluetooth": [
     {
       "manufacturer_id": "0000"
     }
