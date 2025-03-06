@@ -27,6 +27,13 @@ PLATFORMS: list[Platform] = [
     Platform.TEXT,
 ]
 
+class DummyBLEDevice:
+    """A simple class to emulate BLEDevice for dummy devices."""
+    
+    def __init__(self, address="unknown"):
+        self.address = address
+        self.name = "Initializing..."
+
 async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     """Set up Tuya BLE from a config entry."""
     hass.data.setdefault(DOMAIN, {})
@@ -34,13 +41,16 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     # Initialize the manager
     manager = HASSTuyaBLEDeviceManager(hass, entry.options)
     
+    # Create a dummy BLE device with the address from the entry data
+    dummy_ble_device = DummyBLEDevice(entry.data.get(CONF_ADDRESS, "unknown"))
+    
     # Create a dummy device to avoid None errors during setup
     # This will be replaced with the real device later if/when it connects
-    dummy_device = TuyaBLEDevice(None, None) 
-    dummy_device.address = entry.data.get(CONF_ADDRESS, "unknown")
+    dummy_device = TuyaBLEDevice(None, dummy_ble_device)
+    
+    # Now initialize other properties
     dummy_device.category = ""
     dummy_device.product_id = ""
-    dummy_device.name = "Initializing..."
     dummy_device.hardware_version = ""
     dummy_device.device_version = ""
     dummy_device.protocol_version = ""
