@@ -6,6 +6,7 @@ import logging
 
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
+from homeassistant.const import Platform
 
 from .const import DOMAIN
 from .cloud import HASSTuyaBLEDeviceManager
@@ -13,9 +14,16 @@ from .devices import TuyaBLEData
 
 _LOGGER = logging.getLogger(__name__)
 
-# List of platforms to support. There should be a matching .py file for each,
-# eg: switch.py
-PLATFORMS: list[str] = ["sensor"]
+PLATFORMS: list[Platform] = [
+    Platform.BUTTON,
+    Platform.CLIMATE,
+    Platform.NUMBER,
+    Platform.SENSOR,
+    Platform.BINARY_SENSOR,
+    Platform.SELECT,
+    Platform.SWITCH,
+    Platform.TEXT,
+]
 
 async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     """Set up Tuya BLE from a config entry."""
