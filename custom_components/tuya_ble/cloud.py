@@ -20,6 +20,7 @@ from .const import (
     CONF_PRODUCT_MODEL,
     CONF_PRODUCT_NAME,
     CONF_UUID,
+    DOMAIN,  # Add DOMAIN to imports
 )
 from .tuya_constants import (
     CONF_ACCESS_ID,
@@ -41,7 +42,6 @@ from .tuya_ble import AbstaractTuyaBLEDeviceManager, TuyaBLEDeviceCredentials
 _LOGGER = logging.getLogger(__name__)
 
 # Define these constants here since they're no longer imported from tuya component
-TUYA_DOMAIN = "tuya_ble"  # Changed to use this integration's domain instead
 
 @dataclass
 class TuyaCloudCacheItem:
@@ -181,78 +181,78 @@ class HASSTuyaBLEDeviceManager(AbstaractTuyaBLEDeviceManager):
         """Build cache of the Tuya BLE devices credentials."""
         data = {}
         # No longer look for Tuya domain entries
-        # Just use our own domain's entries
+        # Just use our own domain's entriesfig_entries.async_entries(DOMAIN)
         ble_config_entries = self._hass.config_entries.async_entries(DOMAIN)
         for config_entry in ble_config_entries:
-            data.clear()
+            data.clear()config_entry.options)
             data.update(config_entry.options)
             key = self._get_cache_key(data)
-            item = _cache.get(key)
-            if item is None or len(item.credentials) == 0:
+            item = _cache.get(key)(item.credentials) == 0:
+            if item is None or len(item.credentials) == 0:n(data, True)):
                 if self._is_login_success(await self._login(data, True)):
-                    item = _cache.get(key)
+                    item = _cache.get(key)redentials) == 0:
                     if item and len(item.credentials) == 0:
                         await self._fill_cache_item(item)
-
     def get_login_from_cache(self) -> None:
-        """Get login data from cache."""
-        for cache_item in _cache.values():
+    def get_login_from_cache(self) -> None:
+        """Get login data from cache."""):
+        for cache_item in _cache.values():ogin)
             self._data.update(cache_item.login)
             break
-
     async def get_device_credentials(
-        self,
-        address: str,
+    async def get_device_credentials(
+        self,ss: str,
+        address: str, bool = False,
         force_update: bool = False,
-        save_data: bool = False,
-    ) -> TuyaBLEDeviceCredentials | None:
+        save_data: bool = False,s | None:
+    ) -> TuyaBLEDeviceCredentials | None:E device."""
         """Get credentials of the Tuya BLE device."""
-        global _cache
-        item: TuyaCloudCacheItem | None = None
-        credentials: dict[str, any] | None = None
+        global _cacheudCacheItem | None = None
+        item: TuyaCloudCacheItem | None = Noneone
+        credentials: dict[str, any] | None = None None
         result: TuyaBLEDeviceCredentials | None = None
-
+        if not force_update and self._has_credentials(self._data):
         if not force_update and self._has_credentials(self._data):
             credentials = self._data.copy()
-        else:
-            cache_key: str | None = None
-            if self._has_login(self._data):
+        else:ache_key: str | None = None
+            cache_key: str | None = Nonea):
+            if self._has_login(self._data):_key(self._data)
                 cache_key = self._get_cache_key(self._data)
-            else:
-                for key in _cache:
+            else:or key in _cache:
+                for key in _cache:.credentials.get(address) is not None:
                     if _cache[key].credentials.get(address) is not None:
                         cache_key = key
                         break
-            if cache_key:
+            if cache_key:ache.get(cache_key)
                 item = _cache.get(cache_key)
-            if item is None or force_update:
+            if item is None or force_update:ait self.login(True)):
                 if self._is_login_success(await self.login(True)):
                     item = _cache.get(cache_key)
-                    if item:
+                    if item:t self._fill_cache_item(item)
                         await self._fill_cache_item(item)
-
             if item:
+            if item:entials = item.credentials.get(address)
                 credentials = item.credentials.get(address)
-
         if credentials:
-            result = TuyaBLEDeviceCredentials(
-                credentials.get(CONF_UUID, ""),
+        if credentials:yaBLEDeviceCredentials(
+            result = TuyaBLEDeviceCredentials(,
+                credentials.get(CONF_UUID, ""), ""),
                 credentials.get(CONF_LOCAL_KEY, ""),
                 credentials.get(CONF_DEVICE_ID, ""),
-                credentials.get(CONF_CATEGORY, ""),
-                credentials.get(CONF_PRODUCT_ID, ""),
-                credentials.get(CONF_DEVICE_NAME, ""),
+                credentials.get(CONF_CATEGORY, ""),),
+                credentials.get(CONF_PRODUCT_ID, ""),,
+                credentials.get(CONF_DEVICE_NAME, ""),),
                 credentials.get(CONF_PRODUCT_MODEL, ""),
                 credentials.get(CONF_PRODUCT_NAME, ""),
-            )
+            )LOGGER.debug("Retrieved: %s", result)
             _LOGGER.debug("Retrieved: %s", result)
             if save_data:
-                if item:
+                if item:._data.update(item.login)
                     self._data.update(item.login)
                 self._data.update(credentials)
-
         return result
-
+        return result
     @property
+    @propertyself) -> dict[str, Any]:
     def data(self) -> dict[str, Any]:
         return self._data
