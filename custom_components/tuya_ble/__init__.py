@@ -8,6 +8,8 @@ from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
 
 from .const import DOMAIN
+from .cloud import HASSTuyaBLEDeviceManager
+from .devices import TuyaBLEData
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -18,12 +20,21 @@ PLATFORMS: list[str] = ["sensor"]
 async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     """Set up Tuya BLE from a config entry."""
     hass.data.setdefault(DOMAIN, {})
-    hass.data[DOMAIN][entry.entry_id] = entry.data
-
-    # Forward the setup to the sensor platform
-    hass.async_create_task(
-        hass.config_entries.async_forward_entry_setups(entry, PLATFORMS)
+    
+    # Initialize the manager
+    manager = HASSTuyaBLEDeviceManager(hass, entry.options)
+    
+    # Store the entry data with manager for proper handling
+    hass.data[DOMAIN][entry.entry_id] = TuyaBLEData(
+        title=entry.title,
+        device=None,  # Will be initialized later
+        product=None,  # Will be initialized later
+        manager=manager,
+        coordinator=None,  # Will be initialized later
     )
+    
+    # Forward the setup to the sensor platform
+    await hass.config_entries.async_forward_entry_setups(entry, PLATFORMS)
 
     return True
 

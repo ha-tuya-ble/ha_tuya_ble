@@ -3,12 +3,13 @@
   "name": "Tuya BLE",
   "config_flow": true,
   "documentation": "https://github.com/dylanmazurek/ha-tuya-ble",
-  "requirements": [],
-  "dependencies": ["bluetooth"],
+  "requirements": ["tuya-iot-py-sdk", "pycountry"],
+  "dependencies": ["bluetooth", "tuya"],
   "codeowners": ["@dylanmazurek"],
   "bluetooth": [
     {
-      "manufacturer_id": "0000"
+      "manufacturer_id": "0000",
+      "service_uuid": "1910"
     }
   ],
   "version": "0.1.0",
