@@ -22,6 +22,7 @@ from homeassistant.const import CONF_ADDRESS
 from homeassistant.core import callback
 from homeassistant.data_entry_flow import FlowHandler, FlowResult
 
+from .cloud import HASSTuyaBLEDeviceManager  # Add this import
 from .tuya_ble import SERVICE_UUID, TuyaBLEDeviceCredentials
 
 from .const import (
@@ -45,6 +46,26 @@ from .tuya_constants import (
 )
 
 _LOGGER = logging.getLogger(__name__)
+
+# Also need to import a function for getting the device name
+async def get_device_readable_name(
+    service_info: BluetoothServiceInfoBleak,
+    manager: HASSTuyaBLEDeviceManager,
+) -> str:
+    """Get a readable name for a device."""
+    if service_info.name:
+        return service_info.name
+    
+    credentials = None
+    if manager is not None:
+        credentials = await manager.get_device_credentials(
+            service_info.address, False, False
+        )
+    
+    if credentials and credentials.device_name:
+        return credentials.device_name
+    
+    return service_info.address
 
 
 async def _try_login(

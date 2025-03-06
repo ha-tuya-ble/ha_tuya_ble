@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+from typing import Final  # Add this import
+
 # App type
 SMARTLIFE_APP = "smartlife"
 TUYA_SMART_APP = "tuyaSmart"
