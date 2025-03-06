@@ -1,4 +1,4 @@
-"""The Tuya BLE integration."""
+"""Constants for the Tuya BLE integration."""
 
 from __future__ import annotations
 
