@@ -11,6 +11,7 @@ from homeassistant.const import Platform
 from .const import DOMAIN
 from .cloud import HASSTuyaBLEDeviceManager
 from .devices import TuyaBLEData
+from .tuya_ble import TuyaBLEDevice
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -32,10 +33,14 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     # Initialize the manager
     manager = HASSTuyaBLEDeviceManager(hass, entry.options)
     
+    # Create a dummy device to avoid None errors during setup
+    # This will be replaced with the real device later if/when it connects
+    dummy_device = TuyaBLEDevice(None, None) 
+    
     # Store the entry data with manager for proper handling
     hass.data[DOMAIN][entry.entry_id] = TuyaBLEData(
         title=entry.title,
-        device=None,  # Will be initialized later
+        device=dummy_device,  # Use dummy device instead of None
         product=None,  # Will be initialized later
         manager=manager,
         coordinator=None,  # Will be initialized later

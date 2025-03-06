@@ -129,6 +129,10 @@ mapping: dict[str, TuyaBLECategoryTextMapping] = {
 
 
 def get_mapping_by_device(device: TuyaBLEDevice) -> list[TuyaBLETextMapping]:
+    """Get mapping for the device."""
+    if device is None:
+        return []
+        
     category = mapping.get(device.category)
     if category is not None and category.products is not None:
         product_mapping = category.products.get(device.product_id)
