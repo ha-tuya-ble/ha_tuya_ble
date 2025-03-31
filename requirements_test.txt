@@ -8,3 +8,5 @@ pylint-strict-informational==0.1
 pylint==2.8.2
 pytest-asyncio
 pytest-cov
+pyserial
+pycrypto
