@@ -7,15 +7,23 @@ import pytest
 import threading
 import time
 
+from bleak.backends.device import BLEDevice
 from typing import Any
 from unittest.mock import AsyncMock, Mock
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
+from homeassistant.helpers.entity import (
+    EntityDescription
+) 
 from custom_components.tuya_ble.const import DOMAIN
+from custom_components.tuya_ble.devices import TuyaBLECoordinator, TuyaBLEData, TuyaBLEDevice, TuyaBLEProductInfo, TuyaBLEEntity
+from custom_components.tuya_ble.cloud import HASSTuyaBLEDeviceManager
+
 
 DEVICE_NAME = "1234"
 
 DEVICE_CONFIG = {
+    "address": "",
     "device_id": "767823809c9c1f458745",
     "protocol_version": "3.3",
     "local_key": "wV[NcWGUSFF`dSgO",
@@ -32,17 +40,27 @@ async def init(config: dict[str, dict[str, Any]], entity_domain, entity_class):
     )
     hass = HomeAssistant("")
     entry = ConfigEntry(**create_entry(config))
-    tuya_api = TuyaCloudApi("EU", "test_client_id", "test_secret", "test_user_id")
+
+
+    # address: str = entry.data[CONF_ADDRESS]
+
+    ble_device = BLEDevice
+    manager = HASSTuyaBLEDeviceManager(hass, entry.options.copy())
+    device = TuyaBLEDevice(manager, ble_device)
+    # await device.initialize()
+    product_info = TuyaBLEProductInfo("Fake Product")
 
     hass.data.setdefault("tuya_ble", {entry.entry_id: {}})
-
-    dump_device = coordinator.TuyaDevice(hass, entry, config[DEVICE_NAME])
+    dump_device = TuyaBLECoordinator(hass, device)
     dump_device.status_updated = lambda x: [
         [e._status.update(x), e.connection_made(), e.status_updated()]
         for e in get_entites(dump_device)
     ]
+    entity = TuyaBLEEntity(hass, dump_device, device, product_info, EntityDescription("Hello"))
 
-    tuya_ble_hass_data = coordinator.HassTuyaBLEData(tuya_api, {HOST: dump_device})
+
+    tuya_ble_hass_data = TuyaBLEData(title="Hello", device=device, manager=manager, product=product_info, coordinator=dump_device)
+
     hass.data[DOMAIN][entry.entry_id] = tuya_ble_hass_data
 
     await entity.async_setup_entry(
@@ -76,5 +94,5 @@ def create_entry(config: dict[str, dict[str, Any]]):
     }
 
 
-def get_entites(device: coordinator.TuyaDevice):
+def get_entites(device: TuyaBLECoordinator):
     return getattr(device, "_entities")
