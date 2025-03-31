@@ -9,4 +9,4 @@ pylint==2.8.2
 pytest-asyncio
 pytest-cov
 pyserial
-pycrypto
+PyCryptodome
