@@ -11,7 +11,7 @@ from typing import Any
 from unittest.mock import AsyncMock, Mock
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
-from custom_components.tuya_bleuya.const import DOMAIN
+from custom_components.tuya_ble.const import DOMAIN
 
 DEVICE_NAME = "1234"
 
