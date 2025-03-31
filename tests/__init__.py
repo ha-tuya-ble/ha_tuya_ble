@@ -12,16 +12,20 @@ from typing import Any
 from unittest.mock import AsyncMock, Mock
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
-from homeassistant.helpers.entity import (
-    EntityDescription
-)
+from homeassistant.helpers.entity import EntityDescription
 
 
 from habluetooth.central_manager import CentralBluetoothManager
 
 from custom_components.tuya_ble import async_setup_entry
 from custom_components.tuya_ble.const import DOMAIN
-from custom_components.tuya_ble.devices import TuyaBLECoordinator, TuyaBLEData, TuyaBLEDevice, TuyaBLEProductInfo, TuyaBLEEntity
+from custom_components.tuya_ble.devices import (
+    TuyaBLECoordinator,
+    TuyaBLEData,
+    TuyaBLEDevice,
+    TuyaBLEProductInfo,
+    TuyaBLEEntity,
+)
 from custom_components.tuya_ble.cloud import HASSTuyaBLEDeviceManager
 
 
@@ -35,31 +39,24 @@ DEVICE_CONFIG = {
     "friendly_name": "Local 3G",
 }
 
-CentralBluetoothManager.manager = AsyncMock() # HomeAssistantBlueToothManager
-# CentralBluetoothManager.manager.side_effect = lambda address: {
-#     "00:11:22:33:44:55": {"name": "Device1", "rssi": -50},
-#     "66:77:88:99:AA:BB": {"name": "Device2", "rssi": -60},
-# }.get(address, None)
 
 from unittest.mock import AsyncMock, patch
 
+CentralBluetoothManager.manager = AsyncMock()  # HomeAssistantBlueToothManager
+
 # Mock data for the BLE device
 mock_ble_device = BLEDevice(
-    name= "MockTuyaDevice",
-    address= DEVICE_ADDRESS,
-    rssi= -70,
-    details = ""
+    name="MockTuyaDevice", address=DEVICE_ADDRESS, rssi=-70, details=""
 )
-
-# Mock the bluetooth.async_ble_device_from_address function
 with patch(
-    "homeassistant.components.bluetooth.async_ble_device_from_address", new=AsyncMock()
+    "homeassistant.components.bluetooth.api.async_ble_device_from_address", new=Mock()
 ) as mock_async_ble_device_from_address:
-    # Define the behavior of the mock
-    mock_async_ble_device_from_address.side_effect = lambda hass, address, connectable: (
-        mock_ble_device if address == DEVICE_ADDRESS else None
-    )
+    mock_async_ble_device_from_address.side_effect = None
 
+with patch("bleak_retry_connector.get_device", new=AsyncMock()) as mock_get_device:
+    # Define the behavior of the mock
+    mock_get_device.side_effect = Exception('Boom!')
+    
 
 async def init(config: dict[str, dict[str, Any]], entity_domain, entity_class):
     add_entities = AsyncMock()
@@ -85,21 +82,24 @@ async def init(config: dict[str, dict[str, Any]], entity_domain, entity_class):
     ]
     # entity = TuyaBLEEntity(hass, dump_device, device, product_info, EntityDescription("Hello"))
 
-
-    tuya_ble_hass_data = TuyaBLEData(title="Hello", device=device, manager=manager, product=product_info, coordinator=dump_device)
+    tuya_ble_hass_data = TuyaBLEData(
+        title="Hello",
+        device=device,
+        manager=manager,
+        product=product_info,
+        coordinator=dump_device,
+    )
 
     hass.data[DOMAIN][entry.entry_id] = tuya_ble_hass_data
 
-    await async_setup_entry(hass, entry)     # async_add_entities=add_entities,
+    await async_setup_entry(hass, entry)  # async_add_entities=add_entities,
 
     add_entities.assert_called_once()
     return dump_device
 
 
-
 def create_entry(config: dict[str, dict[str, Any]]):
     return {
-
         "data": {
             "devices": config,
             "address": DEVICE_ADDRESS,
