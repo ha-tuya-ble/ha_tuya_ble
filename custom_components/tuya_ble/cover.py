@@ -217,7 +217,7 @@ class TuyaBLECover(TuyaBLEEntity, CoverEntity):
             # the kcy0x4pi product).
             self._hass.add_job(
                 self._validate_data_update_from_device_and_reconnect_if_needed(
-                    time_now=datetime.now(timezone.utc)
+                    state=state, time_now=datetime.now(timezone.utc)
                 )
             )
             self._update_cover_state_without_validation(state)
@@ -235,6 +235,7 @@ class TuyaBLECover(TuyaBLEEntity, CoverEntity):
 
     async def _validate_data_update_from_device_and_reconnect_if_needed(
         self,
+        state: TuyaCoverState,
         sleep_ms: int = 1000,
         time_now: datetime | None = None,
     ) -> None:

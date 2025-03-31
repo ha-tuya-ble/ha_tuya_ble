@@ -9,7 +9,7 @@ import time
 from collections.abc import Callable
 from struct import pack, unpack
 from dataclasses import dataclass
-from typing import Any
+from typing import Any, Hashable
 
 import json
 
