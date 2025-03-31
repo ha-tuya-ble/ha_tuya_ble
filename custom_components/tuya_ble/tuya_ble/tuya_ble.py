@@ -356,6 +356,7 @@ class TuyaBLEDevice:
         self._advertisement_data = advertisement_data
 
     async def initialize(self) -> None:
+        print(self)
         _LOGGER.debug("%s: Initializing", self.address)
         if await self._update_device_info():
             self._decode_advertisement_data()

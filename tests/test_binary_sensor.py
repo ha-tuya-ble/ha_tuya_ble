@@ -19,6 +19,7 @@ CONFIG = {
                 "state_on": STATE_ON,
                 "platform": PLATFORM_DOMAIN,
                 "restore_on_reconnect": False,
+                "address": "12:23:44"
             }
         ],
     }
