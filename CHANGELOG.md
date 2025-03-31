@@ -5,6 +5,24 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog],
 and this project adheres to [Semantic Versioning].
 
+## [0.3.0] - 2025-04-01
+
+Integrate multiple community maintained forks (#1)
+As a result, the following are available.
+
+- Add 'mknd4lci'
+- Add 'riecov42'
+- Add 'jtmspro'
+- Add 'hfgdqhho'
+- Add 'fnlw6npo'
+- Add 'qycalacn'
+- Add 'jjqi2syk'
+- Add '4pbr8eig'
+- Add 'sfkzq'
+- Add 'nxquc5lb'
+- Add Lights support
+
+
 ## [0.2.0] - 2025-02-01
 
 - Add support for kg family and model bs3ubslo
