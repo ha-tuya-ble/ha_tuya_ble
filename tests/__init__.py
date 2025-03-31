@@ -42,20 +42,14 @@ DEVICE_CONFIG = {
 
 from unittest.mock import AsyncMock, patch
 
-CentralBluetoothManager.manager = AsyncMock()  # HomeAssistantBlueToothManager
-
-# Mock data for the BLE device
 mock_ble_device = BLEDevice(
     name="MockTuyaDevice", address=DEVICE_ADDRESS, rssi=-70, details=""
 )
-with patch(
-    "homeassistant.components.bluetooth.api.async_ble_device_from_address", new=Mock()
-) as mock_async_ble_device_from_address:
-    mock_async_ble_device_from_address.side_effect = None
 
-with patch("bleak_retry_connector.get_device", new=AsyncMock()) as mock_get_device:
-    # Define the behavior of the mock
-    mock_get_device.side_effect = Exception('Boom!')
+CentralBluetoothManager.manager = Mock()  # HomeAssistantBlueToothManager
+CentralBluetoothManager.manager.async_ble_device_from_address.side_effect = lambda address, connectable: (
+        mock_ble_device if address == DEVICE_ADDRESS else None
+    )
     
 
 async def init(config: dict[str, dict[str, Any]], entity_domain, entity_class):
@@ -66,12 +60,14 @@ async def init(config: dict[str, dict[str, Any]], entity_domain, entity_class):
         "", (), {"_thread_id": threading.get_ident()}
     )
     hass = HomeAssistant("")
+    hass.loop = asyncio.new_event_loop()
+
     entry = ConfigEntry(**create_entry(config))
 
     ble_device = BLEDevice(name="bob", address="11:22:33", details="", rssi=-50)
     manager = HASSTuyaBLEDeviceManager(hass, entry.options.copy())
     device = TuyaBLEDevice(manager, ble_device)
-    # await device.initialize()
+    await device.initialize()
     product_info = TuyaBLEProductInfo("Fake Product")
 
     hass.data.setdefault("tuya_ble", {entry.entry_id: {}})

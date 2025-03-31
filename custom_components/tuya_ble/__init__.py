@@ -46,14 +46,13 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
         raise ConfigEntryNotReady(
             f"Could not find Tuya BLE device with address {address}"
         )
-    print(ble_device)
+
     manager = HASSTuyaBLEDeviceManager(hass, entry.options.copy())
     device = TuyaBLEDevice(manager, ble_device)
     await device.initialize()
     product_info = get_device_product_info(device)
 
     coordinator = TuyaBLECoordinator(hass, device)
-
     """
     try:
         await device.update()
@@ -62,6 +61,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
             f"Could not communicate with Tuya BLE device with address {address}"
         ) from ex
     """
+
     hass.add_job(device.update())
 
     @callback
