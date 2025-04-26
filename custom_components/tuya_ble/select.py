@@ -31,6 +31,8 @@ _LOGGER = logging.getLogger(__name__)
 
 @dataclass
 class TuyaBLESelectMapping:
+    """Model a DP, description and default values"""
+
     dp_id: int
     description: SelectEntityDescription
     force_add: bool = True
@@ -39,6 +41,8 @@ class TuyaBLESelectMapping:
 
 @dataclass
 class TemperatureUnitDescription(SelectEntityDescription):
+    """Description of temperature unit"""
+
     key: str = "temperature_unit"
     icon: str = "mdi:thermometer"
     entity_category: EntityCategory = EntityCategory.CONFIG
@@ -46,6 +50,8 @@ class TemperatureUnitDescription(SelectEntityDescription):
 
 @dataclass
 class TuyaBLEFingerbotModeMapping(TuyaBLESelectMapping):
+    """Fingerbot mode mapping"""
+
     description: SelectEntityDescription = field(
         default_factory=lambda: SelectEntityDescription(
             key="fingerbot_mode",
@@ -101,6 +107,37 @@ class TuyaBLECategorySelectMapping:
 
 
 mapping: dict[str, TuyaBLECategorySelectMapping] = {
+    "sfkzq": TuyaBLECategorySelectMapping(
+        products={
+            "0axr5s0b": [  # Valve Controller
+                TuyaBLESelectMapping(
+                    dp_id=10,
+                    description=SelectEntityDescription(
+                        key="weather_delay",
+                        options=[
+                            "cancel",
+                            "24h",
+                            "48h",
+                            "72h",
+                        ],
+                        entity_category=EntityCategory.CONFIG,
+                    ),
+                ),
+                TuyaBLESelectMapping(
+                    dp_id=12,
+                    description=SelectEntityDescription(
+                        key="work_state",
+                        options=["auto", "manual", "idle"],
+                        entity_category=EntityCategory.CONFIG,
+                    ),
+                ),
+            ],
+            "nxquc5lb": [  # Smart water timer - SOP10
+                TuyaBLEWeatherDelayMapping(dp_id=10),
+                TuyaBLESmartWeatherMapping(dp_id=13),
+            ],
+        },
+    ),
     "co2bj": TuyaBLECategorySelectMapping(
         products={
             "59s19z5m": [  # CO2 Detector
@@ -119,7 +156,13 @@ mapping: dict[str, TuyaBLECategorySelectMapping] = {
     "ms": TuyaBLECategorySelectMapping(
         products={
             **dict.fromkeys(
-                ["ludzroix", "isk2p555", "uamrw6h3", "okkyfgfs"],  # Smart Lock
+                [
+                    "ludzroix",
+                    "isk2p555",
+                    "gumrixyt",
+                    "uamrw6h3",
+                    "okkyfgfs",
+                ],  # Smart Lock
                 [
                     TuyaBLESelectMapping(
                         dp_id=31,
@@ -244,6 +287,18 @@ mapping: dict[str, TuyaBLECategorySelectMapping] = {
                     ),
                 ),
             ],
+            "vlzqwckk": [
+                TuyaBLESelectMapping(
+                    dp_id=9,
+                    description=TemperatureUnitDescription(
+                        options=[
+                            UnitOfTemperature.CELSIUS,
+                            UnitOfTemperature.FAHRENHEIT,
+                        ],
+                        entity_registry_enabled_default=False,
+                    ),
+                ),
+            ],
         },
     ),
     "znhsb": TuyaBLECategorySelectMapping(
@@ -264,43 +319,11 @@ mapping: dict[str, TuyaBLECategorySelectMapping] = {
                         key="reminder_mode",
                         options=[
                             "interval_reminder",
-                            "schedule_reminder",
-                            "alarm_reminder",
+                            "alarm_reminder",  # TODO: schedule_reminder?
                         ],
                         entity_category=EntityCategory.CONFIG,
                     ),
                 ),
-            ],
-        },
-    ),
-    "sfkzq": TuyaBLECategorySelectMapping(
-        products={
-            "0axr5s0b": [  # Valve Controller
-                TuyaBLESelectMapping(
-                    dp_id=10,
-                    description=SelectEntityDescription(
-                        key="weather_delay",
-                        options=[
-                            "cancel",
-                            "24h",
-                            "48h",
-                            "72h",
-                        ],
-                        entity_category=EntityCategory.CONFIG,
-                    ),
-                ),
-                TuyaBLESelectMapping(
-                    dp_id=12,
-                    description=SelectEntityDescription(
-                        key="work_state",
-                        options=["auto", "manual", "idle"],
-                        entity_category=EntityCategory.CONFIG,
-                    ),
-                ),
-            ],
-            "nxquc5lb": [  # Smart water timer - SOP10
-                TuyaBLEWeatherDelayMapping(dp_id=10),
-                TuyaBLESmartWeatherMapping(dp_id=13),
             ],
         },
     ),
@@ -342,7 +365,7 @@ class TuyaBLESelect(TuyaBLEEntity, SelectEntity):
         datapoint = self._device.datapoints[self._mapping.dp_id]
         if datapoint:
             value = datapoint.value
-            if value >= 0 and value < len(self._attr_options):
+            if 0 <= value < len(self._attr_options):
                 return self._attr_options[value]
 
             return value

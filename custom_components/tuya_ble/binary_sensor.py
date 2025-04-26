@@ -36,6 +36,8 @@ TuyaBLEBinarySensorIsAvailable = (
 
 @dataclass
 class TuyaBLEBinarySensorMapping:
+    """Models a BLE binary sensor"""
+
     dp_id: int
     description: BinarySensorEntityDescription
     force_add: bool = True
@@ -48,6 +50,8 @@ class TuyaBLEBinarySensorMapping:
 
 @dataclass
 class TuyaBLECategoryBinarySensorMapping:
+    """Maps between a dict of products and the sensors"""
+
     products: dict[str, list[TuyaBLEBinarySensorMapping]] | None = None
     mapping: list[TuyaBLEBinarySensorMapping] | None = None
 
@@ -55,17 +59,24 @@ class TuyaBLECategoryBinarySensorMapping:
 mapping: dict[str, TuyaBLECategoryBinarySensorMapping] = {
     "wk": TuyaBLECategoryBinarySensorMapping(
         products={
-            "drlajpqc": [  # Thermostatic Radiator Valve
-                TuyaBLEBinarySensorMapping(
-                    dp_id=105,
-                    description=BinarySensorEntityDescription(
-                        key="battery",
-                        # icon="mdi:battery-alert",
-                        device_class=BinarySensorDeviceClass.BATTERY,
-                        entity_category=EntityCategory.DIAGNOSTIC,
-                    ),
-                ),
-            ],
+            **dict.fromkeys(
+                [
+                    "drlajpqc",
+                    "nhj2j7su",
+                    "zmachryv",
+                ],
+                [  # Thermostatic Radiator Valve
+                    TuyaBLEBinarySensorMapping(
+                        dp_id=105,
+                        description=BinarySensorEntityDescription(
+                            key="battery",
+                            # icon="mdi:battery-alert",
+                            device_class=BinarySensorDeviceClass.BATTERY,
+                            entity_category=EntityCategory.DIAGNOSTIC,
+                        ),
+                    )
+                ],
+            ),
         },
     ),
     "ms": TuyaBLECategoryBinarySensorMapping(

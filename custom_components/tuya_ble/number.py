@@ -46,6 +46,8 @@ TuyaBLENumberSetter = (
 
 @dataclass
 class TuyaBLENumberMapping:
+    """Model a DP, description and default values"""
+
     dp_id: int
     description: NumberEntityDescription
     force_add: bool = True
@@ -61,6 +63,7 @@ def is_fingerbot_in_program_mode(
     self: TuyaBLENumber,
     product: TuyaBLEProductInfo,
 ) -> bool:
+    """Returns if in program mode or not"""
     result: bool = True
     if product.fingerbot:
         datapoint = self._device.datapoints[product.fingerbot.mode]
@@ -97,6 +100,7 @@ def is_fingerbot_repeat_count_available(
     self: TuyaBLENumber,
     product: TuyaBLEProductInfo,
 ) -> bool:
+    """Determine if a repeat count is available"""
     result: bool = True
     if product.fingerbot and product.fingerbot.program:
         datapoint = self._device.datapoints[product.fingerbot.mode]
@@ -104,7 +108,7 @@ def is_fingerbot_repeat_count_available(
             result = datapoint.value == 2
         if result:
             datapoint = self._device.datapoints[product.fingerbot.program]
-            if datapoint and type(datapoint.value) is bytes:
+            if datapoint and isinstance(datapoint.value, bytes):
                 repeat_count = int.from_bytes(datapoint.value[0:2], "big")
                 result = repeat_count != 0xFFFF
 
@@ -118,7 +122,7 @@ def get_fingerbot_program_repeat_count(
     result: float | None = None
     if product.fingerbot and product.fingerbot.program:
         datapoint = self._device.datapoints[product.fingerbot.program]
-        if datapoint and type(datapoint.value) is bytes:
+        if datapoint and isinstance(datapoint.value, bytes):
             repeat_count = int.from_bytes(datapoint.value[0:2], "big")
             result = repeat_count * 1.0
 
@@ -132,7 +136,7 @@ def set_fingerbot_program_repeat_count(
 ) -> None:
     if product.fingerbot and product.fingerbot.program:
         datapoint = self._device.datapoints[product.fingerbot.program]
-        if datapoint and type(datapoint.value) is bytes:
+        if datapoint and isinstance(datapoint.value, bytes):
             new_value = int.to_bytes(int(value), 2, "big") + datapoint.value[2:]
             self._hass.create_task(datapoint.set_value(new_value))
 
@@ -144,7 +148,7 @@ def get_fingerbot_program_position(
     result: float | None = None
     if product.fingerbot and product.fingerbot.program:
         datapoint = self._device.datapoints[product.fingerbot.program]
-        if datapoint and type(datapoint.value) is bytes:
+        if datapoint and isinstance(datapoint.value, bytes):
             result = datapoint.value[2] * 1.0
 
     return result
@@ -157,7 +161,7 @@ def set_fingerbot_program_position(
 ) -> None:
     if product.fingerbot and product.fingerbot.program:
         datapoint = self._device.datapoints[product.fingerbot.program]
-        if datapoint and type(datapoint.value) is bytes:
+        if datapoint and isinstance(datapoint.value, bytes):
             new_value = bytearray(datapoint.value)
             new_value[2] = int(value)
             self._hass.create_task(datapoint.set_value(new_value))
@@ -206,6 +210,8 @@ class TuyaBLEHoldTimeMapping(TuyaBLENumberMapping):
 
 @dataclass
 class TuyaBLECategoryNumberMapping:
+    """Models a dict of products and their mappings"""
+
     products: dict[str, list[TuyaBLENumberMapping]] | None = None
     mapping: list[TuyaBLENumberMapping] | None = None
 
@@ -402,6 +408,7 @@ mapping: dict[str, TuyaBLECategoryNumberMapping] = {
                 [
                     "drlajpqc",
                     "nhj2j7su",
+                    "zmachryv",
                 ],  # Thermostatic Radiator Valve
                 [
                     TuyaBLENumberMapping(
@@ -458,7 +465,7 @@ mapping: dict[str, TuyaBLECategoryNumberMapping] = {
     ),
     "ggq": TuyaBLECategoryNumberMapping(
         products={
-            "6pahkcau": [  # Irrigation computer
+            "6pahkcau": [  # Irrigation computer PARKSIDE PPB A1
                 TuyaBLENumberMapping(
                     dp_id=5,
                     description=NumberEntityDescription(
@@ -471,11 +478,12 @@ mapping: dict[str, TuyaBLECategoryNumberMapping] = {
                     ),
                 ),
             ],
-            "hfgdqhho": [  # Irrigation computer - SGW02
+            "hfgdqhho": [  # Irrigation computer - SGW02, SGW08
                 TuyaBLENumberMapping(
                     dp_id=106,
                     description=NumberEntityDescription(
                         key="countdown_duration_z1",
+                        name="CH1 Countdown",
                         icon="mdi:timer",
                         native_max_value=1440,
                         native_min_value=1,
@@ -487,6 +495,7 @@ mapping: dict[str, TuyaBLECategoryNumberMapping] = {
                     dp_id=103,
                     description=NumberEntityDescription(
                         key="countdown_duration_z2",
+                        name="CH2 Countdown",
                         icon="mdi:timer",
                         native_max_value=1440,
                         native_min_value=1,

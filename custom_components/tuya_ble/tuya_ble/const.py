@@ -20,6 +20,10 @@ RESPONSE_WAIT_TIMEOUT = 60
 
 
 class TuyaBLECode(Enum):
+    """
+    Enum of common BLE codes
+    """
+
     FUN_SENDER_DEVICE_INFO = 0x0000
     FUN_SENDER_PAIR = 0x0001
     FUN_SENDER_DPS = 0x0002

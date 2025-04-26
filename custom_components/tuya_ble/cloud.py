@@ -58,6 +58,8 @@ _LOGGER = logging.getLogger(__name__)
 
 @dataclass
 class TuyaCloudCacheItem:
+    """A cache model for API keys/credentials"""
+
     api: TuyaOpenAPI | None
     login: dict[str, Any]
     credentials: dict[str, dict[str, Any]]
@@ -146,7 +148,7 @@ class HASSTuyaBLEDeviceManager(AbstaractTuyaBLEDeviceManager):
             _LOGGER.debug("Successful login for %s", data[CONF_USERNAME])
             if add_to_cache:
                 auth_type = data[CONF_AUTH_TYPE]
-                if type(auth_type) is AuthType:
+                if isinstance(auth_type, AuthType):
                     data[CONF_AUTH_TYPE] = auth_type.value
                 cache_key = self._get_cache_key(data)
                 cache_item = _cache.get(cache_key)
@@ -160,7 +162,7 @@ class HASSTuyaBLEDeviceManager(AbstaractTuyaBLEDeviceManager):
 
     def _check_login(self) -> bool:
         cache_key = self._get_cache_key(self._data)
-        return _cache.get(cache_key) != None
+        return _cache.get(cache_key) is not None
 
     async def login(self, add_to_cache: bool = False) -> dict[Any, Any]:
         return await self._login(self._data, add_to_cache)

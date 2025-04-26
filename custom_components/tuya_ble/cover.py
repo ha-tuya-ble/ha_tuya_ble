@@ -32,6 +32,8 @@ TUYA_COVER_STATE_MAP = {0: STATE_OPEN, 2: STATE_CLOSED}
 
 
 class TuyaCoverState(IntEnum):
+    """State of cover"""
+
     OPEN = 0
     STOP = 1
     CLOSE = 2
@@ -39,6 +41,8 @@ class TuyaCoverState(IntEnum):
 
 @dataclass
 class TuyaBLECoverMapping:
+    """Model a DP, description and default values"""
+
     description: CoverEntityDescription
 
     cover_state_dp_id: int = 0
@@ -54,6 +58,8 @@ class TuyaBLECoverMapping:
 
 @dataclass
 class TuyaBLECategoryCoverMapping:
+    """Models a dict of products and their mappings"""
+
     products: dict[str, list[TuyaBLECoverMapping]] | None = None
     mapping: list[TuyaBLECoverMapping] | None = None
 
@@ -117,6 +123,7 @@ mapping: dict[str, TuyaBLECategoryCoverMapping] = {
 
 
 def get_mapping_by_device(device: TuyaBLEDevice) -> list[TuyaBLECategoryCoverMapping]:
+    """For a given device, work out the category cover mapping"""
     category = mapping.get(device.category)
     if category is not None and category.products is not None:
         product_mapping = category.products.get(device.product_id)
@@ -124,10 +131,8 @@ def get_mapping_by_device(device: TuyaBLEDevice) -> list[TuyaBLECategoryCoverMap
             return product_mapping
         if category.mapping is not None:
             return category.mapping
-        else:
-            return []
-    else:
-        return []
+
+    return []
 
 
 class TuyaBLECover(TuyaBLEEntity, CoverEntity):

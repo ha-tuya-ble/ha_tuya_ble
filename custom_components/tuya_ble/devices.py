@@ -51,6 +51,8 @@ _LOGGER = logging.getLogger(__name__)
 
 @dataclass
 class TuyaBLEFingerbotInfo:
+    """Model a fingerbot"""
+
     switch: int
     mode: int
     up_position: int
@@ -63,6 +65,8 @@ class TuyaBLEFingerbotInfo:
 
 @dataclass
 class TuyaBLEWaterValveInfo:
+    """Model a water valve"""
+
     switch: bool
     countdown: int
     weather_delay: str
@@ -72,10 +76,13 @@ class TuyaBLEWaterValveInfo:
 
 @dataclass
 class TuyaBLEProductInfo:
+    """Model product info"""
+
     name: str
     manufacturer: str = DEVICE_DEF_MANUFACTURER
     fingerbot: TuyaBLEFingerbotInfo | None = None
     watervalve: TuyaBLEWaterValveInfo | None = None
+    lock: int | None = None
 
 
 class TuyaBLEEntity(CoordinatorEntity):
@@ -122,15 +129,14 @@ class TuyaBLEEntity(CoordinatorEntity):
     def send_dp_value(
         self,
         key: DPCode | None,
-        type: TuyaBLEDataPointType,
+        dp_type: TuyaBLEDataPointType,
         value: bytes | bool | int | str | None = None,
     ) -> None:
-
         dpid = self.find_dpid(key)
         if dpid is not None:
             datapoint = self._device.datapoints.get_or_create(
                 dpid,
-                type,
+                dp_type,
                 value,
             )
             self._hass.create_task(datapoint.set_value(value))
@@ -145,13 +151,13 @@ class TuyaBLEEntity(CoordinatorEntity):
                 dttype = self.get_dptype(code)
                 if isinstance(value, str):
                     # We suppose here that cloud JSON type are sent as string
-                    if dttype == DPType.STRING or dttype == DPType.JSON:
+                    if dttype in (DPType.STRING, DPType.JSON):
                         self.send_dp_value(code, TuyaBLEDataPointType.DT_STRING, value)
                     elif dttype == DPType.ENUM:
                         int_value = 0
                         values = self.device.function[code].values
-                        if isinstance(self.device.function[code].values, dict):
-                            range = self.device.function[code].values.get("range")
+                        if isinstance(values, dict):
+                            range = values.get("range")
                             if isinstance(range, list):
                                 int_value = (
                                     range.index(value) if value in range else None
@@ -332,6 +338,8 @@ class TuyaBLEData:
 
 @dataclass
 class TuyaBLECategoryInfo:
+    """Defines category info"""
+
     products: dict[str, TuyaBLEProductInfo]
     info: TuyaBLEProductInfo | None = None
 
@@ -347,10 +355,14 @@ devices_database: dict[str, TuyaBLECategoryInfo] = {
     "ms": TuyaBLECategoryInfo(
         products={
             **dict.fromkeys(
-                ["ludzroix", "isk2p555", "uamrw6h3", "okkyfgfs"],
+                ["ludzroix", "isk2p555", "gumrixyt", "uamrw6h3"],
                 TuyaBLEProductInfo(  # device product_id
                     name="Smart Lock",
                 ),
+            ),
+            "okkyfgfs": TuyaBLEProductInfo(
+                name="TEKXDD Fingerprint Smart Lock",
+                lock=1,
             ),
         },
     ),
@@ -358,6 +370,9 @@ devices_database: dict[str, TuyaBLECategoryInfo] = {
         products={
             "xicdxood": TuyaBLEProductInfo(  # device product_id
                 name="Raycube K7 Pro+",
+            ),
+            "ebd5e0uauqx0vfsp": TuyaBLEProductInfo(  # device product_id
+                name="CentralAcesso",
             ),
         },
     ),
@@ -459,6 +474,7 @@ devices_database: dict[str, TuyaBLECategoryInfo] = {
                 [
                     "drlajpqc",
                     "nhj2j7su",
+                    "zmachryv",
                 ],  # device product_id
                 TuyaBLEProductInfo(
                     name="Thermostatic Radiator Valve",
@@ -471,8 +487,14 @@ devices_database: dict[str, TuyaBLECategoryInfo] = {
             "ojzlzzsw": TuyaBLEProductInfo(  # device product_id
                 name="Soil moisture sensor",
             ),
-            "iv7hudlj": TuyaBLEProductInfo(  # device product_id
+            "iv7hudlj": TuyaBLEProductInfo(
                 name="Bluetooth Temperature Humidity Sensor",
+            ),
+            "tv6peegl": TuyaBLEProductInfo(  # new device product_id
+                name="Soil Thermo-Hygrometer",
+            ),
+            "vlzqwckk": TuyaBLEProductInfo(
+                name="Temperature Humidity Sensor",
             ),
         },
     ),
@@ -480,23 +502,6 @@ devices_database: dict[str, TuyaBLECategoryInfo] = {
         products={
             "cdlandip": TuyaBLEProductInfo(  # device product_id
                 name="Smart water bottle",
-            ),
-        },
-    ),
-    "sfkzq": TuyaBLECategoryInfo(
-        products={
-            "0axr5s0b": TuyaBLEProductInfo(  # device product_id
-                name="Valve controller",
-            ),
-            "nxquc5lb": TuyaBLEProductInfo(
-                name="Water valve controller",
-                watervalve=TuyaBLEWaterValveInfo(
-                    switch=1,
-                    countdown=8,
-                    weather_delay=10,
-                    smart_weather=13,
-                    use_time=9,
-                ),
             ),
         },
     ),
@@ -513,34 +518,30 @@ devices_database: dict[str, TuyaBLECategoryInfo] = {
                 TuyaBLEProductInfo(
                     name="Irrigation computer",
                 ),
-            )
-        },
-    ),
-    "sfkzq": TuyaBLECategoryInfo(
-        products={
-            "nxquc5lb": TuyaBLEProductInfo(  # device product_id
+            ),
+            "0axr5s0b": TuyaBLEProductInfo(  # device product_id
+                name="Valve controller",
+            ),
+            "nxquc5lb": TuyaBLEProductInfo(
                 name="Water valve controller",
+                watervalve=TuyaBLEWaterValveInfo(
+                    switch=1,
+                    countdown=8,
+                    weather_delay=10,
+                    smart_weather=13,
+                    use_time=9,
+                ),
             ),
         },
     ),
     "ggq": TuyaBLECategoryInfo(
         products={
             **dict.fromkeys(
-                [
-                    "6pahkcau",
-                    "hfgdqhho",
-                ],  # device product_id
+                ["6pahkcau", "hfgdqhho"],  # PPB A1  # SGW08  # device product_id
                 TuyaBLEProductInfo(
                     name="Irrigation computer",
                 ),
             )
-        },
-    ),
-    "sfkzq": TuyaBLECategoryInfo(
-        products={
-            "nxquc5lb": TuyaBLEProductInfo(  # device product_id
-                name="Water valve controller",
-            ),
         },
     ),
     "dd": TuyaBLECategoryInfo(
@@ -586,6 +587,7 @@ def get_device_product_info(device: TuyaBLEDevice) -> TuyaBLEProductInfo | None:
 
 
 def get_short_address(address: str) -> str:
+    """Short address"""
     results = address.replace("-", ":").upper().split(":")
     return f"{results[-3]}{results[-2]}{results[-1]}"[-6:]
 
@@ -594,6 +596,7 @@ async def get_device_readable_name(
     discovery_info: BluetoothServiceInfoBleak,
     manager: AbstaractTuyaBLEDeviceManager | None,
 ) -> str:
+    """Readable name"""
     credentials: TuyaBLEDeviceCredentials | None = None
     product_info: TuyaBLEProductInfo | None = None
     if manager:

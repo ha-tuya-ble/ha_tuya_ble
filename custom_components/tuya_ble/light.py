@@ -10,9 +10,11 @@ import copy
 
 from typing import Any, cast
 
+from homeassistant.util import color as color_util
+
 from homeassistant.components.light import (
     ATTR_BRIGHTNESS,
-    ATTR_COLOR_TEMP,
+    ATTR_COLOR_TEMP_KELVIN,
     ATTR_HS_COLOR,
     ColorMode,
     LightEntity,
@@ -69,24 +71,6 @@ DEFAULT_COLOR_TYPE_DATA_V2 = ColorTypeData(
 @dataclass
 class ColorData:
     """Color Data."""
-
-    type_data: ColorTypeData
-    h_value: int
-    s_value: int
-    v_value: int
-
-    @property
-    def hs_color(self) -> tuple[float, float]:
-        """Get the HS value from this color data."""
-        return (
-            self.type_data.h_type.remap_value_to(self.h_value, 0, 360),
-            self.type_data.s_type.remap_value_to(self.s_value, 0, 100),
-        )
-
-    @property
-    def brightness(self) -> int:
-        """Get the brightness value from this color data."""
-        return round(self.type_data.v_type.remap_value_to(self.v_value, 0, 255))
 
     type_data: ColorTypeData
     h_value: int
@@ -524,8 +508,11 @@ def get_mapping_by_device(device: TuyaBLEDevice) -> tuple[TuyaLightEntityDescrip
     category = ProductsMapping.get(device.category)
     if category is not None:
         product_mapping_overrides = category.get(device.product_id)
-        if product_mapping_overrides is not None:
+        if product_mapping_overrides is not None and category_mapping is not None:
             return update_mapping(category_mapping, product_mapping_overrides)
+
+    if category_mapping is None:
+        _LOGGER.debug("Could not find light with device.category " + device.category)
 
     return category_mapping
 
@@ -636,7 +623,7 @@ class TuyaBLELight(TuyaBLEEntity, LightEntity):
         """Turn on or control the light."""
         commands = [{"code": self.entity_description.key, "value": True}]
 
-        if self._color_temp and ATTR_COLOR_TEMP in kwargs:
+        if self._color_temp and ATTR_COLOR_TEMP_KELVIN in kwargs:
             if self._color_mode_dpcode:
                 commands += [
                     {
@@ -650,7 +637,7 @@ class TuyaBLELight(TuyaBLEEntity, LightEntity):
                     "code": self._color_temp.dpcode,
                     "value": round(
                         self._color_temp.remap_value_from(
-                            kwargs[ATTR_COLOR_TEMP],
+                            kwargs[ATTR_COLOR_TEMP_KELVIN],
                             self.min_mireds,
                             self.max_mireds,
                             reverse=True,
@@ -664,7 +651,7 @@ class TuyaBLELight(TuyaBLEEntity, LightEntity):
             or (
                 ATTR_BRIGHTNESS in kwargs
                 and self.color_mode == ColorMode.HS
-                and ATTR_COLOR_TEMP not in kwargs
+                and ATTR_COLOR_TEMP_KELVIN not in kwargs
             )
         ):
             if self._color_mode_dpcode:
@@ -799,7 +786,7 @@ class TuyaBLELight(TuyaBLEEntity, LightEntity):
         return round(brightness)
 
     @property
-    def color_temp(self) -> int | None:
+    def color_temp_kelvin(self) -> int | None:
         """Return the color_temp of the light."""
         if not self._color_temp:
             return None
@@ -808,9 +795,11 @@ class TuyaBLELight(TuyaBLEEntity, LightEntity):
         if temperature is None:
             return None
 
-        return round(
-            self._color_temp.remap_value_to(
-                temperature, self.min_mireds, self.max_mireds, reverse=True
+        return color_util.color_temperature_mired_to_kelvin(
+            round(
+                self._color_temp.remap_value_to(
+                    temperature, self.min_mireds, self.max_mireds, reverse=True
+                )
             )
         )
 
@@ -882,53 +871,10 @@ class TuyaBLELight(TuyaBLEEntity, LightEntity):
         if not (status_data := self.device.status[self._color_data_dpcode]):
             return False
 
-        if not (isinstance(status_data, str)):
+        if not isinstance(status_data, str):
             return False
 
         return len(status_data) > 12
-
-        return round(brightness)
-
-    @property
-    def color_temp(self) -> int | None:
-        """Return the color_temp of the light."""
-        if not self._color_temp:
-            return None
-
-        temperature = self._device.status.get(self._color_temp.dpcode)
-        if temperature is None:
-            return None
-
-        return round(
-            self._color_temp.remap_value_to(
-                temperature, self.min_mireds, self.max_mireds, reverse=True
-            )
-        )
-
-    @property
-    def hs_color(self) -> tuple[float, float] | None:
-        """Return the hs_color of the light."""
-        if self._color_data_dpcode is None or not (
-            color_data := self._get_color_data()
-        ):
-            return None
-        return color_data.hs_color
-
-    @property
-    def color_mode(self) -> ColorMode:
-        """Return the color_mode of the light."""
-        # We consider it to be in HS color mode, when work mode is anything
-        # else than "white".
-        if (
-            self._color_mode_dpcode
-            and self.device.status.get(self._color_mode_dpcode) != WorkMode.WHITE
-        ):
-            return ColorMode.HS
-        if self._color_temp:
-            return ColorMode.COLOR_TEMP
-        if self._brightness:
-            return ColorMode.BRIGHTNESS
-        return ColorMode.ONOFF
 
     def _get_color_data(self) -> ColorData | None:
         """Get current color data from device."""
@@ -954,7 +900,8 @@ class TuyaBLELight(TuyaBLEEntity, LightEntity):
                 s_value=s,
                 v_value=v,
             )
-        elif len(status_data) > 12:
+
+        if len(status_data) > 12:
             # Encoding for RGB devices from localtuya light component
             h = int(status_data[6:10], 16)
             s = int(status_data[10:12], 16)
@@ -972,7 +919,7 @@ class TuyaBLELight(TuyaBLEEntity, LightEntity):
         if not (status_data := self.device.status[self._color_data_dpcode]):
             return False
 
-        if not (isinstance(status_data, str)):
+        if not isinstance(status_data, str):
             return False
 
         return len(status_data) > 12
@@ -986,6 +933,10 @@ async def async_setup_entry(
     """Set up the Tuya BLE sensors."""
     data: TuyaBLEData = hass.data[DOMAIN][entry.entry_id]
     descs = get_mapping_by_device(data.device)
+
+    if descs is None:
+        return None
+
     entities: list[TuyaBLELight] = []
 
     for desc in descs:

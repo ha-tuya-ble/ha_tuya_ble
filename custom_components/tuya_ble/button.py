@@ -28,6 +28,8 @@ TuyaBLEButtonIsAvailable = Callable[["TuyaBLEButton", TuyaBLEProductInfo], bool]
 
 @dataclass
 class TuyaBLEButtonMapping:
+    """Model a DP, description and default values"""
+
     dp_id: int
     description: ButtonEntityDescription
     force_add: bool = True
@@ -46,6 +48,8 @@ def is_fingerbot_in_push_mode(self: TuyaBLEButton, product: TuyaBLEProductInfo) 
 
 @dataclass
 class TuyaBLEFingerbotModeMapping(TuyaBLEButtonMapping):
+    """Describes availability of a given button"""
+
     description: ButtonEntityDescription = field(
         default_factory=lambda: ButtonEntityDescription(
             key="push",
@@ -55,7 +59,21 @@ class TuyaBLEFingerbotModeMapping(TuyaBLEButtonMapping):
 
 
 @dataclass
+class TuyaBLELockMapping(TuyaBLEButtonMapping):
+    """Describes availability of a given button"""
+
+    description: ButtonEntityDescription = field(
+        default_factory=lambda: ButtonEntityDescription(
+            key="push",
+        )
+    )
+    is_available: TuyaBLEButtonIsAvailable = 0
+
+
+@dataclass
 class TuyaBLECategoryButtonMapping:
+    """Describes a dict of products and their mappings"""
+
     products: dict[str, list[TuyaBLEButtonMapping]] | None = None
     mapping: list[TuyaBLEButtonMapping] | None = None
 
@@ -124,9 +142,10 @@ mapping: dict[str, TuyaBLECategoryButtonMapping] = {
         products={
             "xicdxood": [  # Raycube K7 Pro+
                 TuyaBLEButtonMapping(
-                    dp_id=71,  # On click it opens the lock, just like connecting via Smart Life App and holding the center button
+                    dp_id=71,  # On click it opens the lock, just like connecting via Smart Life App
+                    # and holding the center button
                     description=ButtonEntityDescription(
-                        key="ble_unlock_check",
+                        key="bluetooth_unlock",
                         icon="mdi:lock-open-variant-outline",
                     ),
                 ),
@@ -191,7 +210,11 @@ class TuyaBLEButton(TuyaBLEEntity, ButtonEntity):
             False,
         )
         if datapoint:
-            self._hass.create_task(datapoint.set_value(not bool(datapoint.value)))
+            if self._product.lock:
+                # Lock needs true to activate lock/unlock commands
+                self._hass.create_task(datapoint.set_value(True))
+            else:
+                self._hass.create_task(datapoint.set_value(not bool(datapoint.value)))
 
     @property
     def available(self) -> bool:

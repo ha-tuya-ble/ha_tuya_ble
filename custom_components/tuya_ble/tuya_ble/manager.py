@@ -2,10 +2,13 @@ from __future__ import annotations
 
 from abc import ABC, abstractmethod
 from dataclasses import dataclass
+from typing import List
 
 
 @dataclass
 class TuyaBLEDeviceCredentials:
+    """Model of credentials"""
+
     uuid: str
     local_key: str
     device_id: str

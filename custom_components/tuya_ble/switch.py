@@ -37,6 +37,8 @@ TuyaBLESwitchSetter = Callable[["TuyaBLESwitch", TuyaBLEProductInfo, bool], None
 
 @dataclass
 class TuyaBLESwitchMapping:
+    """Model a DP, description and default values"""
+
     dp_id: int
     description: SwitchEntityDescription
     force_add: bool = True
@@ -84,7 +86,7 @@ def get_fingerbot_program_repeat_forever(
     result: bool | None = None
     if product.fingerbot and product.fingerbot.program:
         datapoint = self._device.datapoints[product.fingerbot.program]
-        if datapoint and type(datapoint.value) is bytes:
+        if datapoint and isinstance(datapoint.value, bytes):
             repeat_count = int.from_bytes(datapoint.value[0:2], "big")
             result = repeat_count == 0xFFFF
     return result
@@ -95,7 +97,7 @@ def set_fingerbot_program_repeat_forever(
 ) -> None:
     if product.fingerbot and product.fingerbot.program:
         datapoint = self._device.datapoints[product.fingerbot.program]
-        if datapoint and type(datapoint.value) is bytes:
+        if datapoint and isinstance(datapoint.value, bytes):
             new_value = (
                 int.to_bytes(0xFFFF if value else 1, 2, "big") + datapoint.value[2:]
             )
@@ -146,11 +148,30 @@ class TuyaBLEReversePositionsMapping(TuyaBLESwitchMapping):
 
 @dataclass
 class TuyaBLECategorySwitchMapping:
+    """Models a dict of products and their mappings"""
+
     products: dict[str, list[TuyaBLESwitchMapping]] | None = None
     mapping: list[TuyaBLESwitchMapping] | None = None
 
 
 mapping: dict[str, TuyaBLECategorySwitchMapping] = {
+    "sfkzq": TuyaBLECategorySwitchMapping(
+        products={
+            "0axr5s0b": [  # Valve Controller
+                TuyaBLESwitchMapping(
+                    dp_id=1,
+                    description=SwitchEntityDescription(
+                        key="water_valve",
+                        entity_registry_enabled_default=True,
+                    ),
+                ),
+            ],
+            "nxquc5lb": [  # Smart water timer - SOP10
+                TuyaBLEWaterValveSwitchMapping(dp_id=1),
+                TuyaBLEWaterValveWeatherSwitchMapping(dp_id=14),
+            ],
+        },
+    ),
     "co2bj": TuyaBLECategorySwitchMapping(
         products={
             "59s19z5m": [  # CO2 Detector
@@ -188,7 +209,7 @@ mapping: dict[str, TuyaBLECategorySwitchMapping] = {
     "ms": TuyaBLECategorySwitchMapping(
         products={
             **dict.fromkeys(
-                ["ludzroix", "isk2p555"],  # Smart Lock
+                ["ludzroix", "isk2p555", "gumrixyt"],  # Smart Lock
                 [
                     TuyaBLESwitchMapping(
                         dp_id=47,
@@ -328,6 +349,7 @@ mapping: dict[str, TuyaBLECategorySwitchMapping] = {
                 [
                     "drlajpqc",
                     "nhj2j7su",
+                    "zmachryv",
                 ],  # Thermostatic Radiator Valve
                 [
                     TuyaBLESwitchMapping(
@@ -399,7 +421,7 @@ mapping: dict[str, TuyaBLECategorySwitchMapping] = {
     ),
     "ggq": TuyaBLECategorySwitchMapping(
         products={
-            "6pahkcau": [  # Irrigation computer
+            "6pahkcau": [  # Irrigation computer PARKSIDE PPB A1
                 TuyaBLESwitchMapping(
                     dp_id=1,
                     description=SwitchEntityDescription(
@@ -420,6 +442,7 @@ mapping: dict[str, TuyaBLECategorySwitchMapping] = {
                         dp_id=105,
                         description=SwitchEntityDescription(
                             key="water_valve_z1",
+                            name="CH1 Valve",
                             entity_registry_enabled_default=True,
                         ),
                     ),
@@ -427,6 +450,7 @@ mapping: dict[str, TuyaBLECategorySwitchMapping] = {
                         dp_id=104,
                         description=SwitchEntityDescription(
                             key="water_valve_z2",
+                            name="CH2 Valve",
                             entity_registry_enabled_default=True,
                         ),
                     ),
@@ -434,53 +458,11 @@ mapping: dict[str, TuyaBLECategorySwitchMapping] = {
             ),
         },
     ),
-    "sfkzq": TuyaBLECategorySwitchMapping(
-        products={
-            "0axr5s0b": [  # Valve Controller
-                TuyaBLESwitchMapping(
-                    dp_id=1,
-                    description=SwitchEntityDescription(
-                        key="water_valve",
-                        entity_registry_enabled_default=True,
-                    ),
-                ),
-            ],
-            "nxquc5lb": [  # Smart water timer - SOP10
-                TuyaBLEWaterValveSwitchMapping(dp_id=1),
-                TuyaBLEWaterValveWeatherSwitchMapping(dp_id=14),
-            ],
-        },
-    ),
-    "sfkzq": TuyaBLECategorySwitchMapping(
-        products={
-            "nxquc5lb": [  # Smart water timer - SOP10
-                TuyaBLESwitchMapping(
-                    dp_id=1,
-                    description=SwitchEntityDescription(
-                        key="water_valve",
-                        entity_registry_enabled_default=True,
-                    ),
-                ),
-            ],
-        },
-    ),
-    "sfkzq": TuyaBLECategorySwitchMapping(
-        products={
-            "nxquc5lb": [  # Smart water timer - SOP10
-                TuyaBLESwitchMapping(
-                    dp_id=1,
-                    description=SwitchEntityDescription(
-                        key="water_valve",
-                        entity_registry_enabled_default=True,
-                    ),
-                ),
-            ],
-        },
-    ),
 }
 
 
 def get_mapping_by_device(device: TuyaBLEDevice) -> list[TuyaBLECategorySwitchMapping]:
+    """Lookup mapping for a given device"""
     category = mapping.get(device.category)
     if category is not None and category.products is not None:
         product_mapping = category.products.get(device.product_id)

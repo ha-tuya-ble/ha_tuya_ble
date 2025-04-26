@@ -107,3 +107,47 @@ As a result, the following are available.
 
 - Connection to the device is postponed now. Previously some out of range device might prevents HA from fully booting.
 - Improved connection stability.
+
+
+## [0.2.0] - 2024-03-21
+
+### Added
+
+- Add sfkzq/nxquc5lb device
+
+### Changed
+
+- Update readme (forked from)
+
+### Fixed
+
+- fix: Compatibility with HA 2024.1
+- Fix deprecated
+
+## [0.2.1] - 2025-03-26
+
+### Added
+
+- Add ggq/hfgdqhho device
+
+### Fixed
+
+- fix: Compatibility with HA 2025.3
+- Fix deprecated
+
+## [0.2.2] - 2025-04-16
+
+### Fixed
+
+- Fix deprecated with Home assistant 2025.4.2
+
+### Update
+
+- Update README about device support
+
+## [0.2.3] - 2025-04-25
+
+### Added
+
+- Add ggq/fnlw6npo device
+- Add jtmspro/ebd5e0uauqx0vfsp device

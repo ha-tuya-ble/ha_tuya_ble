@@ -24,7 +24,7 @@
           "password": "[%key:common::config_flow::data::password%]",
           "username": "Account"
         },
-        "description": "Tuya BLE requires obtaining encryption key from Tuya cloud. Almost all devices only need to access the cloud once during setup.\n\nRefer to documentation of Tuya integration to retrive the cloud credentials https://www.home-assistant.io/integrations/tuya/\n\nEnter your Tuya credentials."
+        "description": "Tuya BLE requires obtaining encryption key from Tuya cloud. Almost all devices only need to access the cloud once during setup.\n\nRefer to documentation of Tuya integration to retrieve the cloud credentials https://www.home-assistant.io/integrations/tuya/\n\nEnter your Tuya credentials."
       }
     }
   },
@@ -33,7 +33,7 @@
       "push": {
         "name": "Push"
       },
-      "ble_unlock_check": {
+      "bluetooth_unlock": {
         "name": "Unlock"
       }
     },
@@ -68,7 +68,6 @@
       "countdown_duration": {
         "name": "Irrigation duration"
       },
-
       "countdown_duration_z1": {
         "name": "Irrigation duration - Zone 1"
       },
@@ -117,6 +116,9 @@
     "binary_sensor": {
       "low_battery": {
         "name": "[%key:component::sensor::entity_component::battery::name%]"
+      },
+      "lock_motor_state": {
+          "name": "Motor State"
       }
     },
     "sensor": {
@@ -199,6 +201,12 @@
       },
       "unlock_password": {
         "name": "Last used Password"
+      },
+      "use_time": {
+        "name": "Accumulated use time"
+      },
+      "use_time_one": {
+      "name": "Last irrigation time"
       }
     },
     "switch": {
@@ -255,7 +263,10 @@
       },
       "water_valve_z2": {
           "name": "Irrigation valve - Zone 2"
-      }	  
+      },
+      "weather_switch": {
+          "name": "Weather switch"
+      } 
     },
     "text": {
       "program": {
@@ -278,7 +289,7 @@
           "password": "[%key:common::config_flow::data::password%]",
           "username": "Account"
         },
-        "description": "Refer to documentation of Tuya integration to retrive the cloud credentials https://www.home-assistant.io/integrations/tuya/\n\nEnter your Tuya credentials."
+        "description": "Refer to documentation of Tuya integration to retrieve the cloud credentials https://www.home-assistant.io/integrations/tuya/\n\nEnter your Tuya credentials."
       }
     }
   }

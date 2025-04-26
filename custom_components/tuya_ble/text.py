@@ -41,6 +41,7 @@ def is_fingerbot_in_program_mode(
     self: TuyaBLEText,
     product: TuyaBLEProductInfo,
 ) -> bool:
+    """Determines if in program mode"""
     result: bool = True
     if product.fingerbot:
         datapoint = self._device.datapoints[product.fingerbot.mode]
@@ -56,15 +57,14 @@ def get_fingerbot_program(
     result: float | None = None
     if product.fingerbot and product.fingerbot.program:
         datapoint = self._device.datapoints[product.fingerbot.program]
-        if datapoint and type(datapoint.value) is bytes:
+        if datapoint and isinstance(datapoint.value, bytes):
             result = ""
             step_count: int = datapoint.value[3]
             for step in range(step_count):
                 step_pos = 4 + step * 3
                 step_data = datapoint.value[step_pos : step_pos + 3]
                 position, delay = unpack(">BH", step_data)
-                if delay > 9999:
-                    delay = 9999
+                delay = min(delay, 9999)
                 result += (
                     (";" if step > 0 else "")
                     + str(position)
@@ -80,7 +80,7 @@ def set_fingerbot_program(
 ) -> None:
     if product.fingerbot and product.fingerbot.program:
         datapoint = self._device.datapoints[product.fingerbot.program]
-        if datapoint and type(datapoint.value) is bytes:
+        if datapoint and isinstance(datapoint.value, bytes):
             new_value = bytearray(datapoint.value[0:3])
             steps = value.split(";")
             new_value += int.to_bytes(len(steps), 1, "big")
@@ -94,6 +94,8 @@ def set_fingerbot_program(
 
 @dataclass
 class TuyaBLETextMapping:
+    """Model a DP, description and default values"""
+
     dp_id: int
     description: TextEntityDescription
     force_add: bool = True
@@ -106,6 +108,8 @@ class TuyaBLETextMapping:
 
 @dataclass
 class TuyaBLECategoryTextMapping:
+    """Models a dict of products and their mappings"""
+
     products: dict[str, list[TuyaBLETextMapping]] | None = None
     mapping: list[TuyaBLETextMapping] | None = None
 
@@ -142,7 +146,7 @@ mapping: dict[str, TuyaBLECategoryTextMapping] = {
     "kg": TuyaBLECategoryTextMapping(
         products={
             **dict.fromkeys(
-                ["mknd4lci", "riecov42"],  # Fingerbot Plus
+                ["mknd4lci", "riecov42", "bs3ubslo"],  # Fingerbot Plus
                 [
                     TuyaBLETextMapping(
                         dp_id=109,
@@ -160,31 +164,11 @@ mapping: dict[str, TuyaBLECategoryTextMapping] = {
             ),
         },
     ),
-    "kg": TuyaBLECategoryTextMapping(
-        products={
-            **dict.fromkeys(
-                ["mknd4lci", "riecov42", "bs3ubslo"],  # Fingerbot Plus
-                [
-                    TuyaBLETextMapping(
-                        dp_id=109,
-                        description=TextEntityDescription(
-                            key="program",
-                            icon="mdi:repeat",
-                            pattern="^((\d{1,2}|100)(\/\d{1,2})?)(;((\d{1,2}|100)(\/\d{1,2})?))+$",
-                            entity_category=EntityCategory.CONFIG,
-                        ),
-                        is_available=is_fingerbot_in_program_mode,
-                        getter=get_fingerbot_program,
-                        setter=set_fingerbot_program,
-                    ),
-                ],
-            ),
-        },
-    ),
 }
 
 
 def get_mapping_by_device(device: TuyaBLEDevice) -> list[TuyaBLETextMapping]:
+    """Lookup mapping for a given device"""
     category = mapping.get(device.category)
     if category is not None and category.products is not None:
         product_mapping = category.products.get(device.product_id)

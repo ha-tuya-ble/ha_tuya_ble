@@ -4,7 +4,6 @@ from __future__ import annotations
 from dataclasses import dataclass
 
 from enum import StrEnum
-
 from tuya_iot import TuyaCloudOpenAPIEndpoint
 from typing_extensions import Final
 
@@ -42,6 +41,14 @@ TUYA_DOMAIN: Final = "tuya"
 
 TUYA_SMART_APP: Final = "tuyaSmart"
 SMARTLIFE_APP: Final = "smartlife"
+
+CONF_AUTH_TYPE = "auth_type"
+CONF_PROJECT_TYPE = "tuya_project_type"
+CONF_ENDPOINT = "endpoint"
+CONF_ACCESS_ID = "access_id"
+CONF_ACCESS_SECRET = "access_secret"
+SMARTLIFE_APP = "smartlife"
+TUYA_SMART_APP = "tuyaSmart"
 
 TUYA_API_DEVICES_URL: Final = "/v1.0/users/%s/devices"
 TUYA_API_FACTORY_INFO_URL: Final = "/v1.0/iot-03/devices/factory-infos?device_ids=%s"

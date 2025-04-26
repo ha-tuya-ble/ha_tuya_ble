@@ -6,7 +6,7 @@ import hashlib
 import logging
 import secrets
 import time
-from collections.abc import Callable
+from collections.abc import Callable, Hashable
 from struct import pack, unpack
 from dataclasses import dataclass
 from typing import Any
@@ -56,23 +56,11 @@ from .exceptions import (
 )
 from .manager import AbstaractTuyaBLEDeviceManager, TuyaBLEDeviceCredentials
 
+
 _LOGGER = logging.getLogger(__name__)
 
 
 BLEAK_EXCEPTIONS = (*BLEAK_RETRY_EXCEPTIONS, OSError)
-
-
-# @dataclass
-class TuyaBLEEntityDescription:
-    # Added to info that we get from the cloud
-    function: list[dict[str, dict]] | None = None
-    status_range: list[dict[str, dict]] | None = None
-
-    # Replace the values that we got from the cloud
-    values_overrides: dict[str, dict] | None = None
-
-    # Values if nothing was set from the cloud
-    values_defaults: dict[str, dict] | None = None
 
 
 # @dataclass
@@ -162,9 +150,6 @@ class TuyaBLEDataPoint:
     def changed_by_device(self) -> bool:
         return self._changed_by_device
 
-    def __repr__(self):
-        return f"{{id:{self.id} type:{self.type} value:{self.value}}}"
-
     def __str__(self):
         return f"{self}"
 
@@ -191,6 +176,8 @@ class TuyaBLEDataPoint:
 
 
 class TuyaBLEDataPoints:
+    """Models DPs"""
+
     def __init__(self, owner: TuyaBLEDevice) -> None:
         self._owner = owner
         self._datapoints: dict[int, TuyaBLEDataPoint] = {}
@@ -209,6 +196,7 @@ class TuyaBLEDataPoints:
 
     @property
     def last_data_received(self) -> datetime | None:
+        """Last data received"""
         return self._last_data_received
 
     def has_id(self, id: int, type: TuyaBLEDataPointType | None = None) -> bool:
@@ -222,6 +210,7 @@ class TuyaBLEDataPoints:
         type: TuyaBLEDataPointType,
         value: bytes | bool | int | str | None = None,
     ) -> TuyaBLEDataPoint:
+        """Lazy loaded datapoint"""
         datapoint = self._datapoints.get(id)
         if datapoint:
             return datapoint
@@ -270,21 +259,8 @@ global_connect_lock = asyncio.Lock()
 
 @dataclass
 class TuyaBLEDeviceFunction:
-    code: str
-    dp_id: int
-    type: DPType
-    values: str | dict | list | None
+    """Models a code, DP and values"""
 
-    def __setattr__(self, name: str, value: str | dict | list | None):
-        if name == "values":
-            # string values are JSON representations of the actual values
-            if isinstance(value, str) and (v := json.loads(value)):
-                value = v
-        super().__setattr__(name, value)
-
-
-@dataclass
-class TuyaBLEDeviceFunction:
     code: str
     dp_id: int
     type: DPType
@@ -299,6 +275,8 @@ class TuyaBLEDeviceFunction:
 
 
 class TuyaBLEDevice:
+    """Abstract model of a device"""
+
     def __init__(
         self,
         device_manager: AbstaractTuyaBLEDeviceManager,
@@ -487,6 +465,7 @@ class TuyaBLEDevice:
 
     @property
     def uuid(self) -> str:
+        """UUID"""
         if self._device_info is not None:
             return self._device_info.uuid
 
@@ -494,6 +473,7 @@ class TuyaBLEDevice:
 
     @property
     def local_key(self) -> str:
+        """Local key"""
         if self._device_info is not None:
             return self._device_info.local_key
 
@@ -515,6 +495,7 @@ class TuyaBLEDevice:
 
     @property
     def product_id(self) -> str:
+        """Product ID"""
         if self._device_info is not None:
             return self._device_info.product_id
 
@@ -522,6 +503,7 @@ class TuyaBLEDevice:
 
     @property
     def product_model(self) -> str:
+        """Produce model"""
         if self._device_info is not None:
             return self._device_info.product_model
 
@@ -533,14 +515,6 @@ class TuyaBLEDevice:
             return self._device_info.product_name
 
         return ""
-
-    @property
-    def function(self) -> dict(str, dict):
-        return self._function
-
-    @property
-    def status_range(self) -> dict(str, dict):
-        return self._status_range
 
     @property
     def function(self) -> dict(str, dict):
@@ -585,6 +559,7 @@ class TuyaBLEDevice:
         return result
 
     def datapoint_log_payload(self) -> dict[Hashable, Any]:
+        """Creates a dict of printable values"""
         item = {}
         for key, value in self.datapoints.__dict__().items():
             if isinstance(value, TuyaBLEDataPoint):
@@ -596,6 +571,7 @@ class TuyaBLEDevice:
 
     @property
     def last_data_received(self) -> datetime | None:
+        """Last data received"""
         return self._datapoints.last_data_received
 
     def get_or_create_datapoint(
@@ -669,13 +645,13 @@ class TuyaBLEDevice:
         """Disconnected callback."""
         was_paired = self._is_paired
         self._is_paired = False
-        self._fire_disconnected_callbacks()
         if self._expected_disconnect:
             _LOGGER.debug(
                 "%s: Disconnected from device; RSSI: %s",
                 self.address,
                 self.rssi,
             )
+            self._fire_disconnected_callbacks()
             return
         self._client = None
         _LOGGER.warning(
@@ -683,13 +659,12 @@ class TuyaBLEDevice:
             self.address,
             self.rssi,
         )
-        if was_paired:
-            _LOGGER.debug(
-                "%s: Scheduling reconnect; RSSI: %s",
-                self.address,
-                self.rssi,
-            )
-            asyncio.create_task(self._reconnect())
+        _LOGGER.debug(
+            "%s: Scheduling reconnect; RSSI: %s",
+            self.address,
+            self.rssi,
+        )
+        asyncio.create_task(self._reconnect())
 
     def _disconnect(self) -> None:
         """Disconnect from device."""

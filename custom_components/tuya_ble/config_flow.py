@@ -20,20 +20,12 @@ from homeassistant.components.bluetooth import (
 )
 from homeassistant.const import (
     CONF_ADDRESS,
-    CONF_DEVICE_ID,
     CONF_COUNTRY_CODE,
     CONF_PASSWORD,
     CONF_USERNAME,
 )
 from homeassistant.core import callback
 from homeassistant.data_entry_flow import FlowHandler, FlowResult
-
-from homeassistant.components.tuya.const import (
-    CONF_COUNTRY_CODE,
-    CONF_PASSWORD,
-    CONF_USERNAME,
-)
-
 
 from .tuya_ble import SERVICE_UUID, TuyaBLEDeviceCredentials
 
