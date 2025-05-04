@@ -105,7 +105,7 @@ mapping: dict[str, TuyaBLECategoryClimateMapping] = {
                     # - [ ] 121 - Historical data (Month-motor opening degree)
                     # - [ ] 122 - Historical data (Year-motor opening degree)
                     # - [ ] 123 - Programming data (Monday)
-                    # - [ ] 124 - Programming data (Tuseday)
+                    # - [ ] 124 - Programming data (Tuesday)
                     # - [ ] 125 - Programming data (Wednesday)
                     # - [ ] 126 - Programming data (Thursday)
                     # - [ ] 127 - Programming data (Friday)
