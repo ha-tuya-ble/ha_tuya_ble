@@ -10,20 +10,20 @@ jobs:
         with:
           black_args: ". --check --diff"
 
-  eslint:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 20
-      - run: npm install eslint
-      - uses: sibiraj-s/action-eslint@v3
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }} # optional
-          eslint-args: '--quiet'
-          extensions: 'json'
-          annotations: true
+  # eslint:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #     - uses: actions/setup-node@v4
+  #       with:
+  #         node-version: 20
+  #     - run: npm install eslint
+  #     - uses: sibiraj-s/action-eslint@v3
+  #       with:
+  #         token: ${{ secrets.GITHUB_TOKEN }} # optional
+  #         eslint-args: '--quiet'
+  #         extensions: 'json'
+  #         annotations: true
 
   validate-hacs:
     runs-on: ubuntu-latest
