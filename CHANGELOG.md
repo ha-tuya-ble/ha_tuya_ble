@@ -144,3 +144,10 @@ As a result, the following are available.
 ### Update
 
 - Update README about device support
+
+## [0.2.3] - 2025-04-25
+
+### Added
+
+- Add ggq/fnlw6npo device
+- Add jtmspro/ebd5e0uauqx0vfsp device
