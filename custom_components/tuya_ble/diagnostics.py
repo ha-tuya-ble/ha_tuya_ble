@@ -5,6 +5,7 @@ from homeassistant.components.diagnostics import async_redact_data
 TO_REDACT = {
     "username",
     "password",
+    "local_key",
     "api_key",
     "token",
     "host",
