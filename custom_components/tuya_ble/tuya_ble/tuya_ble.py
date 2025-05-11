@@ -645,13 +645,13 @@ class TuyaBLEDevice:
         """Disconnected callback."""
         was_paired = self._is_paired
         self._is_paired = False
+        self._fire_disconnected_callbacks()
         if self._expected_disconnect:
             _LOGGER.debug(
                 "%s: Disconnected from device; RSSI: %s",
                 self.address,
                 self.rssi,
             )
-            self._fire_disconnected_callbacks()
             return
         self._client = None
         _LOGGER.warning(
