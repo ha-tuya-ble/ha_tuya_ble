@@ -12,6 +12,7 @@ TO_REDACT = {
     "mac",
 }
 
+
 async def async_get_config_entry_diagnostics(hass: HomeAssistant, entry):
     data = {
         "entry": entry.as_dict(),
@@ -19,6 +20,7 @@ async def async_get_config_entry_diagnostics(hass: HomeAssistant, entry):
         "options": entry.options,
     }
     return async_redact_data(data, TO_REDACT)
+
 
 async def async_get_device_diagnostics(hass: HomeAssistant, entry, device):
     # Optional: if your integration uses devices (via the device registry)
