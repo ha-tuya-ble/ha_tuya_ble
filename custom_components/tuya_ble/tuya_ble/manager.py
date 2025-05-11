@@ -34,7 +34,7 @@ class TuyaBLEDeviceCredentials:
             "status_range: %s"
         ) % (
             self.uuid,
-            f'{"x" * 14}{self.local_key[14:]}',  # Mask the majority of the local key
+            f'{"x" * 10}{self.local_key[10:]}',  # Mask the majority of the local key
             self.device_id,
             self.category,
             self.product_id,
