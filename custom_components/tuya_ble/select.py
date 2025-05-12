@@ -105,33 +105,39 @@ class TuyaBLECategorySelectMapping:
     products: dict[str, list[TuyaBLESelectMapping]] | None = None
     mapping: list[TuyaBLESelectMapping] | None = None
 
-
 mapping: dict[str, TuyaBLECategorySelectMapping] = {
     "sfkzq": TuyaBLECategorySelectMapping(
         products={
-            "0axr5s0b": [  # Valve Controller
-                TuyaBLESelectMapping(
-                    dp_id=10,
-                    description=SelectEntityDescription(
-                        key="weather_delay",
-                        options=[
-                            "cancel",
-                            "24h",
-                            "48h",
-                            "72h",
-                        ],
-                        entity_category=EntityCategory.CONFIG,
+            **dict.fromkeys(
+                [
+                    "46zia2nz",
+                    "1fcnd8xk",
+                    "0axr5s0b"
+                 ],
+                [
+	            TuyaBLESelectMapping(
+	                dp_id=10,
+	                description=SelectEntityDescription(
+	                    key="weather_delay",
+	                    options=[
+	                        "cancel",
+	                        "24h",
+	                        "48h",
+	                        "72h",
+	                    ],
+    	                    entity_category=EntityCategory.CONFIG,
+                	),
                     ),
-                ),
-                TuyaBLESelectMapping(
-                    dp_id=12,
-                    description=SelectEntityDescription(
-                        key="work_state",
-                        options=["auto", "manual", "idle"],
-                        entity_category=EntityCategory.CONFIG,
+                    TuyaBLESelectMapping(
+                        dp_id=12,
+                        description=SelectEntityDescription(
+                            key="work_state",
+                            options=["auto", "manual", "idle"],
+                            entity_category=EntityCategory.CONFIG,
+                        ),
                     ),
-                ),
-            ],
+                ]
+            ),
             "nxquc5lb": [  # Smart water timer - SOP10
                 TuyaBLEWeatherDelayMapping(dp_id=10),
                 TuyaBLESmartWeatherMapping(dp_id=13),
@@ -230,7 +236,6 @@ mapping: dict[str, TuyaBLECategorySelectMapping] = {
                     "neq16kgd",
                     "6jcvqwh0",
                     "riecov42",
-                    "h8kdwywx",
                 ],  # Fingerbot Plus
                 [
                     TuyaBLEFingerbotModeMapping(dp_id=8),

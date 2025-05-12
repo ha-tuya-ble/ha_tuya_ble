@@ -408,7 +408,6 @@ devices_database: dict[str, TuyaBLECategoryInfo] = {
                     "neq16kgd",
                     "6jcvqwh0",
                     "riecov42",
-                    "h8kdwywx",
                 ],  # device product_ids
                 TuyaBLEProductInfo(
                     name="Fingerbot Plus",
@@ -523,15 +522,22 @@ devices_database: dict[str, TuyaBLECategoryInfo] = {
             "0axr5s0b": TuyaBLEProductInfo(  # device product_id
                 name="Valve controller",
             ),
-            "nxquc5lb": TuyaBLEProductInfo(
-                name="Water valve controller",
-                watervalve=TuyaBLEWaterValveInfo(
-                    switch=1,
-                    countdown=8,
-                    weather_delay=10,
-                    smart_weather=13,
-                    use_time=9,
-                ),
+            **dict.fromkeys(
+                [
+                    "nxquc5lb",
+                    "46zia2nz",
+                    "1fcnd8xk",
+                ],  
+                TuyaBLEProductInfo(
+                    name="Water valve controller",
+                    watervalve=TuyaBLEWaterValveInfo(
+                    	switch=1,
+                    	countdown=8,
+                    	weather_delay=10,
+                    	smart_weather=13,
+                    	use_time=9,
+		    ),
+		),
             ),
         },
     ),

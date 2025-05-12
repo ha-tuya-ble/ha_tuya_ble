@@ -284,7 +284,6 @@ mapping: dict[str, TuyaBLECategorySensorMapping] = {
                     "neq16kgd",
                     "6jcvqwh0",
                     "riecov42",
-                    "h8kdwywx",
                 ],  # Fingerbot Plus
                 [
                     TuyaBLEBatteryMapping(dp_id=12),
@@ -587,28 +586,31 @@ mapping: dict[str, TuyaBLECategorySensorMapping] = {
                     ),
                 ),
             ],
-            "nxquc5lb": [  # Smart water timer - SOP10
-                TuyaBLEBatteryMapping(dp_id=7),
-                TuyaBLEWorkStateMapping(dp_id=12),
-                TuyaBLESensorMapping(
-                    dp_id=15,
-                    description=SensorEntityDescription(
-                        key="use_time_one",
-                        device_class=SensorDeviceClass.DURATION,
-                        native_unit_of_measurement=UnitOfTime.SECONDS,
-                        state_class=SensorStateClass.MEASUREMENT,
+            **dict.fromkeys(
+		[ "46zia2nz" , "1fcnd8xk", "nxquc5lb"],
+		[
+                    TuyaBLEBatteryMapping(dp_id=7),
+                    TuyaBLEWorkStateMapping(dp_id=12),
+                    TuyaBLESensorMapping(
+                        dp_id=15,
+                        description=SensorEntityDescription(
+                            key="use_time_one",
+                            device_class=SensorDeviceClass.DURATION,
+                            native_unit_of_measurement=UnitOfTime.SECONDS,
+                            state_class=SensorStateClass.MEASUREMENT,
+                        ),
                     ),
-                ),
-                TuyaBLESensorMapping(
-                    dp_id=9,
-                    description=SensorEntityDescription(
-                        key="use_time",
-                        device_class=SensorDeviceClass.DURATION,
-                        native_unit_of_measurement=UnitOfTime.SECONDS,
-                        state_class=SensorStateClass.MEASUREMENT,
+                    TuyaBLESensorMapping(
+                        dp_id=9,
+                        description=SensorEntityDescription(
+                            key="use_time",
+                            device_class=SensorDeviceClass.DURATION,
+                            native_unit_of_measurement=UnitOfTime.SECONDS,
+                            state_class=SensorStateClass.MEASUREMENT,
+                        ),
                     ),
-                ),
-            ],
+                ],
+            ),
         },
     ),
     "cl": TuyaBLECategorySensorMapping(

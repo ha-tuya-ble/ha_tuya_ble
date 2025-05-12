@@ -276,7 +276,6 @@ mapping: dict[str, TuyaBLECategoryNumberMapping] = {
                     "neq16kgd",
                     "6jcvqwh0",
                     "riecov42",
-                    "h8kdwywx",
                 ],  # Fingerbot Plus
                 [
                     TuyaBLENumberMapping(
@@ -541,19 +540,22 @@ mapping: dict[str, TuyaBLECategoryNumberMapping] = {
     ),
     "sfkzq": TuyaBLECategoryNumberMapping(
         products={
-            "0axr5s0b": [  # Valve Controller
-                TuyaBLENumberMapping(
-                    dp_id=11,
-                    description=NumberEntityDescription(
-                        key="countdown_duration",
-                        icon="mdi:timer",
-                        native_max_value=86400,
-                        native_min_value=1,
-                        native_unit_of_measurement=UnitOfTime.SECONDS,
-                        native_step=1,
-                    ),
-                ),
-            ],
+            **dict.fromkeys(
+		["46zia2nz" , "1fcnd8xk","0axr5s0b"],
+		[
+		    TuyaBLENumberMapping(
+		        dp_id=11,
+		        description=NumberEntityDescription(
+		            key="countdown_duration",
+		            icon="mdi:timer",
+		            native_max_value=86400,
+		            native_min_value=1,
+		            native_unit_of_measurement=UnitOfTime.SECONDS,
+		            native_step=1,
+		            ),
+		        ),
+		    ],
+            ),
             "nxquc5lb": [  # Smart water timer - SOP10
                 TuyaBLENumberMapping(
                     dp_id=11,
