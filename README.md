@@ -66,7 +66,10 @@ The integration works locally, but connection to Tuya BLE device requires device
 
 * Water valve controller (category_id 'sfkzq')
   + Water valve controller (product_id 'nxquc5lb')
-
+  + NOUS L11 Bluetooth Smart Garden Water Timer (product_id '46zia2nz')
+  + WT-03W Diivoo Smart Water Timer for Garden Hose (product_id '1fcnd8xk')
+  
+  
 * Lights
   + Most BLE light products should be supported as the Light class tries to get device description from the cloud when there are added but only Strip Lights (category_id 'dd') Magiacous RGB light bar (product_id 'nvfrtxlq') has has been tested
     

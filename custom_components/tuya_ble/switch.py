@@ -157,18 +157,18 @@ class TuyaBLECategorySwitchMapping:
 mapping: dict[str, TuyaBLECategorySwitchMapping] = {
     "sfkzq": TuyaBLECategorySwitchMapping(
         products={
-           **dict.fromkeys( 
-	      [ "0axr5s0b", "46zia2nz", "1fcnd8xk"],
-	      [	
-                TuyaBLESwitchMapping(
-                    dp_id=1,
-                    description=SwitchEntityDescription(
-                        key="water_valve",
-                        entity_registry_enabled_default=True,
-	                ),
-	            ),
-	        ],
-  	    ),	
+            **dict.fromkeys(
+                ["0axr5s0b", "46zia2nz", "1fcnd8xk"],
+                [
+                    TuyaBLESwitchMapping(
+                        dp_id=1,
+                        description=SwitchEntityDescription(
+                            key="water_valve",
+                            entity_registry_enabled_default=True,
+                        ),
+                    ),
+                ],
+            ),
             "nxquc5lb": [  # Smart water timer - SOP10
                 TuyaBLEWaterValveSwitchMapping(dp_id=1),
                 TuyaBLEWaterValveWeatherSwitchMapping(dp_id=14),

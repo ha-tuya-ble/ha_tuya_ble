@@ -105,28 +105,25 @@ class TuyaBLECategorySelectMapping:
     products: dict[str, list[TuyaBLESelectMapping]] | None = None
     mapping: list[TuyaBLESelectMapping] | None = None
 
+
 mapping: dict[str, TuyaBLECategorySelectMapping] = {
     "sfkzq": TuyaBLECategorySelectMapping(
         products={
             **dict.fromkeys(
+                ["46zia2nz", "1fcnd8xk", "0axr5s0b"],
                 [
-                    "46zia2nz",
-                    "1fcnd8xk",
-                    "0axr5s0b"
-                 ],
-                [
-	            TuyaBLESelectMapping(
-	                dp_id=10,
-	                description=SelectEntityDescription(
-	                    key="weather_delay",
-	                    options=[
-	                        "cancel",
-	                        "24h",
-	                        "48h",
-	                        "72h",
-	                    ],
-    	                    entity_category=EntityCategory.CONFIG,
-                	),
+                    TuyaBLESelectMapping(
+                        dp_id=10,
+                        description=SelectEntityDescription(
+                            key="weather_delay",
+                            options=[
+                                "cancel",
+                                "24h",
+                                "48h",
+                                "72h",
+                            ],
+                            entity_category=EntityCategory.CONFIG,
+                        ),
                     ),
                     TuyaBLESelectMapping(
                         dp_id=12,
@@ -136,7 +133,7 @@ mapping: dict[str, TuyaBLECategorySelectMapping] = {
                             entity_category=EntityCategory.CONFIG,
                         ),
                     ),
-                ]
+                ],
             ),
             "nxquc5lb": [  # Smart water timer - SOP10
                 TuyaBLEWeatherDelayMapping(dp_id=10),
