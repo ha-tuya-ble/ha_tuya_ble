@@ -98,6 +98,7 @@ mapping: dict[str, TuyaBLECategoryBinarySensorMapping] = {
 
 
 def get_mapping_by_device(device: TuyaBLEDevice) -> list[TuyaBLEBinarySensorMapping]:
+    """For a given device, find the right product or category mapping."""
     category = mapping.get(device.category)
     if category is not None and category.products is not None:
         product_mapping = category.products.get(device.product_id)
