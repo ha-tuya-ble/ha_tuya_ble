@@ -316,7 +316,7 @@ mapping: dict[str, TuyaBLECategorySwitchMapping] = {
     "kg": TuyaBLECategorySwitchMapping(
         products={
             **dict.fromkeys(
-                ["mknd4lci", "riecov42", "bs3ubslo"],  # Fingerbot Plus
+                ["mknd4lci", "6jcvqwh0", "riecov42", "bs3ubslo"],  # Fingerbot Plus
                 [
                     TuyaBLEFingerbotSwitchMapping(dp_id=1),
                     TuyaBLEReversePositionsMapping(dp_id=104),
