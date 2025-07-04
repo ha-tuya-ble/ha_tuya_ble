@@ -255,7 +255,7 @@ mapping: dict[str, TuyaBLECategorySelectMapping] = {
         products={
             **dict.fromkeys(
                 ["3yqdo5yt", "xhf790if"],  # CubeTouch 1s and II
-            [
+                [
                     TuyaBLEFingerbotModeMapping(dp_id=2),
                 ],
             ),
@@ -269,7 +269,7 @@ mapping: dict[str, TuyaBLECategorySelectMapping] = {
                     "riecov42",
                     "h8kdwywx",
                 ],  # Fingerbot Plus
-            [
+                [
                     TuyaBLEFingerbotModeMapping(dp_id=8),
                 ],
             ),
@@ -370,8 +370,7 @@ mapping: dict[str, TuyaBLECategorySelectMapping] = {
 
 def get_mapping_by_device(device: TuyaBLEDevice) -> list[TuyaBLECategorySelectMapping]:
     category = mapping.get(device.category)
-    if category:
-        if category is not None and category.products is not None:
+    if category is not None and category.products is not None:
         product_mapping = category.products.get(device.product_id)
         if product_mapping is not None:
             return product_mapping
