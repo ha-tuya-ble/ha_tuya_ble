@@ -681,19 +681,88 @@ mapping: dict[str, TuyaBLECategoryNumberMapping] = {
     ),
 }
 
-def get_mapping_by_device(device: TuyaBLEDevice) -> list[TuyaBLENumberMapping]:
-    """Get the number mapping for a device."""
+def get_mapping_by_device(device: TuyaBLEDevice) -> list[TuyaBLECategoryNumberMapping]:
     category = mapping.get(device.category)
-    if category:
-        if category.products:
-            product_mapping = category.products.get(device.product_id)
-            if product_mapping:
-                return product_mapping
-        if category.mapping:
+    if category is not None and category.products is not None:
+        product_mapping = category.products.get(device.product_id)
+        if product_mapping is not None:
+            return product_mapping
+        if category.mapping is not None:
             return category.mapping
+
     return []
+
 
 class TuyaBLENumber(TuyaBLEEntity, NumberEntity):
     """Representation of a Tuya BLE Number."""
 
     def __init__(
+        self,
+        hass: HomeAssistant,
+        coordinator: DataUpdateCoordinator,
+        device: TuyaBLEDevice,
+        product: TuyaBLEProductInfo,
+        mapping: TuyaBLENumberMapping,
+    ) -> None:
+        super().__init__(hass, coordinator, device, product, mapping.description)
+        self._mapping = mapping
+        self._attr_mode = mapping.mode
+
+    @property
+    def native_value(self) -> float | None:
+        """Return the entity value to represent the entity state."""
+        if self._mapping.getter:
+            return self._mapping.getter(self, self._product)
+
+        datapoint = self._device.datapoints[self._mapping.dp_id]
+        if datapoint:
+            return datapoint.value / self._mapping.coefficient
+
+        return self._mapping.description.native_min_value
+
+    def set_native_value(self, value: float) -> None:
+        """Set new value."""
+        if self._mapping.setter:
+            self._mapping.setter(self, self._product, value)
+            return
+        int_value = int(value * self._mapping.coefficient)
+        datapoint = self._device.datapoints.get_or_create(
+            self._mapping.dp_id,
+            TuyaBLEDataPointType.DT_VALUE,
+            int(int_value),
+        )
+        if datapoint:
+            self._hass.create_task(datapoint.set_value(int_value))
+
+    @property
+    def available(self) -> bool:
+        """Return if entity is available."""
+        result = super().available
+        if result and self._mapping.is_available:
+            result = self._mapping.is_available(self, self._product)
+        return result
+
+
+async def async_setup_entry(
+    hass: HomeAssistant,
+    entry: ConfigEntry,
+    async_add_entities: AddEntitiesCallback,
+) -> None:
+    """Set up the Tuya BLE sensors."""
+    data: TuyaBLEData = hass.data[DOMAIN][entry.entry_id]
+    mappings = get_mapping_by_device(data.device)
+    entities: list[TuyaBLENumber] = []
+    for mapping in mappings:
+        if mapping.force_add or data.device.datapoints.has_id(
+            mapping.dp_id, mapping.dp_type
+        ):
+            entities.append(
+                TuyaBLENumber(
+                    hass,
+                    data.coordinator,
+                    data.device,
+                    data.product,
+                    mapping,
+                )
+            )
+    async_add_entities(entities)
