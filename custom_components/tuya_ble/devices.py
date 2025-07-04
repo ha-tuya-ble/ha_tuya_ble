@@ -370,26 +370,30 @@ devices_database: dict[str, TuyaBLECategoryInfo] = {
     "dcb": TuyaBLECategoryInfo(
         products={
             **dict.fromkeys(
-                [
-                    "z5ztlw3k",
-                ],
-                    TuyaBLEProductInfo(  # device product_id
+                ["z5ztlw3k"],
+                TuyaBLEProductInfo(  # device product_id
                     name="PARKSIDE Smart battery 4Ah",
+                ),
+            ),
+            **dict.fromkeys(
+                ["ajrhf1aj"],
+                TuyaBLEProductInfo(  # device product_id
+                    name="PARKSIDE Smart battery 8Ah",
                 ),
             ),
         },
     ),
-    "dcb": TuyaBLECategoryInfo(
+    "jtmspro": TuyaBLECategoryInfo(
         products={
-            **dict.fromkeys(
-                [
-                    "ajrhf1aj",
-                ],
-                    TuyaBLEProductInfo(  # device product_id
-                    name="PARKSIDE Smart battery 8Ah",
-                ),
-                                                                        
-                                     
+            "xicdxood": TuyaBLEProductInfo(  # device product_id
+                name="Raycube K7 Pro+",
+            ),
+            "ebd5e0uauqx0vfsp": TuyaBLEProductInfo(  # device product_id
+                name="CentralAcesso",
+            ),
+            "okkyfgfs": TuyaBLEProductInfo(
+                name="TEKXDD Fingerprint Smart Lock",
+                lock=1,
             ),
         },
     ),

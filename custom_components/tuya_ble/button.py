@@ -1,4 +1,5 @@
 """The Tuya BLE integration."""
+
 from __future__ import annotations
 
 from dataclasses import dataclass, field
@@ -26,7 +27,7 @@ TuyaBLEButtonIsAvailable = Callable[["TuyaBLEButton", TuyaBLEProductInfo], bool]
 
 @dataclass
 class TuyaBLEButtonMapping:
-    """Model a DP for a button entity."""
+    """Model a DP, description and default values"""
     dp_id: int
     description: ButtonEntityDescription
     force_add: bool = True
@@ -53,15 +54,29 @@ class TuyaBLEFingerbotModeMapping(TuyaBLEButtonMapping):
     is_available: TuyaBLEButtonIsAvailable = is_fingerbot_in_push_mode
 
 @dataclass
+class TuyaBLELockMapping(TuyaBLEButtonMapping):
+    """Describes availability of a given button"""
+
+    description: ButtonEntityDescription = field(
+        default_factory=lambda: ButtonEntityDescription(
+            key="push",
+        )
+    )
+    is_available: TuyaBLEButtonIsAvailable = 0
+
+
+@dataclass
 class TuyaBLECategoryButtonMapping:
-    """Models a dict of products and their mappings."""
+    """Describes a dict of products and their mappings"""
     products: dict[str, list[TuyaBLEButtonMapping]] | None = None
     mapping: list[TuyaBLEButtonMapping] | None = None
 
 mapping: dict[str, TuyaBLECategoryButtonMapping] = {
     "dcb": TuyaBLECategoryButtonMapping(
         products={
-            "ajrhf1aj": [ # PARKSIDE Smart battery 8Ah
+            **dict.fromkeys(
+                ["ajrhf1aj", "z5ztlw3k"], # PARKSIDE Smart battery
+            ): [
                 TuyaBLEButtonMapping(
                     dp_id=115,
                     description=ButtonEntityDescription(
@@ -94,12 +109,16 @@ mapping: dict[str, TuyaBLECategoryButtonMapping] = {
                 [
                     "blliqpsj",
                     "ndvkgsrm",
+                    "riecov42",
                     "yiihr7zh",
-                    "neq16kgd"
-                ], # Fingerbot Plus
-            ): [
-                TuyaBLEFingerbotModeMapping(dp_id=2),
-            ],
+                    "neq16kgd",
+                    "6jcvqwh0",
+                    "h8kdwywx",
+                ],  # Fingerbot Plus
+                [
+                    TuyaBLEFingerbotModeMapping(dp_id=2),
+                ],
+            ),
             **dict.fromkeys(
                 [
                     "ltak7e1p",
@@ -115,6 +134,16 @@ mapping: dict[str, TuyaBLECategoryButtonMapping] = {
             ],
         },
     ),
+    "kg": TuyaBLECategoryButtonMapping(
+        products={
+            **dict.fromkeys(
+                ["mknd4lci", "riecov42", "bs3ubslo"],  # Fingerbot Plus
+                [
+                    TuyaBLEFingerbotModeMapping(dp_id=108),
+                ],
+            ),
+        },
+    ),
     "znhsb": TuyaBLECategoryButtonMapping(
         products={
             "cdlandip": [ # Smart water bottle
@@ -126,6 +155,41 @@ mapping: dict[str, TuyaBLECategoryButtonMapping] = {
                 ),
             ],
         },
+    ),
+    "jtmspro": TuyaBLECategoryButtonMapping(
+        products={
+            "xicdxood": [  # Raycube K7 Pro+
+                TuyaBLEButtonMapping(
+                    dp_id=71,  # On click it opens the lock, just like connecting via Smart Life App
+                    # and holding the center button
+                    description=ButtonEntityDescription(
+                        key="bluetooth_unlock",
+                        icon="mdi:lock-open-variant-outline",
+                    ),
+                ),
+            ],
+        },
+    ),
+    "ms": TuyaBLECategoryButtonMapping(
+        products={
+            **dict.fromkeys(
+                ["okkyfgfs"],  # Smart Lock
+                [
+                    TuyaBLEButtonMapping(
+                        dp_id=6,
+                        description=ButtonEntityDescription(
+                            key="bluetooth_unlock",
+                        ),
+                    ),
+                    # TuyaBLEButtonMapping(
+                    #    dp_id=12,
+                    #    description=ButtonEntityDescription(
+                    #        key="unlock_fingerprint",
+                    #    ),
+                    # ),
+                ],
+            ),
+        }
     ),
 }
 
@@ -171,11 +235,11 @@ class TuyaBLEButton(TuyaBLEEntity, ButtonEntity):
             value,
         )
         if datapoint:
-            if dp_type == TuyaBLEDataPointType.DT_BOOL:
-                # Toggle for boolean buttons
-                await datapoint.set_value(not bool(datapoint.value))
+            if self._product.lock:
+                # Lock needs true to activate lock/unlock commands
+                self._hass.create_task(datapoint.set_value(True))
             else:
-                await datapoint.set_value(value)
+                self._hass.create_task(datapoint.set_value(not bool(datapoint.value)))
 
     @property
     def available(self) -> bool:

@@ -1,10 +1,10 @@
 """The Tuya BLE integration."""
+
 from __future__ import annotations
 
 from dataclasses import dataclass
 
 import logging
-from typing import Callable
 
 from homeassistant.components.climate import (
     ClimateEntityDescription,
@@ -32,6 +32,8 @@ _LOGGER = logging.getLogger(__name__)
 
 @dataclass
 class TuyaBLEClimateMapping:
+    """Model a DP, description and default values"""
+
     description: ClimateEntityDescription
 
     hvac_mode_dp_id: int = 0
@@ -70,60 +72,61 @@ mapping: dict[str, TuyaBLECategoryClimateMapping] = {
         products={
             **dict.fromkeys(
                 [
-                "drlajpqc", 
-                "nhj2j7su",
+                    "drlajpqc",
+                    "nhj2j7su",
+                    "zmachryv",
                 ],  # Thermostatic Radiator Valve
                 [
-                # Thermostatic Radiator Valve
-                # - [x] 8   - Window
-                # - [x] 10  - Antifreeze
-                # - [x] 27  - Calibration
-                # - [x] 40  - Lock
-                # - [x] 101 - Switch
-                # - [x] 102 - Current
-                # - [x] 103 - Target
-                # - [ ] 104 - Heating time
-                # - [x] 105 - Battery power alarm
-                # - [x] 106 - Away
-                # - [x] 107 - Programming mode
-                # - [x] 108 - Programming switch
-                # - [ ] 109 - Programming data (deprecated - do not delete)
-                # - [ ] 110 - Historical data protocol (Day-Target temperature)
-                # - [ ] 111 - System Time Synchronization
-                # - [ ] 112 - Historical data (Week-Target temperature)
-                # - [ ] 113 - Historical data (Month-Target temperature)
-                # - [ ] 114 - Historical data (Year-Target temperature)
-                # - [ ] 115 - Historical data (Day-Current temperature)
-                # - [ ] 116 - Historical data (Week-Current temperature)
-                # - [ ] 117 - Historical data (Month-Current temperature)
-                # - [ ] 118 - Historical data (Year-Current temperature)
-                # - [ ] 119 - Historical data (Day-motor opening degree)
-                # - [ ] 120 - Historical data (Week-motor opening degree)
-                # - [ ] 121 - Historical data (Month-motor opening degree)
-                # - [ ] 122 - Historical data (Year-motor opening degree)
-                # - [ ] 123 - Programming data (Monday)
-                # - [ ] 124 - Programming data (Tuseday)
-                # - [ ] 125 - Programming data (Wednesday)
-                # - [ ] 126 - Programming data (Thursday)
-                # - [ ] 127 - Programming data (Friday)
-                # - [ ] 128 - Programming data (Saturday)
-                # - [ ] 129 - Programming data (Sunday)
-                # - [x] 130 - Water scale
-                TuyaBLEClimateMapping(
-                    description=ClimateEntityDescription(
-                        key="thermostatic_radiator_valve",
-                    ),
-                    hvac_switch_dp_id=101,
-                    hvac_switch_mode=HVACMode.HEAT,
-                    hvac_modes=[HVACMode.OFF, HVACMode.HEAT],
-                    preset_mode_dp_ids={PRESET_AWAY: 106, PRESET_NONE: 106},
-                    current_temperature_dp_id=102,
-                    current_temperature_coefficient=10.0,
-                    target_temperature_coefficient=10.0,
-                    target_temperature_step=0.5,
-                    target_temperature_dp_id=103,
-                    target_temperature_min=5.0,
-                    target_temperature_max=30.0,
+                    # Thermostatic Radiator Valve
+                    # - [x] 8   - Window
+                    # - [x] 10  - Antifreeze
+                    # - [x] 27  - Calibration
+                    # - [x] 40  - Lock
+                    # - [x] 101 - Switch
+                    # - [x] 102 - Current
+                    # - [x] 103 - Target
+                    # - [ ] 104 - Heating time
+                    # - [x] 105 - Battery power alarm
+                    # - [x] 106 - Away
+                    # - [x] 107 - Programming mode
+                    # - [x] 108 - Programming switch
+                    # - [ ] 109 - Programming data (deprecated - do not delete)
+                    # - [ ] 110 - Historical data protocol (Day-Target temperature)
+                    # - [ ] 111 - System Time Synchronization
+                    # - [ ] 112 - Historical data (Week-Target temperature)
+                    # - [ ] 113 - Historical data (Month-Target temperature)
+                    # - [ ] 114 - Historical data (Year-Target temperature)
+                    # - [ ] 115 - Historical data (Day-Current temperature)
+                    # - [ ] 116 - Historical data (Week-Current temperature)
+                    # - [ ] 117 - Historical data (Month-Current temperature)
+                    # - [ ] 118 - Historical data (Year-Current temperature)
+                    # - [ ] 119 - Historical data (Day-motor opening degree)
+                    # - [ ] 120 - Historical data (Week-motor opening degree)
+                    # - [ ] 121 - Historical data (Month-motor opening degree)
+                    # - [ ] 122 - Historical data (Year-motor opening degree)
+                    # - [ ] 123 - Programming data (Monday)
+                    # - [ ] 124 - Programming data (Tuseday)
+                    # - [ ] 125 - Programming data (Wednesday)
+                    # - [ ] 126 - Programming data (Thursday)
+                    # - [ ] 127 - Programming data (Friday)
+                    # - [ ] 128 - Programming data (Saturday)
+                    # - [ ] 129 - Programming data (Sunday)
+                    # - [x] 130 - Water scale
+                    TuyaBLEClimateMapping(
+                        description=ClimateEntityDescription(
+                            key="thermostatic_radiator_valve",
+                        ),
+                        hvac_switch_dp_id=101,
+                        hvac_switch_mode=HVACMode.HEAT,
+                        hvac_modes=[HVACMode.OFF, HVACMode.HEAT],
+                        preset_mode_dp_ids={PRESET_AWAY: 106, PRESET_NONE: 106},
+                        current_temperature_dp_id=102,  # Merge conflict: current_temperature_dp_id=3 for zmachryv?
+                        current_temperature_coefficient=10.0,
+                        target_temperature_coefficient=10.0,
+                        target_temperature_step=0.5,
+                        target_temperature_dp_id=103,  # Merge conflict: current_temperature_dp_id=2 for zmachryv?
+                        target_temperature_min=5.0,
+                        target_temperature_max=30.0,
                     ),
                 ],
             ),
@@ -140,10 +143,8 @@ def get_mapping_by_device(device: TuyaBLEDevice) -> list[TuyaBLECategoryClimateM
             return product_mapping
         if category.mapping is not None:
             return category.mapping
-        else:
-            return []
-    else:
-        return []
+
+    return []
 
 
 class TuyaBLEClimate(TuyaBLEEntity, ClimateEntity):
@@ -199,7 +200,7 @@ class TuyaBLEClimate(TuyaBLEEntity, ClimateEntity):
             datapoint = self._device.datapoints[self._mapping.target_temperature_dp_id]
             if datapoint:
                 self._attr_target_temperature = (
-                    datapoint.value / self._mapping.target_temperature_coefficient
+                    datapoint.value * self._mapping.target_temperature_step
                 )
 
         if self._mapping.current_humidity_dp_id != 0:
@@ -257,9 +258,8 @@ class TuyaBLEClimate(TuyaBLEEntity, ClimateEntity):
     async def async_set_temperature(self, **kwargs) -> None:
         """Set new target temperature."""
         if self._mapping.target_temperature_dp_id != 0:
-            int_value = int(
-                kwargs["temperature"] * self._mapping.target_temperature_coefficient
-            )
+            int_value = int(kwargs["temperature"] * 2)
+            _LOGGER.error(int_value)
             datapoint = self._device.datapoints.get_or_create(
                 self._mapping.target_temperature_dp_id,
                 TuyaBLEDataPointType.DT_VALUE,

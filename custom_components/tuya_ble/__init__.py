@@ -1,4 +1,5 @@
 """The Tuya BLE integration."""
+
 from __future__ import annotations
 
 import logging
@@ -24,9 +25,11 @@ PLATFORMS: list[Platform] = [
     Platform.NUMBER,
     Platform.SENSOR,
     Platform.BINARY_SENSOR,
+    Platform.LIGHT,
     Platform.SELECT,
     Platform.SWITCH,
     Platform.TEXT,
+    Platform.COVER,
 ]
 
 _LOGGER = logging.getLogger(__name__)
@@ -49,14 +52,14 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
 
     coordinator = TuyaBLECoordinator(hass, device)
 
-    '''
+    """
     try:
         await device.update()
     except BLEAK_EXCEPTIONS as ex:
         raise ConfigEntryNotReady(
             f"Could not communicate with Tuya BLE device with address {address}"
         ) from ex
-    '''
+    """
     hass.add_job(device.update())
 
     @callback

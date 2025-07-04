@@ -5,6 +5,28 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog],
 and this project adheres to [Semantic Versioning].
 
+## [0.3.0] - 2025-04-01
+
+Integrate multiple community maintained forks (#1)
+As a result, the following are available.
+
+- Add 'mknd4lci'
+- Add 'riecov42'
+- Add 'jtmspro'
+- Add 'hfgdqhho'
+- Add 'fnlw6npo'
+- Add 'qycalacn'
+- Add 'jjqi2syk'
+- Add '4pbr8eig'
+- Add 'sfkzq'
+- Add 'nxquc5lb'
+- Add Lights support
+
+
+## [0.2.0] - 2025-02-01
+
+- Add support for kg family and model bs3ubslo
+
 ## [0.1.0] - 2023-04-22
 
 - Initial release
@@ -85,3 +107,47 @@ and this project adheres to [Semantic Versioning].
 
 - Connection to the device is postponed now. Previously some out of range device might prevents HA from fully booting.
 - Improved connection stability.
+
+
+## [0.2.0] - 2024-03-21
+
+### Added
+
+- Add sfkzq/nxquc5lb device
+
+### Changed
+
+- Update readme (forked from)
+
+### Fixed
+
+- fix: Compatibility with HA 2024.1
+- Fix deprecated
+
+## [0.2.1] - 2025-03-26
+
+### Added
+
+- Add ggq/hfgdqhho device
+
+### Fixed
+
+- fix: Compatibility with HA 2025.3
+- Fix deprecated
+
+## [0.2.2] - 2025-04-16
+
+### Fixed
+
+- Fix deprecated with Home assistant 2025.4.2
+
+### Update
+
+- Update README about device support
+
+## [0.2.3] - 2025-04-25
+
+### Added
+
+- Add ggq/fnlw6npo device
+- Add jtmspro/ebd5e0uauqx0vfsp device

@@ -24,7 +24,7 @@
                     "password": "Password",
                     "username": "Account"
                 },
-                "description": "Tuya BLE requires obtaining encryption key from Tuya cloud. Almost all devices only need to access the cloud once during setup.\n\nRefer to documentation of Tuya integration to retrive the cloud credentials https://www.home-assistant.io/integrations/tuya/\n\nEnter your Tuya credentials."
+                "description": "Tuya BLE requires obtaining encryption key from Tuya cloud. Almost all devices only need to access the cloud once during setup.\n\nRefer to documentation of Tuya integration to retrieve the cloud credentials https://www.home-assistant.io/integrations/tuya/\n\nEnter your Tuya credentials."
             }
         }
     },
@@ -32,11 +32,20 @@
         "binary_sensor": {
             "low_battery": {
                 "name": "Battery"
+            },
+            "lock_motor_state": {
+                "name": "Motor State"
             }
         },
         "button": {
             "push": {
                 "name": "Push"
+            },
+            "ble_unlock_check": {
+                "name": "Unlock"
+            },
+            "bluetooth_unlock": {
+                "name": "Unlock"
             }
         },
         "number": {
@@ -54,6 +63,9 @@
             },
             "countdown_duration_z2": {
                 "name": "Irrigation duration - Zone 2"
+            },
+            "countdown": {
+                "name": "Irrigation duration"
             },
             "down_position": {
                 "name": "Down position"
@@ -75,11 +87,17 @@
             },
             "up_position": {
                 "name": "Up position"
+            },
+            "ble_unlock_check": {
+                "name": "Unlock"
             }
         },
         "select": {
             "beep_volume": {
                 "name": "Lock Volume"
+            },
+            "language": {
+                "name": "Lock Language"
             },
             "fingerbot_mode": {
                 "name": "Mode",
@@ -88,6 +106,12 @@
                     "push": "Push",
                     "switch": "Switch"
                 }
+            },
+            "weather_delay": {
+                "name": "Weather delay"
+            },
+            "smart_weather": {
+                "name": "Smart weather"
             },
             "reminder_mode": {
                 "name": "Reminder mode",
@@ -142,6 +166,9 @@
             "moisture": {
                 "name": "Moisture"
             },
+            "work_state": {
+                "name": "Work state"
+            },
             "residual_electricity": {
                 "name": "Battery"
             },
@@ -160,6 +187,12 @@
             "use_time_z2": {
                 "name": "Last irrigation time - Zone 2"
             },
+            "use_time": {
+                "name": "Accumulated use time"
+            },
+            "use_time_one": {
+                "name": "Last irrigation time"
+            },
             "water_intake": {
                 "name": "Water intake"
             },
@@ -168,6 +201,15 @@
             },
             "wrong_password": {
                 "name": "Wrong Password"
+            },
+            "unlock_fingerprint": {
+                "name": "Last used Fingerprint"
+            },
+            "unlock_card": {
+                "name": "Last used Card"
+            },
+            "unlock_password": {
+                "name": "Last used Password"
             }
         },
         "switch": {
@@ -222,6 +264,9 @@
             "water_valve_z2": {
                 "name": "Irrigation valve - Zone 2"
             },
+            "weather_switch": {
+                "name": "Weather switch"
+            },
             "window_check": {
                 "name": "Window Check"
             }
@@ -247,8 +292,9 @@
                     "password": "Password",
                     "username": "Account"
                 },
-                "description": "Refer to documentation of Tuya integration to retrive the cloud credentials https://www.home-assistant.io/integrations/tuya/\n\nEnter your Tuya credentials."
+                "description": "Refer to documentation of Tuya integration to retrieve the cloud credentials https://www.home-assistant.io/integrations/tuya/\n\nEnter your Tuya credentials."
             }
         }
     }
 }
+

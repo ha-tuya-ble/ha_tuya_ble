@@ -35,18 +35,22 @@ class TuyaBLEBinarySensorMapping:
     force_add: bool = True
     dp_type: TuyaBLEDataPointType | None = None
     getter: Callable[[TuyaBLEBinarySensor], None] | None = None
+    # coefficient: float = 1.0
+    # icons: list[str] | None = None
     is_available: TuyaBLEBinarySensorIsAvailable = None
 
 @dataclass
 class TuyaBLECategoryBinarySensorMapping:
-    """Models a dict of products and their mappings."""
+    """Maps between a dict of products and the sensors"""
     products: dict[str, list[TuyaBLEBinarySensorMapping]] | None = None
     mapping: list[TuyaBLEBinarySensorMapping] | None = None
 
 mapping: dict[str, TuyaBLECategoryBinarySensorMapping] = {
     "dcb": TuyaBLECategoryBinarySensorMapping(
         products={
-            "ajrhf1aj": [ # PARKSIDE Smart battery 8Ah
+            **dict.fromkeys(
+                ["ajrhf1aj", "z5ztlw3k"], # PARKSIDE Smart battery
+            ): [
                 TuyaBLEBinarySensorMapping(
                     dp_id=171,
                     description=BinarySensorEntityDescription(
@@ -59,17 +63,40 @@ mapping: dict[str, TuyaBLECategoryBinarySensorMapping] = {
     ),
     "wk": TuyaBLECategoryBinarySensorMapping(
         products={
-            "drlajpqc": [ # Thermostatic Radiator Valve
-                TuyaBLEBinarySensorMapping(
-                    dp_id=105,
-                    description=BinarySensorEntityDescription(
-                        key="battery",
-                        device_class=BinarySensorDeviceClass.BATTERY,
-                        entity_category=EntityCategory.DIAGNOSTIC,
-                    ),
-                ),
-            ],
+            **dict.fromkeys(
+                [
+                    "drlajpqc",
+                    "nhj2j7su",
+                    "zmachryv",
+                ],
+                [  # Thermostatic Radiator Valve
+                    TuyaBLEBinarySensorMapping(
+                        dp_id=105,
+                        description=BinarySensorEntityDescription(
+                            key="battery",
+                            # icon="mdi:battery-alert",
+                            device_class=BinarySensorDeviceClass.BATTERY,
+                            entity_category=EntityCategory.DIAGNOSTIC,
+                        ),
+                    )
+                ],
+            ),
         },
+    ),
+    "ms": TuyaBLECategoryBinarySensorMapping(
+        products={
+            **dict.fromkeys(
+                ["okkyfgfs"],  # Smart Lock
+                [
+                    TuyaBLEBinarySensorMapping(
+                        dp_id=47,
+                        description=BinarySensorEntityDescription(
+                            key="lock_motor_state",
+                        ),
+                    ),
+                ],
+            ),
+        }
     ),
 }
 
@@ -83,6 +110,7 @@ def get_mapping_by_device(device: TuyaBLEDevice) -> list[TuyaBLEBinarySensorMapp
                 return product_mapping
         if category.mapping:
             return category.mapping
+
     return []
 
 class TuyaBLEBinarySensor(TuyaBLEEntity, BinarySensorEntity):
@@ -109,6 +137,29 @@ class TuyaBLEBinarySensor(TuyaBLEEntity, BinarySensorEntity):
             datapoint = self._device.datapoints.get(self._mapping.dp_id)
             if datapoint:
                 self._attr_is_on = bool(datapoint.value)
+                """
+                if datapoint.type == TuyaBLEDataPointType.DT_ENUM:
+                    if self.entity_description.options is not None:
+                        if datapoint.value >= 0 and datapoint.value < len(
+                            self.entity_description.options
+                        ):
+                            self._attr_native_value = self.entity_description.options[
+                                datapoint.value
+                            ]
+                        else:
+                            self._attr_native_value = datapoint.value
+                    if self._mapping.icons is not None:
+                        if datapoint.value >= 0 and datapoint.value < len(
+                            self._mapping.icons
+                        ):
+                            self._attr_icon = self._mapping.icons[datapoint.value]
+                elif datapoint.type == TuyaBLEDataPointType.DT_VALUE:
+                    self._attr_native_value = (
+                        datapoint.value / self._mapping.coefficient
+                    )
+                else:
+                    self._attr_native_value = datapoint.value
+                """
         self.async_write_ha_state()
 
     @property
