@@ -255,9 +255,10 @@ mapping: dict[str, TuyaBLECategorySelectMapping] = {
         products={
             **dict.fromkeys(
                 ["3yqdo5yt", "xhf790if"],  # CubeTouch 1s and II
-            ): [
-                TuyaBLEFingerbotModeMapping(dp_id=2),
-            ],
+            [
+                    TuyaBLEFingerbotModeMapping(dp_id=2),
+                ],
+            ),
             **dict.fromkeys(
                 [
                     "blliqpsj",
@@ -268,9 +269,10 @@ mapping: dict[str, TuyaBLECategorySelectMapping] = {
                     "riecov42",
                     "h8kdwywx",
                 ],  # Fingerbot Plus
-            ): [
-                TuyaBLEFingerbotModeMapping(dp_id=8),
-            ],
+            [
+                    TuyaBLEFingerbotModeMapping(dp_id=8),
+                ],
+            ),
             **dict.fromkeys(
                 [
                     "ltak7e1p",
@@ -354,9 +356,9 @@ mapping: dict[str, TuyaBLECategorySelectMapping] = {
                     description=SelectEntityDescription(
                         key="reminder_mode",
                         options=[
+                            "alarm_reminder",
                             "interval_reminder",
                             "schedule_reminder",
-                            "alarm_reminder",
                         ],
                         entity_category=EntityCategory.CONFIG,
                     ),
@@ -369,11 +371,11 @@ mapping: dict[str, TuyaBLECategorySelectMapping] = {
 def get_mapping_by_device(device: TuyaBLEDevice) -> list[TuyaBLECategorySelectMapping]:
     category = mapping.get(device.category)
     if category:
-        if category.products:
-            product_mapping = category.products.get(device.product_id)
-            if product_mapping:
-                return product_mapping
-        if category.mapping:
+        if category is not None and category.products is not None:
+        product_mapping = category.products.get(device.product_id)
+        if product_mapping is not None:
+            return product_mapping
+        if category.mapping is not None:
             return category.mapping
     return []
 
