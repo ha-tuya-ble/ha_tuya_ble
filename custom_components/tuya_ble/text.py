@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
+
 import logging
 from struct import pack, unpack
 from typing import Callable
@@ -54,7 +55,7 @@ def get_fingerbot_program(
     product: TuyaBLEProductInfo,
 ) -> str | None:
     """Get the fingerbot's program from its raw value."""
-    result: str | None = None
+    result: float | None = None
     if product.fingerbot and product.fingerbot.program:
         datapoint = self._device.datapoints[product.fingerbot.program]
         if datapoint and isinstance(datapoint.value, bytes):
@@ -103,13 +104,14 @@ class TuyaBLETextMapping:
     dp_type: TuyaBLEDataPointType | None = None
     default_value: str | None = None
     is_available: TuyaBLETextIsAvailable = None
-    getter: TuyaBLETextGetter = None
-    setter: TuyaBLETextSetter = None
+    getter: Callable[[TuyaBLEText], None] | None = None
+    setter: Callable[[TuyaBLEText], None] | None = None
 
 
 @dataclass
 class TuyaBLECategoryTextMapping:
     """Models a dict of products and their mappings"""
+
     products: dict[str, list[TuyaBLETextMapping]] | None = None
     mapping: list[TuyaBLETextMapping] | None = None
 
@@ -127,35 +129,39 @@ mapping: dict[str, TuyaBLECategoryTextMapping] = {
                     "riecov42",
                     "h8kdwywx",
                 ],  # Fingerbot Plus
-            ): [
-                TuyaBLETextMapping(
-                    dp_id=121,
-                    description=TextEntityDescription(
-                        key="program",
-                        icon="mdi:repeat",
-                        pattern="^((\d{1,2}|100)(\/\d{1,2})?)(;((\d{1,2}|100)(\/\d{1,2})?))+$",
-                        entity_category=EntityCategory.CONFIG,
+                [
+                    TuyaBLETextMapping(
+                        dp_id=121,
+                        description=TextEntityDescription(
+                            key="program",
+                            icon="mdi:repeat",
+                            pattern="^((\d{1,2}|100)(\/\d{1,2})?)(;((\d{1,2}|100)(\/\d{1,2})?))+$",
+                            entity_category=EntityCategory.CONFIG,
+                        ),
+                        is_available=is_fingerbot_in_program_mode,
+                        getter=get_fingerbot_program,
+                        setter=set_fingerbot_program,
                     ),
-                    is_available=is_fingerbot_in_program_mode,
-                    getter=get_fingerbot_program,
-                    setter=set_fingerbot_program,
-                ),
-            ],
+                ],
+            ),
         },
     ),
     "dcb": TuyaBLECategoryTextMapping(
         products={
-            "ajrhf1aj": [  # PARKSIDE Smart battery 8Ah
-                TuyaBLETextMapping(
-                    dp_id=106,
-                    description=TextEntityDescription(
-                        key="battery_pin",
-                        icon="mdi:key-variant",
-                        entity_category=EntityCategory.CONFIG,
+            **dict.fromkeys(
+                ["ajrhf1aj", "z5ztlw3k"],  # PARKSIDE Smart battery
+                [  
+                    TuyaBLETextMapping(
+                        dp_id=106,
+                        description=TextEntityDescription(
+                            key="battery_pin",
+                            icon="mdi:key-variant",
+                            entity_category=EntityCategory.CONFIG,
+                        ),
+                        dp_type=TuyaBLEDataPointType.DT_STRING,
                     ),
-                    dp_type=TuyaBLEDataPointType.DT_STRING,
-                ),
-            ],
+                ],
+            ),
         },
     ),
     "kg": TuyaBLECategoryTextMapping(
@@ -185,12 +191,11 @@ mapping: dict[str, TuyaBLECategoryTextMapping] = {
 def get_mapping_by_device(device: TuyaBLEDevice) -> list[TuyaBLETextMapping]:
     """Get the text mapping for a device."""
     category = mapping.get(device.category)
-    if category:
-        if category.products:
-            product_mapping = category.products.get(device.product_id)
-            if product_mapping:
-                return product_mapping
-        if category.mapping:
+    if category is not None and category.products is not None:
+        product_mapping = category.products.get(device.product_id)
+        if product_mapping is not None:
+            return product_mapping
+        if category.mapping is not None:
             return category.mapping
     return []
 
@@ -213,10 +218,10 @@ class TuyaBLEText(TuyaBLEEntity, TextEntity):
     @property
     def available(self) -> bool:
         """Return if entity is available."""
-        is_available = super().available
-        if is_available and self._mapping.is_available:
-            is_available = self._mapping.is_available(self, self._product)
-        return is_available
+        result = super().available
+        if result and self._mapping.is_available:
+            result = self._mapping.is_available(self, self._product)
+        return result
 
     @property
     def native_value(self) -> str | None:
@@ -224,11 +229,11 @@ class TuyaBLEText(TuyaBLEEntity, TextEntity):
         if self._mapping.getter:
             return self._mapping.getter(self, self._product)
 
-        datapoint = self._device.datapoints.get(self._mapping.dp_id)
+        datapoint = self._device.datapoints[self._mapping.dp_id]
         if datapoint:
             return str(datapoint.value)
         
-        return self._mapping.default_value
+        return self._mapping.description.default_value
 
     def set_value(self, value: str) -> None:
         """Change the value."""
@@ -254,9 +259,9 @@ async def async_setup_entry(
     data: TuyaBLEData = hass.data[DOMAIN][entry.entry_id]
     mappings = get_mapping_by_device(data.device)
     entities: list[TuyaBLEText] = []
-    for entity_mapping in mappings:
-        if entity_mapping.force_add or data.device.datapoints.has_id(
-            entity_mapping.dp_id, entity_mapping.dp_type
+    for mapping in mappings:
+        if mapping.force_add or data.device.datapoints.has_id(
+            mapping.dp_id, mapping.dp_type
         ):
             entities.append(
                 TuyaBLEText(
@@ -264,7 +269,7 @@ async def async_setup_entry(
                     data.coordinator,
                     data.device,
                     data.product,
-                    entity_mapping,
+                    mapping,
                 )
             )
     async_add_entities(entities)
