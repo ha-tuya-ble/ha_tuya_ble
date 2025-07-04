@@ -23,6 +23,8 @@ from .tuya_ble import TuyaBLEDataPointType, TuyaBLEDevice
 
 _LOGGER = logging.getLogger(__name__)
 
+SIGNAL_STRENGTH_DP_ID = -1
+
 TuyaBLEBinarySensorIsAvailable = (
     Callable[["TuyaBLEBinarySensor", TuyaBLEProductInfo], bool] | None
 )
@@ -49,16 +51,20 @@ mapping: dict[str, TuyaBLECategoryBinarySensorMapping] = {
     "dcb": TuyaBLECategoryBinarySensorMapping(
         products={
             **dict.fromkeys(
-                ["ajrhf1aj", "z5ztlw3k"], # PARKSIDE Smart battery
-            ): [
-                TuyaBLEBinarySensorMapping(
-                    dp_id=171,
-                    description=BinarySensorEntityDescription(
-                        key="cw_or_ccw_display",
-                        icon="mdi:rotate-3d-variant",
+                [
+                    "ajrhf1aj", 
+                    "z5ztlw3k",
+                ], # PARKSIDE Smart battery
+                [
+                    TuyaBLEBinarySensorMapping(
+                        dp_id=171,
+                        description=BinarySensorEntityDescription(
+                            key="cw_or_ccw_display",
+                            icon="mdi:rotate-3d-variant",
+                        ),
                     ),
-                ),
-            ],
+                ],
+            ),
         },
     ),
     "wk": TuyaBLECategoryBinarySensorMapping(
@@ -103,12 +109,11 @@ mapping: dict[str, TuyaBLECategoryBinarySensorMapping] = {
 def get_mapping_by_device(device: TuyaBLEDevice) -> list[TuyaBLEBinarySensorMapping]:
     """Get the binary sensor mapping for a device."""
     category = mapping.get(device.category)
-    if category:
-        if category.products:
-            product_mapping = category.products.get(device.product_id)
-            if product_mapping:
-                return product_mapping
-        if category.mapping:
+    if category is not None and category.products is not None:
+        product_mapping = category.products.get(device.product_id)
+        if product_mapping is not None:
+            return product_mapping
+        if category.mapping is not None:
             return category.mapping
 
     return []
@@ -134,7 +139,7 @@ class TuyaBLEBinarySensor(TuyaBLEEntity, BinarySensorEntity):
         if self._mapping.getter is not None:
             self._mapping.getter(self)
         else:
-            datapoint = self._device.datapoints.get(self._mapping.dp_id)
+            datapoint = self._device.datapoints[self._mapping.dp_id]
             if datapoint:
                 self._attr_is_on = bool(datapoint.value)
                 """
@@ -165,10 +170,10 @@ class TuyaBLEBinarySensor(TuyaBLEEntity, BinarySensorEntity):
     @property
     def available(self) -> bool:
         """Return if entity is available."""
-        is_available = super().available
-        if is_available and self._mapping.is_available:
-            is_available = self._mapping.is_available(self, self._product)
-        return is_available
+        result = super().available
+        if result and self._mapping.is_available:
+            result = self._mapping.is_available(self, self._product)
+        return result
 
 async def async_setup_entry(
     hass: HomeAssistant,
@@ -179,9 +184,9 @@ async def async_setup_entry(
     data: TuyaBLEData = hass.data[DOMAIN][entry.entry_id]
     mappings = get_mapping_by_device(data.device)
     entities: list[TuyaBLEBinarySensor] = []
-    for entity_mapping in mappings:
-        if entity_mapping.force_add or data.device.datapoints.has_id(
-            entity_mapping.dp_id, entity_mapping.dp_type
+    for mapping in mappings:
+        if mapping.force_add or data.device.datapoints.has_id(
+            mapping.dp_id, mapping.dp_type
         ):
             entities.append(
                 TuyaBLEBinarySensor(
@@ -189,7 +194,7 @@ async def async_setup_entry(
                     data.coordinator,
                     data.device,
                     data.product,
-                    entity_mapping,
+                    mapping,
                 )
             )
     async_add_entities(entities)
