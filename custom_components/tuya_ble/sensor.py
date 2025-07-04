@@ -195,10 +195,12 @@ mapping: dict[str, TuyaBLECategorySensorMapping] = {
     ),
     "dcb": TuyaBLECategorySensorMapping(
         products={
-            "z5ztlw3k": [  # PARKSIDE Smart battery 4Ah
-                TuyaBLEBatteryMapping(dp_id=16)
-            ],
-            "ajrhf1aj": [  # PARKSIDE Smart battery 8Ah
+            **dict.fromkeys(
+                [
+                    "z5ztlw3k",
+                    "ajrhf1aj",
+                ], # PARKSIDE Smart battery 8Ah
+            ): [  # PARKSIDE Smart battery 8Ah
                 TuyaBLEBatteryMapping(dp_id=16),
                 TuyaBLETemperatureMapping(dp_id=11),
                 TuyaBLESensorMapping(
