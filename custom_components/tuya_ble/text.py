@@ -93,6 +93,17 @@ def set_fingerbot_program(
                 new_value += pack(">BH", position, delay)
             self._hass.create_task(datapoint.set_value(new_value))
 
+def get_dcb_pin_value(
+    self: TuyaBLEText,
+    product: TuyaBLEProductInfo,
+) -> str | None:
+    """Custom getter for DCB devices to correctly handle default values."""
+    dp_id = self._mapping.dp_id
+    if dp_id in self._device.datapoints:
+        datapoint = self._device.datapoints[dp_id]
+        if datapoint and datapoint.value is not None:
+            return str(datapoint.value)
+    return self._mapping.default_value
 
 @dataclass
 class TuyaBLETextMapping:
@@ -159,6 +170,8 @@ mapping: dict[str, TuyaBLECategoryTextMapping] = {
                             entity_category=EntityCategory.CONFIG,
                         ),
                         dp_type=TuyaBLEDataPointType.DT_STRING,
+                        default_value="0000",  # Default PIN
+                        getter=get_dcb_pin_value, # ++ POUŽITIE NOVÉHO GETTERU ++
                     ),
                 ],
             ),
