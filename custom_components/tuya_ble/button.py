@@ -7,9 +7,9 @@ import logging
 from typing import Callable
 
 from homeassistant.components.button import (
+    ButtonEntityDescription,
     ButtonDeviceClass,
     ButtonEntity,
-    ButtonEntityDescription,
 )
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
@@ -38,14 +38,14 @@ def is_fingerbot_in_push_mode(self: TuyaBLEButton, product: TuyaBLEProductInfo) 
     """Check if the fingerbot is in push mode."""
     result: bool = True
     if product.fingerbot:
-        datapoint = self._device.datapoints.get(product.fingerbot.mode)
+        datapoint = self._device.datapoints[product.fingerbot.mode]
         if datapoint:
             result = datapoint.value == 0
     return result
 
 @dataclass
 class TuyaBLEFingerbotModeMapping(TuyaBLEButtonMapping):
-    """A button mapping for a fingerbot."""
+    """Describes availability of a given button"""
     description: ButtonEntityDescription = field(
         default_factory=lambda: ButtonEntityDescription(
             key="push",
@@ -101,10 +101,11 @@ mapping: dict[str, TuyaBLECategoryButtonMapping] = {
     "szjqr": TuyaBLECategoryButtonMapping(
         products={
             **dict.fromkeys(
-                ["3yqdo5yt", "xhf790if"], # CubeTouch 1s and II
-            ): [
-                TuyaBLEFingerbotModeMapping(dp_id=1),
-            ],
+                ["3yqdo5yt", "xhf790if"],  # CubeTouch 1s and II
+                [
+                    TuyaBLEFingerbotModeMapping(dp_id=1),
+                ],
+            ),
             **dict.fromkeys(
                 [
                     "blliqpsj",
@@ -128,10 +129,11 @@ mapping: dict[str, TuyaBLECategoryButtonMapping] = {
                     "bnt7wajf",
                     "rvdceqjh",
                     "5xhbk964",
-                ], # Fingerbot
-            ): [
-                TuyaBLEFingerbotModeMapping(dp_id=2),
-            ],
+                ],  # Fingerbot
+                [
+                    TuyaBLEFingerbotModeMapping(dp_id=2),
+                ],
+            ),
         },
     ),
     "kg": TuyaBLECategoryButtonMapping(
@@ -193,15 +195,14 @@ mapping: dict[str, TuyaBLECategoryButtonMapping] = {
     ),
 }
 
-def get_mapping_by_device(device: TuyaBLEDevice) -> list[TuyaBLEButtonMapping]:
+def get_mapping_by_device(device: TuyaBLEDevice) -> list[TuyaBLECategoryButtonMapping]:
     """Get the button mapping for a device."""
     category = mapping.get(device.category)
-    if category:
-        if category.products:
-            product_mapping = category.products.get(device.product_id)
-            if product_mapping:
-                return product_mapping
-        if category.mapping:
+    if category is not None and category.products is not None:
+        product_mapping = category.products.get(device.product_id)
+        if product_mapping is not None:
+            return product_mapping
+        if category.mapping is not None:
             return category.mapping
     return []
 
@@ -220,19 +221,13 @@ class TuyaBLEButton(TuyaBLEEntity, ButtonEntity):
         super().__init__(hass, coordinator, device, product, mapping.description)
         self._mapping = mapping
 
-    async def async_press(self) -> None:
-        """Handle the button press."""
-        value: bool | bytes = True
-        dp_type = self._mapping.dp_type
-        if dp_type == TuyaBLEDataPointType.DT_RAW:
-            value = b'\x01'
-        elif dp_type is None: # Assume boolean for older configs
-            dp_type = TuyaBLEDataPointType.DT_BOOL
+    def press(self) -> None:
+        """Press the button."""
 
         datapoint = self._device.datapoints.get_or_create(
             self._mapping.dp_id,
-            dp_type,
-            value,
+            TuyaBLEDataPointType.DT_BOOL,
+            False,
         )
         if datapoint:
             if self._product.lock:
@@ -244,10 +239,10 @@ class TuyaBLEButton(TuyaBLEEntity, ButtonEntity):
     @property
     def available(self) -> bool:
         """Return if entity is available."""
-        is_available = super().available
-        if is_available and self._mapping.is_available:
-            is_available = self._mapping.is_available(self, self._product)
-        return is_available
+        result = super().available
+        if result and self._mapping.is_available:
+            result = self._mapping.is_available(self, self._product)
+        return result
 
 async def async_setup_entry(
     hass: HomeAssistant,
@@ -258,9 +253,9 @@ async def async_setup_entry(
     data: TuyaBLEData = hass.data[DOMAIN][entry.entry_id]
     mappings = get_mapping_by_device(data.device)
     entities: list[TuyaBLEButton] = []
-    for entity_mapping in mappings:
-        if entity_mapping.force_add or data.device.datapoints.has_id(
-            entity_mapping.dp_id, entity_mapping.dp_type
+    for mapping in mappings:
+        if mapping.force_add or data.device.datapoints.has_id(
+            mapping.dp_id, mapping.dp_type
         ):
             entities.append(
                 TuyaBLEButton(
@@ -268,7 +263,7 @@ async def async_setup_entry(
                     data.coordinator,
                     data.device,
                     data.product,
-                    entity_mapping,
+                    mapping,
                 )
             )
     async_add_entities(entities)
