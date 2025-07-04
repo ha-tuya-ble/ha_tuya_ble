@@ -76,26 +76,27 @@ mapping: dict[str, TuyaBLECategoryButtonMapping] = {
         products={
             **dict.fromkeys(
                 ["ajrhf1aj", "z5ztlw3k"], # PARKSIDE Smart battery
-            ): [
-                TuyaBLEButtonMapping(
-                    dp_id=115,
-                    description=ButtonEntityDescription(
-                        key="battery_finder",
-                        icon="mdi:find-replace",
-                        entity_category=EntityCategory.DIAGNOSTIC,
+                [
+                    TuyaBLEButtonMapping(
+                        dp_id=115,
+                        description=ButtonEntityDescription(
+                            key="battery_finder",
+                            icon="mdi:find-replace",
+                            entity_category=EntityCategory.DIAGNOSTIC,
+                        ),
                     ),
-                ),
-                TuyaBLEButtonMapping(
-                    dp_id=162,
-                    description=ButtonEntityDescription(
-                        key="factory_data_reset",
-                        device_class=ButtonDeviceClass.RESTART,
-                        icon="mdi:restore",
-                        entity_category=EntityCategory.CONFIG,
+                    TuyaBLEButtonMapping(
+                        dp_id=162,
+                        description=ButtonEntityDescription(
+                            key="factory_data_reset",
+                            device_class=ButtonDeviceClass.RESTART,
+                            icon="mdi:restore",
+                            entity_category=EntityCategory.CONFIG,
+                        ),
+                        dp_type=TuyaBLEDataPointType.DT_RAW,
                     ),
-                    dp_type=TuyaBLEDataPointType.DT_RAW,
-                ),
-            ],
+                ],
+            ),
         },
     ),
     "szjqr": TuyaBLECategoryButtonMapping(
