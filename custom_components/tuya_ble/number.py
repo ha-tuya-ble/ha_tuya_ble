@@ -36,9 +36,7 @@ TuyaBLENumberGetter = (
     Callable[["TuyaBLENumber", TuyaBLEProductInfo], float | None] | None
 )
 
-TuyaBLENumberIsAvailable = (
-    Callable[["TuyaBLENumber", TuyaBLEProductInfo], bool] | None
-)
+TuyaBLENumberIsAvailable = Callable[["TuyaBLENumber", TuyaBLEProductInfo], bool] | None
 
 TuyaBLENumberSetter = (
     Callable[["TuyaBLENumber", TuyaBLEProductInfo, float], None] | None
@@ -313,22 +311,23 @@ mapping: dict[str, TuyaBLECategoryNumberMapping] = {
     "szjqr": TuyaBLECategoryNumberMapping(
         products={
             **dict.fromkeys(
-                ["3yqdo5yt", "xhf790if"], # CubeTouch 1s and II
-            ): [
-                TuyaBLEHoldTimeMapping(dp_id=3),
-                TuyaBLENumberMapping(
-                    dp_id=5,
-                    description=TuyaBLEUpPositionDescription(
-                        native_max_value=100,
+                ["3yqdo5yt", "xhf790if"],  # CubeTouch 1s and II
+                [
+                    TuyaBLEHoldTimeMapping(dp_id=3),
+                    TuyaBLENumberMapping(
+                        dp_id=5,
+                        description=TuyaBLEUpPositionDescription(
+                            native_max_value=100,
+                        ),
                     ),
-                ),
-                TuyaBLENumberMapping(
-                    dp_id=6,
-                    description=TuyaBLEDownPositionDescription(
-                        native_min_value=0,
+                    TuyaBLENumberMapping(
+                        dp_id=6,
+                        description=TuyaBLEDownPositionDescription(
+                            native_min_value=0,
+                        ),
                     ),
-                ),
-            ],
+                ],
+            ),
             **dict.fromkeys(
                 [
                     "blliqpsj",
@@ -394,27 +393,28 @@ mapping: dict[str, TuyaBLECategoryNumberMapping] = {
                     "bnt7wajf",
                     "rvdceqjh",
                     "5xhbk964",
-                ], # Fingerbot
-            ): [
-                TuyaBLENumberMapping(
-                    dp_id=9,
-                    description=TuyaBLEDownPositionDescription(),
-                    is_available=is_fingerbot_not_in_program_mode,
-                ),
-                TuyaBLENumberMapping(
-                    dp_id=10,
-                    description=TuyaBLEHoldTimeDescription(
-                        native_step=0.1,
+                ],  # Fingerbot
+                [
+                    TuyaBLENumberMapping(
+                        dp_id=9,
+                        description=TuyaBLEDownPositionDescription(),
+                        is_available=is_fingerbot_not_in_program_mode,
                     ),
-                    coefficient=10.0,
-                    is_available=is_fingerbot_in_push_mode,
-                ),
-                TuyaBLENumberMapping(
-                    dp_id=15,
-                    description=TuyaBLEUpPositionDescription(),
-                    is_available=is_fingerbot_not_in_program_mode,
-                ),
-            ],
+                    TuyaBLENumberMapping(
+                        dp_id=10,
+                        description=TuyaBLEHoldTimeDescription(
+                            native_step=0.1,
+                        ),
+                        coefficient=10.0,
+                        is_available=is_fingerbot_in_push_mode,
+                    ),
+                    TuyaBLENumberMapping(
+                        dp_id=15,
+                        description=TuyaBLEUpPositionDescription(),
+                        is_available=is_fingerbot_not_in_program_mode,
+                    ),
+                ],
+            ),
         },
     ),
     "kg": TuyaBLECategoryNumberMapping(
@@ -487,8 +487,8 @@ mapping: dict[str, TuyaBLECategoryNumberMapping] = {
                             entity_category=EntityCategory.CONFIG,
                         ),
                     ),
-                ),
-            ],
+                ],
+            ),
         },
     ),
     "wsdcg": TuyaBLECategoryNumberMapping(
@@ -529,7 +529,7 @@ mapping: dict[str, TuyaBLECategoryNumberMapping] = {
     ),
     "ggq": TuyaBLECategoryNumberMapping(
         products={
-            "6pahkcau": [ # Irrigation computer
+            "6pahkcau": [ # Irrigation computer PARKSIDE PPB A1
                 TuyaBLENumberMapping(
                     dp_id=5,
                     description=NumberEntityDescription(
@@ -680,6 +680,7 @@ mapping: dict[str, TuyaBLECategoryNumberMapping] = {
         },
     ),
 }
+
 
 def get_mapping_by_device(device: TuyaBLEDevice) -> list[TuyaBLECategoryNumberMapping]:
     category = mapping.get(device.category)
