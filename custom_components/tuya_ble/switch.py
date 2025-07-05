@@ -535,7 +535,6 @@ mapping: dict[str, TuyaBLECategorySwitchMapping] = {
         },
     ),
 }
-}
 
 
 def get_mapping_by_device(device: TuyaBLEDevice) -> list[TuyaBLECategorySwitchMapping]:
