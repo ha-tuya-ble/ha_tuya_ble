@@ -465,6 +465,76 @@ mapping: dict[str, TuyaBLECategorySwitchMapping] = {
             ),
         },
     ),
+    "dcb": TuyaBLECategorySwitchMapping(
+        products={
+            **dict.fromkeys(
+                [
+                    "ajrhf1aj",
+                    "z5ztlw3k",
+                ],
+                [  # PARKSIDE Smart battery 8Ah
+                    TuyaBLESwitchMapping(
+                        dp_id=12,
+                        description=SwitchEntityDescription(
+                            key="upper_temp_switch",
+                            icon="mdi:thermometer-chevron-up",
+                            entity_category=EntityCategory.CONFIG,
+                        ),
+                    ),
+                    TuyaBLESwitchMapping(
+                        dp_id=22,
+                        description=SwitchEntityDescription(
+                            key="security_switch",
+                            icon="mdi:shield-lock-outline",
+                            entity_category=EntityCategory.CONFIG,
+                        ),
+                    ),
+                    TuyaBLESwitchMapping(
+                        dp_id=155,
+                        description=SwitchEntityDescription(
+                            key="kick_back_switch",
+                            icon="mdi:car-esp",
+                            entity_category=EntityCategory.CONFIG,
+                        ),
+                    ),
+                    TuyaBLESwitchMapping(
+                        dp_id=163,
+                        description=SwitchEntityDescription(
+                            key="lamp_switch",
+                            device_class=SwitchDeviceClass.SWITCH,
+                            icon="mdi:lightbulb",
+                            entity_category=EntityCategory.CONFIG,
+                        ),
+                    ),
+                    TuyaBLESwitchMapping(
+                        dp_id=170,
+                        description=SwitchEntityDescription(
+                            key="cw_or_ccw_control",
+                            icon="mdi:rotate-right",
+                            entity_category=EntityCategory.CONFIG,
+                        ),
+                    ),
+                    TuyaBLESwitchMapping(
+                        dp_id=185,
+                        description=SwitchEntityDescription(
+                            key="laser_switch",
+                            icon="mdi:laser-pointer",
+                            entity_category=EntityCategory.CONFIG,
+                        ),
+                    ),
+                    TuyaBLESwitchMapping(
+                        dp_id=186,
+                        description=SwitchEntityDescription(
+                            key="laser_pulse_switch",
+                            icon="mdi:pulse",
+                            entity_category=EntityCategory.CONFIG,
+                        ),
+                    ),
+                ],
+            ),
+        },
+    ),
+}
 }
 
 
@@ -586,7 +656,7 @@ async def async_setup_entry(
     entry: ConfigEntry,
     async_add_entities: AddEntitiesCallback,
 ) -> None:
-    """Set up the Tuya BLE sensors."""
+    """Set up the Tuya BLE switches."""
     data: TuyaBLEData = hass.data[DOMAIN][entry.entry_id]
     mappings = get_mapping_by_device(data.device)
     entities: list[TuyaBLESwitch] = []
