@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
+
 import logging
 from typing import Callable
 
@@ -17,7 +18,9 @@ from homeassistant.helpers.entity import EntityCategory
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator
 
-from .const import DOMAIN
+from .const import (
+    DOMAIN,
+)
 from .devices import TuyaBLEData, TuyaBLEEntity, TuyaBLEProductInfo
 from .tuya_ble import TuyaBLEDataPointType, TuyaBLEDevice
 
@@ -25,13 +28,16 @@ _LOGGER = logging.getLogger(__name__)
 
 SIGNAL_STRENGTH_DP_ID = -1
 
+
 TuyaBLEBinarySensorIsAvailable = (
     Callable[["TuyaBLEBinarySensor", TuyaBLEProductInfo], bool] | None
 )
 
+
 @dataclass
 class TuyaBLEBinarySensorMapping:
-    """Model a DP for a binary sensor entity."""
+    """Models a BLE binary sensor"""
+
     dp_id: int
     description: BinarySensorEntityDescription
     force_add: bool = True
@@ -41,11 +47,14 @@ class TuyaBLEBinarySensorMapping:
     # icons: list[str] | None = None
     is_available: TuyaBLEBinarySensorIsAvailable = None
 
+
 @dataclass
 class TuyaBLECategoryBinarySensorMapping:
     """Maps between a dict of products and the sensors"""
+
     products: dict[str, list[TuyaBLEBinarySensorMapping]] | None = None
     mapping: list[TuyaBLEBinarySensorMapping] | None = None
+
 
 mapping: dict[str, TuyaBLECategoryBinarySensorMapping] = {
     "dcb": TuyaBLECategoryBinarySensorMapping(
@@ -106,8 +115,8 @@ mapping: dict[str, TuyaBLECategoryBinarySensorMapping] = {
     ),
 }
 
+
 def get_mapping_by_device(device: TuyaBLEDevice) -> list[TuyaBLEBinarySensorMapping]:
-    """Get the binary sensor mapping for a device."""
     category = mapping.get(device.category)
     if category is not None and category.products is not None:
         product_mapping = category.products.get(device.product_id)
@@ -117,6 +126,7 @@ def get_mapping_by_device(device: TuyaBLEDevice) -> list[TuyaBLEBinarySensorMapp
             return category.mapping
 
     return []
+
 
 class TuyaBLEBinarySensor(TuyaBLEEntity, BinarySensorEntity):
     """Representation of a Tuya BLE binary sensor."""
@@ -129,7 +139,6 @@ class TuyaBLEBinarySensor(TuyaBLEEntity, BinarySensorEntity):
         product: TuyaBLEProductInfo,
         mapping: TuyaBLEBinarySensorMapping,
     ) -> None:
-        """Initialize the binary sensor."""
         super().__init__(hass, coordinator, device, product, mapping.description)
         self._mapping = mapping
 
@@ -175,12 +184,13 @@ class TuyaBLEBinarySensor(TuyaBLEEntity, BinarySensorEntity):
             result = self._mapping.is_available(self, self._product)
         return result
 
+
 async def async_setup_entry(
     hass: HomeAssistant,
     entry: ConfigEntry,
     async_add_entities: AddEntitiesCallback,
 ) -> None:
-    """Set up the Tuya BLE binary sensors."""
+    """Set up the Tuya BLE sensors."""
     data: TuyaBLEData = hass.data[DOMAIN][entry.entry_id]
     mappings = get_mapping_by_device(data.device)
     entities: list[TuyaBLEBinarySensor] = []
