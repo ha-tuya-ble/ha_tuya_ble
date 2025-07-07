@@ -161,7 +161,6 @@ def set_fingerbot_program_position(
     product: TuyaBLEProductInfo,
     value: float,
 ) -> None:
-    """Set the fingerbot's program position."""
     if product.fingerbot and product.fingerbot.program:
         datapoint = self._device.datapoints[product.fingerbot.program]
         if datapoint and isinstance(datapoint.value, bytes):
