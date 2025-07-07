@@ -31,6 +31,7 @@ TuyaBLEButtonIsAvailable = Callable[["TuyaBLEButton", TuyaBLEProductInfo], bool]
 @dataclass
 class TuyaBLEButtonMapping:
     """Model a DP, description and default values"""
+
     dp_id: int
     description: ButtonEntityDescription
     force_add: bool = True
@@ -233,7 +234,6 @@ class TuyaBLEButton(TuyaBLEEntity, ButtonEntity):
 
     def press(self) -> None:
         """Press the button."""
-
         datapoint = self._device.datapoints.get_or_create(
             self._mapping.dp_id,
             TuyaBLEDataPointType.DT_BOOL,
