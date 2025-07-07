@@ -509,30 +509,216 @@ mapping: dict[str, TuyaBLECategorySensorMapping] = {
                             entity_category=EntityCategory.DIAGNOSTIC,
                         ),
                     ),
-                    TuyaBLESensorMapping(dp_id=8, description=SensorEntityDescription(key="charge_times", icon="mdi:counter", state_class=SensorStateClass.TOTAL_INCREASING, entity_category=EntityCategory.DIAGNOSTIC)),
-                    TuyaBLESensorMapping(dp_id=9, description=SensorEntityDescription(key="discharge_times", icon="mdi:counter", state_class=SensorStateClass.TOTAL_INCREASING, entity_category=EntityCategory.DIAGNOSTIC)),
-                    TuyaBLESensorMapping(dp_id=14, description=SensorEntityDescription(key="use_time", device_class=SensorDeviceClass.DURATION, native_unit_of_measurement=UnitOfTime.MINUTES, state_class=SensorStateClass.MEASUREMENT, entity_category=EntityCategory.DIAGNOSTIC)),
-                    TuyaBLESensorMapping(dp_id=15, description=SensorEntityDescription(key="runtime_total", device_class=SensorDeviceClass.DURATION, native_unit_of_measurement=UnitOfTime.MINUTES, state_class=SensorStateClass.TOTAL_INCREASING, entity_category=EntityCategory.DIAGNOSTIC)),
-                    TuyaBLESensorMapping(dp_id=10, description=SensorEntityDescription(key="peak_current_times", icon="mdi:counter", state_class=SensorStateClass.TOTAL_INCREASING, entity_category=EntityCategory.DIAGNOSTIC)),
-                    TuyaBLESensorMapping(dp_id=21, description=SensorEntityDescription(key="fault", icon="mdi:alert-circle-outline", entity_category=EntityCategory.DIAGNOSTIC)),
-                    TuyaBLESensorMapping(dp_id=107, description=SensorEntityDescription(key="over_voltage_times", icon="mdi:counter", state_class=SensorStateClass.TOTAL_INCREASING, entity_category=EntityCategory.DIAGNOSTIC)),
-                    TuyaBLESensorMapping(dp_id=108, description=SensorEntityDescription(key="under_voltage_times", icon="mdi:counter", state_class=SensorStateClass.TOTAL_INCREASING, entity_category=EntityCategory.DIAGNOSTIC)),
-                    TuyaBLESensorMapping(dp_id=109, description=SensorEntityDescription(key="overtemp_discharge_times", icon="mdi:counter", state_class=SensorStateClass.TOTAL_INCREASING, entity_category=EntityCategory.DIAGNOSTIC)),
-                    TuyaBLESensorMapping(dp_id=110, description=SensorEntityDescription(key="overtemp_charge_times", icon="mdi:counter", state_class=SensorStateClass.TOTAL_INCREASING, entity_category=EntityCategory.DIAGNOSTIC)),
-                    TuyaBLESensorMapping(dp_id=111, description=SensorEntityDescription(key="undertemp_discharge_times", icon="mdi:counter", state_class=SensorStateClass.TOTAL_INCREASING, entity_category=EntityCategory.DIAGNOSTIC)),
-                    TuyaBLESensorMapping(dp_id=112, description=SensorEntityDescription(key="undertemp_charge_times", icon="mdi:counter", state_class=SensorStateClass.TOTAL_INCREASING, entity_category=EntityCategory.DIAGNOSTIC)),
-                    TuyaBLESensorMapping(dp_id=113, description=SensorEntityDescription(key="short_circuit_times", icon="mdi:counter", state_class=SensorStateClass.TOTAL_INCREASING, entity_category=EntityCategory.DIAGNOSTIC)),
-                    TuyaBLESensorMapping(dp_id=114, description=SensorEntityDescription(key="over_current_times", icon="mdi:counter", state_class=SensorStateClass.TOTAL_INCREASING, entity_category=EntityCategory.DIAGNOSTIC)),
-                    TuyaBLESensorMapping(dp_id=19, description=SensorEntityDescription(key="product_type", entity_category=EntityCategory.DIAGNOSTIC)),
-                    TuyaBLESensorMapping(dp_id=150, description=SensorEntityDescription(key="tool_product_type", entity_category=EntityCategory.DIAGNOSTIC)),
-                    TuyaBLESensorMapping(dp_id=152, description=SensorEntityDescription(key="tool_rotation_speed", icon="mdi:rotate-3d-variant", state_class=SensorStateClass.MEASUREMENT, entity_category=EntityCategory.DIAGNOSTIC)),
-                    TuyaBLESensorMapping(dp_id=153, description=SensorEntityDescription(key="tool_torque", icon="mdi:screw-lag", state_class=SensorStateClass.MEASUREMENT, entity_category=EntityCategory.DIAGNOSTIC)),
-                    TuyaBLESensorMapping(dp_id=154, description=SensorEntityDescription(key="tool_runtime_total", device_class=SensorDeviceClass.DURATION, native_unit_of_measurement=UnitOfTime.MINUTES, state_class=SensorStateClass.TOTAL_INCREASING, entity_category=EntityCategory.DIAGNOSTIC)),
-                    TuyaBLESensorMapping(dp_id=156, description=SensorEntityDescription(key="tool_fault", icon="mdi:alert-circle-outline", entity_category=EntityCategory.DIAGNOSTIC)),
-                    TuyaBLESensorMapping(dp_id=157, description=SensorEntityDescription(key="tools_current", device_class=SensorDeviceClass.CURRENT, state_class=SensorStateClass.MEASUREMENT, entity_category=EntityCategory.DIAGNOSTIC)),
-                    TuyaBLESensorMapping(dp_id=158, description=SensorEntityDescription(key="tool_ot_times", state_class=SensorStateClass.TOTAL_INCREASING, entity_category=EntityCategory.DIAGNOSTIC)),
-                    TuyaBLESensorMapping(dp_id=159, description=SensorEntityDescription(key="tool_locked_times", state_class=SensorStateClass.TOTAL_INCREASING, entity_category=EntityCategory.DIAGNOSTIC)),
-                    TuyaBLESensorMapping(dp_id=160, description=SensorEntityDescription(key="tool_oc_times", state_class=SensorStateClass.TOTAL_INCREASING, entity_category=EntityCategory.DIAGNOSTIC)),
+                    TuyaBLESensorMapping(
+                        dp_id=8,
+                        description=SensorEntityDescription(
+                            key="charge_times",
+                            icon="mdi:counter",
+                            state_class=SensorStateClass.TOTAL_INCREASING,
+                            entity_category=EntityCategory.DIAGNOSTIC,
+                        ),
+                    ),
+                    TuyaBLESensorMapping(
+                        dp_id=9,
+                        description=SensorEntityDescription(
+                            key="discharge_times",
+                            icon="mdi:counter",
+                            state_class=SensorStateClass.TOTAL_INCREASING,
+                            entity_category=EntityCategory.DIAGNOSTIC,
+                        ),
+                    ),
+                    TuyaBLESensorMapping(
+                        dp_id=14,
+                        description=SensorEntityDescription(
+                            key="use_time",
+                            device_class=SensorDeviceClass.DURATION,
+                            native_unit_of_measurement=UnitOfTime.MINUTES,
+                            state_class=SensorStateClass.MEASUREMENT,
+                            entity_category=EntityCategory.DIAGNOSTIC,
+                        ),
+                    ),
+                    TuyaBLESensorMapping(
+                        dp_id=15,
+                        description=SensorEntityDescription(
+                            key="runtime_total",
+                            device_class=SensorDeviceClass.DURATION,
+                            native_unit_of_measurement=UnitOfTime.MINUTES,
+                            state_class=SensorStateClass.TOTAL_INCREASING,
+                            entity_category=EntityCategory.DIAGNOSTIC,
+                        ),
+                    ),
+                    TuyaBLESensorMapping(
+                        dp_id=10,
+                        description=SensorEntityDescription(
+                            key="peak_current_times",
+                            icon="mdi:counter",
+                            state_class=SensorStateClass.TOTAL_INCREASING,
+                            entity_category=EntityCategory.DIAGNOSTIC,
+                        ),
+                    ),
+                    TuyaBLESensorMapping(
+                        dp_id=21,
+                        description=SensorEntityDescription(
+                            key="fault",
+                            icon="mdi:alert-circle-outline",
+                            entity_category=EntityCategory.DIAGNOSTIC,
+                        ),
+                    ),
+                    TuyaBLESensorMapping(
+                        dp_id=107,
+                        description=SensorEntityDescription(
+                            key="over_voltage_times",
+                            icon="mdi:counter",
+                            state_class=SensorStateClass.TOTAL_INCREASING,
+                            entity_category=EntityCategory.DIAGNOSTIC,
+                        ),
+                    ),
+                    TuyaBLESensorMapping(
+                        dp_id=108,
+                        description=SensorEntityDescription(
+                            key="under_voltage_times",
+                            icon="mdi:counter",
+                            state_class=SensorStateClass.TOTAL_INCREASING,
+                            entity_category=EntityCategory.DIAGNOSTIC,
+                        ),
+                    ),
+                    TuyaBLESensorMapping(
+                        dp_id=109,
+                        description=SensorEntityDescription(
+                            key="overtemp_discharge_times",
+                            icon="mdi:counter",
+                            state_class=SensorStateClass.TOTAL_INCREASING,
+                            entity_category=EntityCategory.DIAGNOSTIC,
+                        ),
+                    ),
+                    TuyaBLESensorMapping(
+                        dp_id=110,
+                        description=SensorEntityDescription(
+                            key="overtemp_charge_times",
+                            icon="mdi:counter",
+                            state_class=SensorStateClass.TOTAL_INCREASING,
+                            entity_category=EntityCategory.DIAGNOSTIC,
+                        ),
+                    ),
+                    TuyaBLESensorMapping(
+                        dp_id=111,
+                        description=SensorEntityDescription(
+                            key="undertemp_discharge_times",
+                            icon="mdi:counter",
+                            state_class=SensorStateClass.TOTAL_INCREASING,
+                            entity_category=EntityCategory.DIAGNOSTIC,
+                        ),
+                    ),
+                    TuyaBLESensorMapping(
+                        dp_id=112,
+                        description=SensorEntityDescription(
+                            key="undertemp_charge_times",
+                            icon="mdi:counter",
+                            state_class=SensorStateClass.TOTAL_INCREASING,
+                            entity_category=EntityCategory.DIAGNOSTIC,
+                        ),
+                    ),
+                    TuyaBLESensorMapping(
+                        dp_id=113,
+                        description=SensorEntityDescription(
+                            key="short_circuit_times",
+                            icon="mdi:counter",
+                            state_class=SensorStateClass.TOTAL_INCREASING,
+                            entity_category=EntityCategory.DIAGNOSTIC,
+                        ),
+                    ),
+                    TuyaBLESensorMapping(
+                        dp_id=114,
+                        description=SensorEntityDescription(
+                            key="over_current_times",
+                            icon="mdi:counter",
+                            state_class=SensorStateClass.TOTAL_INCREASING,
+                            entity_category=EntityCategory.DIAGNOSTIC,
+                        ),
+                    ),
+                    TuyaBLESensorMapping(
+                        dp_id=19,
+                        description=SensorEntityDescription(
+                            key="product_type",
+                            entity_category=EntityCategory.DIAGNOSTIC,
+                        ),
+                    ),
+                    TuyaBLESensorMapping(
+                        dp_id=150,
+                        description=SensorEntityDescription(
+                            key="tool_product_type",
+                            entity_category=EntityCategory.DIAGNOSTIC,
+                        ),
+                    ),
+                    TuyaBLESensorMapping(
+                        dp_id=152,
+                        description=SensorEntityDescription(
+                            key="tool_rotation_speed",
+                            icon="mdi:rotate-3d-variant",
+                            state_class=SensorStateClass.MEASUREMENT,
+                            entity_category=EntityCategory.DIAGNOSTIC,
+                        ),
+                    ),
+                    TuyaBLESensorMapping(
+                        dp_id=153,
+                        description=SensorEntityDescription(
+                            key="tool_torque",
+                            icon="mdi:screw-lag",
+                            state_class=SensorStateClass.MEASUREMENT,
+                            entity_category=EntityCategory.DIAGNOSTIC,
+                        ),
+                    ),
+                    TuyaBLESensorMapping(
+                        dp_id=154,
+                        description=SensorEntityDescription(
+                            key="tool_runtime_total",
+                            device_class=SensorDeviceClass.DURATION,
+                            native_unit_of_measurement=UnitOfTime.MINUTES,
+                            state_class=SensorStateClass.TOTAL_INCREASING,
+                            entity_category=EntityCategory.DIAGNOSTIC,
+                        ),
+                    ),
+                    TuyaBLESensorMapping(
+                        dp_id=156,
+                        description=SensorEntityDescription(
+                            key="tool_fault",
+                            icon="mdi:alert-circle-outline",
+                            entity_category=EntityCategory.DIAGNOSTIC,
+                        ),
+                    ),
+                    TuyaBLESensorMapping(
+                        dp_id=157,
+                        description=SensorEntityDescription(
+                            key="tools_current",
+                            device_class=SensorDeviceClass.CURRENT,
+                            state_class=SensorStateClass.MEASUREMENT,
+                            entity_category=EntityCategory.DIAGNOSTIC,
+                        ),
+                    ),
+                    TuyaBLESensorMapping(
+                        dp_id=158,
+                        description=SensorEntityDescription(
+                            key="tool_ot_times",
+                            state_class=SensorStateClass.TOTAL_INCREASING,
+                            entity_category=EntityCategory.DIAGNOSTIC,
+                        ),
+                    ),
+                    TuyaBLESensorMapping(
+                        dp_id=159,
+                        description=SensorEntityDescription(
+                            key="tool_locked_times",
+                            state_class=SensorStateClass.TOTAL_INCREASING,
+                            entity_category=EntityCategory.DIAGNOSTIC,
+                        ),
+                    ),
+                    TuyaBLESensorMapping(
+                        dp_id=160,
+                        description=SensorEntityDescription(
+                            key="tool_oc_times",
+                            state_class=SensorStateClass.TOTAL_INCREASING,
+                            entity_category=EntityCategory.DIAGNOSTIC,
+                        ),
+                    ),
                 ],
             ),
         },
