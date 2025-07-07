@@ -41,7 +41,7 @@ def is_fingerbot_in_program_mode(
     self: TuyaBLEText,
     product: TuyaBLEProductInfo,
 ) -> bool:
-    """Check if the fingerbot is in program mode."""
+    """Determines if in program mode"""
     result: bool = True
     if product.fingerbot:
         datapoint = self._device.datapoints[product.fingerbot.mode]
@@ -54,7 +54,6 @@ def get_fingerbot_program(
     self: TuyaBLEText,
     product: TuyaBLEProductInfo,
 ) -> str | None:
-    """Get the fingerbot's program from its raw value."""
     result: float | None = None
     if product.fingerbot and product.fingerbot.program:
         datapoint = self._device.datapoints[product.fingerbot.program]
@@ -79,7 +78,6 @@ def set_fingerbot_program(
     product: TuyaBLEProductInfo,
     value: str,
 ) -> None:
-    """Set the fingerbot's program from a string."""
     if product.fingerbot and product.fingerbot.program:
         datapoint = self._device.datapoints[product.fingerbot.program]
         if datapoint and isinstance(datapoint.value, bytes):
@@ -92,6 +90,7 @@ def set_fingerbot_program(
                 delay = int(step_values[1]) if len(step_values) > 1 else 0
                 new_value += pack(">BH", position, delay)
             self._hass.create_task(datapoint.set_value(new_value))
+
 
 @dataclass
 class TuyaBLETextMapping:
@@ -189,7 +188,7 @@ mapping: dict[str, TuyaBLECategoryTextMapping] = {
 
 
 def get_mapping_by_device(device: TuyaBLEDevice) -> list[TuyaBLETextMapping]:
-    """Get the text mapping for a device."""
+    """Lookup mapping for a given device"""
     category = mapping.get(device.category)
     if category is not None and category.products is not None:
         product_mapping = category.products.get(device.product_id)
@@ -197,6 +196,7 @@ def get_mapping_by_device(device: TuyaBLEDevice) -> list[TuyaBLETextMapping]:
             return product_mapping
         if category.mapping is not None:
             return category.mapping
+
     return []
 
 
@@ -211,7 +211,6 @@ class TuyaBLEText(TuyaBLEEntity, TextEntity):
         product: TuyaBLEProductInfo,
         mapping: TuyaBLETextMapping,
     ) -> None:
-        """Initialize the text entity."""
         super().__init__(hass, coordinator, device, product, mapping.description)
         self._mapping = mapping
 
@@ -232,7 +231,7 @@ class TuyaBLEText(TuyaBLEEntity, TextEntity):
         datapoint = self._device.datapoints[self._mapping.dp_id]
         if datapoint:
             return str(datapoint.value)
-        
+
         return self._mapping.default_value
 
     def set_value(self, value: str) -> None:
@@ -240,7 +239,6 @@ class TuyaBLEText(TuyaBLEEntity, TextEntity):
         if self._mapping.setter:
             self._mapping.setter(self, self._product, value)
             return
-
         datapoint = self._device.datapoints.get_or_create(
             self._mapping.dp_id,
             TuyaBLEDataPointType.DT_STRING,
@@ -255,7 +253,7 @@ async def async_setup_entry(
     entry: ConfigEntry,
     async_add_entities: AddEntitiesCallback,
 ) -> None:
-    """Set up the Tuya BLE text entities."""
+    """Set up the Tuya BLE sensors."""
     data: TuyaBLEData = hass.data[DOMAIN][entry.entry_id]
     mappings = get_mapping_by_device(data.device)
     entities: list[TuyaBLEText] = []
