@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass, field
+
 import logging
 
 from homeassistant.components.select import (
@@ -27,24 +28,30 @@ from .tuya_ble import TuyaBLEDataPointType, TuyaBLEDevice
 
 _LOGGER = logging.getLogger(__name__)
 
+
 @dataclass
 class TuyaBLESelectMapping:
     """Model a DP, description and default values"""
+
     dp_id: int
     description: SelectEntityDescription
     force_add: bool = True
     dp_type: TuyaBLEDataPointType | None = None
 
+
 @dataclass
 class TemperatureUnitDescription(SelectEntityDescription):
-    """A SelectEntityDescription for temperature units."""
+    """Description of temperature unit"""
+
     key: str = "temperature_unit"
     icon: str = "mdi:thermometer"
     entity_category: EntityCategory = EntityCategory.CONFIG
 
+
 @dataclass
 class TuyaBLEFingerbotModeMapping(TuyaBLESelectMapping):
-    """A select mapping for a fingerbot's mode."""
+    """Fingerbot mode mapping"""
+
     description: SelectEntityDescription = field(
         default_factory=lambda: SelectEntityDescription(
             key="fingerbot_mode",
@@ -92,11 +99,12 @@ class TuyaBLESmartWeatherMapping(TuyaBLESelectMapping):
         )
     )
 
+
 @dataclass
 class TuyaBLECategorySelectMapping:
-    """Models a dict of products and their mappings"""
     products: dict[str, list[TuyaBLESelectMapping]] | None = None
     mapping: list[TuyaBLESelectMapping] | None = None
+
 
 mapping: dict[str, TuyaBLECategorySelectMapping] = {
     "sfkzq": TuyaBLECategorySelectMapping(
@@ -357,9 +365,8 @@ mapping: dict[str, TuyaBLECategorySelectMapping] = {
                     description=SelectEntityDescription(
                         key="reminder_mode",
                         options=[
-                            "alarm_reminder",
                             "interval_reminder",
-                            "schedule_reminder",
+                            "alarm_reminder",  # TODO: schedule_reminder?
                         ],
                         entity_category=EntityCategory.CONFIG,
                     ),
@@ -369,6 +376,7 @@ mapping: dict[str, TuyaBLECategorySelectMapping] = {
     ),
 }
 
+
 def get_mapping_by_device(device: TuyaBLEDevice) -> list[TuyaBLECategorySelectMapping]:
     category = mapping.get(device.category)
     if category is not None and category.products is not None:
@@ -377,7 +385,9 @@ def get_mapping_by_device(device: TuyaBLEDevice) -> list[TuyaBLECategorySelectMa
             return product_mapping
         if category.mapping is not None:
             return category.mapping
+
     return []
+
 
 class TuyaBLESelect(TuyaBLEEntity, SelectEntity):
     """Representation of a Tuya BLE select."""
