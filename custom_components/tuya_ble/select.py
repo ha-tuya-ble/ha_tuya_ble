@@ -172,6 +172,33 @@ mapping: dict[str, TuyaBLECategorySelectMapping] = {
             ],
         },
     ),
+    "dcb": TuyaBLECategorySelectMapping(
+        products={
+            **dict.fromkeys(
+                ["ajrhf1aj", "z5ztlw3k"], # PARKSIDE Smart battery
+                [  
+                    TuyaBLESelectMapping(
+                        dp_id=105,
+                        description=SelectEntityDescription(
+                            key="battery_work_mode",
+                            icon="mdi:leaf-circle-outline",
+                            options=["Performance", "Balanced", "Eco", "Expert"],
+                            entity_category=EntityCategory.CONFIG,
+                        ),
+                    ),
+                    TuyaBLESelectMapping(
+                        dp_id=174,
+                        description=SelectEntityDescription(
+                            key="pack_work_mode",
+                            icon="mdi:leaf-circle-outline",
+                            options=["Performance", "Balanced", "Eco", "Expert"],
+                            entity_category=EntityCategory.CONFIG,
+                        ),
+                    ),
+                ],
+            ),
+        },
+    ),
     "ms": TuyaBLECategorySelectMapping(
         products={
             **dict.fromkeys(

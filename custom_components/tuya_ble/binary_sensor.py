@@ -57,6 +57,25 @@ class TuyaBLECategoryBinarySensorMapping:
 
 
 mapping: dict[str, TuyaBLECategoryBinarySensorMapping] = {
+    "dcb": TuyaBLECategoryBinarySensorMapping(
+        products={
+            **dict.fromkeys(
+                [
+                    "ajrhf1aj", 
+                    "z5ztlw3k",
+                ], # PARKSIDE Smart battery
+                [
+                    TuyaBLEBinarySensorMapping(
+                        dp_id=171,
+                        description=BinarySensorEntityDescription(
+                            key="cw_or_ccw_display",
+                            icon="mdi:rotate-3d-variant",
+                        ),
+                    ),
+                ],
+            ),
+        },
+    ),
     "wk": TuyaBLECategoryBinarySensorMapping(
         products={
             **dict.fromkeys(

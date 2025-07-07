@@ -19,6 +19,8 @@ from homeassistant.const import (
     UnitOfTemperature,
     UnitOfTime,
     UnitOfVolume,
+    UnitOfElectricCurrent,
+    UnitOfElectricPotential,
 )
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity import EntityCategory
@@ -246,6 +248,78 @@ mapping: dict[str, TuyaBLECategoryNumberMapping] = {
                     ),
                 ),
             ],
+        },
+    ),
+    "dcb": TuyaBLECategoryNumberMapping(
+        products={
+            **dict.fromkeys(
+                ["ajrhf1aj", "z5ztlw3k"], # PARKSIDE Smart battery
+                [
+                    TuyaBLENumberMapping(
+                        dp_id=116,
+                        description=NumberEntityDescription(
+                            key="low_discharge_voltage",
+                            device_class=NumberDeviceClass.VOLTAGE,
+                            native_unit_of_measurement=UnitOfElectricPotential.MILLIVOLT,
+                            entity_category=EntityCategory.CONFIG,
+                        ),
+                    ),
+                    TuyaBLENumberMapping(
+                        dp_id=117,
+                        description=NumberEntityDescription(
+                            key="discharge_current_limit",
+                            device_class=NumberDeviceClass.CURRENT,
+                            native_unit_of_measurement=UnitOfElectricCurrent.AMPERE,
+                            entity_category=EntityCategory.CONFIG,
+                        ),
+                    ),
+                    TuyaBLENumberMapping(
+                        dp_id=118,
+                        description=NumberEntityDescription(
+                            key="power_indicator_time",
+                            device_class=NumberDeviceClass.DURATION,
+                            native_unit_of_measurement=UnitOfTime.SECONDS,
+                            entity_category=EntityCategory.CONFIG,
+                        ),
+                    ),
+                    TuyaBLENumberMapping(
+                        dp_id=164,
+                        description=NumberEntityDescription(
+                            key="lamp_brightness_percentage",
+                            native_unit_of_measurement=PERCENTAGE,
+                            icon="mdi:brightness-percent",
+                            entity_category=EntityCategory.CONFIG,
+                        ),
+                    ),
+                    TuyaBLENumberMapping(
+                        dp_id=165,
+                        description=NumberEntityDescription(
+                            key="lamp_delay_time",
+                            device_class=NumberDeviceClass.DURATION,
+                            native_unit_of_measurement=UnitOfTime.SECONDS,
+                            icon="mdi:camera-timer",
+                            entity_category=EntityCategory.CONFIG,
+                        ),
+                    ),
+                    TuyaBLENumberMapping(
+                        dp_id=173,
+                        description=NumberEntityDescription(
+                            key="kick_back_adjust",
+                            icon="mdi:car-esp",
+                            entity_category=EntityCategory.CONFIG,
+                        ),
+                    ),
+                    TuyaBLENumberMapping(
+                        dp_id=178,
+                        description=NumberEntityDescription(
+                            key="speed_percentage",
+                            native_unit_of_measurement=PERCENTAGE,
+                            icon="mdi:speedometer",
+                            entity_category=EntityCategory.CONFIG,
+                        ),
+                    ),
+                ],
+            ),
         },
     ),
     "szjqr": TuyaBLECategoryNumberMapping(

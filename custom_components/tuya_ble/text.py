@@ -144,6 +144,25 @@ mapping: dict[str, TuyaBLECategoryTextMapping] = {
             ),
         },
     ),
+    "dcb": TuyaBLECategoryTextMapping(
+        products={
+            **dict.fromkeys(
+                ["ajrhf1aj", "z5ztlw3k"],  # PARKSIDE Smart battery
+                [  
+                    TuyaBLETextMapping(
+                        dp_id=106,
+                        description=TextEntityDescription(
+                            key="battery_pin",
+                            icon="mdi:key-variant",
+                            entity_category=EntityCategory.CONFIG,
+                        ),
+                        dp_type=TuyaBLEDataPointType.DT_STRING,
+                        default_value="0000",  # Default PIN
+                    ),
+                ],
+            ),
+        },
+    ),
     "kg": TuyaBLECategoryTextMapping(
         products={
             **dict.fromkeys(
@@ -213,7 +232,7 @@ class TuyaBLEText(TuyaBLEEntity, TextEntity):
         if datapoint:
             return str(datapoint.value)
 
-        return self._mapping.description.default_value
+        return self._mapping.default_value
 
     def set_value(self, value: str) -> None:
         """Change the value."""
