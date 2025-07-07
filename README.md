@@ -75,6 +75,11 @@ The integration works locally, but connection to Tuya BLE device requires device
     
     *Note that some light products are using Bluetooth Mesh protocols and not BLE and so aren't compatible with this integration. That's probably the case if your product isn't at least found (even if non-working) by this integration*
 
+
+* Battery (category_id 'dcb')
+  + Parkside Performace Smart Battery 4Ah (product_id 'z5ztlw3k')
+  + Parkside Performace Smart Battery 8Ah (product_id 'ajrhf1aj')
+
 ## Note that the original hasn't been updated in a long time, still, Support original developer @PlusPlus-ua:
 
 I am working on this integration in Ukraine. Our country was subjected to brutal aggression by Russia. The war still continues. The capital of Ukraine - Kyiv, where I live, and many other cities and villages are constantly under threat of rocket attacks. Our air defense forces are doing wonders, but they also need support. So if you want to help the development of this integration, donate some money and I will spend it to support our air defense.
