@@ -390,20 +390,6 @@ devices_database: dict[str, TuyaBLECategoryInfo] = {
             "ebd5e0uauqx0vfsp": TuyaBLEProductInfo(  # device product_id
                 name="CentralAcesso",
             ),
-            "okkyfgfs": TuyaBLEProductInfo(
-                name="TEKXDD Fingerprint Smart Lock",
-                lock=1,
-            ),
-        },
-    ),
-    "jtmspro": TuyaBLECategoryInfo(
-        products={
-            "xicdxood": TuyaBLEProductInfo(  # device product_id
-                name="Raycube K7 Pro+",
-            ),
-            "ebd5e0uauqx0vfsp": TuyaBLEProductInfo(  # device product_id
-                name="CentralAcesso",
-            ),
         },
     ),
     "szjqr": TuyaBLECategoryInfo(
