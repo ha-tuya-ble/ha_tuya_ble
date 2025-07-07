@@ -182,7 +182,12 @@ mapping: dict[str, TuyaBLECategorySelectMapping] = {
                         description=SelectEntityDescription(
                             key="battery_work_mode",
                             icon="mdi:leaf-circle-outline",
-                            options=["Performance", "Balanced", "Eco", "Expert"],
+                            options=[
+                                "Performance",
+                                "Balanced",
+                                "Eco",
+                                "Expert",
+                            ],
                             entity_category=EntityCategory.CONFIG,
                         ),
                     ),
@@ -191,7 +196,12 @@ mapping: dict[str, TuyaBLECategorySelectMapping] = {
                         description=SelectEntityDescription(
                             key="pack_work_mode",
                             icon="mdi:leaf-circle-outline",
-                            options=["Performance", "Balanced", "Eco", "Expert"],
+                            options=[
+                                "Performance",
+                                "Balanced",
+                                "Eco",
+                                "Expert",
+                            ],
                             entity_category=EntityCategory.CONFIG,
                         ),
                     ),

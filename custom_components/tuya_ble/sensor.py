@@ -439,7 +439,7 @@ mapping: dict[str, TuyaBLECategorySensorMapping] = {
                 [
                     "z5ztlw3k",
                     "ajrhf1aj",
-                ], # PARKSIDE Smart battery 8Ah
+                ], # PARKSIDE Smart battery
                 [
                     TuyaBLEBatteryMapping(dp_id=16),
                     TuyaBLETemperatureMapping(dp_id=11),
@@ -457,7 +457,14 @@ mapping: dict[str, TuyaBLECategorySensorMapping] = {
                         description=SensorEntityDescription(
                             key="battery_status",
                             device_class=SensorDeviceClass.ENUM,
-                            options=["Ready", "Charging", "Discharging", "Full", "Sleep", "Error"],
+                            options=[
+                                "Ready",
+                                "Charging",
+                                "Discharging",
+                                "Full",
+                                "Sleep",
+                                "Error",
+                            ],
                         ),
                     ),
                     TuyaBLESensorMapping(

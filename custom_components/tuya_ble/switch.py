@@ -473,7 +473,7 @@ mapping: dict[str, TuyaBLECategorySwitchMapping] = {
                     "ajrhf1aj",
                     "z5ztlw3k",
                 ],
-                [  # PARKSIDE Smart battery 8Ah
+                [  # PARKSIDE Smart battery
                     TuyaBLESwitchMapping(
                         dp_id=12,
                         description=SwitchEntityDescription(
