@@ -9,8 +9,8 @@ from typing import Callable
 
 from homeassistant.components.button import (
     ButtonEntityDescription,
-    ButtonDeviceClass,
     ButtonEntity,
+    ButtonDeviceClass,
 )
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
