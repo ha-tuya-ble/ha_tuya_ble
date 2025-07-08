@@ -439,7 +439,7 @@ mapping: dict[str, TuyaBLECategorySensorMapping] = {
                 [
                     "z5ztlw3k",
                     "ajrhf1aj",
-                ], # PARKSIDE Smart battery
+                ],  # PARKSIDE Smart battery
                 [
                     TuyaBLEBatteryMapping(dp_id=16),
                     TuyaBLETemperatureMapping(dp_id=11),

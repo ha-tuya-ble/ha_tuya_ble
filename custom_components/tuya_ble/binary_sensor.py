@@ -61,9 +61,9 @@ mapping: dict[str, TuyaBLECategoryBinarySensorMapping] = {
         products={
             **dict.fromkeys(
                 [
-                    "ajrhf1aj", 
+                    "ajrhf1aj",
                     "z5ztlw3k",
-                ], # PARKSIDE Smart battery
+                ],  # PARKSIDE Smart battery
                 [
                     TuyaBLEBinarySensorMapping(
                         dp_id=171,

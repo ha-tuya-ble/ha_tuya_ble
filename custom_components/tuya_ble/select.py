@@ -175,8 +175,8 @@ mapping: dict[str, TuyaBLECategorySelectMapping] = {
     "dcb": TuyaBLECategorySelectMapping(
         products={
             **dict.fromkeys(
-                ["ajrhf1aj", "z5ztlw3k"], # PARKSIDE Smart battery
-                [  
+                ["ajrhf1aj", "z5ztlw3k"],  # PARKSIDE Smart battery
+                [
                     TuyaBLESelectMapping(
                         dp_id=105,
                         description=SelectEntityDescription(

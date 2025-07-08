@@ -253,7 +253,7 @@ mapping: dict[str, TuyaBLECategoryNumberMapping] = {
     "dcb": TuyaBLECategoryNumberMapping(
         products={
             **dict.fromkeys(
-                ["ajrhf1aj", "z5ztlw3k"], # PARKSIDE Smart battery
+                ["ajrhf1aj", "z5ztlw3k"],  # PARKSIDE Smart battery
                 [
                     TuyaBLENumberMapping(
                         dp_id=116,
