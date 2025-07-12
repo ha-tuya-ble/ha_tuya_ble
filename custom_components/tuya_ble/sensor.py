@@ -171,6 +171,7 @@ mapping: dict[str, TuyaBLECategorySensorMapping] = {
                     "gumrixyt",
                     "uamrw6h3",
                     "okkyfgfs",
+                    "bvclwu9b",
                 ],  # Smart Lock
                 [
                     TuyaBLESensorMapping(
@@ -196,6 +197,15 @@ mapping: dict[str, TuyaBLECategorySensorMapping] = {
                         ),
                     ),
                     TuyaBLEBatteryMapping(dp_id=8),
+                    TuyaBLESensorMapping(
+                        dp_id=40,
+                        description=SensorEntityDescription(
+                            key="lock_door_status",
+                            entity_category=EntityCategory.DIAGNOSTIC,
+                            device_class=SensorDeviceClass.ENUM,
+                            options=["door_status_unknown", "door_status_open", "door_status_closed"],
+                        ),
+                    ),
                 ],
             ),
         }
