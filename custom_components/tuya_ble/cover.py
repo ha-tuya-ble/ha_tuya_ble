@@ -90,7 +90,7 @@ mapping: dict[str, TuyaBLECategoryCoverMapping] = {
     "cl": TuyaBLECategoryCoverMapping(
         products={
             **dict.fromkeys(
-                ["4pbr8eig", "qqdxfdht"],
+                ["4pbr8eig", "qqdxfdht", "ulughw4g"],
                 [
                     TuyaBLECoverMapping(  # BLE Blind Controller
                         description=CoverEntityDescription(

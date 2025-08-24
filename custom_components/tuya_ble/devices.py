@@ -364,6 +364,10 @@ devices_database: dict[str, TuyaBLECategoryInfo] = {
                 name="TEKXDD Fingerprint Smart Lock",
                 lock=1,
             ),
+            "k53ok3u9": TuyaBLEProductInfo(
+                name="Fingerprint Smart Lock",
+                lock=1,
+            ),
         },
     ),
     "dcb": TuyaBLECategoryInfo(
@@ -505,6 +509,9 @@ devices_database: dict[str, TuyaBLECategoryInfo] = {
                 name="Soil moisture sensor",
             ),
             "iv7hudlj": TuyaBLEProductInfo(
+                name="Bluetooth Temperature Humidity Sensor",
+            ),
+            "jm6iasmb": TuyaBLEProductInfo(
                 name="Bluetooth Temperature Humidity Sensor",
             ),
             "tv6peegl": TuyaBLEProductInfo(  # new device product_id

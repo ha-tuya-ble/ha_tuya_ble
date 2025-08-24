@@ -41,6 +41,7 @@ The integration works locally, but connection to Tuya BLE device requires device
 
 * Temperature and humidity sensors (category_id 'wsdcg')
   + Soil moisture sensor (product_id 'ojzlzzsw').
+  + Bluetooth Temperature Humidity Sensor (product_id 'jm6iasmb')
 
 * CO2 sensors (category_id 'co2bj')
   + CO2 Detector (product_id '59s19z5m').
@@ -48,6 +49,8 @@ The integration works locally, but connection to Tuya BLE device requires device
 * Smart Locks (category_id 'ms', 'jtmspro')
   + Smart Lock (product_id 'ludzroix', 'isk2p555', 'gumrixyt').
   + Raybuke K7 Pro+ (product_id 'xicdxood'), supports ble unlock and other small features.
+  + Fingerprint Smart Lock (product_id 'k53ok3u9')
+  + T55D: Battery & Door status (product_id 'k53ok3u9')
 
 * Climate (category_id 'wk')
   + Thermostatic Radiator Valve (product_ids 'drlajpqc', 'nhj2j7su').
