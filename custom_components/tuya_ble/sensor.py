@@ -204,7 +204,11 @@ mapping: dict[str, TuyaBLECategorySensorMapping] = {
                             key="lock_door_status",
                             entity_category=EntityCategory.DIAGNOSTIC,
                             device_class=SensorDeviceClass.ENUM,
-                            options=["door_status_unknown", "door_status_open", "door_status_closed"],
+                            options=[
+                                "door_status_unknown",
+                                "door_status_open",
+                                "door_status_closed",
+                            ],
                         ),
                     ),
                 ],
