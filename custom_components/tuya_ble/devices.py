@@ -73,6 +73,7 @@ class TuyaBLEWaterValveInfo:
     smart_weather: str
     use_time: int
 
+
 @dataclass
 class TuyaBLEProductInfo:
     """Model product info"""
