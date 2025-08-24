@@ -73,7 +73,6 @@ class TuyaBLEWaterValveInfo:
     smart_weather: str
     use_time: int
 
-
 @dataclass
 class TuyaBLEProductInfo:
     """Model product info"""
@@ -362,6 +361,10 @@ devices_database: dict[str, TuyaBLECategoryInfo] = {
             ),
             "okkyfgfs": TuyaBLEProductInfo(
                 name="TEKXDD Fingerprint Smart Lock",
+                lock=1,
+            ),
+            "k53ok3u9": TuyaBLEProductInfo(
+                name="Fingerprint Smart Lock",
                 lock=1,
             ),
         },
