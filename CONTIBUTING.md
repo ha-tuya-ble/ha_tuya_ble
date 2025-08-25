@@ -33,4 +33,11 @@ This guide explains how to generate a new PR for a set of **DPIDs** (Device Prop
    DPID 2 → Brightness (Integer, 0–1000)
    DPID 3 → Mode (Enum: white, colour, scene)
 ```
+6. Whangjangle this into google jules:
+
+```
+Add support for Example Product - SmartLife Finger Robot (category: szjqr - Product ID: yn4x5fa7)
+
+{ "result": { "category": "szjqr", "functions": [ { "code": "switch", "dp_id": 1, "type": "Boolean", "values": "{}" }, { "code": "mode", "dp_id": 2, "type": "Enum", "values": "{"range":["click"]}" }, { "code": "click_sustain_time", "dp_id": 3, "type": "Integer", "values": "{"unit":"0.1s","min":3,"max":100,"scale":1,"step":1}" }
+```
 
