@@ -467,6 +467,17 @@ devices_database: dict[str, TuyaBLECategoryInfo] = {
                     ),
                 ),
             ),
+            "yn4x5fa7": TuyaBLEProductInfo(
+                name="Nedis SmartLife Finger Robot",
+                fingerbot=TuyaBLEFingerbotInfo(
+                    switch=1,
+                    mode=2,
+                    up_position=4,
+                    down_position=5,
+                    hold_time=3,
+                    reverse_positions=6,
+                ),
+            ),
         },
     ),
     "kg": TuyaBLECategoryInfo(
