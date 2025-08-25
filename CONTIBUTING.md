@@ -25,7 +25,7 @@ This guide explains how to generate a new PR for a set of **DPIDs** (Device Prop
 2. Go to **Cloud → Development → Devices**.  
 3. Select the device you want to support or update.  
 4. Open the **Functions (DP)** tab.  
-5. Copy the list of **DPIDs** and their descriptions:  
+5. Copy the list of **DPIDs** and their descriptions (or the JSON!)
 
    Example:
    ```text
@@ -43,6 +43,6 @@ Add support for Example Product - SmartLife Finger Robot (category: szjqr - Prod
 
 
 7. Publish PR, clearly indicate it is AI assisted if it is not obvious. You should end up with something like https://github.com/ha-tuya-ble/ha_tuya_ble/pull/78
-8. Test locally and iterate.
-9. Share your test results - pics or it didnt happen is a good rule of thumb.
+8. Test locally and iterate - add your fork via https://www.hacs.xyz/docs/faq/custom_repositories/
+9. Share your test results - pics or didnt happen is a good rule of thumb.
 
