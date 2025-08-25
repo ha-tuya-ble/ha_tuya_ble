@@ -690,6 +690,36 @@ mapping: dict[str, TuyaBLECategoryNumberMapping] = {
             )
         },
     ),
+    # "swtz": TuyaBLECategoryNumberMapping(
+    #     products={
+    #         "bf092bejeznilat9": [  # LSC BBQ Thermometer
+    #             TuyaBLENumberMapping(
+    #                 dp_id=104,
+    #                 description=NumberEntityDescription(
+    #                     key="cook_temperature",
+    #                     device_class=NumberDeviceClass.TEMPERATURE,
+    #                     native_unit_of_measurement=UnitOfTemperature.CELSIUS,
+    #                     native_min_value=-30.0,
+    #                     native_max_value=300.0,
+    #                     native_step=1,
+    #                 ),
+    #                 coefficient=10.0,
+    #             ),
+    #             TuyaBLENumberMapping(
+    #                 dp_id=105,
+    #                 description=NumberEntityDescription(
+    #                     key="cook_temperature_2",
+    #                     device_class=NumberDeviceClass.TEMPERATURE,
+    #                     native_unit_of_measurement=UnitOfTemperature.CELSIUS,
+    #                     native_min_value=-30.0,
+    #                     native_max_value=300.0,
+    #                     native_step=1,
+    #                 ),
+    #                 coefficient=10.0,
+    #             ),
+    #         ]
+    #     },
+    # ),
 }
 
 
