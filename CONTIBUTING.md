@@ -41,3 +41,6 @@ Add support for Example Product - SmartLife Finger Robot (category: szjqr - Prod
 { "result": { "category": "szjqr", "functions": [ { "code": "switch", "dp_id": 1, "type": "Boolean", "values": "{}" }, { "code": "mode", "dp_id": 2, "type": "Enum", "values": "{"range":["click"]}" }, { "code": "click_sustain_time", "dp_id": 3, "type": "Integer", "values": "{"unit":"0.1s","min":3,"max":100,"scale":1,"step":1}" }
 ```
 
+7. Publish PR, clearly indicate it is AI assisted.
+8. Test locally and iterate.
+9. Share your test results
