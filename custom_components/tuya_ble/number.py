@@ -426,6 +426,43 @@ mapping: dict[str, TuyaBLECategoryNumberMapping] = {
                     ),
                 ],
             ),
+            "yn4x5fa7": [
+                TuyaBLEHoldTimeMapping(
+                    dp_id=3,
+                    description=TuyaBLEHoldTimeDescription(
+                        native_min_value=0.3,
+                        native_max_value=10.0,
+                        native_step=0.1,
+                    ),
+                    coefficient=10.0,
+                ),
+                TuyaBLENumberMapping(
+                    dp_id=4,
+                    description=NumberEntityDescription(
+                        key="up_position",
+                        icon="mdi:arrow-up-bold",
+                        native_max_value=30,
+                        native_min_value=0,
+                        native_unit_of_measurement=PERCENTAGE,
+                        native_step=1,
+                        entity_category=EntityCategory.CONFIG,
+                    ),
+                    is_available=is_fingerbot_not_in_program_mode,
+                ),
+                TuyaBLENumberMapping(
+                    dp_id=5,
+                    description=NumberEntityDescription(
+                        key="down_position",
+                        icon="mdi:arrow-down-bold",
+                        native_max_value=30,
+                        native_min_value=0,
+                        native_unit_of_measurement=PERCENTAGE,
+                        native_step=1,
+                        entity_category=EntityCategory.CONFIG,
+                    ),
+                    is_available=is_fingerbot_not_in_program_mode,
+                ),
+            ],
         },
     ),
     "kg": TuyaBLECategoryNumberMapping(

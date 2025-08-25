@@ -273,7 +273,7 @@ mapping: dict[str, TuyaBLECategorySelectMapping] = {
     "szjqr": TuyaBLECategorySelectMapping(
         products={
             **dict.fromkeys(
-                ["3yqdo5yt", "xhf790if"],  # CubeTouch 1s and II
+                ["3yqdo5yt", "xhf790if", "yn4x5fa7"],  # CubeTouch 1s and II
                 [
                     TuyaBLEFingerbotModeMapping(dp_id=2),
                 ],

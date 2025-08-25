@@ -311,6 +311,10 @@ mapping: dict[str, TuyaBLECategorySwitchMapping] = {
                     TuyaBLEReversePositionsMapping(dp_id=11),
                 ],
             ),
+            "yn4x5fa7": [
+                TuyaBLEFingerbotSwitchMapping(dp_id=1),
+                TuyaBLEReversePositionsMapping(dp_id=6),
+            ],
         },
     ),
     "kg": TuyaBLECategorySwitchMapping(
