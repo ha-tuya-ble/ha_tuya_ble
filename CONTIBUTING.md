@@ -1,6 +1,13 @@
 # Contributing Guide
 
-Thank you for your interest in contributing!  
+I have a new device that isn't supported.
+
+I have a similar device to one that is already supported.
+
+## Vibe Coding Your Robotic Lawnmower
+
+What could go wrong?
+
 This guide explains how to generate a new PR for a set of **DPIDs** (Device Property IDs) using **Google Jules (Web UI)**, and how to collect the DPIDs from [Tuya IoT](https://iot.tuya.com).
 
 ---
