@@ -16,6 +16,7 @@ from homeassistant.components.cover import (
     STATE_CLOSED,
     STATE_OPEN,
     ATTR_POSITION,
+    ATTR_TILT_POSITION,
 )
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant, callback
@@ -54,6 +55,7 @@ class TuyaBLECoverMapping:
     cover_set_upper_limit_dp_id: int = 0
     cover_factory_reset_dp_id: int = 0
     cover_position_set_dp: int = 0
+    cover_tilt_dp_id: int = 0
 
 
 @dataclass
@@ -117,6 +119,15 @@ mapping: dict[str, TuyaBLECategoryCoverMapping] = {
                     cover_battery_dp_id=13,
                 )
             ],
+            "dy4dh1q0": [
+                TuyaBLECoverMapping(
+                    description=CoverEntityDescription(key="ble_venetian_blind_motor"),
+                    cover_state_dp_id=1,
+                    cover_position_set_dp=2,
+                    cover_position_dp_id=3,
+                    cover_tilt_dp_id=101,
+                )
+            ],
         },
     ),
 }
@@ -140,6 +151,7 @@ class TuyaBLECover(TuyaBLEEntity, CoverEntity):
 
     _attr_is_closed = False
     _attr_current_cover_position = 0
+    _attr_current_cover_tilt_position = 0
 
     def __init__(
         self,
@@ -155,12 +167,15 @@ class TuyaBLECover(TuyaBLEEntity, CoverEntity):
     @property
     def supported_features(self) -> CoverEntityFeature:
         """Return the supported features of the device."""
-        return (
+        result = (
             CoverEntityFeature.CLOSE
             | CoverEntityFeature.OPEN
             | CoverEntityFeature.SET_POSITION
             | CoverEntityFeature.STOP
         )
+        if self._mapping.cover_tilt_dp_id != 0:
+            result |= CoverEntityFeature.SET_TILT_POSITION
+        return result
 
     @callback
     def _handle_coordinator_update(self) -> None:
@@ -199,7 +214,49 @@ class TuyaBLECover(TuyaBLEEntity, CoverEntity):
                 if self._attr_current_cover_position == 100:
                     self._attr_is_opening = False
 
+        if self._mapping.cover_tilt_dp_id != 0:
+            datapoint = self._device.datapoints[self._mapping.cover_tilt_dp_id]
+            if datapoint:
+                self._attr_current_cover_tilt_position = int(
+                    (int(datapoint.value) - 1) / 9 * 100
+                )
+
         self.async_write_ha_state()
+
+    async def async_open_cover_tilt(self, **kwargs: Any) -> None:
+        """Open the cover tilt."""
+        if self._mapping.cover_tilt_dp_id != 0:
+            datapoint = self._device.datapoints.get_or_create(
+                self._mapping.cover_tilt_dp_id,
+                TuyaBLEDataPointType.DT_VALUE,
+                10,
+            )
+            if datapoint:
+                self._hass.create_task(datapoint.set_value(10))
+
+    async def async_close_cover_tilt(self, **kwargs: Any) -> None:
+        """Close the cover tilt."""
+        if self._mapping.cover_tilt_dp_id != 0:
+            datapoint = self._device.datapoints.get_or_create(
+                self._mapping.cover_tilt_dp_id,
+                TuyaBLEDataPointType.DT_VALUE,
+                1,
+            )
+            if datapoint:
+                self._hass.create_task(datapoint.set_value(1))
+
+    async def async_set_cover_tilt_position(self, **kwargs: Any) -> None:
+        """Move the cover tilt to a specific position."""
+        tilt_position = kwargs[ATTR_TILT_POSITION]
+        new_tilt_position = round(tilt_position / 100 * 9 + 1)
+        if self._mapping.cover_tilt_dp_id != 0:
+            datapoint = self._device.datapoints.get_or_create(
+                self._mapping.cover_tilt_dp_id,
+                TuyaBLEDataPointType.DT_VALUE,
+                new_tilt_position,
+            )
+            if datapoint:
+                self._hass.create_task(datapoint.set_value(new_tilt_position))
 
     async def async_open_cover(self, **kwargs) -> None:
         """Open a cover."""
