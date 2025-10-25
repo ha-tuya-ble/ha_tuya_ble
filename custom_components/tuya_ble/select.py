@@ -333,16 +333,10 @@ mapping: dict[str, TuyaBLECategorySelectMapping] = {
     ),
     "wsdcg": TuyaBLECategorySelectMapping(
         products={
-            "ojzlzzsw": [  # Soil moisture sensor
-                TuyaBLETemperatureUnitMapping(dp_id=9)
-            ],
-            "iv7hudlj": [  # Bluetooth Temperature Humidity Sensor
-                TuyaBLETemperatureUnitMapping(dp_id=9)
-            ],
-            "jm6iasmb": [  # Bluetooth Temperature Humidity Sensor
-                TuyaBLETemperatureUnitMapping(dp_id=9)
-            ],
-            "vlzqwckk": [TuyaBLETemperatureUnitMapping(dp_id=9)],
+            **dict.fromkeys(
+                ["ojzlzzsw", "iv7hudlj", "jm6iasmb", "vlzqwckk", "tr0kabuq"],
+                [TuyaBLETemperatureUnitMapping(dp_id=9)],
+            )
         },
     ),
     "znhsb": TuyaBLECategorySelectMapping(
