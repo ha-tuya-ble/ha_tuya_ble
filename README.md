@@ -39,8 +39,9 @@ The integration works locally, but connection to Tuya BLE device requires device
   All features available in Home Assistant, programming (series of actions) is implemented for Fingerbot Plus.
   For programming exposed entities 'Program' (switch), 'Repeat forever', 'Repeats count', 'Idle position' and 'Program' (text). Format of program text is: 'position\[/time\];...' where position is in percents, optional time is in seconds (zero if missing).
 
-* Temperature and humidity sensors (category_id 'wsdcg')
+* Temperature and humidity sensors (category_id 'wsdcg', 'zwjcy')
   + Soil moisture sensor (product_id 'ojzlzzsw').
+  + SRB-PM01 Soil Moisture Sensor (product_id 'jabotj1z').
   + Bluetooth Temperature Humidity Sensor (product_id 'jm6iasmb')
 
 * CO2 sensors (category_id 'co2bj')
