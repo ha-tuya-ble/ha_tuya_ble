@@ -631,6 +631,13 @@ devices_database: dict[str, TuyaBLECategoryInfo] = {
             "kcy0x4pi": TuyaBLEProductInfo(name="Curtain Controller"),
         }
     ),
+    "zwjcy": TuyaBLECategoryInfo(
+        products={
+            "jabotj1z": TuyaBLEProductInfo(
+                name="SRB-PM01 Soil Moisture Sensor",
+            ),
+        },
+    ),
 }
 
 
