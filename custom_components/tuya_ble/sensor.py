@@ -247,31 +247,8 @@ mapping: dict[str, TuyaBLECategorySensorMapping] = {
                 TuyaBLEBatteryMapping(dp_id=8),
             ],
             "ajk32biq": [
-                TuyaBLESensorMapping(
-                    dp_id=21,
-                    description=SensorEntityDescription(
-                        key="alarm_lock",
-                        device_class=SensorDeviceClass.ENUM,
-                        options=[
-                            "wrong_finger",
-                            "wrong_password",
-                            "wrong_card",
-                            "wrong_face",
-                            "tongue_bad",
-                            "too_hot",
-                            "unclosed_time",
-                            "tongue_not_out",
-                            "pry",
-                            "key_in",
-                            "low_battery",
-                            "power_off",
-                            "shock",
-                        ],
-                    ),
-                ),
-                TuyaBLEBatteryMapping(
-                    dp_id=8,
-                ),
+                TuyaBLEAlarmLockStateMapping(dp_id=21),
+                TuyaBLEBatteryMapping(dp_id=8),
             ],
         }
     ),
