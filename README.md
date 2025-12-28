@@ -32,22 +32,32 @@ The integration works locally, but connection to Tuya BLE device requires device
 * Fingerbots (category_id 'szjqr')
   + Fingerbot (product_ids 'ltak7e1p', 'y6kttvd6', 'yrnk7mnn', 'nvr2rocq', 'bnt7wajf', 'rvdceqjh', '5xhbk964'), original device, first in category, powered by CR2 battery.
   + Adaprox Fingerbot (product_id 'y6kttvd6'), built-in battery with USB type C charging.
-  + Fingerbot Plus (product_ids 'blliqpsj', 'ndvkgsrm', 'yiihr7zh', 'neq16kgd', 'mknd4lci', 'riecov42', 'bs3ubslo'), almost same as original, has sensor button for manual control.
+  + Fingerbot Plus (product_ids 'blliqpsj', 'ndvkgsrm', 'yiihr7zh', 'neq16kgd', 'mknd4lci', 'riecov42', 'bs3ubslo', '6jcvqwh0'), almost same as original, has sensor button for manual control.
   + CubeTouch 1s (product_id '3yqdo5yt'), built-in battery with USB type C charging.
   + CubeTouch II (product_id 'xhf790if'), built-in battery with USB type C charging.
 
   All features available in Home Assistant, programming (series of actions) is implemented for Fingerbot Plus.
   For programming exposed entities 'Program' (switch), 'Repeat forever', 'Repeats count', 'Idle position' and 'Program' (text). Format of program text is: 'position\[/time\];...' where position is in percents, optional time is in seconds (zero if missing).
 
-* Temperature and humidity sensors (category_id 'wsdcg')
+* Temperature and humidity sensors (category_id 'wsdcg', 'zwjcy')
   + Soil moisture sensor (product_id 'ojzlzzsw').
+  + SRB-PM01 Soil Moisture Sensor (product_id 'jabotj1z').
+  + Temperature Humidity Sensor (product_id 'jm6iasmb', 'tr0kabuq', 'iv7hudlj, 'jm6iasmb')
+  + Soil Thermo-Hygrometer (product_id 'tv6peegl')
 
 * CO2 sensors (category_id 'co2bj')
   + CO2 Detector (product_id '59s19z5m').
 
 * Smart Locks (category_id 'ms', 'jtmspro')
-  + Smart Lock (product_id 'ludzroix', 'isk2p555', 'gumrixyt').
+  + Smart Lock (product_id 'ludzroix', 'isk2p555', 'gumrixyt', 'sidhzylo', 'mqc2hevy').
   + Raybuke K7 Pro+ (product_id 'xicdxood'), supports ble unlock and other small features.
+  + Fingerprint Smart Lock (product_id 'k53ok3u9')
+  + T55D: Battery & Door status (product_id 'bvclwu9b')
+  + Gimdow A1 Pro Max (product_id 'rlyxv7pe') - experimental
+  + LA-01 Smart lock (product_id 'oyqux5vv') - experimental
+  + B16 (product_id 'ajk32biq')
+  + Smart Cylinder Lock (product_id 'z7lj676i')
+  + TEKXDD Fingerprint Smart Lock (product_id 'okkyfgfs')
 
 * Climate (category_id 'wk')
   + Thermostatic Radiator Valve (product_ids 'drlajpqc', 'nhj2j7su').
@@ -63,14 +73,30 @@ The integration works locally, but connection to Tuya BLE device requires device
 
 * Covers (category_id 'cl')
   + Moes Roller Blind Motor (product_id '4pbr8eig')
+  + Amazon HeyBlinds (product_id 'vlwf3ud6')
+  + Tuya Smart Curtain Robot (product_id 'kcy0x4pi')
+  + Blinds Drive (product_id 'qqdxfdht')
+  + LY Curtain Motor Robot (product_id 'ulughw4g')
+  + AOK AM24 Venetian Blinds Motor (product_id 'dy4dh1q0') - Experimental
 
 * Water valve controller (category_id 'sfkzq')
   + Water valve controller (product_id 'nxquc5lb')
-
+  + NOUS L11 Bluetooth Smart Garden Water Timer (product_id '46zia2nz')
+  + WT-03W Diivoo Smart Water Timer for Garden Hose (product_id '1fcnd8xk')
+  
+  
 * Lights
   + Most BLE light products should be supported as the Light class tries to get device description from the cloud when there are added but only Strip Lights (category_id 'dd') Magiacous RGB light bar (product_id 'nvfrtxlq') has has been tested
+  + Magiacous Floor Lamp (product_id 'umzu0c2y')
+  + Comfamoli Sunset Lamp (product_id '6jxcdae1')
+  + RGB Strip Light (product_id '0qgrjxum')
     
     *Note that some light products are using Bluetooth Mesh protocols and not BLE and so aren't compatible with this integration. That's probably the case if your product isn't at least found (even if non-working) by this integration*
+
+
+* Battery (category_id 'dcb')
+  + Parkside Performace Smart Battery 4Ah (product_id 'z5ztlw3k')
+  + Parkside Performace Smart Battery 8Ah (product_id 'ajrhf1aj')
 
 ## Note that the original hasn't been updated in a long time, still, Support original developer @PlusPlus-ua:
 

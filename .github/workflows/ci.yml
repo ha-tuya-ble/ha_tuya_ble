@@ -40,7 +40,19 @@ jobs:
         if: steps.cache-dependencies.outputs.cache-hit != 'true'
         run: pip install -r requirements_test.txt
 
+  validate-hacs:
+    runs-on: ubuntu-latest
+    steps:
+      - name: "Checkout"
+        uses: actions/checkout@v4
 
+      - name: "HACS validation"
+        uses: "hacs/action@main"
+        with:
+          category: "integration"
+
+      - name: "Hassfest validation"
+        uses: home-assistant/actions/hassfest@master
 
   black:
     name: Black codestyle

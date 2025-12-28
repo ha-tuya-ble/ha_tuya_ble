@@ -57,6 +57,25 @@ class TuyaBLECategoryBinarySensorMapping:
 
 
 mapping: dict[str, TuyaBLECategoryBinarySensorMapping] = {
+    "dcb": TuyaBLECategoryBinarySensorMapping(
+        products={
+            **dict.fromkeys(
+                [
+                    "ajrhf1aj",
+                    "z5ztlw3k",
+                ],  # PARKSIDE Smart battery
+                [
+                    TuyaBLEBinarySensorMapping(
+                        dp_id=171,
+                        description=BinarySensorEntityDescription(
+                            key="cw_or_ccw_display",
+                            icon="mdi:rotate-3d-variant",
+                        ),
+                    ),
+                ],
+            ),
+        },
+    ),
     "wk": TuyaBLECategoryBinarySensorMapping(
         products={
             **dict.fromkeys(
@@ -81,8 +100,9 @@ mapping: dict[str, TuyaBLECategoryBinarySensorMapping] = {
     ),
     "ms": TuyaBLECategoryBinarySensorMapping(
         products={
+            # TODO: Review how many of these are better off as a switch only?
             **dict.fromkeys(
-                ["okkyfgfs"],  # Smart Lock
+                ["okkyfgfs", "sidhzylo", "mqc2hevy"],  # Smart Lock
                 [
                     TuyaBLEBinarySensorMapping(
                         dp_id=47,
@@ -92,6 +112,19 @@ mapping: dict[str, TuyaBLECategoryBinarySensorMapping] = {
                     ),
                 ],
             ),
+        }
+    ),
+    "jtmspro": TuyaBLECategoryBinarySensorMapping(
+        products={
+            "ajk32biq": [
+                TuyaBLEBinarySensorMapping(
+                    dp_id=24,
+                    description=BinarySensorEntityDescription(
+                        key="doorbell",
+                        device_class=BinarySensorDeviceClass.DOORBELL,
+                    ),
+                ),
+            ],
         }
     ),
 }

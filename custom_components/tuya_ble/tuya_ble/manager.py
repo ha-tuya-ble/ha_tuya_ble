@@ -22,9 +22,9 @@ class TuyaBLEDeviceCredentials:
 
     def __str__(self):
         return (
-            "uuid: xxxxxxxxxxxxxxxx, "
-            "local_key: xxxxxxxxxxxxxxxx, "
-            "device_id: xxxxxxxxxxxxxxxx, "
+            "uuid: %s, "
+            "local_key: %s, "
+            "device_id: %s, "
             "category: %s, "
             "product_id: %s, "
             "device_name: %s, "
@@ -33,6 +33,9 @@ class TuyaBLEDeviceCredentials:
             "functions: %s"
             "status_range: %s"
         ) % (
+            self.uuid,
+            f'{"x" * 10}{self.local_key[10:]}',  # Mask the majority of the local key
+            self.device_id,
             self.category,
             self.product_id,
             self.device_name,

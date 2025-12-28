@@ -355,25 +355,53 @@ devices_database: dict[str, TuyaBLECategoryInfo] = {
     "ms": TuyaBLECategoryInfo(
         products={
             **dict.fromkeys(
-                ["ludzroix", "isk2p555", "gumrixyt", "uamrw6h3"],
+                [
+                    "ludzroix",
+                    "isk2p555",
+                    "gumrixyt",
+                    "uamrw6h3",
+                    "sidhzylo",
+                    "mqc2hevy",
+                ],
                 TuyaBLEProductInfo(  # device product_id
                     name="Smart Lock",
+                    lock=1,
                 ),
             ),
             "okkyfgfs": TuyaBLEProductInfo(
                 name="TEKXDD Fingerprint Smart Lock",
                 lock=1,
             ),
+            "k53ok3u9": TuyaBLEProductInfo(
+                name="Fingerprint Smart Lock",
+                lock=1,
+            ),
+        },
+    ),
+    "dcb": TuyaBLECategoryInfo(
+        products={
+            **dict.fromkeys(
+                ["z5ztlw3k"],
+                TuyaBLEProductInfo(  # device product_id
+                    name="PARKSIDE Smart battery 4Ah",
+                ),
+            ),
+            **dict.fromkeys(
+                ["ajrhf1aj"],
+                TuyaBLEProductInfo(  # device product_id
+                    name="PARKSIDE Smart battery 8Ah",
+                ),
+            ),
         },
     ),
     "jtmspro": TuyaBLECategoryInfo(
         products={
-            "xicdxood": TuyaBLEProductInfo(  # device product_id
-                name="Raycube K7 Pro+",
-            ),
-            "ebd5e0uauqx0vfsp": TuyaBLEProductInfo(  # device product_id
-                name="CentralAcesso",
-            ),
+            "xicdxood": TuyaBLEProductInfo(name="Raycube K7 Pro+", lock=1),
+            "oyqux5vv": TuyaBLEProductInfo(name="LA-01 Smart lock", lock=1),
+            "rlyxv7pe": TuyaBLEProductInfo(name="A1 PRO MAX", lock=1),
+            "ebd5e0uauqx0vfsp": TuyaBLEProductInfo(name="CentralAcesso"),
+            "ajk32biq": TuyaBLEProductInfo(name="B16", lock=1),
+            "z7lj676i": TuyaBLEProductInfo(name="Smart Cylinder Lock", lock=1),
         },
     ),
     "szjqr": TuyaBLECategoryInfo(
@@ -408,6 +436,7 @@ devices_database: dict[str, TuyaBLECategoryInfo] = {
                     "neq16kgd",
                     "6jcvqwh0",
                     "riecov42",
+                    "h8kdwywx",
                 ],  # device product_ids
                 TuyaBLEProductInfo(
                     name="Fingerbot Plus",
@@ -444,6 +473,17 @@ devices_database: dict[str, TuyaBLECategoryInfo] = {
                         reverse_positions=11,
                         program=121,
                     ),
+                ),
+            ),
+            "yn4x5fa7": TuyaBLEProductInfo(
+                name="Nedis SmartLife Finger Robot",
+                fingerbot=TuyaBLEFingerbotInfo(
+                    switch=1,
+                    mode=2,
+                    up_position=4,
+                    down_position=5,
+                    hold_time=3,
+                    reverse_positions=6,
                 ),
             ),
         },
@@ -484,25 +524,17 @@ devices_database: dict[str, TuyaBLECategoryInfo] = {
     ),
     "wsdcg": TuyaBLECategoryInfo(
         products={
-            "ojzlzzsw": TuyaBLEProductInfo(  # device product_id
-                name="Soil moisture sensor",
-            ),
-            "iv7hudlj": TuyaBLEProductInfo(
-                name="Bluetooth Temperature Humidity Sensor",
-            ),
-            "tv6peegl": TuyaBLEProductInfo(  # new device product_id
-                name="Soil Thermo-Hygrometer",
-            ),
-            "vlzqwckk": TuyaBLEProductInfo(
-                name="Temperature Humidity Sensor",
-            ),
+            "ojzlzzsw": TuyaBLEProductInfo(name="Soil moisture sensor"),
+            "iv7hudlj": TuyaBLEProductInfo(name="Temperature Humidity Sensor"),
+            "jm6iasmb": TuyaBLEProductInfo(name="Temperature Humidity Sensor"),
+            "tv6peegl": TuyaBLEProductInfo(name="Soil Thermo-Hygrometer"),
+            "vlzqwckk": TuyaBLEProductInfo(name="Temperature Humidity Sensor"),
+            "tr0kabuq": TuyaBLEProductInfo(name="Temperature Humidity Sensor"),
         },
     ),
     "znhsb": TuyaBLECategoryInfo(
         products={
-            "cdlandip": TuyaBLEProductInfo(  # device product_id
-                name="Smart water bottle",
-            ),
+            "cdlandip": TuyaBLEProductInfo(name="Smart water bottle"),
         },
     ),
     "sfkzq": TuyaBLECategoryInfo(
@@ -519,17 +551,37 @@ devices_database: dict[str, TuyaBLECategoryInfo] = {
                     name="Irrigation computer",
                 ),
             ),
-            "0axr5s0b": TuyaBLEProductInfo(  # device product_id
-                name="Valve controller",
+            **dict.fromkeys(
+                [
+                    "svhikeyq",
+                    "0axr5s0b",
+                ],  # device product_id
+                TuyaBLEProductInfo(
+                    name="Valve controller",
+                    watervalve=TuyaBLEWaterValveInfo(
+                        switch=1,
+                        countdown=11,
+                        weather_delay=10,
+                        smart_weather=13,
+                        use_time=15,
+                    ),
+                ),
             ),
-            "nxquc5lb": TuyaBLEProductInfo(
-                name="Water valve controller",
-                watervalve=TuyaBLEWaterValveInfo(
-                    switch=1,
-                    countdown=8,
-                    weather_delay=10,
-                    smart_weather=13,
-                    use_time=9,
+            **dict.fromkeys(
+                [
+                    "nxquc5lb",
+                    "46zia2nz",
+                    "1fcnd8xk",
+                ],
+                TuyaBLEProductInfo(
+                    name="Water valve controller",
+                    watervalve=TuyaBLEWaterValveInfo(
+                        switch=1,
+                        countdown=8,
+                        weather_delay=10,
+                        smart_weather=13,
+                        use_time=9,
+                    ),
                 ),
             ),
         },
@@ -546,25 +598,39 @@ devices_database: dict[str, TuyaBLECategoryInfo] = {
     ),
     "dd": TuyaBLECategoryInfo(
         products={
-            **dict.fromkeys(
-                [
-                    "nvfrtxlq",
-                ],  # device product_id
-                TuyaBLEProductInfo(
-                    name="LGB102 Magic Strip Lights",
-                    manufacturer="Magiacous",
-                ),
+            "nvfrtxlq": TuyaBLEProductInfo(
+                name="LGB102 Magic Strip Lights",
+                manufacturer="Magiacous",
             ),
+            "umzu0c2y": TuyaBLEProductInfo(
+                name="Floor Lamp",
+                manufacturer="Magiacous",
+            ),
+            "6jxcdae1": TuyaBLEProductInfo(
+                name="Sunset Lamp",
+                manufacturer="Comfamoli",
+            ),
+            "0qgrjxum": TuyaBLEProductInfo(name="RGB Strip Light"),
         },
         info=TuyaBLEProductInfo(
-            name="Strip Lights",
+            name="Lights",
         ),
     ),
     "cl": TuyaBLECategoryInfo(
         products={
-            **dict.fromkeys(["4pbr8eig"], TuyaBLEProductInfo(name="Blind Controller")),
+            **dict.fromkeys(
+                ["4pbr8eig", "vlwf3ud6"], TuyaBLEProductInfo(name="Blind Controller")
+            ),
             "kcy0x4pi": TuyaBLEProductInfo(name="Curtain Controller"),
+            "dy4dh1q0": TuyaBLEProductInfo(name="AOK AM24 Venetian Blinds Motor"),
         }
+    ),
+    "zwjcy": TuyaBLECategoryInfo(
+        products={
+            "jabotj1z": TuyaBLEProductInfo(
+                name="SRB-PM01 Soil Moisture Sensor",
+            ),
+        },
     ),
 }
 

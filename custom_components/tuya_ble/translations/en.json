@@ -157,6 +157,14 @@
                     "normal": "Normal"
                 }
             },
+            "lock_door_status": {
+                "name": "Door status",
+                "state": {
+                    "door_status_unknown": "Unknown",
+                    "door_status_open": "Open",
+                    "door_status_closed": "Closed"
+                }
+            },
             "humidity": {
                 "name": "Humidity"
             },

@@ -125,6 +125,7 @@ mapping: dict[str, TuyaBLECategoryTextMapping] = {
                     "neq16kgd",
                     "6jcvqwh0",
                     "riecov42",
+                    "h8kdwywx",
                 ],  # Fingerbot Plus
                 [
                     TuyaBLETextMapping(
@@ -138,6 +139,25 @@ mapping: dict[str, TuyaBLECategoryTextMapping] = {
                         is_available=is_fingerbot_in_program_mode,
                         getter=get_fingerbot_program,
                         setter=set_fingerbot_program,
+                    ),
+                ],
+            ),
+        },
+    ),
+    "dcb": TuyaBLECategoryTextMapping(
+        products={
+            **dict.fromkeys(
+                ["ajrhf1aj", "z5ztlw3k"],  # PARKSIDE Smart battery
+                [
+                    TuyaBLETextMapping(
+                        dp_id=106,
+                        description=TextEntityDescription(
+                            key="battery_pin",
+                            icon="mdi:key-variant",
+                            entity_category=EntityCategory.CONFIG,
+                        ),
+                        dp_type=TuyaBLEDataPointType.DT_STRING,
+                        default_value="0000",  # Default PIN
                     ),
                 ],
             ),
@@ -212,7 +232,7 @@ class TuyaBLEText(TuyaBLEEntity, TextEntity):
         if datapoint:
             return str(datapoint.value)
 
-        return self._mapping.description.default_value
+        return self._mapping.default_value
 
     def set_value(self, value: str) -> None:
         """Change the value."""

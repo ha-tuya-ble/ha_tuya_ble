@@ -549,7 +549,7 @@ class TuyaBLELight(TuyaBLEEntity, LightEntity):
         # Update/override the device info from our description
         device.update_description(description)
 
-        _LOGGER.debug("%s : sunctions: %s", device.name, device.function)
+        _LOGGER.debug("%s: functions: %s", device.name, device.function)
 
         # Determine DPCodes
         self._color_mode_dpcode = self.find_dpcode(

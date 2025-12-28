@@ -10,11 +10,13 @@ from typing import Callable
 from homeassistant.components.button import (
     ButtonEntityDescription,
     ButtonEntity,
+    ButtonDeviceClass,
 )
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator
+from homeassistant.helpers.entity import EntityCategory
 
 from .const import DOMAIN
 from .devices import TuyaBLEData, TuyaBLEEntity, TuyaBLEProductInfo
@@ -79,6 +81,33 @@ class TuyaBLECategoryButtonMapping:
 
 
 mapping: dict[str, TuyaBLECategoryButtonMapping] = {
+    "dcb": TuyaBLECategoryButtonMapping(
+        products={
+            **dict.fromkeys(
+                ["ajrhf1aj", "z5ztlw3k"],  # PARKSIDE Smart battery
+                [
+                    TuyaBLEButtonMapping(
+                        dp_id=115,
+                        description=ButtonEntityDescription(
+                            key="battery_finder",
+                            icon="mdi:find-replace",
+                            entity_category=EntityCategory.DIAGNOSTIC,
+                        ),
+                    ),
+                    TuyaBLEButtonMapping(
+                        dp_id=162,
+                        description=ButtonEntityDescription(
+                            key="factory_data_reset",
+                            device_class=ButtonDeviceClass.RESTART,
+                            icon="mdi:restore",
+                            entity_category=EntityCategory.CONFIG,
+                        ),
+                        dp_type=TuyaBLEDataPointType.DT_RAW,
+                    ),
+                ],
+            ),
+        },
+    ),
     "szjqr": TuyaBLECategoryButtonMapping(
         products={
             **dict.fromkeys(
@@ -95,6 +124,7 @@ mapping: dict[str, TuyaBLECategoryButtonMapping] = {
                     "yiihr7zh",
                     "neq16kgd",
                     "6jcvqwh0",
+                    "h8kdwywx",
                 ],  # Fingerbot Plus
                 [
                     TuyaBLEFingerbotModeMapping(dp_id=2),
@@ -140,22 +170,30 @@ mapping: dict[str, TuyaBLECategoryButtonMapping] = {
     ),
     "jtmspro": TuyaBLECategoryButtonMapping(
         products={
-            "xicdxood": [  # Raycube K7 Pro+
-                TuyaBLEButtonMapping(
-                    dp_id=71,  # On click it opens the lock, just like connecting via Smart Life App
-                    # and holding the center button
-                    description=ButtonEntityDescription(
-                        key="bluetooth_unlock",
-                        icon="mdi:lock-open-variant-outline",
+            **dict.fromkeys(
+                [
+                    "xicdxood",  # Raycube K7 Pro+
+                    "rlyxv7pe",  # A1 PRO MAX
+                    "oyqux5vv",  # LA-01
+                ],
+                [
+                    # Raycube K7 Pro+, unclear if applicable to A1 PRO MAX
+                    TuyaBLEButtonMapping(
+                        dp_id=71,  # On click it opens the lock, just like connecting via Smart Life App
+                        # and holding the center button
+                        description=ButtonEntityDescription(
+                            key="bluetooth_unlock",
+                            icon="mdi:lock-open-variant-outline",
+                        ),
                     ),
-                ),
-            ],
+                ],
+            )
         },
     ),
     "ms": TuyaBLECategoryButtonMapping(
         products={
             **dict.fromkeys(
-                ["okkyfgfs"],  # Smart Lock
+                ["okkyfgfs", "k53ok3u9", "sidhzylo"],  # Smart Lock
                 [
                     TuyaBLEButtonMapping(
                         dp_id=6,

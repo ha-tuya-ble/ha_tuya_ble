@@ -106,10 +106,53 @@ class TuyaBLECategorySelectMapping:
     mapping: list[TuyaBLESelectMapping] | None = None
 
 
+@dataclass
+class TuyaBLETemperatureUnitMapping(TuyaBLESelectMapping):
+    description: TemperatureUnitDescription = field(
+        default_factory=lambda: TemperatureUnitDescription(
+            options=[
+                UnitOfTemperature.CELSIUS,
+                UnitOfTemperature.FAHRENHEIT,
+            ],
+            entity_registry_enabled_default=False,
+        )
+    )
+
+
 mapping: dict[str, TuyaBLECategorySelectMapping] = {
     "sfkzq": TuyaBLECategorySelectMapping(
         products={
-            "0axr5s0b": [  # Valve Controller
+            **dict.fromkeys(
+                ["46zia2nz", "1fcnd8xk", "0axr5s0b"],
+                [
+                    TuyaBLESelectMapping(
+                        dp_id=10,
+                        description=SelectEntityDescription(
+                            key="weather_delay",
+                            options=[
+                                "cancel",
+                                "24h",
+                                "48h",
+                                "72h",
+                            ],
+                            entity_category=EntityCategory.CONFIG,
+                        ),
+                    ),
+                    TuyaBLESelectMapping(
+                        dp_id=12,
+                        description=SelectEntityDescription(
+                            key="work_state",
+                            options=["auto", "manual", "idle"],
+                            entity_category=EntityCategory.CONFIG,
+                        ),
+                    ),
+                ],
+            ),
+            "nxquc5lb": [  # Smart water timer - SOP10
+                TuyaBLEWeatherDelayMapping(dp_id=10),
+                TuyaBLESmartWeatherMapping(dp_id=13),
+            ],
+            "svhikeyq": [  # Smart water timer
                 TuyaBLESelectMapping(
                     dp_id=10,
                     description=SelectEntityDescription(
@@ -123,34 +166,50 @@ mapping: dict[str, TuyaBLECategorySelectMapping] = {
                         entity_category=EntityCategory.CONFIG,
                     ),
                 ),
-                TuyaBLESelectMapping(
-                    dp_id=12,
-                    description=SelectEntityDescription(
-                        key="work_state",
-                        options=["auto", "manual", "idle"],
-                        entity_category=EntityCategory.CONFIG,
-                    ),
-                ),
-            ],
-            "nxquc5lb": [  # Smart water timer - SOP10
-                TuyaBLEWeatherDelayMapping(dp_id=10),
                 TuyaBLESmartWeatherMapping(dp_id=13),
             ],
         },
     ),
     "co2bj": TuyaBLECategorySelectMapping(
         products={
-            "59s19z5m": [  # CO2 Detector
-                TuyaBLESelectMapping(
-                    dp_id=101,
-                    description=TemperatureUnitDescription(
-                        options=[
-                            UnitOfTemperature.CELSIUS,
-                            UnitOfTemperature.FAHRENHEIT,
-                        ],
+            "59s19z5m": [TuyaBLETemperatureUnitMapping(dp_id=101)],  # CO2 Detector
+        },
+    ),
+    "dcb": TuyaBLECategorySelectMapping(
+        products={
+            **dict.fromkeys(
+                ["ajrhf1aj", "z5ztlw3k"],  # PARKSIDE Smart battery
+                [
+                    TuyaBLESelectMapping(
+                        dp_id=105,
+                        description=SelectEntityDescription(
+                            key="battery_work_mode",
+                            icon="mdi:leaf-circle-outline",
+                            options=[
+                                "Performance",
+                                "Balanced",
+                                "Eco",
+                                "Expert",
+                            ],
+                            entity_category=EntityCategory.CONFIG,
+                        ),
                     ),
-                ),
-            ],
+                    TuyaBLESelectMapping(
+                        dp_id=174,
+                        description=SelectEntityDescription(
+                            key="pack_work_mode",
+                            icon="mdi:leaf-circle-outline",
+                            options=[
+                                "Performance",
+                                "Balanced",
+                                "Eco",
+                                "Expert",
+                            ],
+                            entity_category=EntityCategory.CONFIG,
+                        ),
+                    ),
+                ],
+            ),
         },
     ),
     "ms": TuyaBLECategorySelectMapping(
@@ -162,6 +221,7 @@ mapping: dict[str, TuyaBLECategorySelectMapping] = {
                     "gumrixyt",
                     "uamrw6h3",
                     "okkyfgfs",
+                    "sidhzylo",
                 ],  # Smart Lock
                 [
                     TuyaBLESelectMapping(
@@ -179,34 +239,49 @@ mapping: dict[str, TuyaBLECategorySelectMapping] = {
                     ),
                 ],
             ),
-        }
-    ),
-    "jtmspro": TuyaBLECategorySelectMapping(
-        products={
-            "xicdxood": [  # Raycube K7 Pro+
+            "mqc2hevy": [
                 TuyaBLESelectMapping(
                     dp_id=31,
                     description=SelectEntityDescription(
                         key="beep_volume",
+                        icon="mdi:volume-high",
                         options=[
-                            "Mute",
-                            "Low",
-                            "Normal",
-                            "High",
+                            "mute",
+                            "low",
+                            "normal",
+                            "high",
                         ],
                         entity_category=EntityCategory.CONFIG,
                     ),
+                    dp_type=TuyaBLEDataPointType.DT_ENUM,
                 ),
                 TuyaBLESelectMapping(
                     dp_id=28,
                     description=SelectEntityDescription(
                         key="language",
+                        icon="mdi:translate",
                         options=[
-                            "Chinese Simplified",
-                            "English",
-                            "Arabic",
-                            "Indonesian",
-                            "Portuguese",
+                            "chinese_simplified",
+                            "english",
+                            "japanese",
+                            "russian",
+                            "german",
+                            "spanish",
+                            "french",
+                            "korean",
+                        ],
+                        entity_category=EntityCategory.CONFIG,
+                    ),
+                    dp_type=TuyaBLEDataPointType.DT_ENUM,
+                ),
+                TuyaBLESelectMapping(
+                    dp_id=68,
+                    description=SelectEntityDescription(
+                        key="special_function",
+                        icon="mdi:tools",
+                        options=[
+                            "function1",
+                            "function2",
                         ],
                         entity_category=EntityCategory.CONFIG,
                     ),
@@ -214,10 +289,52 @@ mapping: dict[str, TuyaBLECategorySelectMapping] = {
             ],
         }
     ),
+    "jtmspro": TuyaBLECategorySelectMapping(
+        products={
+            **dict.fromkeys(
+                [
+                    "xicdxood",  # Raycube K7 Pro+
+                    "rlyxv7pe",  # A1 PRO MAX - Experimental
+                    "oyqux5vv",  # LA-01 - Experimental
+                    "ajk32biq",  # B16
+                    "z7lj676i",  # Smart Cylinder Lock - Experimental
+                ],
+                [  # Raycube K7 Pro+
+                    TuyaBLESelectMapping(
+                        dp_id=31,
+                        description=SelectEntityDescription(
+                            key="beep_volume",
+                            options=[
+                                "Mute",
+                                "Low",
+                                "Normal",
+                                "High",
+                            ],
+                            entity_category=EntityCategory.CONFIG,
+                        ),
+                    ),
+                    TuyaBLESelectMapping(
+                        dp_id=28,
+                        description=SelectEntityDescription(
+                            key="language",
+                            options=[
+                                "Chinese Simplified",
+                                "English",
+                                "Arabic",
+                                "Indonesian",
+                                "Portuguese",
+                            ],
+                            entity_category=EntityCategory.CONFIG,
+                        ),
+                    ),
+                ],
+            )
+        }
+    ),
     "szjqr": TuyaBLECategorySelectMapping(
         products={
             **dict.fromkeys(
-                ["3yqdo5yt", "xhf790if"],  # CubeTouch 1s and II
+                ["3yqdo5yt", "xhf790if", "yn4x5fa7"],  # CubeTouch 1s and II
                 [
                     TuyaBLEFingerbotModeMapping(dp_id=2),
                 ],
@@ -230,6 +347,7 @@ mapping: dict[str, TuyaBLECategorySelectMapping] = {
                     "neq16kgd",
                     "6jcvqwh0",
                     "riecov42",
+                    "h8kdwywx",
                 ],  # Fingerbot Plus
                 [
                     TuyaBLEFingerbotModeMapping(dp_id=8),
@@ -263,56 +381,16 @@ mapping: dict[str, TuyaBLECategorySelectMapping] = {
     ),
     "wsdcg": TuyaBLECategorySelectMapping(
         products={
-            "ojzlzzsw": [  # Soil moisture sensor
-                TuyaBLESelectMapping(
-                    dp_id=9,
-                    description=TemperatureUnitDescription(
-                        options=[
-                            UnitOfTemperature.CELSIUS,
-                            UnitOfTemperature.FAHRENHEIT,
-                        ],
-                        entity_registry_enabled_default=False,
-                    ),
-                ),
-            ],
-            "iv7hudlj": [  # Bluetooth Temperature Humidity Sensor
-                TuyaBLESelectMapping(
-                    dp_id=9,
-                    description=TemperatureUnitDescription(
-                        options=[
-                            UnitOfTemperature.CELSIUS,
-                            UnitOfTemperature.FAHRENHEIT,
-                        ],
-                        entity_registry_enabled_default=False,
-                    ),
-                ),
-            ],
-            "vlzqwckk": [
-                TuyaBLESelectMapping(
-                    dp_id=9,
-                    description=TemperatureUnitDescription(
-                        options=[
-                            UnitOfTemperature.CELSIUS,
-                            UnitOfTemperature.FAHRENHEIT,
-                        ],
-                        entity_registry_enabled_default=False,
-                    ),
-                ),
-            ],
+            **dict.fromkeys(
+                ["ojzlzzsw", "iv7hudlj", "jm6iasmb", "vlzqwckk", "tr0kabuq"],
+                [TuyaBLETemperatureUnitMapping(dp_id=9)],
+            )
         },
     ),
     "znhsb": TuyaBLECategorySelectMapping(
         products={
             "cdlandip": [  # Smart water bottle
-                TuyaBLESelectMapping(
-                    dp_id=106,
-                    description=TemperatureUnitDescription(
-                        options=[
-                            UnitOfTemperature.CELSIUS,
-                            UnitOfTemperature.FAHRENHEIT,
-                        ],
-                    ),
-                ),
+                TuyaBLETemperatureUnitMapping(dp_id=106),
                 TuyaBLESelectMapping(
                     dp_id=107,
                     description=SelectEntityDescription(
