@@ -355,7 +355,7 @@ devices_database: dict[str, TuyaBLECategoryInfo] = {
     "ms": TuyaBLECategoryInfo(
         products={
             **dict.fromkeys(
-                ["ludzroix", "isk2p555", "gumrixyt", "uamrw6h3","sidhzylo"],
+                ["ludzroix", "isk2p555", "gumrixyt", "uamrw6h3", "sidhzylo"],
                 TuyaBLEProductInfo(  # device product_id
                     name="Smart Lock",
                     lock=1,
@@ -517,31 +517,21 @@ devices_database: dict[str, TuyaBLECategoryInfo] = {
     ),
     "wsdcg": TuyaBLECategoryInfo(
         products={
-            "ojzlzzsw": TuyaBLEProductInfo(  # device product_id
-                name="Soil moisture sensor",
-            ),
+            "ojzlzzsw": TuyaBLEProductInfo(name="Soil moisture sensor"),
             "iv7hudlj": TuyaBLEProductInfo(
-                name="Bluetooth Temperature Humidity Sensor",
+                name="Bluetooth Temperature Humidity Sensor"
             ),
             "jm6iasmb": TuyaBLEProductInfo(
-                name="Bluetooth Temperature Humidity Sensor",
+                name="Bluetooth Temperature Humidity Sensor"
             ),
-            "tv6peegl": TuyaBLEProductInfo(  # new device product_id
-                name="Soil Thermo-Hygrometer",
-            ),
-            "vlzqwckk": TuyaBLEProductInfo(
-                name="Temperature Humidity Sensor",
-            ),
-            "tr0kabuq": TuyaBLEProductInfo(  # device product_id
-                name="Temperature Humidity Sensor",
-            ),
+            "tv6peegl": TuyaBLEProductInfo(name="Soil Thermo-Hygrometer"),
+            "vlzqwckk": TuyaBLEProductInfo(name="Temperature Humidity Sensor"),
+            "tr0kabuq": TuyaBLEProductInfo(name="Temperature Humidity Sensor"),
         },
     ),
     "znhsb": TuyaBLECategoryInfo(
         products={
-            "cdlandip": TuyaBLEProductInfo(  # device product_id
-                name="Smart water bottle",
-            ),
+            "cdlandip": TuyaBLEProductInfo(name="Smart water bottle"),
         },
     ),
     "sfkzq": TuyaBLECategoryInfo(
