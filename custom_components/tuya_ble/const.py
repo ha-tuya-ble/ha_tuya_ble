@@ -432,6 +432,7 @@ class DPCode(StrEnum):
     DEHUMIDITY_SET_VALUE = "dehumidify_set_value"
     DISINFECTION = "disinfection"
     DO_NOT_DISTURB = "do_not_disturb"
+    DOORBELL = "doorbell"
     DOORCONTACT_STATE = "doorcontact_state"  # Status of door window sensor
     DOORCONTACT_STATE_2 = "doorcontact_state_2"
     DOORCONTACT_STATE_3 = "doorcontact_state_3"
@@ -477,8 +478,10 @@ class DPCode(StrEnum):
     LIGHT = "light"  # Light
     LIGHT_MODE = "light_mode"
     LOCK = "lock"  # Lock / Child lock
+    LOCK_MOTOR_STATE = "lock_motor_state"
     MASTER_MODE = "master_mode"  # alarm mode
     MACH_OPERATE = "mach_operate"
+    MANUAL_LOCK = "manual_lock"
     MANUAL_FEED = "manual_feed"
     MATERIAL = "material"  # Material
     MODE = "mode"  # Working mode / Mode
