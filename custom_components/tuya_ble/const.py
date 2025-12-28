@@ -359,6 +359,7 @@ class DPCode(StrEnum):
     ALARM_TIME = "alarm_time"  # Alarm time
     ALARM_VOLUME = "alarm_volume"  # Alarm volume
     ALARM_MESSAGE = "alarm_message"
+    ALARM_LOCK = "alarm_lock"
     ANGLE_HORIZONTAL = "angle_horizontal"
     ANGLE_VERTICAL = "angle_vertical"
     ANION = "anion"  # Ionizer unit
@@ -435,6 +436,7 @@ class DPCode(StrEnum):
     DOORCONTACT_STATE = "doorcontact_state"  # Status of door window sensor
     DOORCONTACT_STATE_2 = "doorcontact_state_2"
     DOORCONTACT_STATE_3 = "doorcontact_state_3"
+    DOORBELL = "doorbell"
     DUSTER_CLOTH = "duster_cloth"
     ECO2 = "eco2"
     EDGE_BRUSH = "edge_brush"
@@ -477,8 +479,10 @@ class DPCode(StrEnum):
     LIGHT = "light"  # Light
     LIGHT_MODE = "light_mode"
     LOCK = "lock"  # Lock / Child lock
+    LOCK_MOTOR_STATE = "lock_motor_state"
     MASTER_MODE = "master_mode"  # alarm mode
     MACH_OPERATE = "mach_operate"
+    MANUAL_LOCK = "manual_lock"
     MANUAL_FEED = "manual_feed"
     MATERIAL = "material"  # Material
     MODE = "mode"  # Working mode / Mode
@@ -519,6 +523,7 @@ class DPCode(StrEnum):
     RECORD_MODE = "record_mode"
     RECORD_SWITCH = "record_switch"  # Recording switch
     RELAY_STATUS = "relay_status"
+    RESIDUAL_ELECTRICITY = "residual_electricity"
     REMAIN_TIME = "remain_time"
     RESET_DUSTER_CLOTH = "reset_duster_cloth"
     RESET_EDGE_BRUSH = "reset_edge_brush"
@@ -601,6 +606,7 @@ class DPCode(StrEnum):
     TOTAL_TIME = "total_time"
     TOTAL_PM = "total_pm"
     TVOC = "tvoc"
+    UNLOCK_BLE = "unlock_ble"
     UPPER_TEMP = "upper_temp"
     UPPER_TEMP_F = "upper_temp_f"
     UV = "uv"  # UV sterilization

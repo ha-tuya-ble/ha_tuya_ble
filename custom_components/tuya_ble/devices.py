@@ -394,6 +394,10 @@ devices_database: dict[str, TuyaBLECategoryInfo] = {
             "ebd5e0uauqx0vfsp": TuyaBLEProductInfo(  # device product_id
                 name="CentralAcesso",
             ),
+            "ajk32biq": TuyaBLEProductInfo(
+                name="B16",
+                lock=1,
+            ),
         },
     ),
     "szjqr": TuyaBLECategoryInfo(
