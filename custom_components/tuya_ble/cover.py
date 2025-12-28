@@ -13,8 +13,6 @@ from homeassistant.components.cover import (
     CoverEntityDescription,
     CoverEntityFeature,
     CoverEntity,
-    STATE_CLOSED,
-    STATE_OPEN,
     ATTR_POSITION,
     ATTR_TILT_POSITION,
 )
@@ -28,8 +26,6 @@ from .devices import TuyaBLEData, TuyaBLEEntity, TuyaBLEProductInfo
 from .tuya_ble import TuyaBLEDataPointType, TuyaBLEDevice
 
 _LOGGER = logging.getLogger(__name__)
-
-TUYA_COVER_STATE_MAP = {0: STATE_OPEN, 2: STATE_CLOSED}
 
 
 class TuyaCoverState(IntEnum):
