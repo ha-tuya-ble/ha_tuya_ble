@@ -122,6 +122,31 @@ class TuyaBLEWorkStateMapping(TuyaBLESensorMapping):
     )
 
 
+@dataclass
+class TuyaBLEAlarmLockStateMapping(TuyaBLESensorMapping):
+    description: SensorEntityDescription = field(
+        default_factory=lambda: SensorEntityDescription(
+            key="alarm_lock",
+            device_class=SensorDeviceClass.ENUM,
+            options=[
+                "wrong_finger",
+                "wrong_password",
+                "wrong_card",
+                "wrong_face",
+                "tongue_bad",
+                "too_hot",
+                "unclosed_time",
+                "tongue_not_out",
+                "pry",
+                "key_in",
+                "low_battery",
+                "power_off",
+                "shock",
+            ],
+        )
+    )
+
+
 mapping: dict[str, TuyaBLECategorySensorMapping] = {
     "co2bj": TuyaBLECategorySensorMapping(
         products={
@@ -175,28 +200,7 @@ mapping: dict[str, TuyaBLECategorySensorMapping] = {
                     "k53ok3u9",
                 ],  # Smart Lock
                 [
-                    TuyaBLESensorMapping(
-                        dp_id=21,
-                        description=SensorEntityDescription(
-                            key="alarm_lock",
-                            device_class=SensorDeviceClass.ENUM,
-                            options=[
-                                "wrong_finger",
-                                "wrong_password",
-                                "wrong_card",
-                                "wrong_face",
-                                "tongue_bad",
-                                "too_hot",
-                                "unclosed_time",
-                                "tongue_not_out",
-                                "pry",
-                                "key_in",
-                                "low_battery",
-                                "power_off",
-                                "shock",
-                            ],
-                        ),
-                    ),
+                    TuyaBLEAlarmLockStateMapping(dp_id=21),
                     TuyaBLEBatteryMapping(dp_id=8),
                     TuyaBLESensorMapping(
                         dp_id=40,
@@ -218,30 +222,7 @@ mapping: dict[str, TuyaBLECategorySensorMapping] = {
     "jtmspro": TuyaBLECategorySensorMapping(
         products={
             "xicdxood": [  # Raycube K7 Pro+
-                TuyaBLESensorMapping(
-                    dp_id=21,  # Requires more testing
-                    description=SensorEntityDescription(
-                        key="alarm_lock",
-                        icon="mdi:alarm-light-outline",
-                        device_class=SensorDeviceClass.ENUM,
-                        options=[
-                            "wrong_finger",
-                            "wrong_password",
-                            "wrong_card",
-                            "wrong_face",
-                            "tongue_bad",
-                            "too_hot",
-                            "unclosed_time",
-                            "tongue_not_out",
-                            "pry",
-                            "key_in",
-                            "low_battery",
-                            "power_off",
-                            "shock",
-                            "defense",
-                        ],
-                    ),
-                ),
+                TuyaBLEAlarmLockStateMapping(dp_id=21),
                 TuyaBLESensorMapping(
                     dp_id=12,  # Retrieve last fingerprint used
                     description=SensorEntityDescription(
