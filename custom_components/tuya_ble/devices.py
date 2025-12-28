@@ -355,7 +355,7 @@ devices_database: dict[str, TuyaBLECategoryInfo] = {
     "ms": TuyaBLECategoryInfo(
         products={
             **dict.fromkeys(
-                ["ludzroix", "isk2p555", "gumrixyt", "uamrw6h3"],
+                ["ludzroix", "isk2p555", "gumrixyt", "uamrw6h3","sidhzylo"],
                 TuyaBLEProductInfo(  # device product_id
                     name="Smart Lock",
                     lock=1,
