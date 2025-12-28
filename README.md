@@ -74,6 +74,7 @@ The integration works locally, but connection to Tuya BLE device requires device
   + Tuya Smart Curtain Robot (product_id 'kcy0x4pi')
   + Blinds Drive (product_id 'qqdxfdht')
   + LY Curtain Motor Robot (product_id 'ulughw4g')
+  + AOK AM24 Venetian Blinds Motor (product_id 'dy4dh1q0') - Experimental
 
 * Water valve controller (category_id 'sfkzq')
   + Water valve controller (product_id 'nxquc5lb')
