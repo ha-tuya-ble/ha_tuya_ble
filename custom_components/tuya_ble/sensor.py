@@ -93,7 +93,7 @@ def is_co2_alarm_enabled(self: TuyaBLESensor, product: TuyaBLEProductInfo) -> bo
 
 
 def battery_enum_getter(self: TuyaBLESensor) -> None:
-    """For a given sensor, read the datapoints and detemine battery info"""
+    """For a given sensor, read the datapoints and determine battery info"""
     datapoint = self._device.datapoints[104]
     if datapoint:
         self._attr_native_value = datapoint.value * 20.0
