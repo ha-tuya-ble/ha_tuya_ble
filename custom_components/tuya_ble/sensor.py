@@ -226,6 +226,7 @@ mapping: dict[str, TuyaBLECategorySensorMapping] = {
                     "xicdxood",  # Raycube K7 Pro+
                     "rlyxv7pe",  # A1 PRO MAX
                     "oyqux5vv",  # LA-01
+                    "ajk32biq",  # B16
                 ],
                 [
                     TuyaBLEAlarmLockStateMapping(dp_id=21),

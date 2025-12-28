@@ -113,6 +113,19 @@ mapping: dict[str, TuyaBLECategoryBinarySensorMapping] = {
             ),
         }
     ),
+    "jtmspro": TuyaBLECategoryBinarySensorMapping(
+        products={
+            "ajk32biq": [
+                TuyaBLEBinarySensorMapping(
+                    dp_id=24,
+                    description=BinarySensorEntityDescription(
+                        key="doorbell",
+                        device_class=BinarySensorDeviceClass.DOORBELL,
+                    ),
+                ),
+            ],
+        }
+    ),
 }
 
 
