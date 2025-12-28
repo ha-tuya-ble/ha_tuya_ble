@@ -518,12 +518,8 @@ devices_database: dict[str, TuyaBLECategoryInfo] = {
     "wsdcg": TuyaBLECategoryInfo(
         products={
             "ojzlzzsw": TuyaBLEProductInfo(name="Soil moisture sensor"),
-            "iv7hudlj": TuyaBLEProductInfo(
-                name="Bluetooth Temperature Humidity Sensor"
-            ),
-            "jm6iasmb": TuyaBLEProductInfo(
-                name="Bluetooth Temperature Humidity Sensor"
-            ),
+            "iv7hudlj": TuyaBLEProductInfo(name="Temperature Humidity Sensor"),
+            "jm6iasmb": TuyaBLEProductInfo(name="Temperature Humidity Sensor"),
             "tv6peegl": TuyaBLEProductInfo(name="Soil Thermo-Hygrometer"),
             "vlzqwckk": TuyaBLEProductInfo(name="Temperature Humidity Sensor"),
             "tr0kabuq": TuyaBLEProductInfo(name="Temperature Humidity Sensor"),
