@@ -591,23 +591,19 @@ devices_database: dict[str, TuyaBLECategoryInfo] = {
     ),
     "dd": TuyaBLECategoryInfo(
         products={
-            **dict.fromkeys(
-                [
-                    "nvfrtxlq",
-                ],  # device product_id
-                TuyaBLEProductInfo(
-                    name="LGB102 Magic Strip Lights",
-                    manufacturer="Magiacous",
-                ),
+            "nvfrtxlq": TuyaBLEProductInfo(
+                name="LGB102 Magic Strip Lights",
+                manufacturer="Magiacous",
             ),
-            "umzu0c2y": TuyaBLEProductInfo(  # device product_id
+            "umzu0c2y": TuyaBLEProductInfo(
                 name="Floor Lamp",
                 manufacturer="Magiacous",
             ),
-            "6jxcdae1": TuyaBLEProductInfo(  # device product_id
+            "6jxcdae1": TuyaBLEProductInfo(
                 name="Sunset Lamp",
                 manufacturer="Comfamoli",
             ),
+            "0qgrjxum": TuyaBLEProductInfo(name="RGB Strip Light"),
         },
         info=TuyaBLEProductInfo(
             name="Lights",
