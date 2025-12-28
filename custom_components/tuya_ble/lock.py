@@ -1,4 +1,3 @@
-
 from __future__ import annotations
 
 from typing import Any
@@ -9,7 +8,12 @@ from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 
 from .const import DOMAIN, DPCode
-from .devices import TuyaBLEData, TuyaBLEEntity, TuyaBLEProductInfo, get_device_product_info
+from .devices import (
+    TuyaBLEData,
+    TuyaBLEEntity,
+    TuyaBLEProductInfo,
+    get_device_product_info,
+)
 from .tuya_ble import TuyaBLEDataPointType, TuyaBLEDevice, TuyaBLECoordinator
 
 
@@ -39,11 +43,9 @@ class TuyaBLELock(TuyaBLEEntity, LockEntity):
     @property
     def is_locked(self) -> bool | None:
         """Return true if lock is locked."""
-        if (
-            motor_state := self._device.datapoints.get_or_create(
-                DPCode.LOCK_MOTOR_STATE, TuyaBLEDataPointType.DT_BOOL, False
-            )
-        ) :
+        if motor_state := self._device.datapoints.get_or_create(
+            DPCode.LOCK_MOTOR_STATE, TuyaBLEDataPointType.DT_BOOL, False
+        ):
             return not motor_state.value
         return None
 
