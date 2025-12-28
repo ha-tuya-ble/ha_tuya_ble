@@ -1,0 +1,15 @@
+black==24.8.0
+codespell==2.4.1
+flake8==3.9.2
+homeassistant==2025.4.0
+mypy==0.901
+pydocstyle==6.1.1
+pylint-strict-informational==0.1
+pylint==2.8.2
+pytest-asyncio
+pytest-cov
+tuya-iot-py-sdk==0.6.6
+pycountry>23.0.0
+pyserial
+PyCryptodome
+tuya-device-sharing-sdk
