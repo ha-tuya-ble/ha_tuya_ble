@@ -100,8 +100,9 @@ mapping: dict[str, TuyaBLECategoryBinarySensorMapping] = {
     ),
     "ms": TuyaBLECategoryBinarySensorMapping(
         products={
+            # TODO: Review how many of these are better off as a switch only?
             **dict.fromkeys(
-                ["okkyfgfs", "sidhzylo"],  # Smart Lock
+                ["okkyfgfs", "sidhzylo", "mqc2hevy"],  # Smart Lock
                 [
                     TuyaBLEBinarySensorMapping(
                         dp_id=47,

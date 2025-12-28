@@ -229,14 +229,12 @@ mapping: dict[str, TuyaBLECategorySwitchMapping] = {
                 [TuyaLockMotorStateMapping(dp_id=47)],
             ),
             **dict.fromkeys(
-                ["uamrw6h3"],  # Smart Fechadura Positivo
+                ["uamrw6h3", "mqc2hevy"],
                 [
                     TuyaLockMotorStateMapping(dp_id=47),
                     TuyaBLESwitchMapping(
                         dp_id=46,
-                        description=SwitchEntityDescription(
-                            key="manual_lock",
-                        ),
+                        description=SwitchEntityDescription(key="manual_lock"),
                     ),
                 ],
             ),
