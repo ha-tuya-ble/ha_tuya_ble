@@ -51,6 +51,8 @@ The integration works locally, but connection to Tuya BLE device requires device
   + Raybuke K7 Pro+ (product_id 'xicdxood'), supports ble unlock and other small features.
   + Fingerprint Smart Lock (product_id 'k53ok3u9')
   + T55D: Battery & Door status (product_id 'bvclwu9b')
+  + Gimdow A1 Pro Max (product_id 'rlyxv7pe') - experimental
+  + LA-01 Smart lock (product_id 'oyqux5vv') - experimental
 
 * Climate (category_id 'wk')
   + Thermostatic Radiator Valve (product_ids 'drlajpqc', 'nhj2j7su').

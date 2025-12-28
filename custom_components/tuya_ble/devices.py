@@ -358,6 +358,7 @@ devices_database: dict[str, TuyaBLECategoryInfo] = {
                 ["ludzroix", "isk2p555", "gumrixyt", "uamrw6h3"],
                 TuyaBLEProductInfo(  # device product_id
                     name="Smart Lock",
+                    lock=1,
                 ),
             ),
             "okkyfgfs": TuyaBLEProductInfo(
@@ -388,16 +389,11 @@ devices_database: dict[str, TuyaBLECategoryInfo] = {
     ),
     "jtmspro": TuyaBLECategoryInfo(
         products={
-            "xicdxood": TuyaBLEProductInfo(  # device product_id
-                name="Raycube K7 Pro+",
-            ),
-            "ebd5e0uauqx0vfsp": TuyaBLEProductInfo(  # device product_id
-                name="CentralAcesso",
-            ),
-            "ajk32biq": TuyaBLEProductInfo(
-                name="B16",
-                lock=1,
-            ),
+            "xicdxood": TuyaBLEProductInfo(name="Raycube K7 Pro+", lock=1),
+            "oyqux5vv": TuyaBLEProductInfo(name="LA-01 Smart lock", lock=1),
+            "rlyxv7pe": TuyaBLEProductInfo(name="A1 PRO MAX", lock=1),
+            "ebd5e0uauqx0vfsp": TuyaBLEProductInfo(name="CentralAcesso"),
+            "ajk32biq": TuyaBLEProductInfo(name="B16", lock=1),
         },
     ),
     "szjqr": TuyaBLECategoryInfo(
