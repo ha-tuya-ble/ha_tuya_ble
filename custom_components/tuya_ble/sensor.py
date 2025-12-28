@@ -121,6 +121,7 @@ class TuyaBLEWorkStateMapping(TuyaBLESensorMapping):
         )
     )
 
+
 @dataclass
 class TuyaBLEAlarmLockStateMapping(TuyaBLESensorMapping):
     description: SensorEntityDescription = field(
@@ -128,22 +129,23 @@ class TuyaBLEAlarmLockStateMapping(TuyaBLESensorMapping):
             key="alarm_lock",
             device_class=SensorDeviceClass.ENUM,
             options=[
-                                "wrong_finger",
-                                "wrong_password",
-                                "wrong_card",
-                                "wrong_face",
-                                "tongue_bad",
-                                "too_hot",
-                                "unclosed_time",
-                                "tongue_not_out",
-                                "pry",
-                                "key_in",
-                                "low_battery",
-                                "power_off",
-                                "shock",
+                "wrong_finger",
+                "wrong_password",
+                "wrong_card",
+                "wrong_face",
+                "tongue_bad",
+                "too_hot",
+                "unclosed_time",
+                "tongue_not_out",
+                "pry",
+                "key_in",
+                "low_battery",
+                "power_off",
+                "shock",
             ],
         )
     )
+
 
 mapping: dict[str, TuyaBLECategorySensorMapping] = {
     "co2bj": TuyaBLECategorySensorMapping(
