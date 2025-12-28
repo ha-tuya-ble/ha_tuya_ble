@@ -54,6 +54,7 @@ The integration works locally, but connection to Tuya BLE device requires device
   + Gimdow A1 Pro Max (product_id 'rlyxv7pe') - experimental
   + LA-01 Smart lock (product_id 'oyqux5vv') - experimental
   + B16 (product_id 'ajk32biq')
+  + Smart Cylinder Lock (product_id 'z7lj676i')
 
 * Climate (category_id 'wk')
   + Thermostatic Radiator Valve (product_ids 'drlajpqc', 'nhj2j7su').
