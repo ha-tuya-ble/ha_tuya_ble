@@ -630,6 +630,7 @@ devices_database: dict[str, TuyaBLECategoryInfo] = {
                 ["4pbr8eig", "vlwf3ud6"], TuyaBLEProductInfo(name="Blind Controller")
             ),
             "kcy0x4pi": TuyaBLEProductInfo(name="Curtain Controller"),
+            "dy4dh1q0": TuyaBLEProductInfo(name="AOK AM24 Venetian Blinds Motor"),
         }
     ),
 }
