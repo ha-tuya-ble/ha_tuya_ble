@@ -5,6 +5,7 @@ This guide is for when:
 - I have a new device that isn't supported.
 - I have a similar device to one that is already supported.
 
+
 ## Vibe Coding Your Robotic Lawnmower
 
 What could go wrong?
@@ -13,14 +14,14 @@ This guide explains how to generate a new PR for a set of **DPIDs** (Device Prop
 
 ---
 
-## 1. Prerequisites
+### 1. Prerequisites
 
 - Access to [Tuya IoT Platform](https://iot.tuya.com/) with a developer account.  
 - Access to **Google Jules** in your browser (with permissions to create PRs on this repo).
 
 ---
 
-## 2. Getting DPIDs from Tuya IoT
+### 2. Getting DPIDs from Tuya IoT
 
 1. **Log in** to [Tuya IoT](https://iot.tuya.com/).  
 2. Go to **Cloud → Development → Devices**.  
@@ -47,3 +48,7 @@ Add support for Example Product - SmartLife Finger Robot (category: szjqr - Prod
 8. Test locally and iterate - add your fork via https://www.hacs.xyz/docs/faq/custom_repositories/
 9. Share your test results - screenshots or didnt happen is a good rule of thumb!
 
+## I am struggling, what are my options?
+
+Raise an issue with the same information as above.
+Search github for your product ID, others may have implemented a fix in a different fork. If found, please mention in issue so fork can be integrated.
