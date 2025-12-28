@@ -19,22 +19,36 @@ from .cloud import HASSTuyaBLEDeviceManager
 from .const import DOMAIN
 from .devices import TuyaBLECoordinator, TuyaBLEData, get_device_product_info
 
-PLATFORMS: list[Platform] = [
-    Platform.BUTTON,
-    Platform.CLIMATE,
-    Platform.LOCK,
-    Platform.NUMBER,
-    Platform.LOCK,
-    Platform.SENSOR,
-    Platform.BINARY_SENSOR,
-    Platform.LIGHT,
-    Platform.SELECT,
-    Platform.SWITCH,
-    Platform.TEXT,
-    Platform.COVER,
-]
-
 _LOGGER = logging.getLogger(__name__)
+
+
+def get_platforms_for_device(device: TuyaBLEDevice) -> list[Platform]:
+    """Get the platforms for a given device."""
+    product_info = get_device_product_info(device)
+    platforms: list[Platform] = [
+        Platform.CLIMATE,
+        Platform.SENSOR,
+        Platform.BINARY_SENSOR,
+        Platform.LIGHT,
+        Platform.TEXT,
+        Platform.COVER,
+    ]
+    if product_info:
+        if product_info.lock:
+            platforms.append(Platform.LOCK)
+        if product_info.fingerbot:
+            platforms.extend(
+                [
+                    Platform.BUTTON,
+                    Platform.NUMBER,
+                    Platform.SELECT,
+                    Platform.SWITCH,
+                ]
+            )
+        if product_info.watervalve:
+            if Platform.SWITCH not in platforms:
+                platforms.append(Platform.SWITCH)
+    return platforms
 
 
 async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
@@ -50,6 +64,8 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     manager = HASSTuyaBLEDeviceManager(hass, entry.options.copy())
     device = TuyaBLEDevice(manager, ble_device)
     await device.initialize()
+
+    platforms = get_platforms_for_device(device)
     product_info = get_device_product_info(device)
 
     coordinator = TuyaBLECoordinator(hass, device)
@@ -91,7 +107,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
         coordinator,
     )
 
-    await hass.config_entries.async_forward_entry_setups(entry, PLATFORMS)
+    await hass.config_entries.async_forward_entry_setups(entry, platforms)
     entry.async_on_unload(entry.add_update_listener(_async_update_listener))
 
     async def _async_stop(event: Event) -> None:
@@ -113,8 +129,10 @@ async def _async_update_listener(hass: HomeAssistant, entry: ConfigEntry) -> Non
 
 async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     """Unload a config entry."""
-    if unload_ok := await hass.config_entries.async_unload_platforms(entry, PLATFORMS):
-        data: TuyaBLEData = hass.data[DOMAIN].pop(entry.entry_id)
+    data: TuyaBLEData = hass.data[DOMAIN][entry.entry_id]
+    platforms = get_platforms_for_device(data.device)
+    if unload_ok := await hass.config_entries.async_unload_platforms(entry, platforms):
+        hass.data[DOMAIN].pop(entry.entry_id)
         await data.device.stop()
 
     return unload_ok
