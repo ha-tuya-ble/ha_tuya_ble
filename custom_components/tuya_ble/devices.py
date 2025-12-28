@@ -633,6 +633,13 @@ devices_database: dict[str, TuyaBLECategoryInfo] = {
             "dy4dh1q0": TuyaBLEProductInfo(name="AOK AM24 Venetian Blinds Motor"),
         }
     ),
+    "zwjcy": TuyaBLECategoryInfo(
+        products={
+            "jabotj1z": TuyaBLEProductInfo(
+                name="SRB-PM01 Soil Moisture Sensor",
+            ),
+        },
+    ),
 }
 
 
