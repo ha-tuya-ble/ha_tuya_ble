@@ -28,7 +28,7 @@ async def async_setup_entry(
     entities: list[TuyaBLELock] = []
 
     product = get_device_product_info(data.device)
-    if product and product.lock:
+    if product and product.lock == 1:
         entities.append([TuyaBLELock(hass, data.coordinator, data.device, product)])
 
     async_add_entities(entities)
