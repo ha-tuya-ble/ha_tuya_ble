@@ -424,9 +424,7 @@ mapping: dict[str, TuyaBLECategorySensorMapping] = {
                 ),
             ],
             "tv6peegl": [  # Soil moisture sensor
-                TuyaBLETemperatureMapping(
-                    dp_id=101,
-                ),
+                TuyaBLETemperatureMapping(dp_id=101),
                 TuyaBLESensorMapping(
                     dp_id=102,
                     description=SensorEntityDescription(
@@ -861,9 +859,7 @@ mapping: dict[str, TuyaBLECategorySensorMapping] = {
     "znhsb": TuyaBLECategorySensorMapping(
         products={
             "cdlandip": [  # Smart water bottle
-                TuyaBLETemperatureMapping(
-                    dp_id=101,
-                ),
+                TuyaBLETemperatureMapping(dp_id=101),
                 TuyaBLESensorMapping(
                     dp_id=102,
                     description=SensorEntityDescription(
