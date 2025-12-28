@@ -23,11 +23,15 @@ async def async_setup_entry(
     entry: ConfigEntry,
     async_add_entities: AddEntitiesCallback,
 ) -> None:
-    """Set up the Tuya BLE sensors."""
+    """Set up the Tuya BLE Locks."""
     data: TuyaBLEData = hass.data[DOMAIN][entry.entry_id]
+    entities: list[TuyaBLELock] = []
+
     product = get_device_product_info(data.device)
     if product and product.lock:
-        async_add_entities([TuyaBLELock(hass, data.coordinator, data.device, product)])
+        entities.append([TuyaBLELock(hass, data.coordinator, data.device, product)])
+
+    async_add_entities(entities)
 
 
 class TuyaBLELock(TuyaBLEEntity, LockEntity):
