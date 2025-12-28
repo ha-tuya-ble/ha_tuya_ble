@@ -33,7 +33,7 @@ This guide explains how to generate a new PR for a set of **DPIDs** (Device Prop
    DPID 1 → Switch (Boolean)
    DPID 2 → Brightness (Integer, 0–1000)
    DPID 3 → Mode (Enum: white, colour, scene)
-```
+   ```
 6. Whangjangle this into google jules:
 
 ```
