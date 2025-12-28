@@ -88,6 +88,7 @@ The integration works locally, but connection to Tuya BLE device requires device
   + Most BLE light products should be supported as the Light class tries to get device description from the cloud when there are added but only Strip Lights (category_id 'dd') Magiacous RGB light bar (product_id 'nvfrtxlq') has has been tested
   + Magiacous Floor Lamp (product_id 'umzu0c2y')
   + Comfamoli Sunset Lamp (product_id '6jxcdae1')
+  + RGB Strip Light (product_id '0qgrjxum')
     
     *Note that some light products are using Bluetooth Mesh protocols and not BLE and so aren't compatible with this integration. That's probably the case if your product isn't at least found (even if non-working) by this integration*
 
