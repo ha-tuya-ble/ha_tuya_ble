@@ -221,31 +221,37 @@ mapping: dict[str, TuyaBLECategorySensorMapping] = {
     ),
     "jtmspro": TuyaBLECategorySensorMapping(
         products={
-            "xicdxood": [  # Raycube K7 Pro+
-                TuyaBLEAlarmLockStateMapping(dp_id=21),
-                TuyaBLESensorMapping(
-                    dp_id=12,  # Retrieve last fingerprint used
-                    description=SensorEntityDescription(
-                        key="unlock_fingerprint",
-                        icon="mdi:fingerprint",
+            **dict.fromkeys(
+                [
+                    "xicdxood",  # Raycube K7 Pro+
+                    "rlyxv7pe",  # A1 PRO MAX
+                ],
+                [
+                    TuyaBLEAlarmLockStateMapping(dp_id=21),
+                    TuyaBLESensorMapping(
+                        dp_id=12,  # Retrieve last fingerprint used
+                        description=SensorEntityDescription(
+                            key="unlock_fingerprint",
+                            icon="mdi:fingerprint",
+                        ),
                     ),
-                ),
-                TuyaBLESensorMapping(
-                    dp_id=15,  # Retrieve last card used
-                    description=SensorEntityDescription(
-                        key="unlock_card",
-                        icon="mdi:nfc-variant",
+                    TuyaBLESensorMapping(
+                        dp_id=15,  # Retrieve last card used
+                        description=SensorEntityDescription(
+                            key="unlock_card",
+                            icon="mdi:nfc-variant",
+                        ),
                     ),
-                ),
-                TuyaBLESensorMapping(
-                    dp_id=13,  # Retrieve last code used
-                    description=SensorEntityDescription(
-                        key="unlock_password",
-                        icon="mdi:keyboard-outline",
+                    TuyaBLESensorMapping(
+                        dp_id=13,  # Retrieve last code used
+                        description=SensorEntityDescription(
+                            key="unlock_password",
+                            icon="mdi:keyboard-outline",
+                        ),
                     ),
-                ),
-                TuyaBLEBatteryMapping(dp_id=8),
-            ],
+                    TuyaBLEBatteryMapping(dp_id=8),
+                ],
+            ),
         }
     ),
     "szjqr": TuyaBLECategorySensorMapping(
