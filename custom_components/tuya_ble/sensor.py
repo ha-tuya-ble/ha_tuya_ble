@@ -224,9 +224,10 @@ mapping: dict[str, TuyaBLECategorySensorMapping] = {
             **dict.fromkeys(
                 [
                     "xicdxood",  # Raycube K7 Pro+
-                    "rlyxv7pe",  # A1 PRO MAX
-                    "oyqux5vv",  # LA-01
+                    "rlyxv7pe",  # A1 PRO MAX - Experimental
+                    "oyqux5vv",  # LA-01 - Experimental
                     "ajk32biq",  # B16
+                    "z7lj676i",  # Smart Cylinder Lock - Experimental
                 ],
                 [
                     TuyaBLEAlarmLockStateMapping(dp_id=21),
