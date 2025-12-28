@@ -174,6 +174,7 @@ mapping: dict[str, TuyaBLECategoryButtonMapping] = {
                 [
                     "xicdxood",  # Raycube K7 Pro+
                     "rlyxv7pe",  # A1 PRO MAX
+                    "oyqux5vv",  # LA-01
                 ],
                 [
                     # Raycube K7 Pro+, unclear if applicable to A1 PRO MAX
