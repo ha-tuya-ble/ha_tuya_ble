@@ -469,6 +469,9 @@ class TuyaBLEDevice:
         if self._device_info is not None:
             return self._device_info.uuid
 
+        if self._uuid is not None:
+            return self._uuid
+
         return ""
 
     @property
