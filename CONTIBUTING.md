@@ -1,8 +1,9 @@
 # Contributing Guide
 
-I have a new device that isn't supported.
+This guide is for when:
 
-I have a similar device to one that is already supported.
+- I have a new device that isn't supported.
+- I have a similar device to one that is already supported.
 
 ## Vibe Coding Your Robotic Lawnmower
 
@@ -44,5 +45,5 @@ Add support for Example Product - SmartLife Finger Robot (category: szjqr - Prod
 
 7. Publish PR, clearly indicate it is AI assisted if it is not obvious. You should end up with something like https://github.com/ha-tuya-ble/ha_tuya_ble/pull/78
 8. Test locally and iterate - add your fork via https://www.hacs.xyz/docs/faq/custom_repositories/
-9. Share your test results - pics or didnt happen is a good rule of thumb.
+9. Share your test results - screenshots or didnt happen is a good rule of thumb!
 
