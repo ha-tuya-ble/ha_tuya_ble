@@ -124,6 +124,13 @@ class TuyaBLEWaterValveSwitchMapping(TuyaBLESwitchMapping):
     )
     is_available: TuyaBLESwitchIsAvailable = is_water_valve_in_switch_mode
 
+@dataclass
+class TuyaLockMotorStateMapping(TuyaBLESwitchMapping):
+ description: SwitchEntityDescription = field(
+        default_factory=lambda: SwitchEntityDescription(
+            key="lock_motor_state",
+        )
+    )
 
 @dataclass
 class TuyaBLEWaterValveWeatherSwitchMapping(TuyaBLESwitchMapping):
@@ -218,23 +225,13 @@ mapping: dict[str, TuyaBLECategorySwitchMapping] = {
             **dict.fromkeys(
                 ["ludzroix", "isk2p555", "gumrixyt"],  # Smart Lock
                 [
-                    TuyaBLESwitchMapping(
-                        dp_id=47,
-                        description=SwitchEntityDescription(
-                            key="lock_motor_state",
-                        ),
-                    ),
+                    TuyaLockMotorStateMapping(dp_id=47)
                 ],
             ),
             **dict.fromkeys(
                 ["uamrw6h3"],  # Smart Fechadura Positivo
                 [
-                    TuyaBLESwitchMapping(
-                        dp_id=47,
-                        description=SwitchEntityDescription(
-                            key="lock_motor_state",
-                        ),
-                    ),
+                    TuyaLockMotorStateMapping(dp_id=47),
                     TuyaBLESwitchMapping(
                         dp_id=46,
                         description=SwitchEntityDescription(
