@@ -632,6 +632,13 @@ devices_database: dict[str, TuyaBLECategoryInfo] = {
             "kcy0x4pi": TuyaBLEProductInfo(name="Curtain Controller"),
         }
     ),
+    "swtz": TuyaBLECategoryInfo(
+        products={
+            "bf092bejeznilat9": TuyaBLEProductInfo(
+                name="LSC BBQ Thermometer",
+            ),
+        },
+    ),
 }
 
 

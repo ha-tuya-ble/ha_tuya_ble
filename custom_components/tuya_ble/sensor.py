@@ -968,6 +968,33 @@ mapping: dict[str, TuyaBLECategorySensorMapping] = {
             ),
         }
     ),
+    # "swtz": TuyaBLECategorySensorMapping(
+    #     products={
+    #         "bf092bejeznilat9": [  # LSC BBQ Thermometer
+    #             TuyaBLEBatteryMapping(dp_id=101),
+    #             TuyaBLETemperatureMapping(dp_id=102, coefficient=10.0),
+    #             TuyaBLETemperatureMapping(
+    #                 dp_id=103,
+    #                 coefficient=10.0,
+    #                 description=SensorEntityDescription(
+    #                     key="temperature_2",
+    #                     device_class=SensorDeviceClass.TEMPERATURE,
+    #                     native_unit_of_measurement=UnitOfTemperature.CELSIUS,
+    #                     state_class=SensorStateClass.MEASUREMENT,
+    #                 ),
+    #             ),
+    #             TuyaBLESensorMapping(
+    #                 dp_id=107,
+    #                 description=SensorEntityDescription(
+    #                     key="countdown",
+    #                     device_class=SensorDeviceClass.DURATION,
+    #                     native_unit_of_measurement=UnitOfTime.MINUTES,
+    #                     state_class=SensorStateClass.MEASUREMENT,
+    #                 ),
+    #             ),
+    #         ]
+    #     },
+    # ),
 }
 
 

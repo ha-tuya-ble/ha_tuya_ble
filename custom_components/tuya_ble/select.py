@@ -362,6 +362,21 @@ mapping: dict[str, TuyaBLECategorySelectMapping] = {
             ],
         },
     ),
+    # "swtz": TuyaBLECategorySelectMapping(
+    #     products={
+    #         "bf092bejeznilat9": [  # LSC BBQ Thermometer
+    #             TuyaBLESelectMapping(
+    #                 dp_id=106,
+    #                 description=TemperatureUnitDescription(
+    #                     options=[
+    #                         "c",
+    #                         "f",
+    #                     ],
+    #                 ),
+    #             ),
+    #         ]
+    #     },
+    # ),
 }
 
 
