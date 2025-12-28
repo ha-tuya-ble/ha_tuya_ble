@@ -395,6 +395,10 @@ devices_database: dict[str, TuyaBLECategoryInfo] = {
             "ebd5e0uauqx0vfsp": TuyaBLEProductInfo(  # device product_id
                 name="CentralAcesso",
             ),
+            "oyqux5vv": TuyaBLEProductInfo(
+                name="LA-01 Smart lock",
+                lock=1,
+            ),
         },
     ),
     "szjqr": TuyaBLECategoryInfo(
