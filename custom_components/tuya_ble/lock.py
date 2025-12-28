@@ -12,9 +12,10 @@ from .devices import (
     TuyaBLEData,
     TuyaBLEEntity,
     TuyaBLEProductInfo,
+    TuyaBLECoordinator,
     get_device_product_info,
 )
-from .tuya_ble import TuyaBLEDataPointType, TuyaBLEDevice, TuyaBLECoordinator
+from .tuya_ble import TuyaBLEDataPointType, TuyaBLEDevice
 
 
 async def async_setup_entry(
