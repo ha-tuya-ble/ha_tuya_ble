@@ -121,7 +121,7 @@ mapping: dict[str, TuyaBLECategoryBinarySensorMapping] = {
                     dp_id=24,
                     description=BinarySensorEntityDescription(
                         key="doorbell",
-                        device_class=BinarySensorDeviceClass.DOORBELL,
+                        device_class=BinarySensorDeviceClass.SOUND,
                     ),
                 ),
             ],
@@ -155,6 +155,7 @@ class TuyaBLEBinarySensor(TuyaBLEEntity, BinarySensorEntity):
     ) -> None:
         super().__init__(hass, coordinator, device, product, mapping.description)
         self._mapping = mapping
+        self._attr_is_on = False
 
     @callback
     def _handle_coordinator_update(self) -> None:
