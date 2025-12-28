@@ -47,10 +47,15 @@ The integration works locally, but connection to Tuya BLE device requires device
   + CO2 Detector (product_id '59s19z5m').
 
 * Smart Locks (category_id 'ms', 'jtmspro')
-  + Smart Lock (product_id 'ludzroix', 'isk2p555', 'gumrixyt').
+  + Smart Lock (product_id 'ludzroix', 'isk2p555', 'gumrixyt', 'sidhzylo').
   + Raybuke K7 Pro+ (product_id 'xicdxood'), supports ble unlock and other small features.
   + Fingerprint Smart Lock (product_id 'k53ok3u9')
   + T55D: Battery & Door status (product_id 'bvclwu9b')
+  + Gimdow A1 Pro Max (product_id 'rlyxv7pe') - experimental
+  + LA-01 Smart lock (product_id 'oyqux5vv') - experimental
+  + B16 (product_id 'ajk32biq')
+  + Smart Cylinder Lock (product_id 'z7lj676i')
+  + TEKXDD Fingerprint Smart Lock (product_id 'okkyfgfs')
 
 * Climate (category_id 'wk')
   + Thermostatic Radiator Valve (product_ids 'drlajpqc', 'nhj2j7su').
@@ -67,7 +72,10 @@ The integration works locally, but connection to Tuya BLE device requires device
 * Covers (category_id 'cl')
   + Moes Roller Blind Motor (product_id '4pbr8eig')
   + Amazon HeyBlinds (product_id 'vlwf3ud6')
-  + AOK AM24 Venetian Blinds Motor (product_id 'dy4dh1q0')
+  + Tuya Smart Curtain Robot (product_id 'kcy0x4pi')
+  + Blinds Drive (product_id 'qqdxfdht')
+  + LY Curtain Motor Robot (product_id 'ulughw4g')
+  + AOK AM24 Venetian Blinds Motor (product_id 'dy4dh1q0') - Experimental
 
 * Water valve controller (category_id 'sfkzq')
   + Water valve controller (product_id 'nxquc5lb')

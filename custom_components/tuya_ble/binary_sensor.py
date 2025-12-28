@@ -101,7 +101,7 @@ mapping: dict[str, TuyaBLECategoryBinarySensorMapping] = {
     "ms": TuyaBLECategoryBinarySensorMapping(
         products={
             **dict.fromkeys(
-                ["okkyfgfs"],  # Smart Lock
+                ["okkyfgfs", "sidhzylo"],  # Smart Lock
                 [
                     TuyaBLEBinarySensorMapping(
                         dp_id=47,
@@ -111,6 +111,19 @@ mapping: dict[str, TuyaBLECategoryBinarySensorMapping] = {
                     ),
                 ],
             ),
+        }
+    ),
+    "jtmspro": TuyaBLECategoryBinarySensorMapping(
+        products={
+            "ajk32biq": [
+                TuyaBLEBinarySensorMapping(
+                    dp_id=24,
+                    description=BinarySensorEntityDescription(
+                        key="doorbell",
+                        device_class=BinarySensorDeviceClass.DOORBELL,
+                    ),
+                ),
+            ],
         }
     ),
 }

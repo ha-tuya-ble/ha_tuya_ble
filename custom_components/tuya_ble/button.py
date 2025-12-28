@@ -170,22 +170,30 @@ mapping: dict[str, TuyaBLECategoryButtonMapping] = {
     ),
     "jtmspro": TuyaBLECategoryButtonMapping(
         products={
-            "xicdxood": [  # Raycube K7 Pro+
-                TuyaBLEButtonMapping(
-                    dp_id=71,  # On click it opens the lock, just like connecting via Smart Life App
-                    # and holding the center button
-                    description=ButtonEntityDescription(
-                        key="bluetooth_unlock",
-                        icon="mdi:lock-open-variant-outline",
+            **dict.fromkeys(
+                [
+                    "xicdxood",  # Raycube K7 Pro+
+                    "rlyxv7pe",  # A1 PRO MAX
+                    "oyqux5vv",  # LA-01
+                ],
+                [
+                    # Raycube K7 Pro+, unclear if applicable to A1 PRO MAX
+                    TuyaBLEButtonMapping(
+                        dp_id=71,  # On click it opens the lock, just like connecting via Smart Life App
+                        # and holding the center button
+                        description=ButtonEntityDescription(
+                            key="bluetooth_unlock",
+                            icon="mdi:lock-open-variant-outline",
+                        ),
                     ),
-                ),
-            ],
+                ],
+            )
         },
     ),
     "ms": TuyaBLECategoryButtonMapping(
         products={
             **dict.fromkeys(
-                ["okkyfgfs", "k53ok3u9"],  # Smart Lock
+                ["okkyfgfs", "k53ok3u9", "sidhzylo"],  # Smart Lock
                 [
                     TuyaBLEButtonMapping(
                         dp_id=6,

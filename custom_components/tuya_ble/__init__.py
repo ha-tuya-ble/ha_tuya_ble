@@ -22,7 +22,9 @@ from .devices import TuyaBLECoordinator, TuyaBLEData, get_device_product_info
 PLATFORMS: list[Platform] = [
     Platform.BUTTON,
     Platform.CLIMATE,
+    Platform.LOCK,
     Platform.NUMBER,
+    Platform.LOCK,
     Platform.SENSOR,
     Platform.BINARY_SENSOR,
     Platform.LIGHT,
