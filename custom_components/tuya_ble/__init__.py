@@ -14,17 +14,20 @@ from homeassistant.core import Event, HomeAssistant, callback
 from homeassistant.exceptions import ConfigEntryNotReady
 
 from .tuya_ble import TuyaBLEDevice
+from .tuya_ble.productinfo import TuyaBLEProductInfo
+
 
 from .cloud import HASSTuyaBLEDeviceManager
 from .const import DOMAIN
 from .devices import TuyaBLECoordinator, TuyaBLEData, get_device_product_info
+
+from .services import SERVICE_REGISTRY
 
 PLATFORMS: list[Platform] = [
     Platform.BUTTON,
     Platform.CLIMATE,
     Platform.LOCK,
     Platform.NUMBER,
-    Platform.LOCK,
     Platform.SENSOR,
     Platform.BINARY_SENSOR,
     Platform.LIGHT,
@@ -50,7 +53,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     manager = HASSTuyaBLEDeviceManager(hass, entry.options.copy())
     device = TuyaBLEDevice(manager, ble_device)
     await device.initialize()
-    product_info = get_device_product_info(device)
+    device.product_info = get_device_product_info(device)
 
     coordinator = TuyaBLECoordinator(hass, device)
 
@@ -86,7 +89,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     hass.data.setdefault(DOMAIN, {})[entry.entry_id] = TuyaBLEData(
         entry.title,
         device,
-        product_info,
+        device.product_info,
         manager,
         coordinator,
     )
@@ -118,3 +121,7 @@ async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
         await data.device.stop()
 
     return unload_ok
+
+async def async_setup(hass, config):
+    await SERVICE_REGISTRY.async_setup(hass)
+    return True

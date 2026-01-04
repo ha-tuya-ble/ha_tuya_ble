@@ -24,7 +24,8 @@ from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator
 
 from .const import DOMAIN
-from .devices import TuyaBLEData, TuyaBLEEntity, TuyaBLEProductInfo
+from .devices import TuyaBLEData, TuyaBLEEntity
+from .tuya_ble.productinfo import TuyaBLEProductInfo
 from .tuya_ble import TuyaBLEDataPoint, TuyaBLEDataPointType, TuyaBLEDevice
 
 _LOGGER = logging.getLogger(__name__)

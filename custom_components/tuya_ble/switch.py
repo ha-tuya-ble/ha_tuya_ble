@@ -13,13 +13,14 @@ from homeassistant.components.switch import (
     SwitchDeviceClass,
 )
 from homeassistant.config_entries import ConfigEntry
-from homeassistant.core import HomeAssistant
+from homeassistant.core import HomeAssistant, callback
 from homeassistant.helpers.entity import EntityCategory
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator
 
 from .const import DOMAIN
-from .devices import TuyaBLEData, TuyaBLEEntity, TuyaBLEProductInfo
+from .devices import TuyaBLEData, TuyaBLEEntity
+from .tuya_ble.productinfo import TuyaBLEProductInfo
 from .tuya_ble import TuyaBLEDataPointType, TuyaBLEDevice
 
 _LOGGER = logging.getLogger(__name__)
@@ -54,8 +55,8 @@ def is_fingerbot_in_program_mode(
     self: TuyaBLESwitch, product: TuyaBLEProductInfo
 ) -> bool:
     result: bool = True
-    if product.fingerbot:
-        datapoint = self._device.datapoints[product.fingerbot.mode]
+    if isinstance(product, TuyaBLEFingerbotInfo):
+        datapoint = self._device.datapoints[product.mode]
         if datapoint:
             result = datapoint.value == 2
     return result
@@ -65,8 +66,8 @@ def is_fingerbot_in_switch_mode(
     self: TuyaBLESwitch, product: TuyaBLEProductInfo
 ) -> bool:
     result: bool = True
-    if product.fingerbot:
-        datapoint = self._device.datapoints[product.fingerbot.mode]
+    if isinstance(product, TuyaBLEFingerbotInfo):
+        datapoint = self._device.datapoints[product.mode]
         if datapoint:
             result = datapoint.value == 1
     return result
@@ -76,7 +77,7 @@ def is_water_valve_in_switch_mode(
     self: TuyaBLESwitch, product: TuyaBLEProductInfo
 ) -> bool:
     result: bool = False
-    if product.watervalve:
+    if isinstance(product, TuyaBLEWaterValveInfo):
         result = True
     return result
 
@@ -85,8 +86,8 @@ def get_fingerbot_program_repeat_forever(
     self: TuyaBLESwitch, product: TuyaBLEProductInfo
 ) -> bool | None:
     result: bool | None = None
-    if product.fingerbot and product.fingerbot.program:
-        datapoint = self._device.datapoints[product.fingerbot.program]
+    if isinstance(product, TuyaBLEFingerbotInfo) and product.program:
+        datapoint = self._device.datapoints[product.program]
         if datapoint and isinstance(datapoint.value, bytes):
             repeat_count = int.from_bytes(datapoint.value[0:2], "big")
             result = repeat_count == 0xFFFF
@@ -96,8 +97,8 @@ def get_fingerbot_program_repeat_forever(
 def set_fingerbot_program_repeat_forever(
     self: TuyaBLESwitch, product: TuyaBLEProductInfo, value: bool
 ) -> None:
-    if product.fingerbot and product.fingerbot.program:
-        datapoint = self._device.datapoints[product.fingerbot.program]
+    if isinstance(product, TuyaBLEFingerbotInfo) and product.program:
+        datapoint = self._device.datapoints[product.program]
         if datapoint and isinstance(datapoint.value, bytes):
             new_value = (
                 int.to_bytes(0xFFFF if value else 1, 2, "big") + datapoint.value[2:]
@@ -235,6 +236,22 @@ mapping: dict[str, TuyaBLECategorySwitchMapping] = {
                     TuyaBLESwitchMapping(
                         dp_id=46,
                         description=SwitchEntityDescription(key="manual_lock"),
+                    ),
+                ],
+            ),
+        }
+    ),
+    "jtmspro": TuyaBLECategorySwitchMapping(
+        products={
+
+            **dict.fromkeys(
+                ["czybdhba"],  # Geeksmart K11
+                [
+                    TuyaBLESwitchMapping(
+                        dp_id=33,
+                        description=SwitchEntityDescription(
+                            key="automatic_lock",
+                        ),
                     ),
                 ],
             ),

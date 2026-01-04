@@ -13,13 +13,14 @@ from homeassistant.components.button import (
     ButtonDeviceClass,
 )
 from homeassistant.config_entries import ConfigEntry
-from homeassistant.core import HomeAssistant
+from homeassistant.core import HomeAssistant, callback
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator
 from homeassistant.helpers.entity import EntityCategory
 
 from .const import DOMAIN
-from .devices import TuyaBLEData, TuyaBLEEntity, TuyaBLEProductInfo
+from .devices import TuyaBLEData, TuyaBLEEntity
+from .tuya_ble.productinfo import TuyaBLEProductInfo
 from .tuya_ble import TuyaBLEDataPointType, TuyaBLEDevice
 
 _LOGGER = logging.getLogger(__name__)
@@ -41,8 +42,8 @@ class TuyaBLEButtonMapping:
 
 def is_fingerbot_in_push_mode(self: TuyaBLEButton, product: TuyaBLEProductInfo) -> bool:
     result: bool = True
-    if product.fingerbot:
-        datapoint = self._device.datapoints[product.fingerbot.mode]
+    if isinstance(product, TuyaBLEFingerbotInfo):
+        datapoint = self._device.datapoints[product.mode]
         if datapoint:
             result = datapoint.value == 0
     return result
@@ -177,17 +178,15 @@ mapping: dict[str, TuyaBLECategoryButtonMapping] = {
                     "oyqux5vv",  # LA-01
                 ],
                 [
-                    # Raycube K7 Pro+, unclear if applicable to A1 PRO MAX
                     TuyaBLEButtonMapping(
-                        dp_id=71,  # On click it opens the lock, just like connecting via Smart Life App
-                        # and holding the center button
+                        dp_id=71,
                         description=ButtonEntityDescription(
                             key="bluetooth_unlock",
                             icon="mdi:lock-open-variant-outline",
                         ),
                     ),
                 ],
-            )
+            ),
         },
     ),
     "ms": TuyaBLECategoryButtonMapping(
@@ -240,6 +239,12 @@ class TuyaBLEButton(TuyaBLEEntity, ButtonEntity):
         super().__init__(hass, coordinator, device, product, mapping.description)
         self._mapping = mapping
 
+    @callback
+    def _handle_coordinator_update(self) -> None:
+        """Handle updated data from the coordinator."""            
+        # This call tells Home Assistant to re-read 'is_locked' and update the UI
+        self.async_write_ha_state()
+
     def press(self) -> None:
         """Press the button."""
         datapoint = self._device.datapoints.get_or_create(
@@ -258,6 +263,7 @@ class TuyaBLEButton(TuyaBLEEntity, ButtonEntity):
     def available(self) -> bool:
         """Return if entity is available."""
         result = super().available
+
         if result and self._mapping.is_available:
             result = self._mapping.is_available(self, self._product)
         return result

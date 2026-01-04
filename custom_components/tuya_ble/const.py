@@ -482,8 +482,8 @@ class DPCode(StrEnum):
     LOCK_MOTOR_STATE = "lock_motor_state"
     MASTER_MODE = "master_mode"  # alarm mode
     MACH_OPERATE = "mach_operate"
-    MANUAL_LOCK = "manual_lock"
     MANUAL_FEED = "manual_feed"
+    MANUAL_LOCK = "manual_lock"
     MATERIAL = "material"  # Material
     MODE = "mode"  # Working mode / Mode
     MOODLIGHTING = "moodlighting"  # Mood light

@@ -1,0 +1,129 @@
+enroll_fingerprint:
+  name: Enroll Fingerprint
+  description: Starts the 5-step fingerprint enrollment process on the lock.
+  fields:
+    device_id:
+      name: Device
+      description: The lock to start enrollment on.
+      required: true
+      selector:
+        device:
+          integration: tuya_ble
+    user_id:
+      name: User ID
+      description: The user ID of the person enrolling the fingerprint
+      required: true
+      default: 1
+      selector:
+        number:
+          min: 1
+          max: 255
+          mode: box
+    finger_name:
+      name: Finger Name
+      description: The name of the finger being enrolled.
+      required: true
+      default: 1
+      selector:
+        text:
+
+retrieve_fingerprints:
+  name: Sync Fingerprints
+  description: Syncs the fingerprints in the lock.
+  fields:
+    device_id:
+      name: Device
+      description: The lock to start enrollment on.
+      required: true
+      selector:
+        device:
+          integration: tuya_ble
+
+remove_fingerprint:
+  name: Remove Fingerprint
+  description: Removes a fingerprint from the lock.
+  fields:
+    device_id:
+      name: Device
+      description: The lock to remove the fingerprint from.
+      required: true
+      selector:
+        device:
+          integration: tuya_ble
+    user_id:
+      name: User ID
+      description: The user ID of the person who owns the fingerprint
+      required: true
+      default: 1
+      selector:
+        number:
+          min: 1
+          max: 255
+          mode: box
+    fingerprint_id:
+      name: Fingerprint ID
+      description: The ID of the fingerprint being removed.
+      required: true
+      default: 
+      selector:
+        number:
+          min: 1
+          max: 255
+
+rename_user:
+  name: Rename Lock User
+  description: Assign a friendly name to a specific lock user ID.
+  fields:
+    device_id:
+      name: Lock Device
+      description: The lock to update.
+      selector:
+        device:
+          integration: tuya_ble
+    user_id:
+      name: User ID
+      description: The ID (1-255) from the lock.
+      required: true
+      selector:
+        number:
+          min: 1
+          max: 255
+    new_name:
+      name: New Name
+      description: The friendly name for this user.
+      required: true
+      selector:
+        text:
+
+rename_fingerprint:
+  name: Rename Finger
+  description: Assign a friendly name to a specific fingerprint.
+  fields:
+    device_id:
+      name: Lock Device
+      description: The lock to update.
+      selector:
+        device:
+          integration: tuya_ble
+    user_id:
+      name: User ID
+      description: The ID (1-255) from the lock.
+      required: true
+      selector:
+        number:
+          min: 1
+          max: 255
+    fingerprint_id:
+      name: Fingerprint ID
+      description: The ID (1-255) from the lock.
+      required: true
+      selector:
+        number:
+          min: 1
+          max: 255
+    new_name:
+      name: New Name
+      description: The friendly name for this fingerprint.
+      required: true
+      selector:
+        text:

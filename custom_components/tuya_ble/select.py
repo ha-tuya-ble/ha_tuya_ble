@@ -23,7 +23,8 @@ from .const import (
     FINGERBOT_MODE_PUSH,
     FINGERBOT_MODE_SWITCH,
 )
-from .devices import TuyaBLEData, TuyaBLEEntity, TuyaBLEProductInfo
+from .devices import TuyaBLEData, TuyaBLEEntity
+from .tuya_ble.productinfo import TuyaBLEProductInfo
 from .tuya_ble import TuyaBLEDataPointType, TuyaBLEDevice
 
 _LOGGER = logging.getLogger(__name__)
@@ -328,7 +329,22 @@ mapping: dict[str, TuyaBLECategorySelectMapping] = {
                         ),
                     ),
                 ],
-            )
+            ),
+            "czybdhba": [  # Geeksmart K11
+                TuyaBLESelectMapping(
+                    dp_id=31,
+                    description=SelectEntityDescription(
+                        key="beep_volume",
+                        options=[
+                            "Mute",
+                            "Low",
+                            "Normal",
+                            "High",
+                        ],
+                        entity_category=EntityCategory.CONFIG,
+                    ),
+                ),
+            ],
         }
     ),
     "szjqr": TuyaBLECategorySelectMapping(
