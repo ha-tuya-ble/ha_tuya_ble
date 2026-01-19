@@ -36,8 +36,7 @@ from .const import (
 
 from .base import IntegerTypeData
 from .util import remap_value
-from .devices import TuyaBLEData, TuyaBLEEntity
-from .tuya_ble.productinfo import TuyaBLEProductInfo
+from .devices import TuyaBLEData, TuyaBLEEntity, TuyaBLEProductInfo
 from .tuya_ble import (
     TuyaBLEDevice,
     TuyaBLEEntityDescription,

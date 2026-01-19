@@ -14,8 +14,6 @@ from homeassistant.core import Event, HomeAssistant, callback
 from homeassistant.exceptions import ConfigEntryNotReady
 
 from .tuya_ble import TuyaBLEDevice
-from .tuya_ble.productinfo import TuyaBLEProductInfo
-
 
 from .cloud import HASSTuyaBLEDeviceManager
 from .const import DOMAIN
@@ -53,7 +51,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     manager = HASSTuyaBLEDeviceManager(hass, entry.options.copy())
     device = TuyaBLEDevice(manager, ble_device)
     await device.initialize()
-    device.product_info = get_device_product_info(device)
+    product_info = get_device_product_info(device)
 
     coordinator = TuyaBLECoordinator(hass, device)
 
@@ -89,10 +87,15 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     hass.data.setdefault(DOMAIN, {})[entry.entry_id] = TuyaBLEData(
         entry.title,
         device,
-        device.product_info,
+        product_info,
         manager,
         coordinator,
     )
+
+    # We check a boolean in hass.data to ensure this only runs once
+    if not hass.data[DOMAIN].get("services_initialized"):
+        await SERVICE_REGISTRY.async_setup(hass)
+        hass.data[DOMAIN]["services_initialized"] = True    
 
     await hass.config_entries.async_forward_entry_setups(entry, PLATFORMS)
     entry.async_on_unload(entry.add_update_listener(_async_update_listener))
@@ -121,7 +124,3 @@ async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
         await data.device.stop()
 
     return unload_ok
-
-async def async_setup(hass, config):
-    await SERVICE_REGISTRY.async_setup(hass)
-    return True

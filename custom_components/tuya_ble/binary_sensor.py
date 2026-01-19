@@ -21,8 +21,7 @@ from homeassistant.helpers.update_coordinator import DataUpdateCoordinator
 from .const import (
     DOMAIN,
 )
-from .devices import TuyaBLEData, TuyaBLEEntity
-from .tuya_ble.productinfo import TuyaBLEProductInfo
+from .devices import TuyaBLEData, TuyaBLEEntity, TuyaBLEProductInfo
 from .tuya_ble import TuyaBLEDataPointType, TuyaBLEDevice
 
 _LOGGER = logging.getLogger(__name__)
@@ -166,7 +165,6 @@ class TuyaBLEBinarySensor(TuyaBLEEntity, BinarySensorEntity):
             datapoint = self._device.datapoints[self._mapping.dp_id]
             if datapoint:
                 self._attr_is_on = bool(datapoint.value)
-
                 """
                 if datapoint.type == TuyaBLEDataPointType.DT_ENUM:
                     if self.entity_description.options is not None:

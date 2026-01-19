@@ -191,11 +191,7 @@ class TuyaBLEOptionsFlow(OptionsFlowWithConfigEntry):
                         address, True, True
                     )
                     if credentials:
-                        # return self.async_create_entry(
-                        #     title=self.config_entry.title,
-                        #     data=entry.manager.data,
-                        # )
-                        self.async_create_entry(
+                        return self.async_create_entry(
                             title=self.config_entry.title,
                             data=entry.manager.data,
                         )

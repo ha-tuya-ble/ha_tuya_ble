@@ -1,19 +1,39 @@
-enroll_fingerprint:
-  name: Enroll Fingerprint
-  description: Starts the 5-step fingerprint enrollment process on the lock.
+add_user:
+  name: Add User
+  description: Adds a user to the lock. Pulls name from the buffer if not provided.
+  target:
+    entity:
+      integration: tuya_ble
+      domain: select
   fields:
-    device_id:
-      name: Device
-      description: The lock to start enrollment on.
-      required: true
-      selector:
-        device:
-          integration: tuya_ble
     user_id:
       name: User ID
-      description: The user ID of the person enrolling the fingerprint
-      required: true
-      default: 1
+      description: "Optional: Specify an ID manually. If omitted, the integration handles assignment."
+      required: false
+      selector:
+        number:
+          min: 1
+          max: 255
+          mode: box
+    name:
+      name: Name
+      description: "Optional: Friendly name. If omitted, pulls from text buffer entity."
+      required: false
+      selector:
+        text:
+
+enroll_fingerprint:
+  name: Enroll Fingerprint
+  description: Starts fingerprint enrollment. Pulls User from the Select entity.
+  target:
+    entity:
+      integration: tuya_ble
+      domain: select
+  fields:
+    user_id:
+      name: User ID
+      description: "Optional: Target User ID."
+      required: false
       selector:
         number:
           min: 1
@@ -21,40 +41,47 @@ enroll_fingerprint:
           mode: box
     finger_name:
       name: Finger Name
-      description: The name of the finger being enrolled.
-      required: true
-      default: 1
+      description: "Optional: Name of the finger. If omitted, pulls from text buffer."
+      required: false
       selector:
         text:
 
 retrieve_fingerprints:
   name: Sync Fingerprints
   description: Syncs the fingerprints in the lock.
+  target:
+    entity:
+      integration: tuya_ble
+      domain: select
+
+remove_user:
+  name: Remove User
+  description: Removes a user and all associated fingerprints. Pulls ID from User Select entity.
+  target:
+    entity:
+      integration: tuya_ble
+      domain: select
   fields:
-    device_id:
-      name: Device
-      description: The lock to start enrollment on.
-      required: true
+    user_id:
+      name: User ID
+      required: false
       selector:
-        device:
-          integration: tuya_ble
+        number:
+          min: 1
+          max: 255
+          mode: box
 
 remove_fingerprint:
   name: Remove Fingerprint
-  description: Removes a fingerprint from the lock.
+  description: Removes a fingerprint. Pulls ID from Fingerprint Select entity.
+  target:
+    entity:
+      integration: tuya_ble
+      domain: select
   fields:
-    device_id:
-      name: Device
-      description: The lock to remove the fingerprint from.
-      required: true
-      selector:
-        device:
-          integration: tuya_ble
     user_id:
       name: User ID
-      description: The user ID of the person who owns the fingerprint
-      required: true
-      default: 1
+      required: false
       selector:
         number:
           min: 1
@@ -62,68 +89,61 @@ remove_fingerprint:
           mode: box
     fingerprint_id:
       name: Fingerprint ID
-      description: The ID of the fingerprint being removed.
-      required: true
-      default: 
+      required: false
       selector:
         number:
-          min: 1
+          min: -1
           max: 255
+          mode: box
 
 rename_user:
   name: Rename Lock User
-  description: Assign a friendly name to a specific lock user ID.
+  description: Rename a user. Pulls User ID from Select entity and name from Buffer.
+  target:
+    entity:
+      integration: tuya_ble
+      domain: select
   fields:
-    device_id:
-      name: Lock Device
-      description: The lock to update.
-      selector:
-        device:
-          integration: tuya_ble
     user_id:
       name: User ID
-      description: The ID (1-255) from the lock.
-      required: true
+      required: false
       selector:
         number:
           min: 1
           max: 255
+          mode: box
     new_name:
       name: New Name
-      description: The friendly name for this user.
-      required: true
+      required: false
       selector:
         text:
 
 rename_fingerprint:
   name: Rename Finger
-  description: Assign a friendly name to a specific fingerprint.
+  description: Rename a finger. Pulls ID from Select entity and name from Buffer.
+  target:
+    entity:
+      integration: tuya_ble
+      domain: select
   fields:
-    device_id:
-      name: Lock Device
-      description: The lock to update.
-      selector:
-        device:
-          integration: tuya_ble
     user_id:
       name: User ID
-      description: The ID (1-255) from the lock.
-      required: true
+      required: false
       selector:
         number:
           min: 1
           max: 255
+          mode: box
     fingerprint_id:
       name: Fingerprint ID
-      description: The ID (1-255) from the lock.
-      required: true
+      required: false
       selector:
         number:
           min: 1
           max: 255
+          mode: box
     new_name:
       name: New Name
-      description: The friendly name for this fingerprint.
-      required: true
+      required: false
       selector:
         text:

@@ -46,13 +46,44 @@ from .const import (
 
 from .base import IntegerTypeData, EnumTypeData
 
-from .tuya_ble.productinfo import TuyaBLEProductInfo
-from .models.geeksmartk11 import TuyaBLEGeeksmartLockInfo
-from .models.fingerbot import TuyaBLEFingerbotInfo
-from .models.watervalve import TuyaBLEWaterValveInfo
-
-
 _LOGGER = logging.getLogger(__name__)
+
+
+@dataclass
+class TuyaBLEFingerbotInfo:
+    """Model a fingerbot"""
+
+    switch: int
+    mode: int
+    up_position: int
+    down_position: int
+    hold_time: int
+    reverse_positions: int
+    manual_control: int = 0
+    program: int = 0
+
+
+@dataclass
+class TuyaBLEWaterValveInfo:
+    """Model a water valve"""
+
+    switch: bool
+    countdown: int
+    weather_delay: str
+    smart_weather: str
+    use_time: int
+
+
+@dataclass
+class TuyaBLEProductInfo:
+    """Model product info"""
+
+    name: str
+    manufacturer: str = DEVICE_DEF_MANUFACTURER
+    fingerbot: TuyaBLEFingerbotInfo | None = None
+    watervalve: TuyaBLEWaterValveInfo | None = None
+    lock: int | None = None
+
 
 class TuyaBLEEntity(CoordinatorEntity):
     """Tuya BLE base entity."""
@@ -241,12 +272,23 @@ class TuyaBLECoordinator(DataUpdateCoordinator[None]):
             _LOGGER,
             name=DOMAIN,
         )
+        self._hass = hass
         self._device = device
         self._disconnected: bool = True
         self._unsub_disconnect: CALLBACK_TYPE | None = None
+        
+        self.device_manager = self._get_device_manager(device)        
+        
         device.register_connected_callback(self._async_handle_connect)
         device.register_callback(self._async_handle_update)
         device.register_disconnected_callback(self._async_handle_disconnect)
+
+    def _get_device_manager(self, device):
+        # This is where your devices/* files are mapped
+        if device.product_id == "czybdhba":
+            from .models.geeksmartk11 import TuyaBLEGeeksmartK11
+            return TuyaBLEGeeksmartK11(_hass = self._hass, _device = device, _coordinator = self)
+        # Add more device types here as you expand to 30+
 
     @property
     def connected(self) -> bool:
@@ -266,9 +308,9 @@ class TuyaBLECoordinator(DataUpdateCoordinator[None]):
         self._async_handle_connect()
         self.async_set_updated_data(None)
         info = get_device_product_info(self._device)
-        if info and isinstance(info, TuyaBLEFingerbotInfo) and info.manual_control != 0:
+        if info and info.fingerbot and info.fingerbot.manual_control != 0:
             for update in updates:
-                if update.id == info.switch and update.changed_by_device:
+                if update.id == info.fingerbot.switch and update.changed_by_device:
                     self.hass.bus.fire(
                         FINGERBOT_BUTTON_EVENT,
                         {
@@ -276,11 +318,6 @@ class TuyaBLECoordinator(DataUpdateCoordinator[None]):
                             CONF_DEVICE_ID: self._device.device_id,
                         },
                     )
-        elif info and isinstance(info, TuyaBLEGeeksmartLockInfo):
-            for update in updates:
-                info.handle_update(update)
-                self.hass.create_task(self.async_update_listeners())
-
 
     @callback
     def _set_disconnected(self, _: None) -> None:
@@ -376,28 +413,31 @@ devices_database: dict[str, TuyaBLECategoryInfo] = {
             "ebd5e0uauqx0vfsp": TuyaBLEProductInfo(name="CentralAcesso"),
             "ajk32biq": TuyaBLEProductInfo(name="B16", lock=1),
             "z7lj676i": TuyaBLEProductInfo(name="Smart Cylinder Lock", lock=1),
-            "czybdhba": TuyaBLEGeeksmartLockInfo(name="GeekSmart K11", lock=1),
         },
     ),
     "szjqr": TuyaBLECategoryInfo(
         products={
-            "3yqdo5yt": TuyaBLEFingerbotInfo(  # device product_id
+            "3yqdo5yt": TuyaBLEProductInfo(  # device product_id
                 name="CUBETOUCH 1s",
-                switch=1,
-                mode=2,
-                up_position=5,
-                down_position=6,
-                hold_time=3,
-                reverse_positions=4,
+                fingerbot=TuyaBLEFingerbotInfo(
+                    switch=1,
+                    mode=2,
+                    up_position=5,
+                    down_position=6,
+                    hold_time=3,
+                    reverse_positions=4,
+                ),
             ),
-            "xhf790if": TuyaBLEFingerbotInfo(  # device product_id
+            "xhf790if": TuyaBLEProductInfo(  # device product_id
                 name="CubeTouch II",
-                switch=1,
-                mode=2,
-                up_position=5,
-                down_position=6,
-                hold_time=3,
-                reverse_positions=4,
+                fingerbot=TuyaBLEFingerbotInfo(
+                    switch=1,
+                    mode=2,
+                    up_position=5,
+                    down_position=6,
+                    hold_time=3,
+                    reverse_positions=4,
+                ),
             ),
             **dict.fromkeys(
                 [
@@ -409,16 +449,18 @@ devices_database: dict[str, TuyaBLECategoryInfo] = {
                     "riecov42",
                     "h8kdwywx",
                 ],  # device product_ids
-                TuyaBLEFingerbotInfo(
+                TuyaBLEProductInfo(
                     name="Fingerbot Plus",
-                    switch=2,
-                    mode=8,
-                    up_position=15,
-                    down_position=9,
-                    hold_time=10,
-                    reverse_positions=11,
-                    manual_control=17,
-                    program=121,
+                    fingerbot=TuyaBLEFingerbotInfo(
+                        switch=2,
+                        mode=8,
+                        up_position=15,
+                        down_position=9,
+                        hold_time=10,
+                        reverse_positions=11,
+                        manual_control=17,
+                        program=121,
+                    ),
                 ),
             ),
             **dict.fromkeys(
@@ -431,25 +473,29 @@ devices_database: dict[str, TuyaBLECategoryInfo] = {
                     "rvdceqjh",
                     "5xhbk964",
                 ],  # device product_ids
-                TuyaBLEFingerbotInfo(
+                TuyaBLEProductInfo(
                     name="Fingerbot",
-                    switch=2,
-                    mode=8,
-                    up_position=15,
-                    down_position=9,
-                    hold_time=10,
-                    reverse_positions=11,
-                    program=121,
+                    fingerbot=TuyaBLEFingerbotInfo(
+                        switch=2,
+                        mode=8,
+                        up_position=15,
+                        down_position=9,
+                        hold_time=10,
+                        reverse_positions=11,
+                        program=121,
+                    ),
                 ),
             ),
-            "yn4x5fa7": TuyaBLEFingerbotInfo(
+            "yn4x5fa7": TuyaBLEProductInfo(
                 name="Nedis SmartLife Finger Robot",
-                switch=1,
-                mode=2,
-                up_position=4,
-                down_position=5,
-                hold_time=3,
-                reverse_positions=6,
+                fingerbot=TuyaBLEFingerbotInfo(
+                    switch=1,
+                    mode=2,
+                    up_position=4,
+                    down_position=5,
+                    hold_time=3,
+                    reverse_positions=6,
+                ),
             ),
         },
     ),
@@ -457,16 +503,18 @@ devices_database: dict[str, TuyaBLECategoryInfo] = {
         products={
             **dict.fromkeys(
                 ["mknd4lci", "riecov42", "bs3ubslo"],  # device product_ids
-                TuyaBLEFingerbotInfo(
+                TuyaBLEProductInfo(
                     name="Fingerbot Plus",
-                    switch=1,
-                    mode=101,
-                    up_position=106,
-                    down_position=102,
-                    hold_time=103,
-                    reverse_positions=104,
-                    manual_control=107,
-                    program=109,
+                    fingerbot=TuyaBLEFingerbotInfo(
+                        switch=1,
+                        mode=101,
+                        up_position=106,
+                        down_position=102,
+                        hold_time=103,
+                        reverse_positions=104,
+                        manual_control=107,
+                        program=109,
+                    ),
                 ),
             ),
         },
@@ -519,13 +567,15 @@ devices_database: dict[str, TuyaBLECategoryInfo] = {
                     "svhikeyq",
                     "0axr5s0b",
                 ],  # device product_id
-                TuyaBLEWaterValveInfo(
+                TuyaBLEProductInfo(
                     name="Valve controller",
-                    switch=1,
-                    countdown=11,
-                    weather_delay=10,
-                    smart_weather=13,
-                    use_time=15,
+                    watervalve=TuyaBLEWaterValveInfo(
+                        switch=1,
+                        countdown=11,
+                        weather_delay=10,
+                        smart_weather=13,
+                        use_time=15,
+                    ),
                 ),
             ),
             **dict.fromkeys(
@@ -534,13 +584,15 @@ devices_database: dict[str, TuyaBLECategoryInfo] = {
                     "46zia2nz",
                     "1fcnd8xk",
                 ],
-                TuyaBLEWaterValveInfo(
+                TuyaBLEProductInfo(
                     name="Water valve controller",
-                    switch=1,
-                    countdown=8,
-                    weather_delay=10,
-                    smart_weather=13,
-                    use_time=9,
+                    watervalve=TuyaBLEWaterValveInfo(
+                        switch=1,
+                        countdown=8,
+                        weather_delay=10,
+                        smart_weather=13,
+                        use_time=9,
+                    ),
                 ),
             ),
         },

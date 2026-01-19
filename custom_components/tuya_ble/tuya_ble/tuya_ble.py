@@ -56,7 +56,6 @@ from .exceptions import (
 )
 from .manager import AbstaractTuyaBLEDeviceManager, TuyaBLEDeviceCredentials
 
-from .productinfo import TuyaBLEProductInfo
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -327,8 +326,6 @@ class TuyaBLEDevice:
         self._function = {}
         self._status_range = {}
 
-        self._product_info: TuyaBLEProductInfo | None = None
-
     def set_ble_device_and_advertisement_data(
         self, ble_device: BLEDevice, advertisement_data: AdvertisementData
     ) -> None:
@@ -583,17 +580,6 @@ class TuyaBLEDevice:
         """Last data received"""
         return self._datapoints.last_data_received
 
-    @property
-    def product_info(self) -> TuyaBLEProductInfo | None:
-        """Get product info"""
-        return self._product_info
-    
-    @product_info.setter
-    def product_info(self, value):
-        """Setter for product_info allowed now."""
-        # You can even add validation here
-        self._product_info = value
-    
     def get_or_create_datapoint(
         self,
         id: int,

@@ -21,8 +21,7 @@ from homeassistant.helpers.update_coordinator import DataUpdateCoordinator
 from .const import (
     DOMAIN,
 )
-from .devices import TuyaBLEData, TuyaBLEEntity
-from .tuya_ble.productinfo import TuyaBLEProductInfo
+from .devices import TuyaBLEData, TuyaBLEEntity, TuyaBLEProductInfo
 from .tuya_ble import TuyaBLEDataPointType, TuyaBLEDevice
 
 _LOGGER = logging.getLogger(__name__)
@@ -30,7 +29,11 @@ _LOGGER = logging.getLogger(__name__)
 SIGNAL_STRENGTH_DP_ID = -1
 
 TuyaBLETextGetter = Callable[["TuyaBLEText", TuyaBLEProductInfo], str | None] | None
+
+
 TuyaBLETextIsAvailable = Callable[["TuyaBLEText", TuyaBLEProductInfo], bool] | None
+
+
 TuyaBLETextSetter = Callable[["TuyaBLEText", TuyaBLEProductInfo, str], None] | None
 
 
@@ -40,8 +43,8 @@ def is_fingerbot_in_program_mode(
 ) -> bool:
     """Determines if in program mode"""
     result: bool = True
-    if isinstance(product, TuyaBLEFingerbotInfo):
-        datapoint = self._device.datapoints[product.mode]
+    if product.fingerbot:
+        datapoint = self._device.datapoints[product.fingerbot.mode]
         if datapoint:
             result = datapoint.value == 2
     return result
@@ -52,8 +55,8 @@ def get_fingerbot_program(
     product: TuyaBLEProductInfo,
 ) -> str | None:
     result: float | None = None
-    if isinstance(product, TuyaBLEFingerbotInfo) and product.program:
-        datapoint = self._device.datapoints[product.program]
+    if product.fingerbot and product.fingerbot.program:
+        datapoint = self._device.datapoints[product.fingerbot.program]
         if datapoint and isinstance(datapoint.value, bytes):
             result = ""
             step_count: int = datapoint.value[3]
@@ -75,8 +78,8 @@ def set_fingerbot_program(
     product: TuyaBLEProductInfo,
     value: str,
 ) -> None:
-    if isinstance(product, TuyaBLEFingerbotInfo) and product.program:
-        datapoint = self._device.datapoints[product.program]
+    if product.fingerbot and product.fingerbot.program:
+        datapoint = self._device.datapoints[product.fingerbot.program]
         if datapoint and isinstance(datapoint.value, bytes):
             new_value = bytearray(datapoint.value[0:3])
             steps = value.split(";")
@@ -267,4 +270,10 @@ async def async_setup_entry(
                     mapping,
                 )
             )
+
+    # Filter the list of entities provided by the manager for sensors
+    for entity in data.coordinator.device_manager.get_entities(hass, data.coordinator, data.device):
+        if isinstance(entity, TextEntity):
+            entities.append(entity)
+
     async_add_entities(entities)

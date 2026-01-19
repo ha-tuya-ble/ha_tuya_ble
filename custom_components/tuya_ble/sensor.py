@@ -36,12 +36,8 @@ from .const import (
     CO2_LEVEL_NORMAL,
     DOMAIN,
 )
-from .devices import TuyaBLEData, TuyaBLEEntity
-from .tuya_ble.productinfo import TuyaBLEProductInfo
+from .devices import TuyaBLEData, TuyaBLEEntity, TuyaBLEProductInfo
 from .tuya_ble import TuyaBLEDataPointType, TuyaBLEDevice
-
-from .models.geeksmartk11 import TuyaBLEGeeksmartLockInfo
-
 
 _LOGGER = logging.getLogger(__name__)
 SIGNAL_STRENGTH_DP_ID = -1
@@ -322,36 +318,6 @@ mapping: dict[str, TuyaBLECategorySensorMapping] = {
                     TuyaBLEBatteryMapping(dp_id=8),
                 ],
             ),
-            "czybdhba": [ # Geeksmart K11            
-                TuyaBLESensorMapping(
-                    dp_id=21,  # Requires more testing
-                    description=SensorEntityDescription(
-                        key="alarm_lock",
-                        icon="mdi:alarm-light-outline",
-                        device_class=SensorDeviceClass.ENUM,
-                        options=[
-                            "wrong_finger",
-                            "low_battery",
-                            "power_off",
-                        ],
-                    ),
-                ),
-                # TuyaBLESensorMapping(
-                #     dp_id=20,
-                #     description=SensorEntityDescription(
-                #         key="lock_record",
-                #     ),
-                #     dp_type=TuyaBLEDataPointType.DT_RAW,
-                # ),
-                TuyaBLESensorMapping(
-                    dp_id=12,  # Retrieve last fingerprint used
-                    description=SensorEntityDescription(
-                        key="unlock_fingerprint",
-                        icon="mdi:fingerprint",
-                    ),
-                ),
-                TuyaBLEBatteryMapping(dp_id=8),
-            ],
         }
     ),
     "szjqr": TuyaBLECategorySensorMapping(
@@ -1118,23 +1084,6 @@ rssi_mapping = TuyaBLESensorMapping(
     getter=rssi_getter,
 )
 
-def status_getter(sensor: TuyaBLESensor) -> None:
-    if isinstance(sensor._device.product_info, TuyaBLEGeeksmartLockInfo):
-        sensor._attr_native_value = sensor._device.product_info.lock_status
-    else:
-        sensor._attr_native_value = None
-
-status_mapping = TuyaBLESensorMapping(
-    dp_id=-2,
-    description=SensorEntityDescription(
-        key="lock_status",
-        entity_category=EntityCategory.DIAGNOSTIC,
-        entity_registry_enabled_default=False,
-    ),
-    getter=status_getter,
-)
-
-
 
 def get_mapping_by_device(device: TuyaBLEDevice) -> list[TuyaBLESensorMapping]:
     category = mapping.get(device.category)
@@ -1233,15 +1182,9 @@ async def async_setup_entry(
                 )
             )
 
-    if isinstance(data.device.product_info, TuyaBLEGeeksmartLockInfo):
-        entities.append(
-            TuyaBLESensor(
-                hass,
-                data.coordinator,
-                data.device,
-                data.product,
-                status_mapping,
-            )
-        )
+    # Filter the list of entities provided by the manager for sensors
+    for entity in data.coordinator.device_manager.get_entities(hass, data.coordinator, data.device):
+        if isinstance(entity, SensorEntity):
+            entities.append(entity)
 
     async_add_entities(entities)
