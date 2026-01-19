@@ -272,12 +272,23 @@ class TuyaBLECoordinator(DataUpdateCoordinator[None]):
             _LOGGER,
             name=DOMAIN,
         )
+        self._hass = hass
         self._device = device
         self._disconnected: bool = True
         self._unsub_disconnect: CALLBACK_TYPE | None = None
+        
+        self.device_manager = self._get_device_manager(device)        
+        
         device.register_connected_callback(self._async_handle_connect)
         device.register_callback(self._async_handle_update)
         device.register_disconnected_callback(self._async_handle_disconnect)
+
+    def _get_device_manager(self, device):
+        # This is where your devices/* files are mapped
+        if device.product_id == "czybdhba":
+            from .models.geeksmartk11 import TuyaBLEGeeksmartK11
+            return TuyaBLEGeeksmartK11(_hass = self._hass, _device = device, _coordinator = self)
+        # Add more device types here as you expand to 30+
 
     @property
     def connected(self) -> bool:

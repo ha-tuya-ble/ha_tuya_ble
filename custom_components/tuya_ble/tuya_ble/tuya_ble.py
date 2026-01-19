@@ -363,6 +363,9 @@ class TuyaBLEDevice:
         _LOGGER.debug("%s: Updating", self.address)
         await self._send_packet(TuyaBLECode.FUN_SENDER_DEVICE_STATUS, bytes())
 
+    def get_options_data(self) -> dict[str, Any]:
+        return self._device_manager.data
+
     async def _update_device_info(self) -> bool:
         if self._device_info is None:
             if self._device_manager:

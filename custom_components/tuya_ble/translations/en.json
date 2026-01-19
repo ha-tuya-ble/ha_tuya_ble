@@ -35,6 +35,9 @@
             },
             "lock_motor_state": {
                 "name": "Motor State"
+            },
+            "open_inside": {
+                "name": "Opened From Inside"
             }
         },
         "button": {
@@ -46,9 +49,18 @@
             },
             "bluetooth_unlock": {
                 "name": "Unlock"
+            },
+            "unlock_method_create": {
+                "name": "Add Fingerprint"
+            },
+            "synch_method": {
+                "name": "Sync Fingerprints"
             }
         },
         "number": {
+            "auto_lock_time": {
+                "name": "Auto-Lock time"
+            },
             "brightness": {
                 "name": "Brightness"
             },
@@ -165,6 +177,12 @@
                     "door_status_closed": "Closed"
                 }
             },
+            "lock_record": {
+                "name": "Lock record"
+            },
+            "lock_status": {
+                "name": "Lock status"
+            },
             "humidity": {
                 "name": "Humidity"
             },
@@ -224,6 +242,9 @@
             "antifreeze": {
                 "name": "Antifreeze"
             },
+            "automatic_lock": {
+                "name": "Auto-Lock"
+            },
             "carbon_dioxide_alarm_switch": {
                 "name": "Alarm enabled"
             },
@@ -242,6 +263,9 @@
             "manual_control": {
                 "name": "Manual control"
             },
+            "manual_lock": {
+                "name": "Manual lock"
+            },
             "program": {
                 "name": "Program"
             },
@@ -259,6 +283,9 @@
             },
             "switch": {
                 "name": "Switch"
+            },
+            "unlock_phone_remote": {
+                "name": "Unlock phone remote"
             },
             "water_scale_proof": {
                 "name": "Anti-scale"

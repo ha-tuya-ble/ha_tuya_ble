@@ -6,6 +6,7 @@ from homeassistant.components.lock import LockEntity, LockEntityFeature
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
+from homeassistant.helpers.update_coordinator import DataUpdateCoordinator
 
 from .const import DOMAIN, DPCode
 from .devices import (
@@ -25,9 +26,17 @@ async def async_setup_entry(
 ) -> None:
     """Set up the Tuya BLE sensors."""
     data: TuyaBLEData = hass.data[DOMAIN][entry.entry_id]
+    entities: list[TuyaBLESwitch] = []
     product = get_device_product_info(data.device)
     if product and product.lock:
         async_add_entities([TuyaBLELock(hass, data.coordinator, data.device, product)])
+
+    # Filter the list of entities provided by the manager for sensors
+    for entity in data.coordinator.device_manager.get_entities(hass, data.coordinator, data.device):
+        if isinstance(entity, LockEntity):
+            entities.append(entity)
+
+    async_add_entities(entities)
 
 
 class TuyaBLELock(TuyaBLEEntity, LockEntity):

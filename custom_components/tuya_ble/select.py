@@ -484,4 +484,10 @@ async def async_setup_entry(
                     mapping,
                 )
             )
+
+    # Filter the list of entities provided by the manager for sensors
+    for entity in data.coordinator.device_manager.get_entities(hass, data.coordinator, data.device):
+        if isinstance(entity, SelectEntity):
+            entities.append(entity)
+
     async_add_entities(entities)

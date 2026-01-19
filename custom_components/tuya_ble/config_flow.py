@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import logging
 import pycountry
+import base64
 from typing import Any
 
 import voluptuous as vol
@@ -26,6 +27,7 @@ from homeassistant.const import (
 )
 from homeassistant.core import callback
 from homeassistant.data_entry_flow import FlowHandler, FlowResult
+from homeassistant.helpers import selector
 
 from .tuya_ble import SERVICE_UUID, TuyaBLEDeviceCredentials
 
@@ -193,6 +195,7 @@ class TuyaBLEOptionsFlow(OptionsFlowWithConfigEntry):
                             title=self.config_entry.title,
                             data=entry.manager.data,
                         )
+                        return await self.async_step_device_settings(None)
 
                     errors["base"] = "device_not_registered"
 
@@ -202,6 +205,45 @@ class TuyaBLEOptionsFlow(OptionsFlowWithConfigEntry):
 
         return _show_login_form(self, user_input, errors, placeholders)
 
+    async def async_step_device_settings(self, user_input=None):
+        """Second step: Collect the 8-digit code for the options dictionary."""
+        errors = {}
+        
+        # Get the current value from options to pre-fill the field
+        current_code = self.config_entry.options.get("secret_code", "")
+        
+        if user_input is not None:
+            code = user_input.get("secret_code", "")
+
+        try:
+            # 1. Decode Base64 to bytes
+            decoded_bytes = base64.b64decode(code)
+            
+            # 2. Extract bytes from index 4 to 12 (the 8-digit number)
+            # In your string: AAH// [bytes 4-11] ...
+            code_bytes = decoded_bytes[4:12]
+            secret_code = code_bytes.decode("ascii")
+            if len(secret_code) != 8 or not secret_code.isdigit():
+                raise ValueError(f"Bad code format: {secret_code}")
+            # Merge into options
+
+            new_options = {**self.config_entry.options, "secret_code": secret_code}
+            return self.async_create_entry(title="", data=new_options)
+                            
+        except Exception as e:
+            errors["base"] = "invalid_code_format"
+
+        return self.async_show_form(
+            step_id="device_settings",
+            data_schema=vol.Schema({
+                vol.Required("secret_code", default=current_code): selector.TextSelector(),
+            }),
+            description_placeholders={
+                "device_name": self.config_entry.title,
+                "device_address": self.config_entry.data.get("address", "Unknown"),
+            },
+            errors=errors,
+        )
 
 class TuyaBLEConfigFlow(ConfigFlow, domain=DOMAIN):
     """Handle a config flow for Tuya BLE."""

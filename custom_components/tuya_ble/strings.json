@@ -281,7 +281,8 @@
         "error": {
             "device_not_registered": "Device is not registered in Tuya cloud",
             "invalid_auth": "Invalid authentication",
-            "login_error": "Login error ({code}): {msg}"
+            "login_error": "Login error ({code}): {msg}",
+            "invalid_code_length": "The code must be exactly 8 digits."
         },
         "step": {
             "login": {
@@ -293,6 +294,13 @@
                     "username": "Account"
                 },
                 "description": "Refer to documentation of Tuya integration to retrieve the cloud credentials https://www.home-assistant.io/integrations/tuya/\n\nEnter your Tuya credentials."
+            },
+            "device_settings": {
+                "title": "Device Configuration",
+                "description": "Configure settings for **{device_name}** ({device_address}).",
+                "data": {
+                    "secret_code": "Enter Bluetooth Unlock (with Verification Codes) data obtained from Tuya IoT Platform."
+                }
             }
         }
     }

@@ -1,0 +1,149 @@
+add_user:
+  name: Add User
+  description: Adds a user to the lock. Pulls name from the buffer if not provided.
+  target:
+    entity:
+      integration: tuya_ble
+      domain: select
+  fields:
+    user_id:
+      name: User ID
+      description: "Optional: Specify an ID manually. If omitted, the integration handles assignment."
+      required: false
+      selector:
+        number:
+          min: 1
+          max: 255
+          mode: box
+    name:
+      name: Name
+      description: "Optional: Friendly name. If omitted, pulls from text buffer entity."
+      required: false
+      selector:
+        text:
+
+enroll_fingerprint:
+  name: Enroll Fingerprint
+  description: Starts fingerprint enrollment. Pulls User from the Select entity.
+  target:
+    entity:
+      integration: tuya_ble
+      domain: select
+  fields:
+    user_id:
+      name: User ID
+      description: "Optional: Target User ID."
+      required: false
+      selector:
+        number:
+          min: 1
+          max: 255
+          mode: box
+    finger_name:
+      name: Finger Name
+      description: "Optional: Name of the finger. If omitted, pulls from text buffer."
+      required: false
+      selector:
+        text:
+
+retrieve_fingerprints:
+  name: Sync Fingerprints
+  description: Syncs the fingerprints in the lock.
+  target:
+    entity:
+      integration: tuya_ble
+      domain: select
+
+remove_user:
+  name: Remove User
+  description: Removes a user and all associated fingerprints. Pulls ID from User Select entity.
+  target:
+    entity:
+      integration: tuya_ble
+      domain: select
+  fields:
+    user_id:
+      name: User ID
+      required: false
+      selector:
+        number:
+          min: 1
+          max: 255
+          mode: box
+
+remove_fingerprint:
+  name: Remove Fingerprint
+  description: Removes a fingerprint. Pulls ID from Fingerprint Select entity.
+  target:
+    entity:
+      integration: tuya_ble
+      domain: select
+  fields:
+    user_id:
+      name: User ID
+      required: false
+      selector:
+        number:
+          min: 1
+          max: 255
+          mode: box
+    fingerprint_id:
+      name: Fingerprint ID
+      required: false
+      selector:
+        number:
+          min: -1
+          max: 255
+          mode: box
+
+rename_user:
+  name: Rename Lock User
+  description: Rename a user. Pulls User ID from Select entity and name from Buffer.
+  target:
+    entity:
+      integration: tuya_ble
+      domain: select
+  fields:
+    user_id:
+      name: User ID
+      required: false
+      selector:
+        number:
+          min: 1
+          max: 255
+          mode: box
+    new_name:
+      name: New Name
+      required: false
+      selector:
+        text:
+
+rename_fingerprint:
+  name: Rename Finger
+  description: Rename a finger. Pulls ID from Select entity and name from Buffer.
+  target:
+    entity:
+      integration: tuya_ble
+      domain: select
+  fields:
+    user_id:
+      name: User ID
+      required: false
+      selector:
+        number:
+          min: 1
+          max: 255
+          mode: box
+    fingerprint_id:
+      name: Fingerprint ID
+      required: false
+      selector:
+        number:
+          min: 1
+          max: 255
+          mode: box
+    new_name:
+      name: New Name
+      required: false
+      selector:
+        text:

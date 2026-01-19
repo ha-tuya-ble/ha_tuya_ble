@@ -19,12 +19,13 @@ from .cloud import HASSTuyaBLEDeviceManager
 from .const import DOMAIN
 from .devices import TuyaBLECoordinator, TuyaBLEData, get_device_product_info
 
+from .services import SERVICE_REGISTRY
+
 PLATFORMS: list[Platform] = [
     Platform.BUTTON,
     Platform.CLIMATE,
     Platform.LOCK,
     Platform.NUMBER,
-    Platform.LOCK,
     Platform.SENSOR,
     Platform.BINARY_SENSOR,
     Platform.LIGHT,
@@ -90,6 +91,11 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
         manager,
         coordinator,
     )
+
+    # We check a boolean in hass.data to ensure this only runs once
+    if not hass.data[DOMAIN].get("services_initialized"):
+        await SERVICE_REGISTRY.async_setup(hass)
+        hass.data[DOMAIN]["services_initialized"] = True    
 
     await hass.config_entries.async_forward_entry_setups(entry, PLATFORMS)
     entry.async_on_unload(entry.add_update_listener(_async_update_listener))

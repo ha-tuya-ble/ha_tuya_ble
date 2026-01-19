@@ -18,6 +18,8 @@ MANUFACTURER_DATA_ID = 0x07D0
 
 RESPONSE_WAIT_TIMEOUT = 60
 
+DEVICE_DEF_MANUFACTURER: Final = "Tuya"
+
 
 class TuyaBLECode(Enum):
     """
