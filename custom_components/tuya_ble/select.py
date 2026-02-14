@@ -384,11 +384,11 @@ mapping: dict[str, TuyaBLECategorySelectMapping] = {
                             "Combination Unlock",
                         ],
                         entity_category=EntityCategory.CONFIG,
-                        ),
                     ),
-                ],
-            }
-        ),
+                ),
+            ],
+        }
+    ),
     "szjqr": TuyaBLECategorySelectMapping(
         products={
             **dict.fromkeys(
