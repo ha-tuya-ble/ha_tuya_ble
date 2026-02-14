@@ -24,7 +24,7 @@
                     "password": "Password",
                     "username": "Account"
                 },
-                "description": "Tuya BLE requires obtaining encryption key from Tuya cloud. Almost all devices only need to access the cloud once during setup.\n\nRefer to documentation of Tuya integration to retrieve the cloud credentials https://www.home-assistant.io/integrations/tuya/\n\nEnter your Tuya credentials."
+                "description": "Tuya BLE requires obtaining encryption key from Tuya cloud. Almost all devices only need to access the cloud once during setup.\n\nRefer to documentation of Tuya integration to retrieve the cloud credentials {url}\n\nEnter your Tuya credentials."
             }
         }
     },
@@ -292,7 +292,7 @@
                     "password": "Password",
                     "username": "Account"
                 },
-                "description": "Refer to documentation of Tuya integration to retrieve the cloud credentials https://www.home-assistant.io/integrations/tuya/\n\nEnter your Tuya credentials."
+                "description": "Refer to documentation of Tuya integration to retrieve the cloud credentials {url}\n\nEnter your Tuya credentials."
             }
         }
     }

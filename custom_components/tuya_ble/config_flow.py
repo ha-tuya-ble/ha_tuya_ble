@@ -119,6 +119,8 @@ def _show_login_form(
     except:
         pass
 
+    placeholders["url"] = "https://www.home-assistant.io/integrations/tuya/"
+
     return flow.async_show_form(
         step_id="login",
         data_schema=vol.Schema(
