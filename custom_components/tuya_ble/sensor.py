@@ -315,6 +315,20 @@ mapping: dict[str, TuyaBLECategorySensorMapping] = {
                             icon="mdi:keyboard-outline",
                         ),
                     ),
+                    TuyaBLESensorMapping(
+                        dp_id=19,  # Retrieve last bluetooth unlock used
+                        description=SensorEntityDescription(
+                            key="unlock_ble",
+                            icon="mdi:bluetooth",
+                        ),
+                    ),
+                    TuyaBLESensorMapping(
+                        dp_id=14,  # Retrieve last dynamic password used
+                        description=SensorEntityDescription(
+                            key="unlock_dynamic",
+                            icon="mdi:lock-reset",
+                        ),
+                    ),
                     TuyaBLEBatteryMapping(dp_id=8),
                 ],
             ),

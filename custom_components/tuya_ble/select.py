@@ -323,6 +323,36 @@ mapping: dict[str, TuyaBLECategorySelectMapping] = {
                                 "Arabic",
                                 "Indonesian",
                                 "Portuguese",
+                                "Russian",
+                                "Spanish",
+                                "Thai",
+                                "Vietnamese",
+                            ],
+                            entity_category=EntityCategory.CONFIG,
+                        ),
+                    ),
+                    TuyaBLESelectMapping(
+                        dp_id=89,
+                        description=SelectEntityDescription(
+                            key="autolock_delay",
+                            options=[
+                                "Inactive",
+                                "4s",
+                                "6s",
+                                "8s",
+                                "10s",
+                                "12s",
+                            ],
+                            entity_category=EntityCategory.CONFIG,
+                        ),
+                    ),
+                    TuyaBLESelectMapping(
+                        dp_id=34,
+                        description=SelectEntityDescription(
+                            key="double_verification",
+                            options=[
+                                "Single Unlock",
+                                "Combination Unlock",
                             ],
                             entity_category=EntityCategory.CONFIG,
                         ),
