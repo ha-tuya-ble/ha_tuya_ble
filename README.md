@@ -42,7 +42,7 @@ The integration works locally, but connection to Tuya BLE device requires device
 * Temperature and humidity sensors (category_id 'wsdcg', 'zwjcy')
   + Soil moisture sensor (product_id 'ojzlzzsw').
   + SRB-PM01 Soil Moisture Sensor (product_id 'jabotj1z').
-  + Temperature Humidity Sensor (product_id 'jm6iasmb', 'tr0kabuq', 'iv7hudlj, 'jm6iasmb')
+  + Temperature Humidity Sensor (product_id 'jm6iasmb', 'tr0kabuq', 'iv7hudlj', 'jm6iasmb')
   + Soil Thermo-Hygrometer (product_id 'tv6peegl')
 
 * CO2 sensors (category_id 'co2bj')
