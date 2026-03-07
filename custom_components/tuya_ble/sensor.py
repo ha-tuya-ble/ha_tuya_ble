@@ -1048,7 +1048,13 @@ mapping: dict[str, TuyaBLECategorySensorMapping] = {
     "cl": TuyaBLECategorySensorMapping(
         products={
             **dict.fromkeys(
-                ["4pbr8eig", "qqdxfdht", "kcy0x4pi", "vlwf3ud6"],  # Blind Controller
+                [
+                    "4pbr8eig",
+                    "qqdxfdht",
+                    "kcy0x4pi",
+                    "vlwf3ud6",
+                    "v3fzfd2y",
+                ],  # Blind Controller
                 [
                     TuyaBLEBatteryMapping(dp_id=13),
                     TuyaBLESensorMapping(
