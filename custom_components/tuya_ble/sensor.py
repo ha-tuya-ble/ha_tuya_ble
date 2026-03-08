@@ -280,7 +280,7 @@ mapping: dict[str, TuyaBLECategorySensorMapping] = {
                     ),
                 ),
             ],
-            "a6nttc41": [  # ORION Smart Lock 
+            "a6nttc41": [  # ORION Smart Lock
                 TuyaBLEBatteryMapping(dp_id=8),
                 TuyaBLESensorMapping(
                     dp_id=19,

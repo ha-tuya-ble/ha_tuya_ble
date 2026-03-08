@@ -238,7 +238,7 @@ mapping: dict[str, TuyaBLECategorySwitchMapping] = {
                     ),
                 ],
             ),
-            "a6nttc41": [TuyaLockMotorStateMapping(dp_id=33)]
+            "a6nttc41": [TuyaLockMotorStateMapping(dp_id=33)],
         }
     ),
     "szjqr": TuyaBLECategorySwitchMapping(
