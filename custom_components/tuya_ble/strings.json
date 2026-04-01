@@ -25,6 +25,12 @@
                     "username": "Account"
                 },
                 "description": "Tuya BLE requires obtaining encryption key from Tuya cloud. Almost all devices only need to access the cloud once during setup.\n\nRefer to documentation of Tuya integration to retrieve the cloud credentials {url}\n\nEnter your Tuya credentials."
+            },
+            "pick_cloud_device": {
+                "data": {
+                    "device_id": "Cloud device"
+                },
+                "description": "The BLE device could not be automatically matched to a Tuya cloud device. Please select the matching device manually."
             }
         }
     },
@@ -293,6 +299,12 @@
                     "username": "Account"
                 },
                 "description": "Refer to documentation of Tuya integration to retrieve the cloud credentials {url}\n\nEnter your Tuya credentials."
+            },
+            "pick_cloud_device": {
+                "data": {
+                    "device_id": "Cloud device"
+                },
+                "description": "The BLE device could not be automatically matched to a Tuya cloud device. Please select the matching device manually."
             }
         }
     }

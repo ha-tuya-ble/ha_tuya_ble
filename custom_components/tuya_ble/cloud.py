@@ -260,6 +260,12 @@ class HASSTuyaBLEDeviceManager(AbstaractTuyaBLEDeviceManager):
                     if item and len(item.credentials) == 0:
                         await self._fill_cache_item(item)
 
+        # Fill any cache items that were added by _try_login but not
+        # covered by existing config entries (e.g. during config flow)
+        for item in _cache.values():
+            if item.api and len(item.credentials) == 0:
+                await self._fill_cache_item(item)
+
     def get_login_from_cache(self) -> None:
         global _cache
         for cache_item in _cache.values():
@@ -301,6 +307,14 @@ class HASSTuyaBLEDeviceManager(AbstaractTuyaBLEDeviceManager):
             if item:
                 credentials = item.credentials.get(address)
 
+            # Search all cache items if not found in the primary one
+            if credentials is None:
+                for cache_item in _cache.values():
+                    credentials = cache_item.credentials.get(address)
+                    if credentials is not None:
+                        item = cache_item
+                        break
+
         if credentials:
             result = TuyaBLEDeviceCredentials(
                 credentials.get(CONF_UUID, ""),
@@ -321,6 +335,27 @@ class HASSTuyaBLEDeviceManager(AbstaractTuyaBLEDeviceManager):
                 self._data.update(credentials)
 
         return result
+
+    def get_all_cached_credentials(self) -> dict[str, dict[str, Any]]:
+        """Return all cached device credentials across all logins."""
+        global _cache
+        all_credentials: dict[str, dict[str, Any]] = {}
+        for cache_item in _cache.values():
+            all_credentials.update(cache_item.credentials)
+        return all_credentials
+
+    def associate_credentials(self, ble_address: str, device_id: str) -> bool:
+        """Associate a BLE address with existing cloud credentials by device_id."""
+        global _cache
+        for cache_item in _cache.values():
+            for mac, creds in cache_item.credentials.items():
+                if creds.get(CONF_DEVICE_ID) == device_id:
+                    cache_item.credentials[ble_address] = {
+                        **creds,
+                        CONF_ADDRESS: ble_address,
+                    }
+                    return True
+        return False
 
     @property
     def data(self) -> dict[str, Any]:
