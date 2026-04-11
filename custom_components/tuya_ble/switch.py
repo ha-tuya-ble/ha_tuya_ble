@@ -349,6 +349,14 @@ mapping: dict[str, TuyaBLECategorySwitchMapping] = {
                     ),
                 ],
             ),
+            "4ctjfrzq": [
+                TuyaBLESwitchMapping(
+                    dp_id=1,
+                    description=SwitchEntityDescription(
+                        key="switch",
+                    ),
+                ),
+            ],
         },
     ),
     "wk": TuyaBLECategorySwitchMapping(

@@ -511,6 +511,9 @@ devices_database: dict[str, TuyaBLECategoryInfo] = {
                     ),
                 ),
             ),
+            "4ctjfrzq": TuyaBLEProductInfo(
+                name="Switch Robot",
+            ),
         },
     ),
     "wk": TuyaBLECategoryInfo(
