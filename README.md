@@ -35,6 +35,7 @@ The integration works locally, but connection to Tuya BLE device requires device
   + Fingerbot Plus (product_ids 'blliqpsj', 'ndvkgsrm', 'yiihr7zh', 'neq16kgd', 'mknd4lci', 'riecov42', 'bs3ubslo', '6jcvqwh0'), almost same as original, has sensor button for manual control.
   + CubeTouch 1s (product_id '3yqdo5yt'), built-in battery with USB type C charging.
   + CubeTouch II (product_id 'xhf790if'), built-in battery with USB type C charging.
+  + Tuya BLE Switch Robot (SB02) (product_id '4ctjfrzq')
 
   All features available in Home Assistant, programming (series of actions) is implemented for Fingerbot Plus.
   For programming exposed entities 'Program' (switch), 'Repeat forever', 'Repeats count', 'Idle position' and 'Program' (text). Format of program text is: 'position\[/time\];...' where position is in percents, optional time is in seconds (zero if missing).
