@@ -60,6 +60,7 @@ The integration works locally, but connection to Tuya BLE device requires device
   + Smart Cylinder Lock (product_id 'z7lj676i')
   + TEKXDD Fingerprint Smart Lock (product_id 'okkyfgfs')
   + Orion Smart Door Handle Lock (product_id 'a6nttc41')
+  + Smart Cylinder Lock (LVD11_BK) (product_id 'hs21i377')
 
 * Climate (category_id 'wk')
   + Thermostatic Radiator Valve (product_ids 'drlajpqc', 'nhj2j7su').
