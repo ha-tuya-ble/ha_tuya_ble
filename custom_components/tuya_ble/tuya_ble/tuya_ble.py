@@ -26,18 +26,11 @@ from bleak_retry_connector import (
 )
 from Crypto.Cipher import AES
 
-from homeassistant.components.tuya.const import (
-    DPCode,
-)
-
-from tuya_device_handlers.const import (
-    DPType,
-)
-
-
 from .const import (
     CHARACTERISTIC_NOTIFY,
+    CHARACTERISTIC_NOTIFY_ALT,
     CHARACTERISTIC_WRITE,
+    CHARACTERISTIC_WRITE_ALT,
     GATT_MTU,
     MANUFACTURER_DATA_ID,
     RESPONSE_WAIT_TIMEOUT,
@@ -318,6 +311,9 @@ class TuyaBLEDevice:
         self._session_key: bytes | None = None
 
         self._is_paired = False
+
+        self._char_notify = CHARACTERISTIC_NOTIFY
+        self._char_write = CHARACTERISTIC_WRITE
 
         self._input_buffer: bytearray | None = None
         self._input_expected_packet_num = 0
@@ -693,7 +689,7 @@ class TuyaBLEDevice:
             self._expected_disconnect = True
             self._client = None
             if client and client.is_connected:
-                await client.stop_notify(CHARACTERISTIC_NOTIFY)
+                await client.stop_notify(self._char_notify)
                 await client.disconnect()
         async with self._seq_num_lock:
             self._current_seq_num = 1
@@ -760,9 +756,49 @@ class TuyaBLEDevice:
                 if client and client.is_connected:
                     _LOGGER.debug("%s: Connected; RSSI: %s", self.address, self.rssi)
                     self._client = client
+
+                    # Log all discovered GATT services and characteristics
+                    for service in client.services:
+                        _LOGGER.debug(
+                            "%s: Service: %s (%s)",
+                            self.address,
+                            service.uuid,
+                            service.description,
+                        )
+                        for char in service.characteristics:
+                            _LOGGER.debug(
+                                "%s:   Char: %s (%s) props=%s",
+                                self.address,
+                                char.uuid,
+                                char.description,
+                                char.properties,
+                            )
+
+                    # Detect alternative characteristic UUIDs
+                    char_uuids = {
+                        char.uuid
+                        for service in client.services
+                        for char in service.characteristics
+                    }
+                    if CHARACTERISTIC_NOTIFY not in char_uuids:
+                        if CHARACTERISTIC_NOTIFY_ALT in char_uuids:
+                            _LOGGER.debug(
+                                "%s: Using alternative BLE characteristics",
+                                self.address,
+                            )
+                            self._char_notify = CHARACTERISTIC_NOTIFY_ALT
+                            self._char_write = CHARACTERISTIC_WRITE_ALT
+                        else:
+                            _LOGGER.error(
+                                "%s: No compatible notify characteristic found",
+                                self.address,
+                            )
+                            self._client = None
+                            continue
+
                     try:
                         await self._client.start_notify(
-                            CHARACTERISTIC_NOTIFY, self._notification_handler
+                            self._char_notify, self._notification_handler
                         )
                     except:  # [BLEAK_EXCEPTIONS, BleakNotFoundError]:
                         self._client = None
@@ -777,10 +813,17 @@ class TuyaBLEDevice:
 
                 if self._client and self._client.is_connected:
                     _LOGGER.debug("%s: Sending device info request", self.address)
+                    # Devices with alternative characteristics need a
+                    # 2-byte payload for the device info request
+                    device_info_data = (
+                        bytes([0x00, 0xF3])
+                        if self._char_notify == CHARACTERISTIC_NOTIFY_ALT
+                        else bytes(0)
+                    )
                     try:
                         if not await self._send_packet_while_connected(
                             TuyaBLECode.FUN_SENDER_DEVICE_INFO,
-                            bytes(0),
+                            device_info_data,
                             0,
                             True,
                         ):
@@ -1112,9 +1155,9 @@ class TuyaBLEDevice:
         for packet in packets:
             if self._client:
                 try:
-                    # _LOGGER.debug("%s: Sending packet: %s", self.address, packet.hex())
+                    _LOGGER.debug("%s: Sending packet: %s", self.address, packet.hex())
                     await self._client.write_gatt_char(
-                        CHARACTERISTIC_WRITE,
+                        self._char_write,
                         packet,
                         False,
                     )
@@ -1174,6 +1217,19 @@ class TuyaBLEDevice:
         )
         return (timestamp, end_pos)
 
+    def _parse_datapoint_value(
+        self, type: TuyaBLEDataPointType, raw_value: bytes
+    ) -> Any:
+        match type:
+            case TuyaBLEDataPointType.DT_RAW | TuyaBLEDataPointType.DT_BITMAP:
+                return raw_value
+            case TuyaBLEDataPointType.DT_BOOL:
+                return int.from_bytes(raw_value, "big") != 0
+            case TuyaBLEDataPointType.DT_VALUE | TuyaBLEDataPointType.DT_ENUM:
+                return int.from_bytes(raw_value, "big", signed=True)
+            case TuyaBLEDataPointType.DT_STRING:
+                return raw_value.decode()
+
     def _parse_datapoints_v3(
         self, timestamp: float, flags: int, data: bytes, start_pos: int
     ) -> int:
@@ -1194,15 +1250,43 @@ class TuyaBLEDevice:
             if next_pos > len(data):
                 raise TuyaBLEDataLengthError()
             raw_value = data[pos:next_pos]
-            match type:
-                case TuyaBLEDataPointType.DT_RAW | TuyaBLEDataPointType.DT_BITMAP:
-                    value = raw_value
-                case TuyaBLEDataPointType.DT_BOOL:
-                    value = int.from_bytes(raw_value, "big") != 0
-                case TuyaBLEDataPointType.DT_VALUE | TuyaBLEDataPointType.DT_ENUM:
-                    value = int.from_bytes(raw_value, "big", signed=True)
-                case TuyaBLEDataPointType.DT_STRING:
-                    value = raw_value.decode()
+            value = self._parse_datapoint_value(type, raw_value)
+
+            _LOGGER.debug(
+                "%s: Received datapoint update, id: %s, type: %s: value: %s",
+                self.address,
+                id,
+                type.name,
+                value,
+            )
+            self._datapoints._update_from_device(id, timestamp, flags, type, value)
+            datapoints.append(self._datapoints[id])
+            pos = next_pos
+
+        self._fire_callbacks(datapoints)
+
+    def _parse_datapoints_v4(
+        self, timestamp: float, flags: int, data: bytes, start_pos: int
+    ) -> None:
+        """Parse V4 datapoints which use 2-byte length fields."""
+        datapoints: list[TuyaBLEDataPoint] = []
+
+        pos = start_pos
+        while len(data) - pos >= 5:
+            id: int = data[pos]
+            pos += 1
+            _type: int = data[pos]
+            if _type > TuyaBLEDataPointType.DT_BITMAP.value:
+                raise TuyaBLEDataFormatError()
+            type: TuyaBLEDataPointType = TuyaBLEDataPointType(_type)
+            pos += 1
+            data_len: int = int.from_bytes(data[pos : pos + 2], "big")
+            pos += 2
+            next_pos = pos + data_len
+            if next_pos > len(data):
+                raise TuyaBLEDataLengthError()
+            raw_value = data[pos:next_pos]
+            value = self._parse_datapoint_value(type, raw_value)
 
             _LOGGER.debug(
                 "%s: Received datapoint update, id: %s, type: %s: value: %s",
@@ -1311,6 +1395,26 @@ class TuyaBLEDevice:
                 self._parse_datapoints_v3(time.time(), flags, data, pos)
                 data = pack(">HBB", dp_seq_num, flags, 0)
                 asyncio.create_task(self._send_response(code, data, seq_num))
+
+            case TuyaBLECode.FUN_RECEIVE_DP_V4:
+                _LOGGER.debug(
+                    "%s: FUN_RECEIVE_DP_V4 raw data: %s",
+                    self.address,
+                    data.hex(),
+                )
+                # V4 datapoints: 7-byte prefix, then DP fields with 2-byte length
+                self._parse_datapoints_v4(time.time(), 0, data, 7)
+                asyncio.create_task(self._send_response(code, bytes(0), seq_num))
+
+            case TuyaBLECode.FUN_RECEIVE_TIME_DP_V4:
+                _LOGGER.debug(
+                    "%s: FUN_RECEIVE_TIME_DP_V4 raw data: %s",
+                    self.address,
+                    data.hex(),
+                )
+                # V4 time datapoints: 7-byte prefix, then DP fields with 2-byte length
+                self._parse_datapoints_v4(time.time(), 0, data, 7)
+                asyncio.create_task(self._send_response(code, bytes(0), seq_num))
 
         if response_to != 0:
             future = self._input_expected_responses.pop(response_to, None)
