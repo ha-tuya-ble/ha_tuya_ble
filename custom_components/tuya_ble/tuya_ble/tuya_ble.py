@@ -26,15 +26,6 @@ from bleak_retry_connector import (
 )
 from Crypto.Cipher import AES
 
-from homeassistant.components.tuya.const import (
-    DPCode,
-)
-
-from tuya_device_handlers.const import (
-    DPType,
-)
-
-
 from .const import (
     CHARACTERISTIC_NOTIFY,
     CHARACTERISTIC_WRITE,
