@@ -27,7 +27,7 @@ from homeassistant.helpers.entity import EntityCategory
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator
 
-from .const import DOMAIN
+from .const import DOMAIN, FINGERBOT_MODE_PROGRAM
 from .devices import TuyaBLEData, TuyaBLEEntity, TuyaBLEProductInfo
 from .tuya_ble import TuyaBLEDataPointType, TuyaBLEDevice
 
@@ -468,7 +468,7 @@ mapping: dict[str, TuyaBLECategoryNumberMapping] = {
     "kg": TuyaBLECategoryNumberMapping(
         products={
             **dict.fromkeys(
-                ["mknd4lci", "riecov42", "bs3ubslo"],  # Fingerbot Plus
+                ["mknd4lci", "riecov42", "6jcvqwh0"],  # Fingerbot Plus
                 [
                     TuyaBLENumberMapping(
                         dp_id=102,
@@ -512,6 +512,56 @@ mapping: dict[str, TuyaBLECategoryNumberMapping] = {
                     ),
                 ],
             ),
+            "bs3ubslo": [  # Fingerbot Touch (dual button touch timing)
+                TuyaBLENumberMapping(
+                    dp_id=103,
+                    description=NumberEntityDescription(
+                        key="touch_time_1",
+                        icon="mdi:timer",
+                        native_min_value=100,
+                        native_max_value=10000,
+                        native_step=100,
+                        native_unit_of_measurement=UnitOfTime.MILLISECONDS,
+                        entity_category=EntityCategory.CONFIG,
+                    ),
+                ),
+                TuyaBLENumberMapping(
+                    dp_id=117,
+                    description=NumberEntityDescription(
+                        key="off_touch_time_1",
+                        icon="mdi:timer-off",
+                        native_min_value=100,
+                        native_max_value=10000,
+                        native_step=100,
+                        native_unit_of_measurement=UnitOfTime.MILLISECONDS,
+                        entity_category=EntityCategory.CONFIG,
+                    ),
+                ),
+                TuyaBLENumberMapping(
+                    dp_id=104,
+                    description=NumberEntityDescription(
+                        key="touch_time_2",
+                        icon="mdi:timer",
+                        native_min_value=100,
+                        native_max_value=10000,
+                        native_step=100,
+                        native_unit_of_measurement=UnitOfTime.MILLISECONDS,
+                        entity_category=EntityCategory.CONFIG,
+                    ),
+                ),
+                TuyaBLENumberMapping(
+                    dp_id=118,
+                    description=NumberEntityDescription(
+                        key="off_touch_time_2",
+                        icon="mdi:timer-off",
+                        native_min_value=100,
+                        native_max_value=10000,
+                        native_step=100,
+                        native_unit_of_measurement=UnitOfTime.MILLISECONDS,
+                        entity_category=EntityCategory.CONFIG,
+                    ),
+                ),
+            ],
         },
     ),
     "wk": TuyaBLECategoryNumberMapping(
