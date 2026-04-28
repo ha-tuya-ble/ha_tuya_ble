@@ -43,6 +43,7 @@ class TuyaBLEBinarySensorMapping:
     force_add: bool = True
     dp_type: TuyaBLEDataPointType | None = None
     getter: Callable[[TuyaBLEBinarySensor], None] | None = None
+    bit: int | None = None
     # coefficient: float = 1.0
     # icons: list[str] | None = None
     is_available: TuyaBLEBinarySensorIsAvailable = None
@@ -114,6 +115,87 @@ mapping: dict[str, TuyaBLECategoryBinarySensorMapping] = {
             ),
         }
     ),
+    "sfkzq": TuyaBLECategoryBinarySensorMapping(
+        products={
+            "ldcdnigc": [
+                TuyaBLEBinarySensorMapping(
+                    dp_id=1,
+                    dp_type=TuyaBLEDataPointType.DT_BOOL,
+                    description=BinarySensorEntityDescription(
+                        key="switch",
+                        name="Switch status",
+                        device_class=BinarySensorDeviceClass.OPENING,
+                    ),
+                ),
+                TuyaBLEBinarySensorMapping(
+                    dp_id=4,
+                    dp_type=TuyaBLEDataPointType.DT_BITMAP,
+                    bit=0,
+                    description=BinarySensorEntityDescription(
+                        key="low_battery",
+                        name="Low Battery",
+                        device_class=BinarySensorDeviceClass.BATTERY,
+                        entity_category=EntityCategory.DIAGNOSTIC,
+                    ),
+                ),
+                TuyaBLEBinarySensorMapping(
+                    dp_id=4,
+                    dp_type=TuyaBLEDataPointType.DT_BITMAP,
+                    bit=1,
+                    description=BinarySensorEntityDescription(
+                        key="fault",
+                        name="Fault",
+                        device_class=BinarySensorDeviceClass.PROBLEM,
+                        entity_category=EntityCategory.DIAGNOSTIC,
+                    ),
+                ),
+                TuyaBLEBinarySensorMapping(
+                    dp_id=4,
+                    dp_type=TuyaBLEDataPointType.DT_BITMAP,
+                    bit=2,
+                    description=BinarySensorEntityDescription(
+                        key="lack_water",
+                        name="Lack of Water",
+                        icon="mdi:water-off",
+                        entity_category=EntityCategory.DIAGNOSTIC,
+                    ),
+                ),
+                TuyaBLEBinarySensorMapping(
+                    dp_id=4,
+                    dp_type=TuyaBLEDataPointType.DT_BITMAP,
+                    bit=3,
+                    description=BinarySensorEntityDescription(
+                        key="sensor_fault",
+                        name="Sensor Fault",
+                        device_class=BinarySensorDeviceClass.PROBLEM,
+                        entity_category=EntityCategory.DIAGNOSTIC,
+                    ),
+                ),
+                TuyaBLEBinarySensorMapping(
+                    dp_id=4,
+                    dp_type=TuyaBLEDataPointType.DT_BITMAP,
+                    bit=4,
+                    description=BinarySensorEntityDescription(
+                        key="motor_fault",
+                        name="Motor Fault",
+                        device_class=BinarySensorDeviceClass.PROBLEM,
+                        entity_category=EntityCategory.DIAGNOSTIC,
+                    ),
+                ),
+                TuyaBLEBinarySensorMapping(
+                    dp_id=4,
+                    dp_type=TuyaBLEDataPointType.DT_BITMAP,
+                    bit=5,
+                    description=BinarySensorEntityDescription(
+                        key="low_temp",
+                        name="Low Temperature",
+                        device_class=BinarySensorDeviceClass.COLD,
+                        entity_category=EntityCategory.DIAGNOSTIC,
+                    ),
+                ),
+            ],
+        },
+    ),
     "jtmspro": TuyaBLECategoryBinarySensorMapping(
         products={
             "hs21i377": [
@@ -177,7 +259,13 @@ class TuyaBLEBinarySensor(TuyaBLEEntity, BinarySensorEntity):
         else:
             datapoint = self._device.datapoints[self._mapping.dp_id]
             if datapoint:
-                self._attr_is_on = bool(datapoint.value)
+                if self._mapping.bit is not None and datapoint.value is not None:
+                    value = datapoint.value
+                    if isinstance(value, bytes):
+                        value = value[0]
+                    self._attr_is_on = bool((value >> self._mapping.bit) & 1)
+                else:
+                    self._attr_is_on = bool(datapoint.value)
                 """
                 if datapoint.type == TuyaBLEDataPointType.DT_ENUM:
                     if self.entity_description.options is not None:
