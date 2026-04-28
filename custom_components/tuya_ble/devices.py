@@ -584,6 +584,9 @@ devices_database: dict[str, TuyaBLECategoryInfo] = {
                     ),
                 ),
             ),
+            "ldcdnigc": TuyaBLEProductInfo(
+                name="ZX-7378 Smart Irrigation Controller",
+            ),
         },
     ),
     "ggq": TuyaBLECategoryInfo(

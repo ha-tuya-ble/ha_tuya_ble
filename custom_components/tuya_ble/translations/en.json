@@ -30,11 +30,26 @@
     },
     "entity": {
         "binary_sensor": {
+            "fault": {
+                "name": "Fault"
+            },
+            "lack_water": {
+                "name": "Lack of water"
+            },
             "low_battery": {
                 "name": "Battery"
             },
             "lock_motor_state": {
                 "name": "Motor State"
+            },
+            "low_temp": {
+                "name": "Low temperature"
+            },
+            "motor_fault": {
+                "name": "Motor fault"
+            },
+            "sensor_fault": {
+                "name": "Sensor fault"
             }
         },
         "button": {
