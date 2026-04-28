@@ -163,6 +163,7 @@ mapping: dict[str, TuyaBLECategoryBinarySensorMapping] = {
                     description=BinarySensorEntityDescription(
                         key="lack_water",
                         name="Lack of Water",
+                        device_class=BinarySensorDeviceClass.PROBLEM,
                         icon="mdi:water-off",
                         entity_category=EntityCategory.DIAGNOSTIC,
                     ),
