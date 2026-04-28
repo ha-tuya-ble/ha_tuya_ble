@@ -86,6 +86,7 @@ The integration works locally, but connection to Tuya BLE device requires device
   + Water valve controller (product_id 'nxquc5lb')
   + NOUS L11 Bluetooth Smart Garden Water Timer (product_id '46zia2nz')
   + WT-03W Diivoo Smart Water Timer for Garden Hose (product_id '1fcnd8xk')
+  + ZX-7378 Smart Irrigation Controller (product_id: "ldcdnigc") 
   
   
 * Lights
