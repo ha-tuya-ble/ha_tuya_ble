@@ -678,7 +678,6 @@ mapping: dict[str, TuyaBLECategoryNumberMapping] = {
                         native_min_value=0,
                         native_unit_of_measurement=UnitOfTime.SECONDS,
                         native_step=1,
-                        entity_category=EntityCategory.CONFIG,
                     ),
                 ),
             ],

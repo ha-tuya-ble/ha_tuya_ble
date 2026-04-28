@@ -1035,7 +1035,6 @@ mapping: dict[str, TuyaBLECategorySensorMapping] = {
                         key="work_state",
                         device_class=SensorDeviceClass.ENUM,
                         options=["auto", "manual", "idle"],
-                        entity_category=EntityCategory.DIAGNOSTIC,
                     ),
                 ),
                 TuyaBLESensorMapping(
@@ -1057,7 +1056,6 @@ mapping: dict[str, TuyaBLECategorySensorMapping] = {
                         name="Battery Percentage",
                         device_class=SensorDeviceClass.BATTERY,
                         native_unit_of_measurement=PERCENTAGE,
-                        entity_category=EntityCategory.DIAGNOSTIC,
                         state_class=SensorStateClass.MEASUREMENT,
                     ),
                 ),
@@ -1067,6 +1065,7 @@ mapping: dict[str, TuyaBLECategorySensorMapping] = {
                         key="use_time_one",
                         device_class=SensorDeviceClass.DURATION,
                         native_unit_of_measurement=UnitOfTime.SECONDS,
+                        entity_category=EntityCategory.DIAGNOSTIC,
                         state_class=SensorStateClass.MEASUREMENT,
                     ),
                 ),
