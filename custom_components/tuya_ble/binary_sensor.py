@@ -34,6 +34,13 @@ TuyaBLEBinarySensorIsAvailable = (
 )
 
 
+def _bitmap_value_to_int(value: bytes | bytearray | int) -> int:
+    """Convert a Tuya bitmap datapoint value to an integer bitfield."""
+    if isinstance(value, bytes | bytearray):
+        return int.from_bytes(value, "big")
+    return int(value)
+
+
 @dataclass
 class TuyaBLEBinarySensorMapping:
     """Models a BLE binary sensor"""
@@ -260,9 +267,7 @@ class TuyaBLEBinarySensor(TuyaBLEEntity, BinarySensorEntity):
             datapoint = self._device.datapoints[self._mapping.dp_id]
             if datapoint:
                 if self._mapping.bit is not None and datapoint.value is not None:
-                    value = datapoint.value
-                    if isinstance(value, bytes):
-                        value = value[0]
+                    value = _bitmap_value_to_int(datapoint.value)
                     self._attr_is_on = bool((value >> self._mapping.bit) & 1)
                 else:
                     self._attr_is_on = bool(datapoint.value)
