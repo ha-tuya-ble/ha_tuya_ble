@@ -412,6 +412,7 @@ mapping: dict[str, TuyaBLECategorySensorMapping] = {
                     dp_id=116,
                     description=SensorEntityDescription(
                         key="charge_status",
+                        entity_registry_enabled_default=False,
                         device_class=SensorDeviceClass.ENUM,
                         entity_category=EntityCategory.DIAGNOSTIC,
                         options=["none", "charging", "charge_done"],
