@@ -19,6 +19,7 @@ from homeassistant.helpers.update_coordinator import DataUpdateCoordinator
 
 from .const import (
     DOMAIN,
+    FINGERBOT_MODE_CLICK,
     FINGERBOT_MODE_PROGRAM,
     FINGERBOT_MODE_PUSH,
     FINGERBOT_MODE_SWITCH,
@@ -58,6 +59,23 @@ class TuyaBLEFingerbotModeMapping(TuyaBLESelectMapping):
             entity_category=EntityCategory.CONFIG,
             options=[
                 FINGERBOT_MODE_PUSH,
+                FINGERBOT_MODE_SWITCH,
+                FINGERBOT_MODE_PROGRAM,
+            ],
+        )
+    )
+
+
+@dataclass
+class TuyaBLEFingerbotTouchModeMapping(TuyaBLESelectMapping):
+    """Fingerbot Touch mode mapping (uses 'click' instead of 'push')"""
+
+    description: SelectEntityDescription = field(
+        default_factory=lambda: SelectEntityDescription(
+            key="fingerbot_mode",
+            entity_category=EntityCategory.CONFIG,
+            options=[
+                FINGERBOT_MODE_CLICK,
                 FINGERBOT_MODE_SWITCH,
                 FINGERBOT_MODE_PROGRAM,
             ],
@@ -372,11 +390,26 @@ mapping: dict[str, TuyaBLECategorySelectMapping] = {
     "kg": TuyaBLECategorySelectMapping(
         products={
             **dict.fromkeys(
-                ["mknd4lci", "riecov42", "bs3ubslo"],  # Fingerbot Plus
+                ["mknd4lci", "riecov42", "6jcvqwh0"],  # Fingerbot Plus
                 [
                     TuyaBLEFingerbotModeMapping(dp_id=101),
                 ],
             ),
+            "bs3ubslo": [  # Fingerbot Touch (dual button, mode = click/switch/program)
+                TuyaBLEFingerbotTouchModeMapping(dp_id=101),
+                TuyaBLEFingerbotTouchModeMapping(
+                    dp_id=102,
+                    description=SelectEntityDescription(
+                        key="fingerbot_mode_2",
+                        entity_category=EntityCategory.CONFIG,
+                        options=[
+                            FINGERBOT_MODE_CLICK,
+                            FINGERBOT_MODE_SWITCH,
+                            FINGERBOT_MODE_PROGRAM,
+                        ],
+                    ),
+                ),
+            ],
         },
     ),
     "wsdcg": TuyaBLECategorySelectMapping(

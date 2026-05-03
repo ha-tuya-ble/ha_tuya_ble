@@ -439,6 +439,9 @@ LIGHTS: dict[str, tuple[TuyaLightEntityDescription, ...]] = {
     ),
 }
 
+# Fingerbot Touch has no backlight entity
+ProductsMapping.setdefault("kg", {})["bs3ubslo"] = ()
+
 # Socket (duplicate of `kg`)
 # https://developer.tuya.com/en/docs/iot/s?id=K9gf7o5prgf7s
 LIGHTS["cz"] = LIGHTS["kg"]

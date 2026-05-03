@@ -18,7 +18,7 @@ from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator
 from homeassistant.helpers.entity import EntityCategory
 
-from .const import DOMAIN
+from .const import DOMAIN, FINGERBOT_MODE_CLICK
 from .devices import TuyaBLEData, TuyaBLEEntity, TuyaBLEProductInfo
 from .tuya_ble import TuyaBLEDataPointType, TuyaBLEDevice
 
@@ -46,6 +46,27 @@ def is_fingerbot_in_push_mode(self: TuyaBLEButton, product: TuyaBLEProductInfo) 
         if datapoint:
             result = datapoint.value == 0
     return result
+
+
+def is_fingerbot_touch_in_click_mode(
+    self: TuyaBLEButton, product: TuyaBLEProductInfo
+) -> bool:
+    """Button 1: available only if mode_1 (dp101) == 0 (click)"""
+    if product.fingerbot:
+        datapoint = self._device.datapoints[product.fingerbot.mode]
+        if datapoint:
+            return datapoint.value == 0
+    return False
+
+
+def is_fingerbot_touch_b2_in_click_mode(
+    self: TuyaBLEButton, product: TuyaBLEProductInfo
+) -> bool:
+    """Button 2: available only if mode_2 (dp102) == 0 (click)"""
+    datapoint = self._device.datapoints[102]
+    if datapoint:
+        return datapoint.value == 0
+    return False
 
 
 @dataclass
@@ -149,11 +170,29 @@ mapping: dict[str, TuyaBLECategoryButtonMapping] = {
     "kg": TuyaBLECategoryButtonMapping(
         products={
             **dict.fromkeys(
-                ["mknd4lci", "riecov42", "bs3ubslo"],  # Fingerbot Plus
+                ["mknd4lci", "riecov42", "6jcvqwh0"],  # Fingerbot Plus
                 [
                     TuyaBLEFingerbotModeMapping(dp_id=108),
                 ],
             ),
+            "bs3ubslo": [  # Fingerbot Touch (dual button click triggers)
+                TuyaBLEButtonMapping(
+                    dp_id=1,
+                    description=ButtonEntityDescription(
+                        key="button_1_click",
+                        icon="mdi:gesture-tap",
+                    ),
+                    is_available=is_fingerbot_touch_in_click_mode,
+                ),
+                TuyaBLEButtonMapping(
+                    dp_id=2,
+                    description=ButtonEntityDescription(
+                        key="button_2_click",
+                        icon="mdi:gesture-tap",
+                    ),
+                    is_available=is_fingerbot_touch_b2_in_click_mode,
+                ),
+            ],
         },
     ),
     "znhsb": TuyaBLECategoryButtonMapping(

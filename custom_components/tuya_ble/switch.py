@@ -18,7 +18,7 @@ from homeassistant.helpers.entity import EntityCategory
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator
 
-from .const import DOMAIN
+from .const import DOMAIN, FINGERBOT_MODE_CLICK, FINGERBOT_MODE_SWITCH, FINGERBOT_MODE_PROGRAM
 from .devices import TuyaBLEData, TuyaBLEEntity, TuyaBLEProductInfo
 from .tuya_ble import TuyaBLEDataPointType, TuyaBLEDevice
 
@@ -70,6 +70,48 @@ def is_fingerbot_in_switch_mode(
         if datapoint:
             result = datapoint.value == 1
     return result
+
+
+def is_fingerbot_touch_in_switch_mode(
+    self: TuyaBLESwitch, product: TuyaBLEProductInfo
+) -> bool:
+    """Button 1: mode_1 (dp101) == 1 (switch)"""
+    if product.fingerbot:
+        datapoint = self._device.datapoints[product.fingerbot.mode]
+        if datapoint:
+            return datapoint.value == 1
+    return True
+
+
+def is_fingerbot_touch_in_program_mode(
+    self: TuyaBLESwitch, product: TuyaBLEProductInfo
+) -> bool:
+    """Button 1: mode_1 (dp101) == 2 (program)"""
+    if product.fingerbot:
+        datapoint = self._device.datapoints[product.fingerbot.mode]
+        if datapoint:
+            return datapoint.value == 2
+    return False
+
+
+def is_fingerbot_touch_b2_in_switch_mode(
+    self: TuyaBLESwitch, product: TuyaBLEProductInfo
+) -> bool:
+    """Button 2: mode_2 (dp102) == 1 (switch)"""
+    datapoint = self._device.datapoints[102]
+    if datapoint:
+        return datapoint.value == 1
+    return True
+
+
+def is_fingerbot_touch_b2_in_program_mode(
+    self: TuyaBLESwitch, product: TuyaBLEProductInfo
+) -> bool:
+    """Button 2: mode_2 (dp102) == 2 (program)"""
+    datapoint = self._device.datapoints[102]
+    if datapoint:
+        return datapoint.value == 2
+    return False
 
 
 def is_water_valve_in_switch_mode(
@@ -325,7 +367,7 @@ mapping: dict[str, TuyaBLECategorySwitchMapping] = {
     "kg": TuyaBLECategorySwitchMapping(
         products={
             **dict.fromkeys(
-                ["mknd4lci", "riecov42", "bs3ubslo"],  # Fingerbot Plus
+                ["mknd4lci", "riecov42", "6jcvqwh0"],  # Fingerbot Plus
                 [
                     TuyaBLEFingerbotSwitchMapping(dp_id=1),
                     TuyaBLEReversePositionsMapping(dp_id=104),
@@ -358,6 +400,66 @@ mapping: dict[str, TuyaBLECategorySwitchMapping] = {
                     ),
                 ],
             ),
+            "bs3ubslo": [  # Fingerbot Touch (dual button)
+                TuyaBLESwitchMapping(
+                    dp_id=1,
+                    description=SwitchEntityDescription(key="switch"),
+                    is_available=is_fingerbot_touch_in_switch_mode,
+                ),
+                TuyaBLESwitchMapping(
+                    dp_id=1,
+                    description=SwitchEntityDescription(
+                        key="program", icon="mdi:repeat"
+                    ),
+                    is_available=is_fingerbot_touch_in_program_mode,
+                ),
+                TuyaBLESwitchMapping(
+                    dp_id=2,
+                    description=SwitchEntityDescription(
+                        key="switch_2", icon="mdi:gesture-tap"
+                    ),
+                    is_available=is_fingerbot_touch_b2_in_switch_mode,
+                ),
+                TuyaBLESwitchMapping(
+                    dp_id=2,
+                    description=SwitchEntityDescription(
+                        key="program_2", icon="mdi:repeat"
+                    ),
+                    is_available=is_fingerbot_touch_b2_in_program_mode,
+                ),
+                TuyaBLESwitchMapping(
+                    dp_id=105,
+                    description=SwitchEntityDescription(
+                        key="touch_enable_1",
+                        icon="mdi:gesture-tap-button",
+                        entity_category=EntityCategory.CONFIG,
+                    ),
+                ),
+                TuyaBLESwitchMapping(
+                    dp_id=106,
+                    description=SwitchEntityDescription(
+                        key="touch_enable_2",
+                        icon="mdi:gesture-tap-button",
+                        entity_category=EntityCategory.CONFIG,
+                    ),
+                ),
+                TuyaBLESwitchMapping(
+                    dp_id=107,
+                    description=SwitchEntityDescription(
+                        key="invert_switch_1",
+                        icon="mdi:swap-horizontal",
+                        entity_category=EntityCategory.CONFIG,
+                    ),
+                ),
+                TuyaBLESwitchMapping(
+                    dp_id=108,
+                    description=SwitchEntityDescription(
+                        key="invert_switch_2",
+                        icon="mdi:swap-horizontal",
+                        entity_category=EntityCategory.CONFIG,
+                    ),
+                ),
+            ],
             "4ctjfrzq": [
                 TuyaBLESwitchMapping(
                     dp_id=1,
