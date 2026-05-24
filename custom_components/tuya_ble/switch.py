@@ -108,14 +108,32 @@ def set_16wgjvck_water_valve(
     self: TuyaBLESwitch, product: TuyaBLEProductInfo, value: bool
 ) -> None:
     if value:
+        # Lese vorher den eingestellten Timer (DP 15 = use_time oder DP 11 = countdown)
+        dp_11_val = 60
+        dp15 = self._device.datapoints[15]
+        dp11 = self._device.datapoints[11]
+        
+        if dp15 and dp15.value:
+            dp_11_val = int(dp15.value)
+        elif dp11 and dp11.value:
+            dp_11_val = int(dp11.value)
+            
+        if dp_11_val <= 0:
+            dp_11_val = 60
+            
+        # Lese die eingestellte Ventilöffnung (DP 2)
+        dp_2_val = 100
+        dp2 = self._device.datapoints[2]
+        if dp2 and dp2.value is not None:
+            dp_2_val = int(dp2.value)
+        if dp_2_val <= 0:
+            dp_2_val = 100
+
         # Atomic Multi-Datapoint Payload for turning on
-        # DP 1: True (Switch)
-        # DP 2: 100% (Valve opening)
-        # DP 11: 60s (Countdown time left)
         dp_updates = {
             1: True,
-            2: 100,
-            11: 60,
+            2: dp_2_val,
+            11: dp_11_val,
         }
         self._hass.create_task(self._device.set_multiple_values(dp_updates))
     else:
