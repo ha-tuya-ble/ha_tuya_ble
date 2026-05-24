@@ -129,6 +129,12 @@ def set_16wgjvck_water_valve(
         if dp_2_val <= 0:
             dp_2_val = 100
 
+        # Erstelle die Datenpunkte im Cache, FALLS sie noch nicht vom Gerät gesendet wurden,
+        # damit "set_multiple_values" sie nicht einfach ignoriert.
+        self._device.datapoints.get_or_create(1, TuyaBLEDataPointType.DT_BOOL, True)
+        self._device.datapoints.get_or_create(2, TuyaBLEDataPointType.DT_VALUE, dp_2_val)
+        self._device.datapoints.get_or_create(11, TuyaBLEDataPointType.DT_VALUE, dp_11_val)
+
         # Atomic Multi-Datapoint Payload for turning on
         dp_updates = {
             1: True,
@@ -138,6 +144,7 @@ def set_16wgjvck_water_valve(
         self._hass.create_task(self._device.set_multiple_values(dp_updates))
     else:
         # Just turn off the switch
+        self._device.datapoints.get_or_create(1, TuyaBLEDataPointType.DT_BOOL, False)
         self._hass.create_task(self._device.set_multiple_values({1: False}))
 
 @dataclass
