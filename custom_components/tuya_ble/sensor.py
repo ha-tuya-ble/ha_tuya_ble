@@ -1017,12 +1017,37 @@ mapping: dict[str, TuyaBLECategorySensorMapping] = {
             "16wgjvck": [
                 TuyaBLEBatteryMapping(dp_id=7),
                 TuyaBLESensorMapping(
+                    dp_id=7,
+                    dp_type=TuyaBLEDataPointType.DT_VALUE,
+                    description=SensorEntityDescription(
+                        key="battery_percentage",
+                        name="Battery Percentage",
+                        device_class=SensorDeviceClass.BATTERY,
+                        native_unit_of_measurement=PERCENTAGE,
+                        state_class=SensorStateClass.MEASUREMENT,
+                        entity_category=EntityCategory.DIAGNOSTIC,
+                    ),
+                ),
+                TuyaBLESensorMapping(
                     dp_id=8,
                     dp_type=TuyaBLEDataPointType.DT_ENUM,
                     description=SensorEntityDescription(
                         key="battery_state",
+                        name="Battery State",
                         device_class=SensorDeviceClass.ENUM,
                         options=["low", "middle", "high"],
+                        entity_category=EntityCategory.DIAGNOSTIC,
+                    ),
+                ),
+                TuyaBLESensorMapping(
+                    dp_id=104,
+                    dp_type=TuyaBLEDataPointType.DT_VALUE,
+                    description=SensorEntityDescription(
+                        key="battery_percentage_alt",
+                        name="Battery Percentage (Alt)",
+                        device_class=SensorDeviceClass.BATTERY,
+                        native_unit_of_measurement=PERCENTAGE,
+                        state_class=SensorStateClass.MEASUREMENT,
                         entity_category=EntityCategory.DIAGNOSTIC,
                     ),
                 ),
