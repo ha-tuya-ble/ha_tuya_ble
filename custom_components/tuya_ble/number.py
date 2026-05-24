@@ -652,6 +652,41 @@ mapping: dict[str, TuyaBLECategoryNumberMapping] = {
     ),
     "sfkzq": TuyaBLECategoryNumberMapping(
         products={
+            "16wgjvck": [
+                TuyaBLENumberMapping(
+                    dp_id=2,
+                    description=NumberEntityDescription(
+                        key="valve_opening_percentage",
+                        icon="mdi:valve",
+                        native_max_value=100,
+                        native_min_value=0,
+                        native_unit_of_measurement=PERCENTAGE,
+                        native_step=1,
+                    ),
+                ),
+                TuyaBLENumberMapping(
+                    dp_id=11,
+                    description=NumberEntityDescription(
+                        key="countdown",
+                        icon="mdi:timer",
+                        native_max_value=86400,
+                        native_min_value=0,
+                        native_unit_of_measurement=UnitOfTime.SECONDS,
+                        native_step=1,
+                    ),
+                ),
+                TuyaBLENumberMapping(
+                    dp_id=15,
+                    description=NumberEntityDescription(
+                        key="use_time",
+                        icon="mdi:timer",
+                        native_max_value=86400,
+                        native_min_value=0,
+                        native_unit_of_measurement=UnitOfTime.SECONDS,
+                        native_step=1,
+                    ),
+                ),
+            ],
             **dict.fromkeys(
                 ["46zia2nz", "1fcnd8xk", "0axr5s0b"],
                 [

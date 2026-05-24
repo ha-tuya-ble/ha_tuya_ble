@@ -122,6 +122,16 @@ class TuyaBLETemperatureUnitMapping(TuyaBLESelectMapping):
 mapping: dict[str, TuyaBLECategorySelectMapping] = {
     "sfkzq": TuyaBLECategorySelectMapping(
         products={
+            "16wgjvck": [
+                TuyaBLESelectMapping(
+                    dp_id=12,
+                    description=SelectEntityDescription(
+                        key="work_state",
+                        options=["auto", "manual"],
+                        entity_category=EntityCategory.CONFIG,
+                    ),
+                ),
+            ],
             **dict.fromkeys(
                 ["46zia2nz", "1fcnd8xk", "0axr5s0b"],
                 [

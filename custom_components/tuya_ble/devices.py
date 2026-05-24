@@ -539,6 +539,16 @@ devices_database: dict[str, TuyaBLECategoryInfo] = {
     ),
     "sfkzq": TuyaBLECategoryInfo(
         products={
+            "16wgjvck": TuyaBLEProductInfo(
+                name="Aldi/Ferrex Smart Water Valve",
+                watervalve=TuyaBLEWaterValveInfo(
+                    switch=1,
+                    countdown=11,
+                    weather_delay=10,
+                    smart_weather=13,
+                    use_time=15,
+                ),
+            ),
             **dict.fromkeys(
                 [
                     "6pahkcau",
