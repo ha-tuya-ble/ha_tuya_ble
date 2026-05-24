@@ -1467,3 +1467,40 @@ class TuyaBLEDevice:
             await self._send_datapoints_v3(datapoint_ids)
         else:
             raise TuyaBLEDeviceError(0)
+
+    async def set_multiple_values(self, dp_updates: dict[int, Any]) -> None:
+        """Set multiple datapoint values in a single atomic BLE payload."""
+        data = bytearray()
+        updated_dps = []
+        
+        for dp_id, value in dp_updates.items():
+            dp = self._datapoints[dp_id]
+            if not dp:
+                continue
+
+            # Update the internal state safely
+            if dp.type in [TuyaBLEDataPointType.DT_RAW, TuyaBLEDataPointType.DT_BITMAP]:
+                dp._value = bytes(value)
+            elif dp.type == TuyaBLEDataPointType.DT_BOOL:
+                dp._value = bool(value)
+            elif dp.type == TuyaBLEDataPointType.DT_VALUE:
+                dp._value = int(value)
+            elif dp.type == TuyaBLEDataPointType.DT_ENUM:
+                dp._value = int(value)
+            elif dp.type == TuyaBLEDataPointType.DT_STRING:
+                dp._value = str(value)
+            
+            dp._changed_by_device = False
+            updated_dps.append(dp)
+
+            # Build the payload according to protocol version 3
+            val_bytes = dp._get_value()
+            data += pack(">BBB", dp.id, int(dp.type.value), len(val_bytes))
+            data += val_bytes
+
+        if not data:
+            return
+            
+        await self._send_packet(TuyaBLECode.FUN_SENDER_DPS, data)
+        self._fire_callbacks(updated_dps)
+

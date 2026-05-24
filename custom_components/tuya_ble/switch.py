@@ -104,6 +104,23 @@ def set_fingerbot_program_repeat_forever(
             )
             self._hass.create_task(datapoint.set_value(new_value))
 
+def set_16wgjvck_water_valve(
+    self: TuyaBLESwitch, product: TuyaBLEProductInfo, value: bool
+) -> None:
+    if value:
+        # Atomic Multi-Datapoint Payload for turning on
+        # DP 1: True (Switch)
+        # DP 2: 100% (Valve opening)
+        # DP 11: 60s (Countdown time left)
+        dp_updates = {
+            1: True,
+            2: 100,
+            11: 60,
+        }
+        self._hass.create_task(self._device.set_multiple_values(dp_updates))
+    else:
+        # Just turn off the switch
+        self._hass.create_task(self._device.set_multiple_values({1: False}))
 
 @dataclass
 class TuyaBLEFingerbotSwitchMapping(TuyaBLESwitchMapping):
@@ -186,6 +203,16 @@ mapping: dict[str, TuyaBLECategorySwitchMapping] = {
                         key="water_valve",
                         icon="mdi:valve",
                     ),
+                ),
+            ],
+            "16wgjvck": [  # Aldi/Ferrex Smart Water Valve
+                TuyaBLESwitchMapping(
+                    dp_id=1,
+                    description=SwitchEntityDescription(
+                        key="water_valve",
+                        icon="mdi:valve",
+                    ),
+                    setter=set_16wgjvck_water_valve,
                 ),
             ],
             **dict.fromkeys(
