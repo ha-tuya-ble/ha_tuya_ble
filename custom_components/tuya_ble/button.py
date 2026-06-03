@@ -199,11 +199,11 @@ mapping: dict[str, TuyaBLECategoryButtonMapping] = {
                 ),
             ],
             "kholoaew": [  # Smart Lock
-                TuyaBLESwitchMapping(
+                TuyaBLEButtonMapping(
                     dp_id=46,
                     description=SwitchEntityDescription(key="manual_lock"),
                 ),
-                TuyaBLESwitchMapping(
+                TuyaBLEButtonMapping(
                     dp_id=33,
                     description=SwitchEntityDescription(
                         key="automatic_lock",
@@ -217,19 +217,8 @@ mapping: dict[str, TuyaBLECategoryButtonMapping] = {
                         key="bluetooth_unlock",
                         icon="mdi:lock-open-variant-outline",
                     ),
-                    #dp_type=TuyaBLEDataPointType.DT_RAW,
-            ),
-        ],
-#            "kholoaew": [
-#                TuyaBLEButtonMapping(
-#                    dp_id=71,
-#                    description=ButtonEntityDescription(
-#                        key="bluetooth_unlock",
-#                        icon="mdi:lock-open-check-outline",
-#                    ),
-#                    dp_type=TuyaBLEDataPointType.DT_RAW,
-#                ),
-#            ],
+                ),
+            ],
         },
     ),
     "ms": TuyaBLECategoryButtonMapping(
@@ -299,19 +288,9 @@ class TuyaBLEButton(TuyaBLEEntity, ButtonEntity):
         if dp71:
             await dp71.set_value(dp71_value)
 
- #   async def _run_kholoaew_unlock(self) -> None:
- #       dp = self._device.datapoints[self._mapping.dp_id]
- #       if dp and isinstance(dp.value, (bytes, bytearray)) and dp.value:
- #           self._hass.create_task(dp.set_value(dp.value))
- #       return
-
     def press(self) -> None:
         """Press the button."""
         if self._device.product_id == "hs21i377":
-            if self._mapping.description.key == "bluetooth_unlock":
-                self._hass.create_task(self._run_hs21i377_unlock())
-                return
-        if self._device.product_id == "kholoaew":
             if self._mapping.description.key == "bluetooth_unlock":
                 self._hass.create_task(self._run_hs21i377_unlock())
                 return
