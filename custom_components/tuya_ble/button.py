@@ -299,12 +299,12 @@ class TuyaBLEButton(TuyaBLEEntity, ButtonEntity):
             if self._mapping.description.key == "bluetooth_unlock":
                 self._hass.create_task(self._run_hs21i377_unlock())
                 return
-
-        if (
-            self._product.lock
-            and self._mapping.dp_type == TuyaBLEDataPointType.DT_RAW
-            and self._mapping.description.key == "bluetooth_unlock"
-        ):
+        if self._device.product_id == "kholoaew":
+ #       if (
+ #           self._product.lock
+ #           and self._mapping.dp_type == TuyaBLEDataPointType.DT_RAW
+ #           and self._mapping.description.key == "bluetooth_unlock"
+ #       ):
             dp = self._device.datapoints[self._mapping.dp_id]
             if dp and isinstance(dp.value, (bytes, bytearray)) and dp.value:
                 self._hass.create_task(dp.set_value(dp.value))
