@@ -80,17 +80,3 @@ class TuyaBLELock(TuyaBLEEntity, LockEntity):
             DPCode.MANUAL_LOCK, TuyaBLEDataPointType.DT_BOOL, False
         ):
             await manual_lock.set_value(False)
-    async def async_unlock(self, **kwargs: Any) -> None:
-        """Unlock the lock."""
-        # jtmspro locks require echoing the ble_unlock_check token (DP 71)
-        # back to the device to authenticate the unlock over BLE.
-        # ms-style locks don't have DP 71, so they fall through to manual_lock.
-        dp71 = self._device.datapoints[71]
-        if dp71 is not None and isinstance(dp71.value, (bytes, bytearray)) and dp71.value:
-            await dp71.set_value(dp71.value)
-            return
-        # Fallback for ms-style locks
-        if manual_lock := self._device.datapoints.get_or_create(
-            DPCode.MANUAL_LOCK, TuyaBLEDataPointType.DT_BOOL, False
-        ):
-            await manual_lock.set_value(False)
