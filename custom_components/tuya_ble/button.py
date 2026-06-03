@@ -210,6 +210,22 @@ mapping: dict[str, TuyaBLECategoryButtonMapping] = {
                         icon="mdi:lock-open-variant-outline",
                     ),
                 ),
+                TuyaBLEButtonMapping(
+                    dp_id=71,
+                    description=ButtonEntityDescription(
+                        key="71",
+                        icon="mdi:lock-open-variant-outline",
+                    ),
+                ),
+                TuyaBLEButtonMapping(
+                    dp_id=71,
+                    description=ButtonEntityDescription(
+                        key="bluetooth_unlock2",
+                        icon="mdi:lock-open-check-outline",
+                    ),
+                    dp_type=TuyaBLEDataPointType.DT_RAW,
+                    ),
+                ),
             ],
         },
     ),
@@ -282,7 +298,7 @@ class TuyaBLEButton(TuyaBLEEntity, ButtonEntity):
 
     def press(self) -> None:
         """Press the button."""
-        if self._device.product_id == "hs21i377":
+        if self._device.product_id == "kholoaew":
             if self._mapping.description.key == "bluetooth_unlock":
                 self._hass.create_task(self._run_hs21i377_unlock())
                 return
