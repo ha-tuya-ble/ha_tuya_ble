@@ -204,14 +204,6 @@ mapping: dict[str, TuyaBLECategoryButtonMapping] = {
                     description=ButtonEntityDescription(key="manual_lock"),
                 ),
                 TuyaBLEButtonMapping(
-                    dp_id=33,
-                    description=ButtonEntityDescription(
-                        key="automatic_lock",
-                        icon="mdi:lock-clock",
-                        entity_category=EntityCategory.CONFIG,
-                    ),
-                ),
-                TuyaBLEButtonMapping(
                     dp_id=61,
                     description=ButtonEntityDescription(
                         key="bluetooth_unlock",
