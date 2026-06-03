@@ -307,9 +307,9 @@ mapping: dict[str, TuyaBLECategorySelectMapping] = {
                             key="beep_volume",
                             options=[
                                 "Mute",
-                                "Low",
-                                "Normal",
                                 "High",
+                                "Normal",
+                                "Low",
                             ],
                             entity_category=EntityCategory.CONFIG,
                         ),
