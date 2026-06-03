@@ -175,7 +175,6 @@ mapping: dict[str, TuyaBLECategoryButtonMapping] = {
                     "xicdxood",  # Raycube K7 Pro+
                     "rlyxv7pe",  # A1 PRO MAX
                     "oyqux5vv",  # LA-01
-                    "kholoaew",  # Smart Lock
                 ],
                 [
                     # Raycube K7 Pro+, unclear if applicable to A1 PRO MAX
@@ -199,6 +198,16 @@ mapping: dict[str, TuyaBLECategoryButtonMapping] = {
                     dp_type=TuyaBLEDataPointType.DT_RAW,
                 ),
             ],
+            "kholoaew": [  # Smart Lock — RAW ble_unlock_check
+                TuyaBLEButtonMapping(
+                    dp_id=71,
+                    description=ButtonEntityDescription(
+                        key="bluetooth_unlock",
+                        icon="mdi:lock-open-variant-outline",
+                    ),
+              dp_type=TuyaBLEDataPointType.DT_RAW,
+            ),
+        ],
 #            "kholoaew": [
 #                TuyaBLEButtonMapping(
 #                    dp_id=71,
