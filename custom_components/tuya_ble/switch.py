@@ -125,13 +125,13 @@ class TuyaBLEWaterValveSwitchMapping(TuyaBLESwitchMapping):
     is_available: TuyaBLESwitchIsAvailable = is_water_valve_in_switch_mode
 
 
-#@dataclass
-#class TuyaLockMotorStateMapping(TuyaBLESwitchMapping):
-#    description: SwitchEntityDescription = field(
-#        default_factory=lambda: SwitchEntityDescription(
-#            key="lock_motor_state",
-#        )
-#    )
+@dataclass
+class TuyaLockMotorStateMapping(TuyaBLESwitchMapping):
+    description: SwitchEntityDescription = field(
+        default_factory=lambda: SwitchEntityDescription(
+            key="lock_motor_state",
+        )
+    )
 
 
 @dataclass
@@ -243,11 +243,11 @@ mapping: dict[str, TuyaBLECategorySwitchMapping] = {
                     TuyaLockMotorStateMapping(dp_id=47),
                     TuyaBLESwitchMapping(
                         dp_id=46,
-                        description=SwitchEntityDescription(key="manual_lock"),
+                        description=SwitchEntityDescription(key="manual_"),
                     ),
                 ],
             ),
-            "a6nttc41": [TuyaLockMotorStateMapping(dp_id=33)],
+            "a6nttc41": [TuyaMotorStateMapping(dp_id=33)],
         }
     ),
     "szjqr": TuyaBLECategorySwitchMapping(
@@ -396,8 +396,8 @@ mapping: dict[str, TuyaBLECategorySwitchMapping] = {
                     TuyaBLESwitchMapping(
                         dp_id=40,
                         description=SwitchEntityDescription(
-                            key="child_lock",
-                            icon="mdi:account-lock",
+                            key="child_",
+                            icon="mdi:account-",
                             entity_category=EntityCategory.CONFIG,
                         ),
                     ),
@@ -421,7 +421,7 @@ mapping: dict[str, TuyaBLECategorySwitchMapping] = {
                         dp_id=108,
                         description=SwitchEntityDescription(
                             key="programming_switch",
-                            icon="mdi:calendar-clock",
+                            icon="mdi:calendar-c",
                             entity_category=EntityCategory.CONFIG,
                         ),
                     ),
@@ -503,7 +503,7 @@ mapping: dict[str, TuyaBLECategorySwitchMapping] = {
                         dp_id=22,
                         description=SwitchEntityDescription(
                             key="security_switch",
-                            icon="mdi:shield-lock-outline",
+                            icon="mdi:shield--outline",
                             entity_category=EntityCategory.CONFIG,
                         ),
                     ),
