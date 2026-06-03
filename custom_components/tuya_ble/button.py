@@ -288,21 +288,10 @@ class TuyaBLEButton(TuyaBLEEntity, ButtonEntity):
             await dp71.set_value(dp71_value)
 
  #   async def _run_kholoaew_unlock(self) -> None:
- #       """Run the validated dp71 unlock flow for kholoaew."""
-        # kholoaew uses a device-specific dp71 unlock payload.
-        # Practical testing confirmed multiple payload variants can unlock,
-        # so this is not treated as a fixed "known lock code". We keep an
-        # empirically validated value here until the payload semantics are
-        # understood better.
- #       dp71_value = bytes.fromhex("0001ffff36383538313536320169ab34cd0000")
-
- #       dp71 = self._device.datapoints.get_or_create(
- #           71,
- #           TuyaBLEDataPointType.DT_RAW,
- #           b"",
- #       )
- #       if dp71:
- #           await dp71.set_value(dp71_value)
+ #       dp = self._device.datapoints[self._mapping.dp_id]
+ #       if dp and isinstance(dp.value, (bytes, bytearray)) and dp.value:
+ #           self._hass.create_task(dp.set_value(dp.value))
+ #       return
 
     def press(self) -> None:
         """Press the button."""
@@ -310,6 +299,16 @@ class TuyaBLEButton(TuyaBLEEntity, ButtonEntity):
             if self._mapping.description.key == "bluetooth_unlock":
                 self._hass.create_task(self._run_hs21i377_unlock())
                 return
+
+    if (
+        self._product.lock
+        and self._mapping.dp_type == TuyaBLEDataPointType.DT_RAW
+        and self._mapping.description.key == "bluetooth_unlock"
+    ):
+        dp = self._device.datapoints[self._mapping.dp_id]
+        if dp and isinstance(dp.value, (bytes, bytearray)) and dp.value:
+            self._hass.create_task(dp.set_value(dp.value))
+        return
 #        if self._device.product_id == "kholoaew":
 #            if self._mapping.description.key == "bluetooth_unlock":
 #                self._hass.create_task(self._run_kholoaew_unlock())
