@@ -198,14 +198,26 @@ mapping: dict[str, TuyaBLECategoryButtonMapping] = {
                     dp_type=TuyaBLEDataPointType.DT_RAW,
                 ),
             ],
-            "kholoaew": [  # Smart Lock — RAW ble_unlock_check
+            "kholoaew": [  # Smart Lock
+                TuyaBLESwitchMapping(
+                    dp_id=46,
+                    description=SwitchEntityDescription(key="manual_lock"),
+                ),
+                TuyaBLESwitchMapping(
+                    dp_id=33,
+                    description=SwitchEntityDescription(
+                        key="automatic_lock",
+                        icon="mdi:lock-clock",
+                        entity_category=EntityCategory.CONFIG,
+                    ),
+                ),
                 TuyaBLEButtonMapping(
-                    dp_id=71,
+                    dp_id=61,
                     description=ButtonEntityDescription(
                         key="bluetooth_unlock",
                         icon="mdi:lock-open-variant-outline",
                     ),
-                    dp_type=TuyaBLEDataPointType.DT_RAW,
+                    #dp_type=TuyaBLEDataPointType.DT_RAW,
             ),
         ],
 #            "kholoaew": [
