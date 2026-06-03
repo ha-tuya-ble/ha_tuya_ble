@@ -224,7 +224,6 @@ mapping: dict[str, TuyaBLECategoryButtonMapping] = {
                         icon="mdi:lock-open-check-outline",
                     ),
                     dp_type=TuyaBLEDataPointType.DT_RAW,
-                    ),
                 ),
             ],
         },
