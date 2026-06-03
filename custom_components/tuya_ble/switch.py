@@ -125,13 +125,13 @@ class TuyaBLEWaterValveSwitchMapping(TuyaBLESwitchMapping):
     is_available: TuyaBLESwitchIsAvailable = is_water_valve_in_switch_mode
 
 
-@dataclass
-class TuyaLockMotorStateMapping(TuyaBLESwitchMapping):
-    description: SwitchEntityDescription = field(
-        default_factory=lambda: SwitchEntityDescription(
-            key="lock_motor_state",
-        )
-    )
+#@dataclass
+#class TuyaLockMotorStateMapping(TuyaBLESwitchMapping):
+#    description: SwitchEntityDescription = field(
+#        default_factory=lambda: SwitchEntityDescription(
+#            key="lock_motor_state",
+#        )
+#    )
 
 
 @dataclass
