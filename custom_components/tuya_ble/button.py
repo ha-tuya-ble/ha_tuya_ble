@@ -205,7 +205,7 @@ mapping: dict[str, TuyaBLECategoryButtonMapping] = {
                         key="bluetooth_unlock",
                         icon="mdi:lock-open-variant-outline",
                     ),
-              dp_type=TuyaBLEDataPointType.DT_RAW,
+                    dp_type=TuyaBLEDataPointType.DT_RAW,
             ),
         ],
 #            "kholoaew": [
