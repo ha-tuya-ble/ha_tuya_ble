@@ -201,11 +201,11 @@ mapping: dict[str, TuyaBLECategoryButtonMapping] = {
             "kholoaew": [  # Smart Lock
                 TuyaBLEButtonMapping(
                     dp_id=46,
-                    description=SwitchEntityDescription(key="manual_lock"),
+                    description=ButtonEntityDescription(key="manual_lock"),
                 ),
                 TuyaBLEButtonMapping(
                     dp_id=33,
-                    description=SwitchEntityDescription(
+                    description=ButtonEntityDescription(
                         key="automatic_lock",
                         icon="mdi:lock-clock",
                         entity_category=EntityCategory.CONFIG,
