@@ -313,6 +313,7 @@ mapping: dict[str, TuyaBLECategorySensorMapping] = {
                     "ajk32biq",  # B16
                     "z7lj676i",  # Smart Cylinder Lock - Experimental
                     "hs21i377",  # Smart Cylinder Lock (LVD11_BK)
+                    "kholoaew",  # Smart Lock
                 ],
                 [
                     TuyaBLEAlarmLockStateMapping(dp_id=21),
@@ -340,72 +341,7 @@ mapping: dict[str, TuyaBLECategorySensorMapping] = {
                     TuyaBLEBatteryMapping(dp_id=8),
                 ],
             ),
-                    "kholoaew": [  # Smart Lock
-                TuyaBLEAlarmLockStateMapping(dp_id=21),
-                TuyaBLEBatteryMapping(dp_id=8),
-                TuyaBLESensorMapping(
-                    dp_id=12,
-                    description=SensorEntityDescription(
-                        key="unlock_fingerprint",
-                        icon="mdi:fingerprint",
-                    ),
-                ),
-                TuyaBLESensorMapping(
-                    dp_id=13,
-                    description=SensorEntityDescription(
-                        key="unlock_password",
-                        icon="mdi:keyboard-outline",
-                    ),
-                ),
-                TuyaBLESensorMapping(
-                    dp_id=14,
-                    description=SensorEntityDescription(
-                        key="unlock_dynamic",
-                        icon="mdi:lock-reset",
-                        entity_category=EntityCategory.DIAGNOSTIC,
-                    ),
-                ),
-                TuyaBLESensorMapping(
-                    dp_id=15,
-                    description=SensorEntityDescription(
-                        key="unlock_card",
-                        icon="mdi:nfc-variant",
-                    ),
-                ),
-                TuyaBLESensorMapping(
-                    dp_id=19,
-                    description=SensorEntityDescription(
-                        key="unlock_ble",
-                        icon="mdi:bluetooth",
-                        entity_category=EntityCategory.DIAGNOSTIC,
-                    ),
-                ),
-                TuyaBLESensorMapping(
-                    dp_id=55,
-                    description=SensorEntityDescription(
-                        key="unlock_temporary",
-                        icon="mdi:key-clock",
-                        entity_category=EntityCategory.DIAGNOSTIC,
-                    ),
-                ),
-                TuyaBLESensorMapping(
-                    dp_id=62,
-                    description=SensorEntityDescription(
-                        key="unlock_phone_remote",
-                        icon="mdi:cellphone-lock",
-                        entity_category=EntityCategory.DIAGNOSTIC,
-                    ),
-                ),
-                TuyaBLESensorMapping(
-                    dp_id=63,
-                    description=SensorEntityDescription(
-                        key="unlock_voice_remote",
-                        icon="mdi:account-voice",
-                        entity_category=EntityCategory.DIAGNOSTIC,
-                    ),
-                ),
-            ],
-        }
+        },
     ),
     "szjqr": TuyaBLECategorySensorMapping(
         products={
