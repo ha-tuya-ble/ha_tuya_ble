@@ -209,6 +209,7 @@ mapping: dict[str, TuyaBLECategoryButtonMapping] = {
                         key="71",
                         icon="mdi:lock-open-variant-outline",
                     ),
+                    dp_type=TuyaBLEDataPointType.DT_RAW,
                 ),
                 TuyaBLEButtonMapping(
                     dp_id=71,
@@ -216,6 +217,7 @@ mapping: dict[str, TuyaBLECategoryButtonMapping] = {
                         key="bluetooth_unlock2",
                         icon="mdi:lock-open-check-outline",
                     ),
+                    dp_type=TuyaBLEDataPointType.DT_RAW,
                 ),
             ],
         },
@@ -271,37 +273,17 @@ class TuyaBLEButton(TuyaBLEEntity, ButtonEntity):
         self._mapping = mapping
 
     async def _run_1(self) -> None:
-        """Run the validated dp71 unlock flow for hs21i377."""
-        # hs21i377 uses a device-specific dp71 unlock payload.
-        # Practical testing confirmed multiple payload variants can unlock,
-        # so this is not treated as a fixed "known lock code". We keep an
-        # empirically validated value here until the payload semantics are
-        # understood better.
-        dp71_value = bytes.fromhex("0001ffff363835383135b4cd0000")
-
-        dp71 = self._device.datapoints.get_or_create(
-            71,
-            TuyaBLEDataPointType.DT_RAW,
-            b"",
-        )
-        if dp71:
-            await dp71.set_value(dp71_value)
-    async def _run_3(self) -> None:
-        """Run the validated dp71 unlock flow for hs21i377."""
-        # hs21i377 uses a device-specific dp71 unlock payload.
-        # Practical testing confirmed multiple payload variants can unlock,
-        # so this is not treated as a fixed "known lock code". We keep an
-        # empirically validated value here until the payload semantics are
-        # understood better.
-        dp71_value = bytes.fromhex("0001ffff363835383135b4cd0000")
-
-        dp71 = self._device.datapoints.get_or_create(
-            71,
-            TuyaBLEDataPointType.DT_RAW,
-            b"",
-        )
-        if dp71:
-            await dp71.set_value(dp71_value)            
+        """Unlock by echoing the device's ble_unlock_check token."""
+        import asyncio
+        # Give device time to send fresh DP 71 update
+        await asyncio.sleep(0.5)
+    
+        dp71 = self._device.datapoints[71]
+        _LOGGER.debug(f"kholoaew DP 71 value: {dp71.value.hex() if dp71.value else 'None'}")
+        if dp71 and isinstance(dp71.value, (bytes, bytearray)) and dp71.value:
+            await dp71.set_value(dp71.value)
+            return
+           
     async def _run_2(self) -> None:
         """Run the validated dp71 unlock flow for kholoaew."""
         # hs21i377 uses a device-specific dp71 unlock payload.
@@ -329,10 +311,6 @@ class TuyaBLEButton(TuyaBLEEntity, ButtonEntity):
             if self._mapping.description.key == "bluetooth_unlock3":
                 self._hass.create_task(self._run_2())
                 return                
-        if self._device.product_id == "kholoaew":
-            if self._mapping.description.key == "bluetooth_unlock2":
-                self._hass.create_task(self._run_3())
-                return    
         
         datapoint = self._device.datapoints.get_or_create(
             self._mapping.dp_id,
