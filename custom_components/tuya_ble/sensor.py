@@ -313,6 +313,7 @@ mapping: dict[str, TuyaBLECategorySensorMapping] = {
                     "ajk32biq",  # B16
                     "z7lj676i",  # Smart Cylinder Lock - Experimental
                     "hs21i377",  # Smart Cylinder Lock (LVD11_BK)
+                    "kholoaew",  # Smart Lock
                 ],
                 [
                     TuyaBLEAlarmLockStateMapping(dp_id=21),
