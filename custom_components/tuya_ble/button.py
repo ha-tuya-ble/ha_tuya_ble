@@ -199,8 +199,9 @@ mapping: dict[str, TuyaBLECategoryButtonMapping] = {
                     description=ButtonEntityDescription(
                         key="bluetooth_unlock",
                         icon="mdi:lock-open-check-outline",
-                    ),
+                        ),
                     dp_type=TuyaBLEDataPointType.DT_RAW,
+                    ),
                 ),
             ],
         },
