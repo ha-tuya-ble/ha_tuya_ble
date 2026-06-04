@@ -209,7 +209,6 @@ mapping: dict[str, TuyaBLECategoryButtonMapping] = {
                         key="71",
                         icon="mdi:lock-open-variant-outline",
                     ),
-                    dp_type=TuyaBLEDataPointType.DT_RAW,
                 ),
                 TuyaBLEButtonMapping(
                     dp_id=71,
@@ -217,7 +216,6 @@ mapping: dict[str, TuyaBLECategoryButtonMapping] = {
                         key="bluetooth_unlock2",
                         icon="mdi:lock-open-check-outline",
                     ),
-                    dp_type=TuyaBLEDataPointType.DT_RAW,
                 ),
             ],
         },
