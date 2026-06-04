@@ -194,16 +194,16 @@ mapping: dict[str, TuyaBLECategoryButtonMapping] = {
                     "kholoaew", 
                 ],
                 [
-                TuyaBLEButtonMapping(
-                    dp_id=71,
-                    description=ButtonEntityDescription(
-                        key="bluetooth_unlock",
-                        icon="mdi:lock-open-check-outline",
+                    TuyaBLEButtonMapping(
+                        dp_id=71,
+                        description=ButtonEntityDescription(
+                            key="bluetooth_unlock",
+                            icon="mdi:lock-open-check-outline",
                         ),
                     dp_type=TuyaBLEDataPointType.DT_RAW,
                     ),
-                ),
-            ],
+                ],
+            ),
         },
     ),
     "ms": TuyaBLECategoryButtonMapping(
