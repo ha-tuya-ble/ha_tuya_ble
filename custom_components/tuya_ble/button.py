@@ -303,14 +303,23 @@ class TuyaBLEButton(TuyaBLEEntity, ButtonEntity):
 
     def press(self) -> None:
         """Press the button."""
-        if self._device.product_id == "kholoaew":
-            if self._mapping.description.key == "bluetooth_unlock":
-                self._hass.create_task(self._run_1())
+#        if self._device.product_id == "kholoaew":
+#            if self._mapping.description.key == "bluetooth_unlock":
+#                self._hass.create_task(self._run_1())
+#                return
+#        if self._device.product_id == "kholoaew":
+#            if self._mapping.description.key == "bluetooth_unlock2":
+#                self._hass.create_task(self._run_2())
+#                return                
+        if (
+            self._product.lock
+            and self._mapping.dp_type == TuyaBLEDataPointType.DT_RAW
+            and self._mapping.description.key == "bluetooth_unlock"
+        ):
+            dp71 = self._device.datapoints[71]
+            if dp71 and isinstance(dp71.value, (bytes, bytearray)) and dp71.value:
+                self._hass.create_task(dp71.set_value(dp71.value))
                 return
-        if self._device.product_id == "kholoaew":
-            if self._mapping.description.key == "bluetooth_unlock2":
-                self._hass.create_task(self._run_2())
-                return                
         
         datapoint = self._device.datapoints.get_or_create(
             self._mapping.dp_id,
