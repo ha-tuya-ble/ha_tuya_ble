@@ -266,15 +266,8 @@ class TuyaBLEButton(TuyaBLEEntity, ButtonEntity):
 
     def press(self) -> None:
         """Press the button."""
-         _LOGGER.debug(f"All DP 71 info: dp={self._device.datapoints[71]}, type={type(self._device.datapoints[71].value if self._device.datapoints[71] else None)}")
-#        if self._device.product_id == "kholoaew":
-#            if self._mapping.description.key == "bluetooth_unlock":
-#                self._hass.create_task(self._run_1())
-#                return
-#        if self._device.product_id == "kholoaew":
-#            if self._mapping.description.key == "bluetooth_unlock2":
-#                self._hass.create_task(self._run_2())
-#                return                
+        _LOGGER.debug(f"All DP 71 info: dp={self._device.datapoints[71]}, type={type(self._device.datapoints[71].value if self._device.datapoints[71] else None)}")
+             
         if (
             self._product.lock
             and self._mapping.dp_type == TuyaBLEDataPointType.DT_RAW
