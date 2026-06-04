@@ -217,9 +217,10 @@ mapping: dict[str, TuyaBLECategoryBinarySensorMapping] = {
                     description=BinarySensorEntityDescription(
                         key="lock_motor_state",
                         entity_category=EntityCategory.DIAGNOSTIC,
+                        ),
                     ),
-                ),
-            ],
+                ],
+            ),
         },
     ),
     # "jtmspro": TuyaBLECategoryBinarySensorMapping(
