@@ -266,7 +266,7 @@ class TuyaBLEButton(TuyaBLEEntity, ButtonEntity):
 
     def press(self) -> None:
         """Press the button."""
-        _LOGGER.debug(f"All DP 71 info: dp={self._device.datapoints[71]}, type={type(self._device.datapoints[71].value if self._device.datapoints[71] else None)}")
+        _LOGGER.debug(f"DP 71 value type: {type(dp71.value).__name__ if dp71 else 'None'}, value: {dp71.value if dp71 else 'None'}")
              
         if (
             self._product.lock
