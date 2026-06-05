@@ -295,11 +295,6 @@ class TuyaBLEButton(TuyaBLEEntity, ButtonEntity):
             TuyaBLEDataPointType.DT_BOOL,
             False,
         )
-        datapoint = self._device.datapoints.get_or_create(
-            self._mapping.dp_id,
-            TuyaBLEDataPointType.DT_BOOL,
-            False,
-        )
         if datapoint:
             if self._product.lock:
                 # Lock needs true to activate lock/unlock commands
