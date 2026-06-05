@@ -188,12 +188,17 @@ mapping: dict[str, TuyaBLECategoryButtonMapping] = {
                     ),
                 ],
             ),
-            **dict.fromkeys(
-                [
-                    "hs21i377",  # Raycube K7 Pro+
-                    "kholoaew", 
-                ],
-                [
+            "hs21i377": [ # Raycube K7 Pro+
+                    TuyaBLEButtonMapping(
+                        dp_id=71,
+                        description=ButtonEntityDescription(
+                            key="bluetooth_unlock",
+                            icon="mdi:lock-open-check-outline",
+                        ),
+                    dp_type=TuyaBLEDataPointType.DT_RAW,
+                ),
+            ],
+            "kholoaew": [ # Smart Lock
                     TuyaBLEButtonMapping(
                         dp_id=46,
                         description=ButtonEntityDescription(key="manual_lock"),
@@ -205,10 +210,8 @@ mapping: dict[str, TuyaBLECategoryButtonMapping] = {
                             icon="mdi:lock-open-check-outline",
                         ),
                     dp_type=TuyaBLEDataPointType.DT_RAW,
-                    ),
-
-                ],
-            ),
+                ),
+            ],
         },
     ),
     "ms": TuyaBLECategoryButtonMapping(
@@ -268,8 +271,8 @@ class TuyaBLEButton(TuyaBLEEntity, ButtonEntity):
         # so this is not treated as a fixed "known lock code". We keep an
         # empirically validated value here until the payload semantics are
         # understood better.
-        # kholoaew gave 0001ffff3038383532353836016a1f49270000 as the value 
-        # but neither actually unlock it
+        # kholoaew needs RAW and gave 0001ffff3038383532353836016a1f49270000 
+        # as the value but neither value will unlock it.
         dp71_value = bytes.fromhex("0001ffff36383538313536320169ab34cd0000")
  
         dp71 = self._device.datapoints.get_or_create(
