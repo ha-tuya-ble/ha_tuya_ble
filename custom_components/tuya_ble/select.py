@@ -352,10 +352,9 @@ mapping: dict[str, TuyaBLECategorySelectMapping] = {
                             "English",
                         ],
                         entity_category=EntityCategory.CONFIG,
-                        ),
                     ),
-                ],
-            )
+                ),
+            ],
         }
     ),
     "szjqr": TuyaBLECategorySelectMapping(
