@@ -191,8 +191,13 @@ mapping: dict[str, TuyaBLECategoryButtonMapping] = {
             **dict.fromkeys(
                 [
                     "hs21i377",  # Raycube K7 Pro+
+                    "kholoaew", 
                 ],
                 [
+                    TuyaBLEButtonMapping(
+                        dp_id=46,
+                        description=ButtonEntityDescription(key="manual_lock"),
+                    ),
                     TuyaBLEButtonMapping(
                         dp_id=71,
                         description=ButtonEntityDescription(
@@ -201,25 +206,7 @@ mapping: dict[str, TuyaBLECategoryButtonMapping] = {
                         ),
                     dp_type=TuyaBLEDataPointType.DT_RAW,
                     ),
-                ],
-            ),
-            **dict.fromkeys(
-                [
-                    "kholoaew",  # Smart Lock
-                ],
-                [
-                TuyaBLEButtonMapping(
-                    dp_id=46,
-                    description=ButtonEntityDescription(key="manual_lock"),
-                ),
-                    TuyaBLEButtonMapping(
-                        dp_id=71,
-                        description=ButtonEntityDescription(
-                            key="bluetooth_unlock",
-                            icon="mdi:lock-open-check-outline",
-                        ),
-                    dp_type=TuyaBLEDataPointType.DT_RAW,
-                    ),
+
                 ],
             ),
         },
@@ -274,33 +261,17 @@ class TuyaBLEButton(TuyaBLEEntity, ButtonEntity):
         super().__init__(hass, coordinator, device, product, mapping.description)
         self._mapping = mapping
 
-#    async def _run_hs21i377_unlock(self) -> None:
-#        """Run the validated dp71 unlock flow for hs21i377."""
-        # hs21i377 uses a device-specific dp71 unlock payload.
+    async def _run_DP71_unlock(self) -> None:
+        """Run the validated dp71 unlock flow for hs21i377 & kholoaew."""
+        # hs21i377 and kholoaew use a semi device-specific dp71 unlock payload.
         # Practical testing confirmed multiple payload variants can unlock,
         # so this is not treated as a fixed "known lock code". We keep an
         # empirically validated value here until the payload semantics are
         # understood better.
-#        dp71_value = bytes.fromhex("0001ffff36383538313536320169ab34cd0000")
-
-#        dp71 = self._device.datapoints.get_or_create(
-#            71,
-#            TuyaBLEDataPointType.DT_RAW,
-#            b"",
-#        )
-#        if dp71:
-#            await dp71.set_value(dp71_value)
-
-class YourClass:
-    UNLOCK_PAYLOADS = {
-        "hs21i377": "0001ffff36383538313536320169ab34cd0000",
-        "kholoaew": "0001ffff3038383532353836016a1f49270000",
-    }
-
-    async def _run_unlock(self, dp71_hex: str) -> None:
-        """Run the validated dp71 unlock flow."""
-        dp71_value = bytes.fromhex(dp71_hex)
-
+        # kholoaew gave 0001ffff3038383532353836016a1f49270000 as the value 
+        # but neither actually unlock it
+        dp71_value = bytes.fromhex("0001ffff36383538313536320169ab34cd0000")
+ 
         dp71 = self._device.datapoints.get_or_create(
             71,
             TuyaBLEDataPointType.DT_RAW,
@@ -308,15 +279,19 @@ class YourClass:
         )
         if dp71:
             await dp71.set_value(dp71_value)
-            
+
     def press(self) -> None:
         """Press the button."""
-        if self._mapping.description.key == "bluetooth_unlock":
-            payload = self.UNLOCK_PAYLOADS.get(self._device.product_id)
-            if payload:
-                self._hass.create_task(self._run_unlock(payload))
+        if self._device.product_id in ("hs21i377", "kholoaew"):
+            if self._mapping.description.key == "bluetooth_unlock":
+                self._hass.create_task(self._run_DP71_unlock())
                 return
 
+        datapoint = self._device.datapoints.get_or_create(
+            self._mapping.dp_id,
+            TuyaBLEDataPointType.DT_BOOL,
+            False,
+        )
         datapoint = self._device.datapoints.get_or_create(
             self._mapping.dp_id,
             TuyaBLEDataPointType.DT_BOOL,
