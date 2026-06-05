@@ -298,7 +298,6 @@ mapping: dict[str, TuyaBLECategorySelectMapping] = {
                     "oyqux5vv",  # LA-01 - Experimental
                     "ajk32biq",  # B16
                     "z7lj676i",  # Smart Cylinder Lock - Experimental
-                    "kholoaew",  # Smart Lock
                 ],
                 [  # Raycube K7 Pro+
                     TuyaBLESelectMapping(
@@ -324,6 +323,37 @@ mapping: dict[str, TuyaBLECategorySelectMapping] = {
                                 "Arabic",
                                 "Indonesian",
                                 "Portuguese",
+                            ],
+                            entity_category=EntityCategory.CONFIG,
+                        ),
+                    ),
+                ],
+            )
+            **dict.fromkeys(
+                [
+                    "kholoaew",  # Smart Lock
+                ],
+                [  # Raycube K7 Pro+
+                    TuyaBLESelectMapping(
+                        dp_id=31,
+                        description=SelectEntityDescription(
+                            key="beep_volume",
+                            options=[
+                                "Mute",
+                                "Low",
+                                "Normal",
+                                "High",
+                            ],
+                            entity_category=EntityCategory.CONFIG,
+                        ),
+                    ),
+                    TuyaBLESelectMapping(
+                        dp_id=28,
+                        description=SelectEntityDescription(
+                            key="language",
+                            options=[
+                                "Chinese Simplified",
+                                "English",
                             ],
                             entity_category=EntityCategory.CONFIG,
                         ),
