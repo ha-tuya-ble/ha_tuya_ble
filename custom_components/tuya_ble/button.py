@@ -191,9 +191,27 @@ mapping: dict[str, TuyaBLECategoryButtonMapping] = {
             **dict.fromkeys(
                 [
                     "hs21i377",  # Raycube K7 Pro+
-                    "kholoaew", 
                 ],
                 [
+                    TuyaBLEButtonMapping(
+                        dp_id=71,
+                        description=ButtonEntityDescription(
+                            key="bluetooth_unlock",
+                            icon="mdi:lock-open-check-outline",
+                        ),
+                    dp_type=TuyaBLEDataPointType.DT_RAW,
+                    ),
+                ],
+            ),
+            **dict.fromkeys(
+                [
+                    "kholoaew",  # Smart Lock
+                ],
+                [
+                TuyaBLEButtonMapping(
+                    dp_id=46,
+                    description=ButtonEntityDescription(key="manual_lock"),
+                ),
                     TuyaBLEButtonMapping(
                         dp_id=71,
                         description=ButtonEntityDescription(
