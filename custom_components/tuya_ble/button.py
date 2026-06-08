@@ -189,26 +189,26 @@ mapping: dict[str, TuyaBLECategoryButtonMapping] = {
                 ],
             ),
             "hs21i377": [ # Raycube K7 Pro+
-                    TuyaBLEButtonMapping(
-                        dp_id=71,
-                        description=ButtonEntityDescription(
-                            key="bluetooth_unlock",
-                            icon="mdi:lock-open-check-outline",
-                        ),
+                TuyaBLEButtonMapping(
+                    dp_id=71,
+                    description=ButtonEntityDescription(
+                        key="bluetooth_unlock",
+                        icon="mdi:lock-open-check-outline",
+                    ),
                     dp_type=TuyaBLEDataPointType.DT_RAW,
                 ),
             ],
             "kholoaew": [ # Smart Lock
-                    TuyaBLEButtonMapping(
-                        dp_id=46,
-                        description=ButtonEntityDescription(key="manual_lock"),
+                TuyaBLEButtonMapping(
+                    dp_id=46,
+                    description=ButtonEntityDescription(key="manual_lock"),
+                ),
+                TuyaBLEButtonMapping(
+                    dp_id=71,
+                    description=ButtonEntityDescription(
+                        key="bluetooth_unlock",
+                        icon="mdi:lock-open-check-outline",
                     ),
-                    TuyaBLEButtonMapping(
-                        dp_id=71,
-                        description=ButtonEntityDescription(
-                            key="bluetooth_unlock",
-                            icon="mdi:lock-open-check-outline",
-                        ),
                     dp_type=TuyaBLEDataPointType.DT_RAW,
                 ),
             ],
@@ -284,7 +284,7 @@ class TuyaBLEButton(TuyaBLEEntity, ButtonEntity):
         # It seems like kholoaew requires the same type of unlock as hs21i377
         # but I haven't been able to make it work.
         dp71_value = bytes.fromhex("0001ffff3038383532353836016a1f49270000")
- 
+
         dp71 = self._device.datapoints.get_or_create(
             71,
             TuyaBLEDataPointType.DT_RAW,
