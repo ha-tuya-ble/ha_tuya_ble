@@ -212,11 +212,11 @@ mapping: dict[str, TuyaBLECategoryBinarySensorMapping] = {
                     "kholoaew",
                 ], 
                 [
-                TuyaBLEBinarySensorMapping(
-                    dp_id=47,
-                    description=BinarySensorEntityDescription(
-                        key="lock_motor_state",
-                        entity_category=EntityCategory.DIAGNOSTIC,
+                    TuyaBLEBinarySensorMapping(
+                        dp_id=47,
+                        description=BinarySensorEntityDescription(
+                            key="lock_motor_state",
+                            entity_category=EntityCategory.DIAGNOSTIC,
                         ),
                     ),
                 ],
