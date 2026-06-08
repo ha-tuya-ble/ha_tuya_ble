@@ -299,7 +299,7 @@ mapping: dict[str, TuyaBLECategorySelectMapping] = {
                     "ajk32biq",  # B16
                     "z7lj676i",  # Smart Cylinder Lock - Experimental
                 ],
-                [  
+                [
                     TuyaBLESelectMapping(
                         dp_id=31,
                         description=SelectEntityDescription(
