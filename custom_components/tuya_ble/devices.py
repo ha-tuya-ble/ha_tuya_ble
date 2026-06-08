@@ -399,7 +399,7 @@ devices_database: dict[str, TuyaBLECategoryInfo] = {
             "ajk32biq": TuyaBLEProductInfo(name="B16", lock=1),
             "z7lj676i": TuyaBLEProductInfo(name="Smart Cylinder Lock", lock=1),
             "hs21i377": TuyaBLEProductInfo(name="Smart Cylinder Lock"),
-            "kholoaew": TuyaBLEProductInfo(name="Smart Lock"), 
+            "kholoaew": TuyaBLEProductInfo(name="Smart Lock"),
         },
     ),
     "szjqr": TuyaBLECategoryInfo(
