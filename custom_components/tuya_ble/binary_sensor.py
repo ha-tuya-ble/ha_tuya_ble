@@ -210,7 +210,7 @@ mapping: dict[str, TuyaBLECategoryBinarySensorMapping] = {
                 [
                     "hs21i377",
                     "kholoaew",
-                ], 
+                ],
                 [
                     TuyaBLEBinarySensorMapping(
                         dp_id=47,
