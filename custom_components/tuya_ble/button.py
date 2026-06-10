@@ -262,7 +262,7 @@ class TuyaBLEButton(TuyaBLEEntity, ButtonEntity):
         super().__init__(hass, coordinator, device, product, mapping.description)
         self._mapping = mapping
 
- async def _run_hs21i377_unlock(self) -> None:
+    async def _run_hs21i377_unlock(self) -> None:
         """Run the validated dp71 unlock flow for hs21i377."""
         # hs21i377 uses a device-specific dp71 unlock payload.
         # Practical testing confirmed multiple payload variants can unlock,
