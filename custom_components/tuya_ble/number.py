@@ -668,43 +668,22 @@ mapping: dict[str, TuyaBLECategoryNumberMapping] = {
                     ),
                 ],
             ),
-            "ldcdnigc": [
-                TuyaBLENumberMapping(
-                    dp_id=11,
-                    description=NumberEntityDescription(
-                        key="countdown",
-                        icon="mdi:timer",
-                        native_max_value=86400,
-                        native_min_value=0,
-                        native_unit_of_measurement=UnitOfTime.SECONDS,
-                        native_step=1,
+            **dict.fromkeys(
+                ["ldcdnigc", "e1poaiwa"],  # ZX-7378 / Rainpoint TTV102B
+                [
+                    TuyaBLENumberMapping(
+                        dp_id=11,
+                        description=NumberEntityDescription(
+                            key="countdown",
+                            icon="mdi:timer",
+                            native_max_value=86400,
+                            native_min_value=0,
+                            native_unit_of_measurement=UnitOfTime.SECONDS,
+                            native_step=1,
+                        ),
                     ),
-                ),
-            ],
-            "e1poaiwa": [  # Rainpoint TTV102B
-                TuyaBLENumberMapping(
-                    dp_id=11,
-                    description=NumberEntityDescription(
-                        key="countdown",
-                        icon="mdi:timer",
-                        native_max_value=86400,
-                        native_min_value=0,
-                        native_unit_of_measurement=UnitOfTime.SECONDS,
-                        native_step=1,
-                    ),
-                ),
-                TuyaBLENumberMapping(
-                    dp_id=15,
-                    description=NumberEntityDescription(
-                        key="use_time_one",
-                        icon="mdi:timer-outline",
-                        native_max_value=86400,
-                        native_min_value=0,
-                        native_unit_of_measurement=UnitOfTime.SECONDS,
-                        native_step=1,
-                    ),
-                ),
-            ],
+                ],
+            ),
             "svhikeyq": [
                 TuyaBLENumberMapping(
                     dp_id=11,
