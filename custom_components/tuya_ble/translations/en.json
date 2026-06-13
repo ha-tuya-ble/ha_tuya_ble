@@ -105,6 +105,9 @@
             },
             "ble_unlock_check": {
                 "name": "Unlock"
+            },
+            "use_time_one": {
+                "name": "Last irrigation time"
             }
         },
         "select": {
