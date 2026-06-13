@@ -555,6 +555,7 @@ devices_database: dict[str, TuyaBLECategoryInfo] = {
                 [
                     "svhikeyq",
                     "0axr5s0b",
+                    "e1poaiwa",
                 ],  # device product_id
                 TuyaBLEProductInfo(
                     name="Valve controller",
