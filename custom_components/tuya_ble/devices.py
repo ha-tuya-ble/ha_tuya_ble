@@ -628,6 +628,13 @@ devices_database: dict[str, TuyaBLECategoryInfo] = {
             "dy4dh1q0": TuyaBLEProductInfo(name="AOK AM24 Venetian Blinds Motor"),
         }
     ),
+    "cxjmb": TuyaBLECategoryInfo(
+        products={
+            "pnxl0r3l": TuyaBLEProductInfo(
+                name="Window Cleaner Robot",
+            ),
+        },
+    ),
     "zwjcy": TuyaBLECategoryInfo(
         products={
             "jabotj1z": TuyaBLEProductInfo(
@@ -647,6 +654,13 @@ def get_product_info_by_ids(
         if product_info is not None:
             return product_info
         return category_info.info
+
+    # Fallback: scan all categories by product_id (handles unknown category)
+    for cat_info in devices_database.values():
+        if cat_info.products:
+            product_info = cat_info.products.get(product_id)
+            if product_info is not None:
+                return product_info
 
     return None
 

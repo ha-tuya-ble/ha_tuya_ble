@@ -405,6 +405,29 @@ mapping: dict[str, TuyaBLECategorySelectMapping] = {
             ],
         },
     ),
+    "cxjmb": TuyaBLECategorySelectMapping(
+        products={
+            "pnxl0r3l": [  # Window Cleaner Robot
+                TuyaBLESelectMapping(
+                    dp_id=2,
+                    description=SelectEntityDescription(
+                        key="mode",
+                        icon="mdi:robot-mower",
+                        options=["smart", "z_mode", "n_mode", "edge", "spot"],
+                        entity_category=EntityCategory.CONFIG,
+                    ),
+                ),
+                TuyaBLESelectMapping(
+                    dp_id=3,
+                    description=SelectEntityDescription(
+                        key="direction_control",
+                        icon="mdi:navigation",
+                        options=["forward", "backward", "turn_left", "turn_right", "stop"],
+                    ),
+                ),
+            ],
+        },
+    ),
 }
 
 
@@ -417,8 +440,15 @@ def get_mapping_by_device(device: TuyaBLEDevice) -> list[TuyaBLECategorySelectMa
         if category.mapping is not None:
             return category.mapping
 
-    return []
 
+    # Fallback: scan all categories by product_id (handles unknown category)
+    for cat_info in mapping.values():
+        if cat_info.products:
+            product_mapping = cat_info.products.get(device.product_id)
+            if product_mapping is not None:
+                return product_mapping
+
+    return []
 
 class TuyaBLESelect(TuyaBLEEntity, SelectEntity):
     """Representation of a Tuya BLE select."""

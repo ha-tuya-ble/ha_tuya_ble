@@ -230,6 +230,33 @@ mapping: dict[str, TuyaBLECategoryBinarySensorMapping] = {
     #         ],
     #     }
     # ),
+    "cxjmb": TuyaBLECategoryBinarySensorMapping(
+        products={
+            "pnxl0r3l": [  # Window Cleaner Robot - fault bitmap (DP11)
+                TuyaBLEBinarySensorMapping(
+                    dp_id=11,
+                    description=BinarySensorEntityDescription(
+                        key="fault",
+                        icon="mdi:alert-circle-outline",
+                        device_class=BinarySensorDeviceClass.PROBLEM,
+                        entity_category=EntityCategory.DIAGNOSTIC,
+                    ),
+                    # bit=None → is_on = bool(value), non-zero bitmap means fault
+                    getter=lambda sensor: setattr(
+                        sensor,
+                        "_attr_is_on",
+                        bool(
+                            _bitmap_value_to_int(
+                                sensor._device.datapoints[11].value
+                            )
+                            if sensor._device.datapoints[11]
+                            else False
+                        ),
+                    ),
+                ),
+            ],
+        },
+    ),
 }
 
 
@@ -242,8 +269,15 @@ def get_mapping_by_device(device: TuyaBLEDevice) -> list[TuyaBLEBinarySensorMapp
         if category.mapping is not None:
             return category.mapping
 
-    return []
 
+    # Fallback: scan all categories by product_id (handles unknown category)
+    for cat_info in mapping.values():
+        if cat_info.products:
+            product_mapping = cat_info.products.get(device.product_id)
+            if product_mapping is not None:
+                return product_mapping
+
+    return []
 
 class TuyaBLEBinarySensor(TuyaBLEEntity, BinarySensorEntity):
     """Representation of a Tuya BLE binary sensor."""

@@ -633,3 +633,6 @@ class DPCode(StrEnum):
     WIRELESS_ELECTRICITY = "wireless_electricity"
     WORK_MODE = "work_mode"  # Working mode
     WORK_POWER = "work_power"
+    DIRECTION_CONTROL = "direction_control"  # Window cleaner direction
+    SWITCH_GO = "switch_go"  # Window cleaner clean switch
+    WATER_AUTO = "water_auto"  # Window cleaner auto spray water

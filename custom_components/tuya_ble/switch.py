@@ -552,6 +552,28 @@ mapping: dict[str, TuyaBLECategorySwitchMapping] = {
             ),
         },
     ),
+    "cxjmb": TuyaBLECategorySwitchMapping(
+        products={
+            "pnxl0r3l": [  # Window Cleaner Robot
+                TuyaBLESwitchMapping(
+                    dp_id=1,
+                    description=SwitchEntityDescription(
+                        key="window_cleaner_switch",
+                        icon="mdi:window-open",
+                        device_class=SwitchDeviceClass.SWITCH,
+                    ),
+                ),
+                TuyaBLESwitchMapping(
+                    dp_id=103,
+                    description=SwitchEntityDescription(
+                        key="water_auto",
+                        icon="mdi:water-auto",
+                        entity_category=EntityCategory.CONFIG,
+                    ),
+                ),
+            ],
+        },
+    ),
 }
 
 
@@ -564,6 +586,13 @@ def get_mapping_by_device(device: TuyaBLEDevice) -> list[TuyaBLECategorySwitchMa
             return product_mapping
         if category.mapping is not None:
             return category.mapping
+
+    # Fallback: scan all categories by product_id (handles unknown category)
+    for cat_info in mapping.values():
+        if cat_info.products:
+            product_mapping = cat_info.products.get(device.product_id)
+            if product_mapping is not None:
+                return product_mapping
 
     return []
 
