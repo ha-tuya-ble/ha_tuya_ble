@@ -238,28 +238,6 @@ mapping: dict[str, TuyaBLECategoryBinarySensorMapping] = {
     #         ],
     #     }
     # ),
-    "gcj": TuyaBLECategoryBinarySensorMapping(
-        products={
-            "9hdajpiw": [
-                TuyaBLEBinarySensorMapping(
-                    dp_id=116,
-                    description=BinarySensorEntityDescription(
-                        key="machine_cover",
-                        device_class=BinarySensorDeviceClass.DOOR,
-                        entity_category=EntityCategory.DIAGNOSTIC,
-                    ),
-                ),
-                TuyaBLEBinarySensorMapping(
-                    dp_id=102,
-                    description=BinarySensorEntityDescription(
-                        key="machine_problem",
-                        device_class=BinarySensorDeviceClass.PROBLEM,
-                        entity_category=EntityCategory.DIAGNOSTIC,
-                    ),
-                ),
-            ],
-        },
-    ),
 }
 
 

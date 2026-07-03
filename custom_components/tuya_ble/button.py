@@ -222,68 +222,6 @@ mapping: dict[str, TuyaBLECategoryButtonMapping] = {
             ),
         }
     ),
-    "gcj": TuyaBLECategoryButtonMapping(
-        products={
-            "9hdajpiw": [
-                TuyaBLEButtonMapping(
-                    dp_id=114,
-                    description=ButtonEntityDescription(
-                        key="clear_machine_partition",
-                        icon="mdi:map-marker-remove",
-                        entity_category=EntityCategory.CONFIG,
-                    ),
-                ),
-                TuyaBLEButtonMapping(
-                    dp_id=107,
-                    description=ButtonEntityDescription(
-                        key="clear_appointment",
-                        icon="mdi:calendar-remove",
-                        entity_category=EntityCategory.CONFIG,
-                    ),
-                ),
-                TuyaBLEButtonMapping(
-                    dp_id=108,
-                    description=ButtonEntityDescription(
-                        key="query_appointment",
-                        icon="mdi:calendar-search",
-                        entity_category=EntityCategory.CONFIG,
-                    ),
-                ),
-                TuyaBLEButtonMapping(
-                    dp_id=109,
-                    description=ButtonEntityDescription(
-                        key="query_partition",
-                        icon="mdi:map-search",
-                        entity_category=EntityCategory.CONFIG,
-                    ),
-                ),
-                TuyaBLEButtonMapping(
-                    dp_id=115,
-                    string_value="StartMowing",
-                    description=ButtonEntityDescription(
-                        key="start_mowing",
-                        icon="mdi:play",
-                    ),
-                ),
-                TuyaBLEButtonMapping(
-                    dp_id=115,
-                    string_value="PauseWork",
-                    description=ButtonEntityDescription(
-                        key="pause_work",
-                        icon="mdi:pause",
-                    ),
-                ),
-                TuyaBLEButtonMapping(
-                    dp_id=115,
-                    string_value="StartReturnStation",
-                    description=ButtonEntityDescription(
-                        key="start_return_station",
-                        icon="mdi:home-import-outline",
-                    ),
-                ),
-            ],
-        },
-    ),
 }
 
 

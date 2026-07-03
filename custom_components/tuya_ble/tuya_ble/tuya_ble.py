@@ -752,8 +752,17 @@ class TuyaBLEDevice:
                     _LOGGER.debug("%s: Connected; RSSI: %s", self.address, self.rssi)
                     self._client = client
                     try:
+                        notify_char = CHARACTERISTIC_NOTIFY
+                        if not self._client.services.get_characteristic(notify_char):
+                            for service in self._client.services:
+                                for char in service.characteristics:
+                                    if "notify" in char.properties:
+                                        notify_char = char.uuid
+                                        break
+                                if notify_char != CHARACTERISTIC_NOTIFY:
+                                    break
                         await self._client.start_notify(
-                            CHARACTERISTIC_NOTIFY, self._notification_handler
+                            notify_char, self._notification_handler
                         )
                     except:  # [BLEAK_EXCEPTIONS, BleakNotFoundError]:
                         self._client = None
