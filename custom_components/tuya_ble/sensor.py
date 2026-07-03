@@ -1129,6 +1129,35 @@ mapping: dict[str, TuyaBLECategorySensorMapping] = {
             ),
         }
     ),
+    "gcj": TuyaBLECategorySensorMapping(
+        products={
+            "9hdajpiw": [
+                TuyaBLEBatteryMapping(dp_id=6),
+                TuyaBLESensorMapping(
+                    dp_id=101,
+                    description=SensorEntityDescription(
+                        key="machine_status",
+                    ),
+                ),
+                TuyaBLESensorMapping(
+                    dp_id=105,
+                    description=SensorEntityDescription(
+                        key="machine_worktime",
+                        device_class=SensorDeviceClass.DURATION,
+                        native_unit_of_measurement=UnitOfTime.HOURS,
+                        state_class=SensorStateClass.MEASUREMENT,
+                    ),
+                ),
+                TuyaBLESensorMapping(
+                    dp_id=103,
+                    description=SensorEntityDescription(
+                        key="machine_problem",
+                        icon="mdi:robot-mower-outline",
+                    ),
+                ),
+            ],
+        },
+    ),
 }
 
 

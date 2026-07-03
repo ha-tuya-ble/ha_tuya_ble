@@ -372,6 +372,7 @@ class DPCode(StrEnum):
     BASIC_NIGHTVISION = "basic_nightvision"
     BASIC_OSD = "basic_osd"
     BASIC_PRIVATE = "basic_private"
+    BACKWARD_BLADE_STOP = "backwardbladestop"
     BASIC_WDR = "basic_wdr"
     BATTERY_PERCENTAGE = "battery_percentage"  # Battery percentage
     BATTERY_STATE = "battery_state"  # Battery state
@@ -393,6 +394,8 @@ class DPCode(StrEnum):
     CH2O_STATE = "ch2o_state"
     CH2O_VALUE = "ch2o_value"
     CH4_SENSOR_STATE = "ch4_sensor_state"
+    CLEAR_APPOINTMENT = "ClearAppointment"
+    CLEAR_MACHINE_PARTITION = "clearmachinepartition"
     CH4_SENSOR_VALUE = "ch4_sensor_value"
     CHILD_LOCK = "child_lock"  # Child lock
     CISTERN = "cistern"
@@ -464,6 +467,7 @@ class DPCode(StrEnum):
     GAS_SENSOR_STATE = "gas_sensor_state"
     GAS_SENSOR_STATUS = "gas_sensor_status"
     GAS_SENSOR_VALUE = "gas_sensor_value"
+    HEDGEHOG_PROTECTION = "HedgehogPROT"
     HUMIDIFIER = "humidifier"  # Humidification
     HUMIDITY = "humidity"  # Humidity
     HUMIDITY_CURRENT = "humidity_current"  # Current humidity
@@ -482,6 +486,11 @@ class DPCode(StrEnum):
     LOCK_MOTOR_STATE = "lock_motor_state"
     MASTER_MODE = "master_mode"  # alarm mode
     MACH_OPERATE = "mach_operate"
+    MACHINE_CONTROL_CMD = "MachineControlCmd"
+    MACHINE_COVER = "MachineCover"
+    MACHINE_RAIN_MODE = "MachineRainMode"
+    MACHINE_STATUS = "MachineStatus"
+    MACHINE_WORKTIME = "MachineWorktime"
     MANUAL_LOCK = "manual_lock"
     MANUAL_FEED = "manual_feed"
     MATERIAL = "material"  # Material
@@ -519,6 +528,8 @@ class DPCode(StrEnum):
     PRESSURE_STATE = "pressure_state"
     PRESSURE_VALUE = "pressure_value"
     PUMP_RESET = "pump_reset"  # Water pump reset
+    QUERY_APPOINTMENT = "QueryAppointment"
+    QUERY_PARTITION = "QueryPartition"
     OXYGEN = "oxygen"  # Oxygen bar
     RECORD_MODE = "record_mode"
     RECORD_SWITCH = "record_switch"  # Recording switch

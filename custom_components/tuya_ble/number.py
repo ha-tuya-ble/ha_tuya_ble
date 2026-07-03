@@ -740,6 +740,21 @@ mapping: dict[str, TuyaBLECategoryNumberMapping] = {
             )
         },
     ),
+    "gcj": TuyaBLECategoryNumberMapping(
+        products={
+            "9hdajpiw": [
+                TuyaBLENumberMapping(
+                    dp_id=105,
+                    description=NumberEntityDescription(
+                        key="machine_worktime",
+                        native_unit_of_measurement=UnitOfTime.HOURS,
+                        icon="mdi:clock",
+                        entity_category=EntityCategory.CONFIG,
+                    ),
+                ),
+            ],
+        },
+    ),
 }
 
 

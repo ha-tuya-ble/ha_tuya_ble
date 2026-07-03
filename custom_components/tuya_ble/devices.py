@@ -635,6 +635,13 @@ devices_database: dict[str, TuyaBLECategoryInfo] = {
             ),
         },
     ),
+    "gcj": TuyaBLECategoryInfo(
+        products={
+            "9hdajpiw": TuyaBLEProductInfo(
+                name="Parkside Mower PAMRC 250 A1 (BT) City",
+            ),
+        },
+    ),
 }
 
 

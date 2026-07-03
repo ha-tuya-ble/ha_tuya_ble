@@ -50,6 +50,12 @@
             },
             "sensor_fault": {
                 "name": "Sensor fault"
+            },
+            "machine_cover": {
+                "name": "Cover"
+            },
+            "machine_problem": {
+                "name": "Problem"
             }
         },
         "button": {
@@ -61,6 +67,27 @@
             },
             "bluetooth_unlock": {
                 "name": "Unlock"
+            },
+            "clear_machine_partition": {
+                "name": "Clear partition"
+            },
+            "clear_appointment": {
+                "name": "Clear appointment"
+            },
+            "query_appointment": {
+                "name": "Refresh appointment"
+            },
+            "query_partition": {
+                "name": "Refresh partition"
+            },
+            "start_mowing": {
+                "name": "Start mowing"
+            },
+            "pause_work": {
+                "name": "Pause work"
+            },
+            "start_return_station": {
+                "name": "Return to dock"
             }
         },
         "number": {
@@ -102,6 +129,9 @@
             },
             "up_position": {
                 "name": "Up position"
+            },
+            "machine_worktime": {
+                "name": "Running time"
             },
             "ble_unlock_check": {
                 "name": "Unlock"
@@ -186,6 +216,12 @@
             "low_battery": {
                 "name": "Low Battery"
             },
+            "machine_status": {
+                "name": "Status"
+            },
+            "machine_worktime": {
+                "name": "Running time"
+            },
             "moisture": {
                 "name": "Moisture"
             },
@@ -215,6 +251,9 @@
             },
             "use_time_one": {
                 "name": "Last irrigation time"
+            },
+            "machine_problem": {
+                "name": "Problem"
             },
             "water_intake": {
                 "name": "Water intake"
@@ -253,6 +292,15 @@
             },
             "low_battery_alarm": {
                 "name": "Low battery alarm"
+            },
+            "machine_rain_mode": {
+                "name": "Rain mode"
+            },
+            "hedgehog_protection": {
+                "name": "Hedgehog protection"
+            },
+            "backward_blade_stop": {
+                "name": "Backward blade stop"
             },
             "manual_control": {
                 "name": "Manual control"
