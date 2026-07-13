@@ -1129,6 +1129,78 @@ mapping: dict[str, TuyaBLECategorySensorMapping] = {
             ),
         }
     ),
+    "slj": TuyaBLECategorySensorMapping(
+        products={
+            "mqqna0px": [
+                TuyaBLEBatteryMapping(dp_id=4),
+                TuyaBLESensorMapping(
+                    dp_id=5,
+                    description=SensorEntityDescription(
+                        key="flow_velocity",
+                        icon="mdi:water-pump",
+                        native_unit_of_measurement="L/min",
+                        state_class=SensorStateClass.MEASUREMENT,
+                    ),
+                    coefficient=10.0,
+                ),
+                TuyaBLESensorMapping(
+                    dp_id=2,
+                    description=SensorEntityDescription(
+                        key="water_once",
+                        icon="mdi:water",
+                        native_unit_of_measurement=UnitOfVolume.LITERS,
+                        device_class=SensorDeviceClass.WATER,
+                        state_class=SensorStateClass.TOTAL_INCREASING,
+                    ),
+                    coefficient=10.0,
+                ),
+                TuyaBLESensorMapping(
+                    dp_id=1,
+                    description=SensorEntityDescription(
+                        key="water_use_data",
+                        icon="mdi:water",
+                        native_unit_of_measurement=UnitOfVolume.LITERS,
+                        device_class=SensorDeviceClass.WATER,
+                        state_class=SensorStateClass.TOTAL_INCREASING,
+                    ),
+                    coefficient=10.0,
+                ),
+                TuyaBLESensorMapping(
+                    dp_id=101,
+                    description=SensorEntityDescription(
+                        key="day_water_usage",
+                        icon="mdi:water",
+                        native_unit_of_measurement=UnitOfVolume.LITERS,
+                        device_class=SensorDeviceClass.WATER,
+                        state_class=SensorStateClass.TOTAL_INCREASING,
+                    ),
+                    coefficient=10.0,
+                ),
+                TuyaBLESensorMapping(
+                    dp_id=107,
+                    description=SensorEntityDescription(
+                        key="total_usage_after_reset",
+                        icon="mdi:water",
+                        native_unit_of_measurement=UnitOfVolume.LITERS,
+                        device_class=SensorDeviceClass.WATER,
+                        state_class=SensorStateClass.TOTAL_INCREASING,
+                    ),
+                    coefficient=10.0,
+                ),
+                TuyaBLESensorMapping(
+                    dp_id=108,
+                    description=SensorEntityDescription(
+                        key="day_usage_after_reset",
+                        icon="mdi:water",
+                        native_unit_of_measurement=UnitOfVolume.LITERS,
+                        device_class=SensorDeviceClass.WATER,
+                        state_class=SensorStateClass.TOTAL_INCREASING,
+                    ),
+                    coefficient=10.0,
+                ),
+            ]
+        }
+    ),
 }
 
 

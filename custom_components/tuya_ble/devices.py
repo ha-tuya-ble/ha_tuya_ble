@@ -635,6 +635,13 @@ devices_database: dict[str, TuyaBLECategoryInfo] = {
             ),
         },
     ),
+    "slj": TuyaBLECategoryInfo(
+        products={
+            "mqqna0px": TuyaBLEProductInfo(
+                name="RESTMO BT Water Meter",
+            ),
+        },
+    ),
 }
 
 
