@@ -188,7 +188,7 @@ mapping: dict[str, TuyaBLECategoryButtonMapping] = {
                     ),
                 ],
             ),
-            "hs21i377": [ # Raycube K7 Pro+
+            "hs21i377": [  # Raycube K7 Pro+
                 TuyaBLEButtonMapping(
                     dp_id=71,
                     description=ButtonEntityDescription(
@@ -198,7 +198,7 @@ mapping: dict[str, TuyaBLECategoryButtonMapping] = {
                     dp_type=TuyaBLEDataPointType.DT_RAW,
                 ),
             ],
-            "kholoaew": [ # Smart Lock
+            "kholoaew": [  # Smart Lock
                 TuyaBLEButtonMapping(
                     dp_id=46,
                     description=ButtonEntityDescription(key="manual_lock"),
@@ -237,6 +237,7 @@ mapping: dict[str, TuyaBLECategoryButtonMapping] = {
     ),
 }
 
+
 def get_mapping_by_device(device: TuyaBLEDevice) -> list[TuyaBLECategoryButtonMapping]:
     category = mapping.get(device.category)
     if category is not None and category.products is not None:
@@ -247,6 +248,7 @@ def get_mapping_by_device(device: TuyaBLEDevice) -> list[TuyaBLECategoryButtonMa
             return category.mapping
 
     return []
+
 
 class TuyaBLEButton(TuyaBLEEntity, ButtonEntity):
     """Representation of a Tuya BLE Button."""
