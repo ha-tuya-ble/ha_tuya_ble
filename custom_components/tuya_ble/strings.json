@@ -244,9 +244,18 @@
             },
             "unlock_password": {
                 "name": "Last used Password"
+            },
+            "unlock_ble": {
+                "name": "Last used BLE"
+            },
+            "unlock_phone_remote": {
+                "name": "Last used remote phone"
             }
         },
         "switch": {
+            "automatic_lock": {
+                "name": "Automatic lock"
+            },
             "antifreeze": {
                 "name": "Antifreeze"
             },

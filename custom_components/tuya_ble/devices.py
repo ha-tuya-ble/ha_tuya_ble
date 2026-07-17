@@ -390,6 +390,14 @@ devices_database: dict[str, TuyaBLECategoryInfo] = {
             ),
         },
     ),
+    "itmspro": TuyaBLECategoryInfo(
+        products={
+            "y2yaegze": TuyaBLEProductInfo(
+                name="Drawer Lock CTL20H",
+                lock=1,
+            ),
+        },
+    ),
     "jtmspro": TuyaBLECategoryInfo(
         products={
             "xicdxood": TuyaBLEProductInfo(name="Raycube K7 Pro+", lock=1),

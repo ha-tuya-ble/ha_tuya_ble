@@ -322,6 +322,20 @@ mapping: dict[str, TuyaBLECategorySwitchMapping] = {
             ],
         },
     ),
+    "itmspro": TuyaBLECategorySwitchMapping(
+        products={
+            "y2yaegze": [
+                TuyaBLESwitchMapping(
+                    dp_id=33,
+                    description=SwitchEntityDescription(
+                        key="automatic_lock",
+                        icon="mdi:lock-clock",
+                        entity_category=EntityCategory.CONFIG,
+                    ),
+                ),
+            ],
+        }
+    ),
     "jtmspro": TuyaBLECategorySwitchMapping(
         products={
             "kholoaew": [  # Smart Lock
