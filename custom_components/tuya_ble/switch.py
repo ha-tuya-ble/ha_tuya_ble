@@ -322,7 +322,7 @@ mapping: dict[str, TuyaBLECategorySwitchMapping] = {
             ],
         },
     ),
-    "itmspro": TuyaBLECategorySwitchMapping(
+    "jtmspro": TuyaBLECategorySwitchMapping(
         products={
             "y2yaegze": [
                 TuyaBLESwitchMapping(
@@ -334,10 +334,6 @@ mapping: dict[str, TuyaBLECategorySwitchMapping] = {
                     ),
                 ),
             ],
-        }
-    ),
-    "jtmspro": TuyaBLECategorySwitchMapping(
-        products={
             "kholoaew": [  # Smart Lock
                 TuyaBLESwitchMapping(
                     dp_id=33,

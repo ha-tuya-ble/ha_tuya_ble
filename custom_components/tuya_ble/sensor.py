@@ -303,7 +303,7 @@ mapping: dict[str, TuyaBLECategorySensorMapping] = {
             ],
         }
     ),
-    "itmspro": TuyaBLECategorySensorMapping(
+    "jtmspro": TuyaBLECategorySensorMapping(
         products={
             "y2yaegze": [
                 TuyaBLEAlarmLockStateMapping(dp_id=21),
@@ -332,10 +332,6 @@ mapping: dict[str, TuyaBLECategorySensorMapping] = {
                 ),
                 TuyaBLEBatteryMapping(dp_id=8),
             ],
-        }
-    ),
-    "jtmspro": TuyaBLECategorySensorMapping(
-        products={
             **dict.fromkeys(
                 [
                     "xicdxood",  # Raycube K7 Pro+
