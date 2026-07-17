@@ -117,8 +117,8 @@ The integration works locally, but connection to Tuya BLE device requires device
       <td>—</td>
     </tr>
     <tr>
-      <td rowspan="13"><strong>Smart Locks</strong></td>
-      <td rowspan="13"><code>ms</code>, <code>jtmspro</code></td>
+      <td rowspan="14"><strong>Smart Locks</strong></td>
+      <td rowspan="14"><code>ms</code>, <code>jtmspro</code></td>
       <td>Smart Lock</td>
       <td><code>ludzroix</code>, <code>isk2p555</code>, <code>gumrixyt</code>, <code>uamrw6h3</code>, <code>sidhzylo</code>, <code>mqc2hevy</code>, <code>7a4xvbtt</code></td>
       <td>—</td>
@@ -152,6 +152,11 @@ The integration works locally, but connection to Tuya BLE device requires device
       <td>B16</td>
       <td><code>ajk32biq</code></td>
       <td>—</td>
+    </tr>
+    <tr>
+      <td>CS-9 Smart Fingerprint Lock</td>
+      <td><code>pyawczjj</code></td>
+      <td>Experimental.</td>
     </tr>
     <tr>
       <td>Smart Cylinder Lock</td>
