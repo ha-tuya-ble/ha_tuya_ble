@@ -69,10 +69,11 @@ The integration works locally, but connection to Tuya BLE device requires device
 * Smart water bottle (category_id 'znhsb')
   + Smart water bottle (product_id 'cdlandip')
 
-* Irrigation computer (category_id 'ggq')
+* Irrigation computer (category_id 'ggq', 'slj')
   + Irrigation computer (product_id '6pahkcau')
   + 2-outlet irrigation computer (product_ids 'hfgdqhho', 'fnlw6npo', 'qycalacn', 'jjqi2syk')
     - also known as: SGW02, SGW08, MOES BWV-YC02-EU-GY, Kogan SmarterHome KASMWATMRDA / KASMWTV2LVA
+  + RESTMO BT Water Meter (FML026A) (product_id 'mqqna0px')
 
 
 * Covers (category_id 'cl')
