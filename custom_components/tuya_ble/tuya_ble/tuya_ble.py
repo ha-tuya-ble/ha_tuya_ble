@@ -1500,4 +1500,3 @@ class TuyaBLEDevice:
             return
         await self._send_packet(TuyaBLECode.FUN_SENDER_DPS, data)
         self._fire_callbacks(updated_dps)
-
