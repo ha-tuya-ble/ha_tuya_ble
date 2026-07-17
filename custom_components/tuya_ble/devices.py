@@ -531,6 +531,7 @@ devices_database: dict[str, TuyaBLECategoryInfo] = {
             "tv6peegl": TuyaBLEProductInfo(name="Soil Thermo-Hygrometer"),
             "vlzqwckk": TuyaBLEProductInfo(name="Temperature Humidity Sensor"),
             "tr0kabuq": TuyaBLEProductInfo(name="Temperature Humidity Sensor"),
+            "6lbesej0": TuyaBLEProductInfo(name="Temperature Humidity Sensor SS302"),
         },
     ),
     "znhsb": TuyaBLECategoryInfo(
