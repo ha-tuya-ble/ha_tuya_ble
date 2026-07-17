@@ -643,6 +643,7 @@ class TuyaBLEDevice:
         """Disconnected callback."""
         was_paired = self._is_paired
         self._is_paired = False
+        self._clean_input()
         if self._expected_disconnect:
             _LOGGER.debug(
                 "%s: Disconnected from device; RSSI: %s",
@@ -686,6 +687,7 @@ class TuyaBLEDevice:
             if client and client.is_connected:
                 await client.stop_notify(CHARACTERISTIC_NOTIFY)
                 await client.disconnect()
+        self._clean_input()
         async with self._seq_num_lock:
             self._current_seq_num = 1
 
@@ -1395,6 +1397,14 @@ class TuyaBLEDevice:
         packet_num, pos = self._unpack_int(data, pos)
 
         if packet_num < self._input_expected_packet_num:
+            if packet_num != 0:
+                _LOGGER.warning(
+                    "%s: Unexpected packet (number %s) in notifications, expected %s. Ignoring.",
+                    self.address,
+                    packet_num,
+                    self._input_expected_packet_num,
+                )
+                return
             _LOGGER.error(
                 "%s: Unexpected packet (number %s) in notifications, " "expected %s",
                 self.address,
