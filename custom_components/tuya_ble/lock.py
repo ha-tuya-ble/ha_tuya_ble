@@ -2,7 +2,11 @@ from __future__ import annotations
 
 from typing import Any
 
-from homeassistant.components.lock import LockEntity, LockEntityFeature
+from homeassistant.components.lock import (
+    LockEntity,
+    LockEntityFeature,
+    LockEntityDescription,
+)
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
@@ -38,7 +42,13 @@ class TuyaBLELock(TuyaBLEEntity, LockEntity):
         device: TuyaBLEDevice,
         product: TuyaBLEProductInfo,
     ) -> None:
-        super().__init__(hass, coordinator, device, product, None)
+        super().__init__(
+            hass,
+            coordinator,
+            device,
+            product,
+            LockEntityDescription(key="lock", name=product.name),
+        )
         self._attr_supported_features = LockEntityFeature.OPEN
 
     @property

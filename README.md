@@ -35,6 +35,8 @@ The integration works locally, but connection to Tuya BLE device requires device
   + Fingerbot Plus (product_ids 'blliqpsj', 'ndvkgsrm', 'yiihr7zh', 'neq16kgd', 'mknd4lci', 'riecov42', 'bs3ubslo', '6jcvqwh0'), almost same as original, has sensor button for manual control.
   + CubeTouch 1s (product_id '3yqdo5yt'), built-in battery with USB type C charging.
   + CubeTouch II (product_id 'xhf790if'), built-in battery with USB type C charging.
+  + Tuya BLE Switch Robot (SB02) (product_id '4ctjfrzq')
+  + Tuya BLE Fingerbot SM-FB-01B (product_id 'gnpbj0bq')
 
   All features available in Home Assistant, programming (series of actions) is implemented for Fingerbot Plus.
   For programming exposed entities 'Program' (switch), 'Repeat forever', 'Repeats count', 'Idle position' and 'Program' (text). Format of program text is: 'position\[/time\];...' where position is in percents, optional time is in seconds (zero if missing).
@@ -42,7 +44,8 @@ The integration works locally, but connection to Tuya BLE device requires device
 * Temperature and humidity sensors (category_id 'wsdcg', 'zwjcy')
   + Soil moisture sensor (product_id 'ojzlzzsw').
   + SRB-PM01 Soil Moisture Sensor (product_id 'jabotj1z').
-  + Temperature Humidity Sensor (product_id 'jm6iasmb', 'tr0kabuq', 'iv7hudlj, 'jm6iasmb')
+  + Temperature Humidity Sensor (product_id 'jm6iasmb', 'tr0kabuq', 'iv7hudlj', 'jm6iasmb')
+  + Temperature Humidity Sensor SS302 (product_id '6lbesej0')
   + Soil Thermo-Hygrometer (product_id 'tv6peegl')
 
 * CO2 sensors (category_id 'co2bj')
@@ -58,6 +61,9 @@ The integration works locally, but connection to Tuya BLE device requires device
   + B16 (product_id 'ajk32biq')
   + Smart Cylinder Lock (product_id 'z7lj676i')
   + TEKXDD Fingerprint Smart Lock (product_id 'okkyfgfs')
+  + Orion Smart Door Handle Lock (product_id 'a6nttc41')
+  + Smart Cylinder Lock (LVD11_BK) (product_id 'hs21i377')
+  + Smart Lock (product_id 'kholoaew') - Partial
 
 * Climate (category_id 'wk')
   + Thermostatic Radiator Valve (product_ids 'drlajpqc', 'nhj2j7su').
@@ -65,15 +71,15 @@ The integration works locally, but connection to Tuya BLE device requires device
 * Smart water bottle (category_id 'znhsb')
   + Smart water bottle (product_id 'cdlandip')
 
-* Irrigation computer (category_id 'ggq')
+* Irrigation computer (category_id 'ggq', 'slj')
   + Irrigation computer (product_id '6pahkcau')
   + 2-outlet irrigation computer (product_ids 'hfgdqhho', 'fnlw6npo', 'qycalacn', 'jjqi2syk')
     - also known as: SGW02, SGW08, MOES BWV-YC02-EU-GY, Kogan SmarterHome KASMWATMRDA / KASMWTV2LVA
-
+  + RESTMO BT Water Meter (FML026A) (product_id 'mqqna0px')
 
 * Covers (category_id 'cl')
   + Moes Roller Blind Motor (product_id '4pbr8eig')
-  + Amazon HeyBlinds (product_id 'vlwf3ud6')
+  + Amazon HeyBlinds (product_id 'vlwf3ud6', 'v3fzfd2y')
   + Tuya Smart Curtain Robot (product_id 'kcy0x4pi')
   + Blinds Drive (product_id 'qqdxfdht')
   + LY Curtain Motor Robot (product_id 'ulughw4g')
@@ -83,7 +89,8 @@ The integration works locally, but connection to Tuya BLE device requires device
   + Water valve controller (product_id 'nxquc5lb')
   + NOUS L11 Bluetooth Smart Garden Water Timer (product_id '46zia2nz')
   + WT-03W Diivoo Smart Water Timer for Garden Hose (product_id '1fcnd8xk')
-  
+  + ZX-7378 Smart Irrigation Controller (product_id: "ldcdnigc") 
+  + Rainpoint TTV102B (product_id 'e1poaiwa')
   
 * Lights
   + Most BLE light products should be supported as the Light class tries to get device description from the cloud when there are added but only Strip Lights (category_id 'dd') Magiacous RGB light bar (product_id 'nvfrtxlq') has has been tested
