@@ -1472,7 +1472,6 @@ class TuyaBLEDevice:
         """Set multiple datapoint values in a single atomic BLE payload."""
         data = bytearray()
         updated_dps = []
-        
         for dp_id, value in dp_updates.items():
             dp = self._datapoints[dp_id]
             if not dp:
@@ -1489,7 +1488,6 @@ class TuyaBLEDevice:
                 dp._value = int(value)
             elif dp.type == TuyaBLEDataPointType.DT_STRING:
                 dp._value = str(value)
-            
             dp._changed_by_device = False
             updated_dps.append(dp)
 
@@ -1500,7 +1498,6 @@ class TuyaBLEDevice:
 
         if not data:
             return
-            
         await self._send_packet(TuyaBLECode.FUN_SENDER_DPS, data)
         self._fire_callbacks(updated_dps)
 

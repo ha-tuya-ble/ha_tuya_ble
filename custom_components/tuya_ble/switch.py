@@ -104,6 +104,7 @@ def set_fingerbot_program_repeat_forever(
             )
             self._hass.create_task(datapoint.set_value(new_value))
 
+
 def set_16wgjvck_water_valve(
     self: TuyaBLESwitch, product: TuyaBLEProductInfo, value: bool
 ) -> None:
@@ -112,15 +113,12 @@ def set_16wgjvck_water_valve(
         dp_11_val = 60
         dp15 = self._device.datapoints[15]
         dp11 = self._device.datapoints[11]
-        
         if dp15 and dp15.value:
             dp_11_val = int(dp15.value)
         elif dp11 and dp11.value:
             dp_11_val = int(dp11.value)
-            
         if dp_11_val <= 0:
             dp_11_val = 60
-            
         # Lese die eingestellte Ventilöffnung (DP 2)
         dp_2_val = 100
         dp2 = self._device.datapoints[2]
@@ -146,6 +144,7 @@ def set_16wgjvck_water_valve(
         # Just turn off the switch
         self._device.datapoints.get_or_create(1, TuyaBLEDataPointType.DT_BOOL, False)
         self._hass.create_task(self._device.set_multiple_values({1: False}))
+
 
 @dataclass
 class TuyaBLEFingerbotSwitchMapping(TuyaBLESwitchMapping):
