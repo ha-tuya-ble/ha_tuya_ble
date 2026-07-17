@@ -358,6 +358,7 @@ devices_database: dict[str, TuyaBLECategoryInfo] = {
                     "sidhzylo",
                     "mqc2hevy",
                     "a6nttc41",
+                    "7a4xvbtt",
                 ],
                 TuyaBLEProductInfo(  # device product_id
                     name="Smart Lock",
@@ -490,7 +491,7 @@ devices_database: dict[str, TuyaBLECategoryInfo] = {
     "kg": TuyaBLECategoryInfo(
         products={
             **dict.fromkeys(
-                ["mknd4lci", "riecov42", "bs3ubslo"],  # device product_ids
+                ["mknd4lci", "riecov42", "bs3ubslo", "gnpbj0bq"],  # device product_ids
                 TuyaBLEProductInfo(
                     name="Fingerbot Plus",
                     fingerbot=TuyaBLEFingerbotInfo(
@@ -532,6 +533,7 @@ devices_database: dict[str, TuyaBLECategoryInfo] = {
             "tv6peegl": TuyaBLEProductInfo(name="Soil Thermo-Hygrometer"),
             "vlzqwckk": TuyaBLEProductInfo(name="Temperature Humidity Sensor"),
             "tr0kabuq": TuyaBLEProductInfo(name="Temperature Humidity Sensor"),
+            "6lbesej0": TuyaBLEProductInfo(name="Temperature Humidity Sensor SS302"),
         },
     ),
     "znhsb": TuyaBLECategoryInfo(
@@ -629,6 +631,7 @@ devices_database: dict[str, TuyaBLECategoryInfo] = {
             ),
             "kcy0x4pi": TuyaBLEProductInfo(name="Curtain Controller"),
             "dy4dh1q0": TuyaBLEProductInfo(name="AOK AM24 Venetian Blinds Motor"),
+            "v3fzfd2y": TuyaBLEProductInfo(name="AOK AM25 Roller Blinds Motor"),
         }
     ),
     "zwjcy": TuyaBLECategoryInfo(

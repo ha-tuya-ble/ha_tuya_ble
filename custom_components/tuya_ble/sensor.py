@@ -199,6 +199,7 @@ mapping: dict[str, TuyaBLECategorySensorMapping] = {
                     "sidhzylo",
                     "bvclwu9b",
                     "k53ok3u9",
+                    "7a4xvbtt",
                 ],  # Smart Lock
                 [
                     TuyaBLEAlarmLockStateMapping(dp_id=21),
@@ -429,7 +430,7 @@ mapping: dict[str, TuyaBLECategorySensorMapping] = {
     "kg": TuyaBLECategorySensorMapping(
         products={
             **dict.fromkeys(
-                ["mknd4lci", "riecov42"],  # Fingerbot Plus
+                ["mknd4lci", "riecov42", "gnpbj0bq"],  # Fingerbot Plus
                 [
                     TuyaBLEBatteryMapping(dp_id=105),
                 ],
@@ -489,6 +490,37 @@ mapping: dict[str, TuyaBLECategorySensorMapping] = {
                     description=SensorEntityDescription(
                         key="va_moisture",
                         device_class=SensorDeviceClass.MOISTURE,
+                        native_unit_of_measurement=PERCENTAGE,
+                        state_class=SensorStateClass.MEASUREMENT,
+                    ),
+                ),
+                TuyaBLEBatteryMapping(
+                    dp_id=4,
+                    description=SensorEntityDescription(
+                        key="battery_percentage",
+                        device_class=SensorDeviceClass.BATTERY,
+                        native_unit_of_measurement=PERCENTAGE,
+                        entity_category=EntityCategory.DIAGNOSTIC,
+                        state_class=SensorStateClass.MEASUREMENT,
+                    ),
+                ),
+            ],
+            "6lbesej0": [  # Temperature Humidity Sensor SS302
+                TuyaBLETemperatureMapping(
+                    dp_id=1,
+                    coefficient=10.0,
+                    description=SensorEntityDescription(
+                        key="temp_current",
+                        device_class=SensorDeviceClass.TEMPERATURE,
+                        native_unit_of_measurement=UnitOfTemperature.CELSIUS,
+                        state_class=SensorStateClass.MEASUREMENT,
+                    ),
+                ),
+                TuyaBLESensorMapping(
+                    dp_id=2,
+                    description=SensorEntityDescription(
+                        key="humidity_value",
+                        device_class=SensorDeviceClass.HUMIDITY,
                         native_unit_of_measurement=PERCENTAGE,
                         state_class=SensorStateClass.MEASUREMENT,
                     ),
@@ -1144,7 +1176,13 @@ mapping: dict[str, TuyaBLECategorySensorMapping] = {
     "cl": TuyaBLECategorySensorMapping(
         products={
             **dict.fromkeys(
-                ["4pbr8eig", "qqdxfdht", "kcy0x4pi", "vlwf3ud6"],  # Blind Controller
+                [
+                    "4pbr8eig",
+                    "qqdxfdht",
+                    "kcy0x4pi",
+                    "vlwf3ud6",
+                    "v3fzfd2y",
+                ],  # Blind Controller
                 [
                     TuyaBLEBatteryMapping(dp_id=13),
                     TuyaBLESensorMapping(

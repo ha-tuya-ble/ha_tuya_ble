@@ -234,7 +234,13 @@ mapping: dict[str, TuyaBLECategorySwitchMapping] = {
     "ms": TuyaBLECategorySwitchMapping(
         products={
             **dict.fromkeys(
-                ["ludzroix", "isk2p555", "gumrixyt", "sidhzylo"],  # Smart Lock
+                [
+                    "ludzroix",
+                    "isk2p555",
+                    "gumrixyt",
+                    "sidhzylo",
+                    "7a4xvbtt",
+                ],  # Smart Lock
                 [TuyaLockMotorStateMapping(dp_id=47)],
             ),
             **dict.fromkeys(
@@ -349,7 +355,7 @@ mapping: dict[str, TuyaBLECategorySwitchMapping] = {
     "kg": TuyaBLECategorySwitchMapping(
         products={
             **dict.fromkeys(
-                ["mknd4lci", "riecov42", "bs3ubslo"],  # Fingerbot Plus
+                ["mknd4lci", "riecov42", "bs3ubslo", "gnpbj0bq"],  # Fingerbot Plus
                 [
                     TuyaBLEFingerbotSwitchMapping(dp_id=1),
                     TuyaBLEReversePositionsMapping(dp_id=104),
