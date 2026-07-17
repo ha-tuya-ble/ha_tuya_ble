@@ -172,6 +172,15 @@
                     "normal": "Normal"
                 }
             },
+            "day_usage_after_reset": {
+                "name": "Daily usage after reset"
+            },
+            "day_water_usage": {
+                "name": "Daily water usage"
+            },
+            "flow_velocity": {
+                "name": "Flow rate"
+            },
             "lock_door_status": {
                 "name": "Door status",
                 "state": {
@@ -204,6 +213,9 @@
             "time_left": {
                 "name": "Remaining irrigation time"
             },
+            "total_usage_after_reset": {
+                "name": "Total usage after reset"
+            },
             "use_time_z1": {
                 "name": "Last irrigation time - Zone 1"
             },
@@ -218,6 +230,12 @@
             },
             "water_intake": {
                 "name": "Water intake"
+            },
+            "water_once": {
+                "name": "Last session water usage"
+            },
+            "water_use_data": {
+                "name": "Total water usage"
             },
             "wrong_finger": {
                 "name": "Wrong Fingerprint"
