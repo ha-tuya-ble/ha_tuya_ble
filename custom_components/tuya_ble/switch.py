@@ -130,8 +130,12 @@ def set_16wgjvck_water_valve(
         # Erstelle die Datenpunkte im Cache, FALLS sie noch nicht vom Gerät gesendet wurden,
         # damit "set_multiple_values" sie nicht einfach ignoriert.
         self._device.datapoints.get_or_create(1, TuyaBLEDataPointType.DT_BOOL, True)
-        self._device.datapoints.get_or_create(2, TuyaBLEDataPointType.DT_VALUE, dp_2_val)
-        self._device.datapoints.get_or_create(11, TuyaBLEDataPointType.DT_VALUE, dp_11_val)
+        self._device.datapoints.get_or_create(
+            2, TuyaBLEDataPointType.DT_VALUE, dp_2_val
+        )
+        self._device.datapoints.get_or_create(
+            11, TuyaBLEDataPointType.DT_VALUE, dp_11_val
+        )
 
         # Atomic Multi-Datapoint Payload for turning on
         dp_updates = {
