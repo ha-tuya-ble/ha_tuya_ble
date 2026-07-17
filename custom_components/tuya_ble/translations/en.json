@@ -141,7 +141,16 @@
         },
         "sensor": {
             "alarm_lock": {
-                "name": "Alarm"
+                "name": "Alarm",
+                "state": {
+                    "wrong_finger": "Wrong Fingerprint",
+                    "wrong_password": "Wrong Password",
+                    "low_battery": "Low Battery",
+                    "power_off": "Power off"
+                }
+            },
+            "power_off": {
+                "name": "Power off"
             },
             "battery": {
                 "name": "Battery"

@@ -306,6 +306,20 @@ mapping: dict[str, TuyaBLECategorySensorMapping] = {
     ),
     "jtmspro": TuyaBLECategorySensorMapping(
         products={
+            "hc7n0urm": [  # A1 Ultra-JM
+                TuyaBLESensorMapping(
+                    dp_id=21,  # Alarm event
+                    description=SensorEntityDescription(
+                        key="alarm_lock",
+                        icon="mdi:alarm-light-outline",
+                        device_class=SensorDeviceClass.ENUM,
+                        options=[
+                            "low_battery",
+                            "power_off",
+                        ],
+                    ),
+                ),
+            ],
             **dict.fromkeys(
                 [
                     "xicdxood",  # Raycube K7 Pro+
