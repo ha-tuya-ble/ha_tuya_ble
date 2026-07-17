@@ -51,7 +51,6 @@ from .exceptions import (
 )
 from .manager import AbstaractTuyaBLEDeviceManager, TuyaBLEDeviceCredentials
 
-
 _LOGGER = logging.getLogger(__name__)
 
 
@@ -641,6 +640,7 @@ class TuyaBLEDevice:
 
     def _disconnected(self, client: BleakClientWithServiceCache) -> None:
         """Disconnected callback."""
+        self._clean_input()
         was_paired = self._is_paired
         self._is_paired = False
         if self._expected_disconnect:
@@ -679,6 +679,7 @@ class TuyaBLEDevice:
 
     async def _execute_disconnect(self) -> None:
         """Execute disconnection."""
+        self._clean_input()
         async with self._connect_lock:
             client = self._client
             self._expected_disconnect = True
@@ -1402,6 +1403,8 @@ class TuyaBLEDevice:
                 self._input_expected_packet_num,
             )
             self._clean_input()
+            if packet_num != 0:
+                return
 
         if packet_num == self._input_expected_packet_num:
             if packet_num == 0:
