@@ -40,7 +40,6 @@ The integration works locally, but connection to Tuya BLE device requires device
     </tr>
   </thead>
   <tbody>
-    <!-- Fingerbots -->
     <tr>
       <td rowspan="7"><strong>Fingerbots</strong></td>
       <td rowspan="7"><code>szjqr</code></td>
@@ -78,8 +77,6 @@ The integration works locally, but connection to Tuya BLE device requires device
       <td><code>gnpbj0bq</code></td>
       <td>—</td>
     </tr>
-
-    <!-- Temperature and humidity sensors -->
     <tr>
       <td rowspan="5"><strong>Temperature and humidity sensors</strong></td>
       <td rowspan="5"><code>wsdcg</code>, <code>zwjcy</code></td>
@@ -107,8 +104,6 @@ The integration works locally, but connection to Tuya BLE device requires device
       <td><code>tv6peegl</code></td>
       <td>—</td>
     </tr>
-
-    <!-- CO2 sensors -->
     <tr>
       <td><strong>CO2 sensors</strong></td>
       <td><code>co2bj</code></td>
@@ -116,8 +111,6 @@ The integration works locally, but connection to Tuya BLE device requires device
       <td><code>59s19z5m</code></td>
       <td>—</td>
     </tr>
-
-    <!-- Smart Locks -->
     <tr>
       <td rowspan="12"><strong>Smart Locks</strong></td>
       <td rowspan="12"><code>ms</code>, <code>jtmspro</code></td>
@@ -180,8 +173,6 @@ The integration works locally, but connection to Tuya BLE device requires device
       <td><code>kholoaew</code></td>
       <td>Partial.</td>
     </tr>
-
-    <!-- Climate -->
     <tr>
       <td><strong>Climate</strong></td>
       <td><code>wk</code></td>
@@ -189,8 +180,6 @@ The integration works locally, but connection to Tuya BLE device requires device
       <td><code>drlajpqc</code>, <code>nhj2j7su</code></td>
       <td>—</td>
     </tr>
-
-    <!-- Smart water bottle -->
     <tr>
       <td><strong>Smart water bottle</strong></td>
       <td><code>znhsb</code></td>
@@ -198,8 +187,6 @@ The integration works locally, but connection to Tuya BLE device requires device
       <td><code>cdlandip</code></td>
       <td>—</td>
     </tr>
-
-    <!-- Irrigation computer -->
     <tr>
       <td rowspan="3"><strong>Irrigation computer</strong></td>
       <td rowspan="3"><code>ggq</code>, <code>slj</code></td>
@@ -217,8 +204,6 @@ The integration works locally, but connection to Tuya BLE device requires device
       <td><code>mqqna0px</code></td>
       <td>—</td>
     </tr>
-
-    <!-- Covers -->
     <tr>
       <td rowspan="6"><strong>Covers</strong></td>
       <td rowspan="6"><code>cl</code></td>
@@ -251,8 +236,6 @@ The integration works locally, but connection to Tuya BLE device requires device
       <td><code>dy4dh1q0</code></td>
       <td>Experimental.</td>
     </tr>
-
-    <!-- Water valve controller -->
     <tr>
       <td rowspan="5"><strong>Water valve controller</strong></td>
       <td rowspan="5"><code>sfkzq</code></td>
@@ -280,8 +263,6 @@ The integration works locally, but connection to Tuya BLE device requires device
       <td><code>e1poaiwa</code></td>
       <td>—</td>
     </tr>
-
-    <!-- Lights -->
     <tr>
       <td rowspan="4"><strong>Lights</strong></td>
       <td rowspan="4">Multiple (e.g. <code>dd</code> for Strip Lights)</td>
@@ -301,8 +282,6 @@ The integration works locally, but connection to Tuya BLE device requires device
       <td>RGB Strip Light</td>
       <td><code>0qgrjxum</code></td>
     </tr>
-
-    <!-- Battery -->
     <tr>
       <td rowspan="2"><strong>Battery</strong></td>
       <td rowspan="2"><code>dcb</code></td>
