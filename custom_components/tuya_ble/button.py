@@ -326,6 +326,7 @@ class TuyaBLEButton(TuyaBLEEntity, ButtonEntity):
             result = self._mapping.is_available(self, self._product)
         return result
 
+
 async def async_setup_entry(
     hass: HomeAssistant,
     entry: ConfigEntry,
