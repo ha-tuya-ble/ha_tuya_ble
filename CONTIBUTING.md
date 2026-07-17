@@ -39,7 +39,9 @@ This guide explains how to generate a new PR for a set of **DPIDs** (Device Prop
 
 ```
 Add support for Example Product - SmartLife Finger Robot (category: szjqr - Product ID: yn4x5fa7)
-Add the product id to the README.
+Add the product details, id to the README.
+Ensure that you have installed `black` and it is run before commit.
+Ensure that any JSON modifications are well formed.
 
 { "result": { "category": "szjqr", "functions": [ { "code": "switch", "dp_id": 1, "type": "Boolean", "values": "{}" }, { "code": "mode", "dp_id": 2, "type": "Enum", "values": "{"range":["click"]}" }, { "code": "click_sustain_time", "dp_id": 3, "type": "Integer", "values": "{"unit":"0.1s","min":3,"max":100,"scale":1,"step":1}" }
 ```
