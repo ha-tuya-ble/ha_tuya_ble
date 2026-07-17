@@ -27,7 +27,7 @@ After adding to Home Assistant integration should discover all supported Bluetoo
 
 The integration works locally, but connection to Tuya BLE device requires device ID and encryption key from Tuya IOT cloud. It could be obtained using the same credentials as in the previous official Tuya integration. To obtain the credentials, please refer to official Tuya integration [documentation](https://web.archive.org/web/20231228044831/https://www.home-assistant.io/integrations/tuya/) [[1]](https://github.com/home-assistant/home-assistant.io/blob/a4e6d4819f1db584cc66ba2082508d3978f83f7e/source/_integrations/tuya.markdown)
 
-## Supported devices list (not up to date)
+## Supported devices list
 
 <table>
   <thead>
@@ -41,8 +41,8 @@ The integration works locally, but connection to Tuya BLE device requires device
   </thead>
   <tbody>
     <tr>
-      <td rowspan="7"><strong>Fingerbots</strong></td>
-      <td rowspan="7"><code>szjqr</code></td>
+      <td rowspan="8"><strong>Fingerbots</strong></td>
+      <td rowspan="8"><code>szjqr</code></td>
       <td>Fingerbot</td>
       <td><code>ltak7e1p</code>, <code>y6kttvd6</code>, <code>yrnk7mnn</code>, <code>nvr2rocq</code>, <code>bnt7wajf</code>, <code>rvdceqjh</code>, <code>5xhbk964</code></td>
       <td>Original device, first in category, powered by CR2 battery.</td>
@@ -54,7 +54,7 @@ The integration works locally, but connection to Tuya BLE device requires device
     </tr>
     <tr>
       <td>Fingerbot Plus</td>
-      <td><code>blliqpsj</code>, <code>ndvkgsrm</code>, <code>yiihr7zh</code>, <code>neq16kgd</code>, <code>mknd4lci</code>, <code>riecov42</code>, <code>bs3ubslo</code>, <code>6jcvqwh0</code></td>
+      <td><code>blliqpsj</code>, <code>ndvkgsrm</code>, <code>yiihr7zh</code>, <code>neq16kgd</code>, <code>mknd4lci</code>, <code>riecov42</code>, <code>bs3ubslo</code>, <code>6jcvqwh0</code>, <code>h8kdwywx</code></td>
       <td>Almost same as original, has sensor button for manual control. See programming note below.</td>
     </tr>
     <tr>
@@ -78,6 +78,11 @@ The integration works locally, but connection to Tuya BLE device requires device
       <td>—</td>
     </tr>
     <tr>
+      <td>Nedis SmartLife Finger Robot</td>
+      <td><code>yn4x5fa7</code></td>
+      <td>—</td>
+    </tr>
+    <tr>
       <td rowspan="5"><strong>Temperature and humidity sensors</strong></td>
       <td rowspan="5"><code>wsdcg</code>, <code>zwjcy</code></td>
       <td>Soil moisture sensor</td>
@@ -91,7 +96,7 @@ The integration works locally, but connection to Tuya BLE device requires device
     </tr>
     <tr>
       <td>Temperature Humidity Sensor</td>
-      <td><code>jm6iasmb</code>, <code>tr0kabuq</code>, <code>iv7hudlj</code>, <code>jm6iasmb</code></td>
+      <td><code>jm6iasmb</code>, <code>tr0kabuq</code>, <code>iv7hudlj</code>, <code>vlzqwckk</code></td>
       <td>—</td>
     </tr>
     <tr>
@@ -112,10 +117,10 @@ The integration works locally, but connection to Tuya BLE device requires device
       <td>—</td>
     </tr>
     <tr>
-      <td rowspan="12"><strong>Smart Locks</strong></td>
-      <td rowspan="12"><code>ms</code>, <code>jtmspro</code></td>
+      <td rowspan="13"><strong>Smart Locks</strong></td>
+      <td rowspan="13"><code>ms</code>, <code>jtmspro</code></td>
       <td>Smart Lock</td>
-      <td><code>ludzroix</code>, <code>isk2p555</code>, <code>gumrixyt</code>, <code>sidhzylo</code>, <code>mqc2hevy</code>, <code>7a4xvbtt</code></td>
+      <td><code>ludzroix</code>, <code>isk2p555</code>, <code>gumrixyt</code>, <code>uamrw6h3</code>, <code>sidhzylo</code>, <code>mqc2hevy</code>, <code>7a4xvbtt</code></td>
       <td>—</td>
     </tr>
     <tr>
@@ -174,10 +179,15 @@ The integration works locally, but connection to Tuya BLE device requires device
       <td>Partial.</td>
     </tr>
     <tr>
+      <td>CentralAcesso</td>
+      <td><code>ebd5e0uauqx0vfsp</code></td>
+      <td>—</td>
+    </tr>
+    <tr>
       <td><strong>Climate</strong></td>
       <td><code>wk</code></td>
       <td>Thermostatic Radiator Valve</td>
-      <td><code>drlajpqc</code>, <code>nhj2j7su</code></td>
+      <td><code>drlajpqc</code>, <code>nhj2j7su</code>, <code>zmachryv</code></td>
       <td>—</td>
     </tr>
     <tr>
@@ -237,8 +247,8 @@ The integration works locally, but connection to Tuya BLE device requires device
       <td>Experimental.</td>
     </tr>
     <tr>
-      <td rowspan="5"><strong>Water valve controller</strong></td>
-      <td rowspan="5"><code>sfkzq</code></td>
+      <td rowspan="6"><strong>Water valve controller</strong></td>
+      <td rowspan="6"><code>sfkzq</code></td>
       <td>Water valve controller</td>
       <td><code>nxquc5lb</code></td>
       <td>—</td>
@@ -261,6 +271,11 @@ The integration works locally, but connection to Tuya BLE device requires device
     <tr>
       <td>Rainpoint TTV102B</td>
       <td><code>e1poaiwa</code></td>
+      <td>—</td>
+    </tr>
+    <tr>
+      <td>Valve controller</td>
+      <td><code>svhikeyq</code>, <code>0axr5s0b</code></td>
       <td>—</td>
     </tr>
     <tr>
