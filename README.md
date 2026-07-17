@@ -75,7 +75,6 @@ The integration works locally, but connection to Tuya BLE device requires device
     - also known as: SGW02, SGW08, MOES BWV-YC02-EU-GY, Kogan SmarterHome KASMWATMRDA / KASMWTV2LVA
   + RESTMO BT Water Meter (FML026A) (product_id 'mqqna0px')
 
-
 * Covers (category_id 'cl')
   + Moes Roller Blind Motor (product_id '4pbr8eig')
   + Amazon HeyBlinds (product_id 'vlwf3ud6')
@@ -89,7 +88,7 @@ The integration works locally, but connection to Tuya BLE device requires device
   + NOUS L11 Bluetooth Smart Garden Water Timer (product_id '46zia2nz')
   + WT-03W Diivoo Smart Water Timer for Garden Hose (product_id '1fcnd8xk')
   + ZX-7378 Smart Irrigation Controller (product_id: "ldcdnigc") 
-  
+  + Rainpoint TTV102B (product_id 'e1poaiwa')
   
 * Lights
   + Most BLE light products should be supported as the Light class tries to get device description from the cloud when there are added but only Strip Lights (category_id 'dd') Magiacous RGB light bar (product_id 'nvfrtxlq') has has been tested
