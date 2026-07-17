@@ -299,6 +299,7 @@ mapping: dict[str, TuyaBLECategorySelectMapping] = {
                     "oyqux5vv",  # LA-01 - Experimental
                     "ajk32biq",  # B16
                     "z7lj676i",  # Smart Cylinder Lock - Experimental
+                    "pyawczjj",  # CS-9 Smart Fingerprint Lock - Experimental
                 ],
                 [
                     TuyaBLESelectMapping(
