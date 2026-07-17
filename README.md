@@ -52,7 +52,7 @@ The integration works locally, but connection to Tuya BLE device requires device
   + CO2 Detector (product_id '59s19z5m').
 
 * Smart Locks (category_id 'ms', 'jtmspro')
-  + Smart Lock (product_id 'ludzroix', 'isk2p555', 'gumrixyt', 'sidhzylo', 'mqc2hevy').
+  + Smart Lock (product_ids 'ludzroix', 'isk2p555', 'gumrixyt', 'sidhzylo', 'mqc2hevy', '7a4xvbtt').
   + Raybuke K7 Pro+ (product_id 'xicdxood'), supports ble unlock and other small features.
   + Fingerprint Smart Lock (product_id 'k53ok3u9')
   + T55D: Battery & Door status (product_id 'bvclwu9b')
