@@ -98,12 +98,12 @@ jobs:
       - name: "Checkout"
         uses: actions/checkout@v4
 
-      # - name: Restore Python
-      #   uses: actions/cache/restore@v4.2.0
-      #   with:
-      #     path: ${{needs.base.outputs.PY_PATH}}
-      #     fail-on-cache-miss: true
-      #     key: ${{ runner.os }}-pip-dependencies-${{ hashFiles('requirements_test.txt') }}_${{env.CACHE_VERSION}}
+      - name: Restore Python
+        uses: actions/cache/restore@v4.2.0
+        with:
+          path: ${{needs.base.outputs.PY_PATH}}
+          fail-on-cache-miss: false
+          key: ${{ runner.os }}-pip-dependencies-${{ hashFiles('requirements_test.txt') }}_${{env.CACHE_VERSION}}
 
       - name: Install Dependencies
         run: |
