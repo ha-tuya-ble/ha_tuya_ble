@@ -144,6 +144,11 @@ The integration works locally, but connection to Tuya BLE device requires device
       <td>Experimental.</td>
     </tr>
     <tr>
+      <td>A1 Ultra-JM</td>
+      <td><code>hc7n0urm</code></td>
+      <td>—</td>
+    </tr>
+    <tr>
       <td>LA-01 Smart lock</td>
       <td><code>oyqux5vv</code></td>
       <td>Experimental.</td>
