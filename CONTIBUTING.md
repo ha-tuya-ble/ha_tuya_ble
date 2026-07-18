@@ -49,7 +49,7 @@ Ensure that any JSON modifications are well formed.
 
 7. Publish PR, clearly indicate it is AI assisted if it is not obvious. You should end up with something like https://github.com/ha-tuya-ble/ha_tuya_ble/pull/78
 8. Test locally and iterate - add your fork via https://www.hacs.xyz/docs/faq/custom_repositories/
-9. Share your test results - screenshots or didnt happen is a good rule of thumb!
+9. Share your test results - screenshots or didn't happen is a good rule of thumb!
 
 ## I am struggling, what are my options?
 
