@@ -13,4 +13,4 @@ pycountry>23.0.0
 pyserial
 PyCryptodome
 tuya-device-sharing-sdk
-pytest-homeassistant-custom-component
+pytest-homeassistant-custom-component==0.13.0
