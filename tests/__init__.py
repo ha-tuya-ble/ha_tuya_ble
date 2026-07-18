@@ -87,7 +87,10 @@ async def init(config: dict[str, dict[str, Any]], entity_domain, entity_class):
     )
 
     hass.data[DOMAIN][entry.entry_id] = tuya_ble_hass_data
-
+    hass.config_entries = Mock()
+    hass.config_entries.async_forward_entry_setups = AsyncMock(
+        return_value=True
+    )
     await async_setup_entry(hass, entry)  # async_add_entities=add_entities,
 
     add_entities.assert_called_once()
