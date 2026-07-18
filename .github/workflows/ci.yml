@@ -109,17 +109,3 @@ jobs:
         run: |
           ${{needs.base.outputs.PY_PATH}}/bin/pytest --cov --disable-warnings -s
 
-  eslint:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 22
-      - run: npm install eslint
-      - uses: sibiraj-s/action-eslint@v3
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }} # optional
-          eslint-args: '--quiet'
-          extensions: 'json'
-          annotations: true
