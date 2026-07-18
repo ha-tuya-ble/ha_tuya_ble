@@ -28,9 +28,9 @@ CONFIG = {
 DPS_STATUS = {"1": "activated", "2": False}
 
 
-async def test_button():
-    device = await init(CONFIG, PLATFORM_DOMAIN, TuyaBLEBinarySensor)
-    entities: list[TuyaBLEBinarySensor] = get_entites(device)
+async def test_button(hass: HomeAssistant) -> None:
+    coordinator = await init(hass, CONFIG, PLATFORM_DOMAIN, TuyaBLEBinarySensor)
+    entities: list[TuyaBLEBinarySensor] = get_entites(coordinator)
 
     assert len(entities) > 0
     entity_1, *_ = entities
@@ -38,7 +38,7 @@ async def test_button():
 
     assert entity_1.state == "off"
 
-    device.status_updated(DPS_STATUS)
+    coordinator.status_updated(DPS_STATUS)
 
     assert entity_1.state == "on"
-    assert entity_1.dp_value("1") == STATE_ON
+    assert coordinator._device.datapoints[1].value == STATE_ON
