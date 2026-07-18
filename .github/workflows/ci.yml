@@ -103,7 +103,13 @@ jobs:
         with:
           path: ${{needs.base.outputs.PY_PATH}}
           fail-on-cache-miss: true
-          key: ${{ runner.os }}-pip-dependencies-${{ hashFiles('requirements.txt') }}_${{env.CACHE_VERSION}}
+          key: ${{ runner.os }}-pip-dependencies-${{ hashFiles('requirements_test.txt') }}_${{env.CACHE_VERSION}}
+
+      - name: Install Dependencies
+        if: steps.cache-python-test.outputs.cache-hit != 'true'
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements_test.txt
 
       - name: "Pytest"
         run: |
