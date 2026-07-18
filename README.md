@@ -27,76 +27,307 @@ After adding to Home Assistant integration should discover all supported Bluetoo
 
 The integration works locally, but connection to Tuya BLE device requires device ID and encryption key from Tuya IOT cloud. It could be obtained using the same credentials as in the previous official Tuya integration. To obtain the credentials, please refer to official Tuya integration [documentation](https://web.archive.org/web/20231228044831/https://www.home-assistant.io/integrations/tuya/) [[1]](https://github.com/home-assistant/home-assistant.io/blob/a4e6d4819f1db584cc66ba2082508d3978f83f7e/source/_integrations/tuya.markdown)
 
-## Supported devices list (not up to date)
+## Supported devices list
 
-* Fingerbots (category_id 'szjqr')
-  + Fingerbot (product_ids 'ltak7e1p', 'y6kttvd6', 'yrnk7mnn', 'nvr2rocq', 'bnt7wajf', 'rvdceqjh', '5xhbk964'), original device, first in category, powered by CR2 battery.
-  + Adaprox Fingerbot (product_id 'y6kttvd6'), built-in battery with USB type C charging.
-  + Fingerbot Plus (product_ids 'blliqpsj', 'ndvkgsrm', 'yiihr7zh', 'neq16kgd', 'mknd4lci', 'riecov42', 'bs3ubslo', '6jcvqwh0'), almost same as original, has sensor button for manual control.
-  + CubeTouch 1s (product_id '3yqdo5yt'), built-in battery with USB type C charging.
-  + CubeTouch II (product_id 'xhf790if'), built-in battery with USB type C charging.
+<table>
+  <thead>
+    <tr>
+      <th>Category</th>
+      <th>Category ID</th>
+      <th>Device / Model</th>
+      <th>Product ID</th>
+      <th>Notes</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td rowspan="8"><strong>Fingerbots</strong></td>
+      <td rowspan="8"><code>szjqr</code></td>
+      <td>Fingerbot</td>
+      <td><code>ltak7e1p</code>, <code>y6kttvd6</code>, <code>yrnk7mnn</code>, <code>nvr2rocq</code>, <code>bnt7wajf</code>, <code>rvdceqjh</code>, <code>5xhbk964</code></td>
+      <td>Original device, first in category, powered by CR2 battery.</td>
+    </tr>
+    <tr>
+      <td>Adaprox Fingerbot</td>
+      <td><code>y6kttvd6</code></td>
+      <td>Built-in battery with USB type C charging.</td>
+    </tr>
+    <tr>
+      <td>Fingerbot Plus</td>
+      <td><code>blliqpsj</code>, <code>ndvkgsrm</code>, <code>yiihr7zh</code>, <code>neq16kgd</code>, <code>mknd4lci</code>, <code>riecov42</code>, <code>bs3ubslo</code>, <code>6jcvqwh0</code>, <code>h8kdwywx</code></td>
+      <td>Almost same as original, has sensor button for manual control. See programming note below.</td>
+    </tr>
+    <tr>
+      <td>CubeTouch 1s</td>
+      <td><code>3yqdo5yt</code></td>
+      <td>Built-in battery with USB type C charging.</td>
+    </tr>
+    <tr>
+      <td>CubeTouch II</td>
+      <td><code>xhf790if</code></td>
+      <td>Built-in battery with USB type C charging.</td>
+    </tr>
+    <tr>
+      <td>Tuya BLE Switch Robot (SB02)</td>
+      <td><code>4ctjfrzq</code></td>
+      <td>—</td>
+    </tr>
+    <tr>
+      <td>Tuya BLE Fingerbot SM-FB-01B</td>
+      <td><code>gnpbj0bq</code></td>
+      <td>—</td>
+    </tr>
+    <tr>
+      <td>Nedis SmartLife Finger Robot</td>
+      <td><code>yn4x5fa7</code></td>
+      <td>—</td>
+    </tr>
+    <tr>
+      <td rowspan="5"><strong>Temperature and humidity sensors</strong></td>
+      <td rowspan="5"><code>wsdcg</code>, <code>zwjcy</code></td>
+      <td>Soil moisture sensor</td>
+      <td><code>ojzlzzsw</code></td>
+      <td>—</td>
+    </tr>
+    <tr>
+      <td>SRB-PM01 Soil Moisture Sensor</td>
+      <td><code>jabotj1z</code></td>
+      <td>—</td>
+    </tr>
+    <tr>
+      <td>Temperature Humidity Sensor</td>
+      <td><code>jm6iasmb</code>, <code>tr0kabuq</code>, <code>iv7hudlj</code>, <code>vlzqwckk</code></td>
+      <td>—</td>
+    </tr>
+    <tr>
+      <td>Temperature Humidity Sensor SS302</td>
+      <td><code>6lbesej0</code></td>
+      <td>—</td>
+    </tr>
+    <tr>
+      <td>Soil Thermo-Hygrometer</td>
+      <td><code>tv6peegl</code></td>
+      <td>—</td>
+    </tr>
+    <tr>
+      <td><strong>CO2 sensors</strong></td>
+      <td><code>co2bj</code></td>
+      <td>CO2 Detector</td>
+      <td><code>59s19z5m</code></td>
+      <td>—</td>
+    </tr>
+    <tr>
+      <td rowspan="14"><strong>Smart Locks</strong></td>
+      <td rowspan="14"><code>ms</code>, <code>jtmspro</code></td>
+      <td>Smart Lock</td>
+      <td><code>ludzroix</code>, <code>isk2p555</code>, <code>gumrixyt</code>, <code>uamrw6h3</code>, <code>sidhzylo</code>, <code>mqc2hevy</code>, <code>7a4xvbtt</code></td>
+      <td>—</td>
+    </tr>
+    <tr>
+      <td>Raybuke K7 Pro+</td>
+      <td><code>xicdxood</code></td>
+      <td>Supports BLE unlock and other small features.</td>
+    </tr>
+    <tr>
+      <td>Fingerprint Smart Lock</td>
+      <td><code>k53ok3u9</code></td>
+      <td>—</td>
+    </tr>
+    <tr>
+      <td>T55D</td>
+      <td><code>bvclwu9b</code></td>
+      <td>Battery &amp; Door status.</td>
+    </tr>
+    <tr>
+      <td>Gimdow A1 Pro Max</td>
+      <td><code>rlyxv7pe</code></td>
+      <td>Experimental.</td>
+    </tr>
+    <tr>
+      <td>A1 Ultra-JM</td>
+      <td><code>hc7n0urm</code></td>
+      <td>—</td>
+    </tr>
+    <tr>
+      <td>LA-01 Smart lock</td>
+      <td><code>oyqux5vv</code></td>
+      <td>Experimental.</td>
+    </tr>
+    <tr>
+      <td>B16</td>
+      <td><code>ajk32biq</code></td>
+      <td>—</td>
+    </tr>
+    <tr>
+      <td>CS-9 Smart Fingerprint Lock</td>
+      <td><code>pyawczjj</code></td>
+      <td>Experimental.</td>
+    </tr>
+    <tr>
+      <td>Smart Cylinder Lock</td>
+      <td><code>z7lj676i</code></td>
+      <td>—</td>
+    </tr>
+    <tr>
+      <td>TEKXDD Fingerprint Smart Lock</td>
+      <td><code>okkyfgfs</code></td>
+      <td>—</td>
+    </tr>
+    <tr>
+      <td>Orion Smart Door Handle Lock</td>
+      <td><code>a6nttc41</code></td>
+      <td>—</td>
+    </tr>
+    <tr>
+      <td>Smart Cylinder Lock (LVD11_BK)</td>
+      <td><code>hs21i377</code></td>
+      <td>—</td>
+    </tr>
+    <tr>
+      <td>Smart Lock</td>
+      <td><code>kholoaew</code></td>
+      <td>Partial.</td>
+    </tr>
+    <tr>
+      <td>CentralAcesso</td>
+      <td><code>ebd5e0uauqx0vfsp</code></td>
+      <td>—</td>
+    </tr>
+    <tr>
+      <td><strong>Climate</strong></td>
+      <td><code>wk</code></td>
+      <td>Thermostatic Radiator Valve</td>
+      <td><code>drlajpqc</code>, <code>nhj2j7su</code>, <code>zmachryv</code></td>
+      <td>—</td>
+    </tr>
+    <tr>
+      <td><strong>Smart water bottle</strong></td>
+      <td><code>znhsb</code></td>
+      <td>Smart water bottle</td>
+      <td><code>cdlandip</code></td>
+      <td>—</td>
+    </tr>
+    <tr>
+      <td rowspan="3"><strong>Irrigation computer</strong></td>
+      <td rowspan="3"><code>ggq</code>, <code>slj</code></td>
+      <td>Irrigation computer</td>
+      <td><code>6pahkcau</code></td>
+      <td>—</td>
+    </tr>
+    <tr>
+      <td>2-outlet irrigation computer</td>
+      <td><code>hfgdqhho</code>, <code>fnlw6npo</code>, <code>qycalacn</code>, <code>jjqi2syk</code></td>
+      <td>Also known as: SGW02, SGW08, MOES BWV-YC02-EU-GY, Kogan SmarterHome KASMWATMRDA / KASMWTV2LVA.</td>
+    </tr>
+    <tr>
+      <td>RESTMO BT Water Meter (FML026A)</td>
+      <td><code>mqqna0px</code></td>
+      <td>—</td>
+    </tr>
+    <tr>
+      <td rowspan="6"><strong>Covers</strong></td>
+      <td rowspan="6"><code>cl</code></td>
+      <td>Moes Roller Blind Motor</td>
+      <td><code>4pbr8eig</code></td>
+      <td>—</td>
+    </tr>
+    <tr>
+      <td>Amazon HeyBlinds</td>
+      <td><code>vlwf3ud6</code>, <code>v3fzfd2y</code></td>
+      <td>—</td>
+    </tr>
+    <tr>
+      <td>Tuya Smart Curtain Robot</td>
+      <td><code>kcy0x4pi</code></td>
+      <td>—</td>
+    </tr>
+    <tr>
+      <td>Blinds Drive</td>
+      <td><code>qqdxfdht</code></td>
+      <td>—</td>
+    </tr>
+    <tr>
+      <td>LY Curtain Motor Robot</td>
+      <td><code>ulughw4g</code></td>
+      <td>—</td>
+    </tr>
+    <tr>
+      <td>AOK AM24 Venetian Blinds Motor</td>
+      <td><code>dy4dh1q0</code></td>
+      <td>Experimental.</td>
+    </tr>
+    <tr>
+      <td rowspan="6"><strong>Water valve controller</strong></td>
+      <td rowspan="6"><code>sfkzq</code></td>
+      <td>Water valve controller</td>
+      <td><code>nxquc5lb</code></td>
+      <td>—</td>
+    </tr>
+    <tr>
+      <td>NOUS L11 Bluetooth Smart Garden Water Timer</td>
+      <td><code>46zia2nz</code></td>
+      <td>—</td>
+    </tr>
+    <tr>
+      <td>WT-03W Diivoo Smart Water Timer for Garden Hose</td>
+      <td><code>1fcnd8xk</code></td>
+      <td>—</td>
+    </tr>
+    <tr>
+      <td>ZX-7378 Smart Irrigation Controller</td>
+      <td><code>ldcdnigc</code></td>
+      <td>—</td>
+    </tr>
+    <tr>
+      <td>Rainpoint TTV102B</td>
+      <td><code>e1poaiwa</code></td>
+      <td>—</td>
+    </tr>
+    <tr>
+      <td>Valve controller</td>
+      <td><code>svhikeyq</code>, <code>0axr5s0b</code></td>
+      <td>—</td>
+    </tr>
+    <tr>
+      <td rowspan="4"><strong>Lights</strong></td>
+      <td rowspan="4">Multiple (e.g. <code>dd</code> for Strip Lights)</td>
+      <td>Strip Lights / Magiacous RGB light bar</td>
+      <td><code>nvfrtxlq</code></td>
+      <td rowspan="4">Most BLE light products should be supported as the Light class tries to get device description from the cloud when they are added. But only Strip Lights (category_id 'dd') Magiacous RGB light bar (product_id 'nvfrtxlq') has been tested.<br><br>See note on Bluetooth Mesh light compatibility below.</td>
+    </tr>
+    <tr>
+      <td>Magiacous Floor Lamp</td>
+      <td><code>umzu0c2y</code></td>
+    </tr>
+    <tr>
+      <td>Comfamoli Sunset Lamp</td>
+      <td><code>6jxcdae1</code></td>
+    </tr>
+    <tr>
+      <td>RGB Strip Light</td>
+      <td><code>0qgrjxum</code></td>
+    </tr>
+    <tr>
+      <td rowspan="2"><strong>Battery</strong></td>
+      <td rowspan="2"><code>dcb</code></td>
+      <td>Parkside Performance Smart Battery 4Ah</td>
+      <td><code>z5ztlw3k</code></td>
+      <td>—</td>
+    </tr>
+    <tr>
+      <td>Parkside Performance Smart Battery 8Ah</td>
+      <td><code>ajrhf1aj</code></td>
+      <td>—</td>
+    </tr>
+  </tbody>
+</table>
 
-  All features available in Home Assistant, programming (series of actions) is implemented for Fingerbot Plus.
-  For programming exposed entities 'Program' (switch), 'Repeat forever', 'Repeats count', 'Idle position' and 'Program' (text). Format of program text is: 'position\[/time\];...' where position is in percents, optional time is in seconds (zero if missing).
+### Fingerbots Programming Note
+All features available in Home Assistant, programming (series of actions) is implemented for Fingerbot Plus.
+For programming exposed entities: 'Program' (switch), 'Repeat forever', 'Repeats count', 'Idle position' and 'Program' (text). Format of program text is: `position[/time];...` where position is in percents, optional time is in seconds (zero if missing).
 
-* Temperature and humidity sensors (category_id 'wsdcg', 'zwjcy')
-  + Soil moisture sensor (product_id 'ojzlzzsw').
-  + SRB-PM01 Soil Moisture Sensor (product_id 'jabotj1z').
-  + Temperature Humidity Sensor (product_id 'jm6iasmb', 'tr0kabuq', 'iv7hudlj, 'jm6iasmb')
-  + Soil Thermo-Hygrometer (product_id 'tv6peegl')
-
-* CO2 sensors (category_id 'co2bj')
-  + CO2 Detector (product_id '59s19z5m').
-
-* Smart Locks (category_id 'ms', 'jtmspro')
-  + Smart Lock (product_id 'ludzroix', 'isk2p555', 'gumrixyt', 'sidhzylo', 'mqc2hevy').
-  + Raybuke K7 Pro+ (product_id 'xicdxood'), supports ble unlock and other small features.
-  + Fingerprint Smart Lock (product_id 'k53ok3u9')
-  + T55D: Battery & Door status (product_id 'bvclwu9b')
-  + Gimdow A1 Pro Max (product_id 'rlyxv7pe') - experimental
-  + LA-01 Smart lock (product_id 'oyqux5vv') - experimental
-  + B16 (product_id 'ajk32biq')
-  + Smart Cylinder Lock (product_id 'z7lj676i')
-  + TEKXDD Fingerprint Smart Lock (product_id 'okkyfgfs')
-
-* Climate (category_id 'wk')
-  + Thermostatic Radiator Valve (product_ids 'drlajpqc', 'nhj2j7su').
-
-* Smart water bottle (category_id 'znhsb')
-  + Smart water bottle (product_id 'cdlandip')
-
-* Irrigation computer (category_id 'ggq')
-  + Irrigation computer (product_id '6pahkcau')
-  + 2-outlet irrigation computer (product_ids 'hfgdqhho', 'fnlw6npo', 'qycalacn', 'jjqi2syk')
-    - also known as: SGW02, SGW08, MOES BWV-YC02-EU-GY, Kogan SmarterHome KASMWATMRDA / KASMWTV2LVA
-
-
-* Covers (category_id 'cl')
-  + Moes Roller Blind Motor (product_id '4pbr8eig')
-  + Amazon HeyBlinds (product_id 'vlwf3ud6')
-  + Tuya Smart Curtain Robot (product_id 'kcy0x4pi')
-  + Blinds Drive (product_id 'qqdxfdht')
-  + LY Curtain Motor Robot (product_id 'ulughw4g')
-  + AOK AM24 Venetian Blinds Motor (product_id 'dy4dh1q0') - Experimental
-
-* Water valve controller (category_id 'sfkzq')
-  + Water valve controller (product_id 'nxquc5lb')
-  + NOUS L11 Bluetooth Smart Garden Water Timer (product_id '46zia2nz')
-  + WT-03W Diivoo Smart Water Timer for Garden Hose (product_id '1fcnd8xk')
-  
-  
-* Lights
-  + Most BLE light products should be supported as the Light class tries to get device description from the cloud when there are added but only Strip Lights (category_id 'dd') Magiacous RGB light bar (product_id 'nvfrtxlq') has has been tested
-  + Magiacous Floor Lamp (product_id 'umzu0c2y')
-  + Comfamoli Sunset Lamp (product_id '6jxcdae1')
-  + RGB Strip Light (product_id '0qgrjxum')
-    
-    *Note that some light products are using Bluetooth Mesh protocols and not BLE and so aren't compatible with this integration. That's probably the case if your product isn't at least found (even if non-working) by this integration*
-
-
-* Battery (category_id 'dcb')
-  + Parkside Performace Smart Battery 4Ah (product_id 'z5ztlw3k')
-  + Parkside Performace Smart Battery 8Ah (product_id 'ajrhf1aj')
+### Lights Compatibility Note
+Note that some light products are using Bluetooth Mesh protocols and not BLE and so aren't compatible with this integration. That's probably the case if your product isn't at least found (even if non-working) by this integration.
 
 ## Note that the original hasn't been updated in a long time, still, Support original developer @PlusPlus-ua:
 

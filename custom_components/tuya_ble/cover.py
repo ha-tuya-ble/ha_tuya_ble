@@ -106,6 +106,17 @@ mapping: dict[str, TuyaBLECategoryCoverMapping] = {
                     )
                 ],
             ),
+            "v3fzfd2y": [
+                TuyaBLECoverMapping(
+                    description=CoverEntityDescription(key="ble_blind_controller"),
+                    cover_state_dp_id=1,
+                    cover_position_set_dp=2,
+                    cover_position_dp_id=3,
+                    cover_work_state_dp_id=7,
+                    cover_battery_dp_id=13,
+                    cover_factory_reset_dp_id=102,
+                )
+            ],
             "kcy0x4pi": [
                 TuyaBLECoverMapping(
                     description=CoverEntityDescription(key="ble_curtain_controller"),
