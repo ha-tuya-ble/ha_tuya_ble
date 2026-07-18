@@ -20,6 +20,7 @@ from homeassistant.const import (
     UnitOfVolume,
     UnitOfElectricCurrent,
     UnitOfElectricPotential,
+    Platform,
 )
 from homeassistant.core import HomeAssistant, callback
 from homeassistant.helpers.entity import EntityCategory
@@ -1293,6 +1294,8 @@ def get_mapping_by_device(device: TuyaBLEDevice) -> list[TuyaBLESensorMapping]:
 
 class TuyaBLESensor(TuyaBLEEntity, SensorEntity):
     """Representation of a Tuya BLE sensor."""
+
+    platform = Platform.SENSOR
 
     def __init__(
         self,

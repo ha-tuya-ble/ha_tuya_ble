@@ -5,7 +5,7 @@ from dataclasses import dataclass
 from typing import Any
 
 import logging
-from homeassistant.const import CONF_ADDRESS, CONF_DEVICE_ID
+from homeassistant.const import CONF_ADDRESS, CONF_DEVICE_ID, Platform
 
 from homeassistant.core import CALLBACK_TYPE, HomeAssistant, callback
 from homeassistant.helpers import device_registry as dr
@@ -83,6 +83,8 @@ class TuyaBLEProductInfo:
 class TuyaBLEEntity(CoordinatorEntity):
     """Tuya BLE base entity."""
 
+    platform: Platform = Platform.SENSOR
+
     def __init__(
         self,
         hass: HomeAssistant,
@@ -103,7 +105,7 @@ class TuyaBLEEntity(CoordinatorEntity):
         self._attr_device_info = get_device_info(self._device)
         self._attr_unique_id = f"{self._device.device_id}-{description.key}"
         self.entity_id = generate_entity_id(
-            "sensor.{}", self._attr_unique_id, hass=hass
+            f"{self.platform}.{{}}", self._attr_unique_id, hass=hass
         )
 
     @property

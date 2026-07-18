@@ -22,6 +22,7 @@ from homeassistant.components.light import (
 )
 
 from homeassistant.config_entries import ConfigEntry
+from homeassistant.const import Platform
 from homeassistant.core import HomeAssistant, callback
 from homeassistant.helpers.entity import EntityCategory
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
@@ -519,6 +520,8 @@ def get_mapping_by_device(device: TuyaBLEDevice) -> tuple[TuyaLightEntityDescrip
 
 class TuyaBLELight(TuyaBLEEntity, LightEntity):
     """Representation of a Tuya BLE Light."""
+
+    platform = Platform.LIGHT
 
     entity_description: TuyaLightEntityDescription
 

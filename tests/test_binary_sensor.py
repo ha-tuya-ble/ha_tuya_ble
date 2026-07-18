@@ -28,7 +28,7 @@ CONFIG = {
 DPS_STATUS = {"1": "activated", "2": False}
 
 
-async def test_button(hass: HomeAssistant) -> None:
+async def test_binary_sensor(hass: HomeAssistant) -> None:
     coordinator = await init(hass, CONFIG, PLATFORM_DOMAIN, TuyaBLEBinarySensor)
     entities: list[TuyaBLEBinarySensor] = get_entites(coordinator)
 
