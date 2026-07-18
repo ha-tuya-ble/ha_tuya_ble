@@ -14,6 +14,7 @@ from homeassistant.components.binary_sensor import (
 )
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant, callback
+from homeassistant.const import Platform
 from homeassistant.helpers.entity import EntityCategory
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator
@@ -253,6 +254,8 @@ def get_mapping_by_device(device: TuyaBLEDevice) -> list[TuyaBLEBinarySensorMapp
 
 class TuyaBLEBinarySensor(TuyaBLEEntity, BinarySensorEntity):
     """Representation of a Tuya BLE binary sensor."""
+
+    platform = Platform.BINARY_SENSOR
 
     def __init__(
         self,

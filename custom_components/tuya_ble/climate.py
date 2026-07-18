@@ -18,7 +18,7 @@ from homeassistant.components.climate.const import (
     PRESET_NONE,
 )
 from homeassistant.config_entries import ConfigEntry
-from homeassistant.const import UnitOfTemperature
+from homeassistant.const import UnitOfTemperature, Platform
 from homeassistant.core import HomeAssistant, callback
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator
@@ -149,6 +149,8 @@ def get_mapping_by_device(device: TuyaBLEDevice) -> list[TuyaBLECategoryClimateM
 
 class TuyaBLEClimate(TuyaBLEEntity, ClimateEntity):
     """Representation of a Tuya BLE Climate."""
+
+    platform = Platform.CLIMATE
 
     def __init__(
         self,

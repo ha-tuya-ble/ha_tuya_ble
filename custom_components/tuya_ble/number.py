@@ -21,6 +21,7 @@ from homeassistant.const import (
     UnitOfVolume,
     UnitOfElectricCurrent,
     UnitOfElectricPotential,
+    Platform,
 )
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity import EntityCategory
@@ -760,6 +761,8 @@ def get_mapping_by_device(device: TuyaBLEDevice) -> list[TuyaBLECategoryNumberMa
 
 class TuyaBLENumber(TuyaBLEEntity, NumberEntity):
     """Representation of a Tuya BLE Number."""
+
+    platform = Platform.NUMBER
 
     def __init__(
         self,
