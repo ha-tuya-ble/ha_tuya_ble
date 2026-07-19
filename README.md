@@ -318,6 +318,13 @@ The integration works locally, but connection to Tuya BLE device requires device
       <td><code>0qgrjxum</code></td>
     </tr>
     <tr>
+      <td><strong>Wireless switches</strong></td>
+      <td><code>wxkg</code></td>
+      <td>Arlec Smart Button</td>
+      <td><code>kpzc6pm8</code>, <code>ja5osu5g</code></td>
+      <td>Single/Double click and Long press support via events.</td>
+    </tr>
+    <tr>
       <td rowspan="2"><strong>Battery</strong></td>
       <td rowspan="2"><code>dcb</code></td>
       <td>Parkside Performance Smart Battery 4Ah</td>

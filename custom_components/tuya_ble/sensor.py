@@ -188,6 +188,16 @@ mapping: dict[str, TuyaBLECategorySensorMapping] = {
             ]
         }
     ),
+    "wxkg": TuyaBLECategorySensorMapping(
+        products={
+            **dict.fromkeys(
+                ["kpzc6pm8", "ja5osu5g"],
+                [
+                    TuyaBLEBatteryMapping(dp_id=10),
+                ],
+            ),
+        }
+    ),
     "ms": TuyaBLECategorySensorMapping(
         products={
             **dict.fromkeys(

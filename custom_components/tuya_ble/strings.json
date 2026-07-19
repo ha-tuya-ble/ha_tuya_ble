@@ -63,6 +63,11 @@
                 "name": "Unlock"
             }
         },
+        "event": {
+            "event": {
+                "name": "Event"
+            }
+        },
         "number": {
             "brightness": {
                 "name": "Brightness"
