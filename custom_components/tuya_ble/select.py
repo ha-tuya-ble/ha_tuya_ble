@@ -349,6 +349,7 @@ mapping: dict[str, TuyaBLECategorySelectMapping] = {
             ],
             **dict.fromkeys(
                 [
+                    "stugc8dl",  # HU06 Smart Lock
                     "xicdxood",  # Raycube K7 Pro+
                     "rlyxv7pe",  # A1 PRO MAX - Experimental
                     "oyqux5vv",  # LA-01 - Experimental

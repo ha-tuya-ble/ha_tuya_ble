@@ -58,7 +58,24 @@ mapping: dict[str, TuyaBLECategoryEventMapping] = {
                 ],
             )
         }
-    )
+    ),
+    "jtmspro": TuyaBLECategoryEventMapping(
+        products={
+            **dict.fromkeys(
+                ["stugc8dl", "xicdxood", "yfqp0shy"],
+                [
+                    TuyaBLEEventMapping(
+                        dp_id=24,
+                        description=EventEntityDescription(
+                            key="doorbell",
+                            device_class=EventDeviceClass.DOORBELL,
+                        ),
+                        event_types=["ring"],
+                    )
+                ],
+            )
+        }
+    ),
 }
 
 
@@ -112,7 +129,12 @@ class TuyaBLEEvent(TuyaBLEEntity, EventEntity):
         # Let's see what is the value of the DP
         val = dp.value
 
-        if isinstance(val, int):
+        if isinstance(val, bool):
+            if val and len(self._attr_event_types) > 0:
+                event_type = self._attr_event_types[0]
+            else:
+                event_type = None
+        elif isinstance(val, int):
             if 0 <= val < len(self._attr_event_types):
                 event_type = self._attr_event_types[val]
             else:

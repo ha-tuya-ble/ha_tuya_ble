@@ -42,6 +42,17 @@ def _bitmap_value_to_int(value: bytes | bytearray | int) -> int:
     return int(value)
 
 
+def door_status_getter(self: TuyaBLEBinarySensor) -> None:
+    datapoint = self._device.datapoints[self._mapping.dp_id]
+    if datapoint and datapoint.value is not None:
+        if datapoint.value == "open":
+            self._attr_is_on = True
+        elif datapoint.value == "closed":
+            self._attr_is_on = False
+        else:
+            self._attr_is_on = None
+
+
 @dataclass
 class TuyaBLEBinarySensorMapping:
     """Models a BLE binary sensor"""
@@ -213,6 +224,47 @@ mapping: dict[str, TuyaBLECategoryBinarySensorMapping] = {
     ),
     "jtmspro": TuyaBLECategoryBinarySensorMapping(
         products={
+            **dict.fromkeys(
+                [
+                    "stugc8dl",
+                    "xicdxood",
+                ],
+                [
+                    TuyaBLEBinarySensorMapping(
+                        dp_id=22,
+                        description=BinarySensorEntityDescription(
+                            key="duress",
+                            device_class=BinarySensorDeviceClass.SAFETY,
+                            entity_category=EntityCategory.DIAGNOSTIC,
+                        ),
+                    ),
+                    TuyaBLEBinarySensorMapping(
+                        dp_id=40,
+                        description=BinarySensorEntityDescription(
+                            key="door_status",
+                            device_class=BinarySensorDeviceClass.DOOR,
+                            entity_category=EntityCategory.DIAGNOSTIC,
+                        ),
+                        getter=door_status_getter,
+                    ),
+                    TuyaBLEBinarySensorMapping(
+                        dp_id=102,
+                        description=BinarySensorEntityDescription(
+                            key="keypad_reset",
+                            device_class=BinarySensorDeviceClass.RUNNING,
+                            entity_category=EntityCategory.DIAGNOSTIC,
+                        ),
+                    ),
+                    TuyaBLEBinarySensorMapping(
+                        dp_id=107,
+                        description=BinarySensorEntityDescription(
+                            key="connectivity",
+                            device_class=BinarySensorDeviceClass.CONNECTIVITY,
+                            entity_category=EntityCategory.DIAGNOSTIC,
+                        ),
+                    ),
+                ],
+            ),
             **dict.fromkeys(
                 [
                     "hs21i377",
