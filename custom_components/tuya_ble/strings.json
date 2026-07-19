@@ -258,6 +258,15 @@
             },
             "unlock_password": {
                 "name": "Last used Password"
+            },
+            "unlock_key": {
+                "name": "Last used Key"
+            },
+            "unlock_dynamic": {
+                "name": "Last used Dynamic Password"
+            },
+            "unlock_ble": {
+                "name": "Last used Bluetooth"
             }
         },
         "switch": {

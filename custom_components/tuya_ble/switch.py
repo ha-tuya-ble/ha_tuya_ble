@@ -431,6 +431,24 @@ mapping: dict[str, TuyaBLECategorySwitchMapping] = {
                     ),
                 ),
             ],
+            "yfqp0shy": [
+                TuyaLockMotorStateMapping(dp_id=47),
+                TuyaBLESwitchMapping(
+                    dp_id=46,
+                    description=SwitchEntityDescription(
+                        key="manual_lock",
+                        icon="mdi:lock-plus",
+                    ),
+                ),
+                TuyaBLESwitchMapping(
+                    dp_id=33,
+                    description=SwitchEntityDescription(
+                        key="automatic_lock",
+                        icon="mdi:lock-clock",
+                        entity_category=EntityCategory.CONFIG,
+                    ),
+                ),
+            ],
         }
     ),
     "kg": TuyaBLECategorySwitchMapping(

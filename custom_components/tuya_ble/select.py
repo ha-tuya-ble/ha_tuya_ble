@@ -444,6 +444,19 @@ mapping: dict[str, TuyaBLECategorySelectMapping] = {
                     ),
                 ),
             ],
+            "yfqp0shy": [
+                TuyaBLESelectMapping(
+                    dp_id=34,
+                    description=SelectEntityDescription(
+                        key="double_verification",
+                        options=[
+                            "Single Unlock",
+                            "Combination Unlock",
+                        ],
+                        entity_category=EntityCategory.CONFIG,
+                    ),
+                ),
+            ],
             "kholoaew": [
                 TuyaBLESelectMapping(
                     dp_id=31,
