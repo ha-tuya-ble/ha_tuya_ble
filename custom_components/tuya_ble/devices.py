@@ -293,8 +293,8 @@ class TuyaBLECoordinator(DataUpdateCoordinator[None]):
     @callback
     def _async_handle_update(self, updates: list[TuyaBLEDataPoint]) -> None:
         """Just trigger the callbacks."""
-        self.last_updates = updates
         self._async_handle_connect()
+        self.last_updates = updates
         self.async_set_updated_data(None)
         self.last_updates = None
         info = get_device_product_info(self._device)
