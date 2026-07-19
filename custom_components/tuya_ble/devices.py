@@ -425,6 +425,7 @@ devices_database: dict[str, TuyaBLECategoryInfo] = {
             "hc7n0urm": TuyaBLEProductInfo(  # device product_id
                 name="A1 Ultra-JM",
             ),
+            "stugc8dl": TuyaBLEProductInfo(name="HU06 Smart Lock", lock=1),
             "xicdxood": TuyaBLEProductInfo(name="Raycube K7 Pro+", lock=1),
             "oyqux5vv": TuyaBLEProductInfo(name="LA-01 Smart lock", lock=1),
             "rlyxv7pe": TuyaBLEProductInfo(name="A1 PRO MAX", lock=1),

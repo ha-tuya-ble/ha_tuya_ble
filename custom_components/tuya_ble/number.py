@@ -782,6 +782,38 @@ mapping: dict[str, TuyaBLECategoryNumberMapping] = {
     ),
     "jtmspro": TuyaBLECategoryNumberMapping(
         products={
+            **dict.fromkeys(
+                [
+                    "stugc8dl",
+                    "xicdxood",
+                ],
+                [
+                    TuyaBLENumberMapping(
+                        dp_id=27,
+                        description=NumberEntityDescription(
+                            key="doorbell_volume",
+                            icon="mdi:volume-high",
+                            native_max_value=100,
+                            native_min_value=0,
+                            native_unit_of_measurement=PERCENTAGE,
+                            native_step=1,
+                            entity_category=EntityCategory.CONFIG,
+                        ),
+                    ),
+                    TuyaBLENumberMapping(
+                        dp_id=36,
+                        description=NumberEntityDescription(
+                            key="auto_lock_time",
+                            icon="mdi:lock-clock",
+                            native_max_value=180,
+                            native_min_value=10,
+                            native_unit_of_measurement=UnitOfTime.SECONDS,
+                            native_step=10,
+                            entity_category=EntityCategory.CONFIG,
+                        ),
+                    ),
+                ],
+            ),
             "yfqp0shy": [
                 TuyaBLENumberMapping(
                     dp_id=36,
