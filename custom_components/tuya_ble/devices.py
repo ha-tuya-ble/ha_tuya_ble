@@ -375,6 +375,16 @@ devices_database: dict[str, TuyaBLECategoryInfo] = {
                 name="Fingerprint Smart Lock",
                 lock=1,
             ),
+            "6fibxtph": TuyaBLEProductInfo(
+                name="Primebras Athenas Lock",
+                manufacturer="Primebras",
+                lock=1,
+            ),
+            "99gv5nmz": TuyaBLEProductInfo(
+                name="Foxgard Smart Fingerprint Door Lock",
+                manufacturer="Foxgard",
+                lock=1,
+            ),
         },
     ),
     "dcb": TuyaBLECategoryInfo(
