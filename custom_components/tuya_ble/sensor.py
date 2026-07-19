@@ -188,6 +188,16 @@ mapping: dict[str, TuyaBLECategorySensorMapping] = {
             ]
         }
     ),
+    "wxkg": TuyaBLECategorySensorMapping(
+        products={
+            **dict.fromkeys(
+                ["kpzc6pm8", "ja5osu5g"],
+                [
+                    TuyaBLEBatteryMapping(dp_id=10),
+                ],
+            ),
+        }
+    ),
     "ms": TuyaBLECategorySensorMapping(
         products={
             **dict.fromkeys(
@@ -394,6 +404,52 @@ mapping: dict[str, TuyaBLECategorySensorMapping] = {
                     description=SensorEntityDescription(
                         key="unlock_dynamic",
                         icon="mdi:lock-reset",
+                    ),
+                ),
+                TuyaBLEBatteryMapping(dp_id=8),
+            ],
+            "yfqp0shy": [
+                TuyaBLEAlarmLockStateMapping(dp_id=21),
+                TuyaBLESensorMapping(
+                    dp_id=12,  # Retrieve last fingerprint used
+                    description=SensorEntityDescription(
+                        key="unlock_fingerprint",
+                        icon="mdi:fingerprint",
+                    ),
+                ),
+                TuyaBLESensorMapping(
+                    dp_id=15,  # Retrieve last card used
+                    description=SensorEntityDescription(
+                        key="unlock_card",
+                        icon="mdi:nfc-variant",
+                    ),
+                ),
+                TuyaBLESensorMapping(
+                    dp_id=13,  # Retrieve last code used
+                    description=SensorEntityDescription(
+                        key="unlock_password",
+                        icon="mdi:keyboard-outline",
+                    ),
+                ),
+                TuyaBLESensorMapping(
+                    dp_id=19,  # Retrieve last bluetooth unlock used
+                    description=SensorEntityDescription(
+                        key="unlock_ble",
+                        icon="mdi:bluetooth",
+                    ),
+                ),
+                TuyaBLESensorMapping(
+                    dp_id=14,  # Retrieve last dynamic password used
+                    description=SensorEntityDescription(
+                        key="unlock_dynamic",
+                        icon="mdi:lock-reset",
+                    ),
+                ),
+                TuyaBLESensorMapping(
+                    dp_id=16,  # Retrieve last physical key unlock used
+                    description=SensorEntityDescription(
+                        key="unlock_key",
+                        icon="mdi:key",
                     ),
                 ),
                 TuyaBLEBatteryMapping(dp_id=8),

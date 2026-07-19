@@ -228,6 +228,24 @@ mapping: dict[str, TuyaBLECategoryBinarySensorMapping] = {
                     ),
                 ],
             ),
+            "yfqp0shy": [
+                TuyaBLEBinarySensorMapping(
+                    dp_id=47,
+                    description=BinarySensorEntityDescription(
+                        key="lock_motor_state",
+                        device_class=BinarySensorDeviceClass.LOCK,
+                        entity_category=EntityCategory.DIAGNOSTIC,
+                    ),
+                ),
+                TuyaBLEBinarySensorMapping(
+                    dp_id=22,
+                    description=BinarySensorEntityDescription(
+                        key="hijack",
+                        device_class=BinarySensorDeviceClass.TAMPER,
+                        entity_category=EntityCategory.DIAGNOSTIC,
+                    ),
+                ),
+            ],
         },
     ),
     # "jtmspro": TuyaBLECategoryBinarySensorMapping(

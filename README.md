@@ -117,8 +117,8 @@ The integration works locally, but connection to Tuya BLE device requires device
       <td>—</td>
     </tr>
     <tr>
-      <td rowspan="17"><strong>Smart Locks</strong></td>
-      <td rowspan="17"><code>ms</code>, <code>jtmspro</code></td>
+      <td rowspan="18"><strong>Smart Locks</strong></td>
+      <td rowspan="18"><code>ms</code>, <code>jtmspro</code></td>
       <td>Smart Lock</td>
       <td><code>ludzroix</code>, <code>isk2p555</code>, <code>gumrixyt</code>, <code>uamrw6h3</code>, <code>sidhzylo</code>, <code>mqc2hevy</code>, <code>7a4xvbtt</code></td>
       <td>—</td>
@@ -201,6 +201,11 @@ The integration works locally, but connection to Tuya BLE device requires device
     <tr>
       <td>CentralAcesso</td>
       <td><code>ebd5e0uauqx0vfsp</code></td>
+      <td>—</td>
+    </tr>
+    <tr>
+      <td>Gainsborough Liberty BLE Lock (GGC01HA)</td>
+      <td><code>yfqp0shy</code></td>
       <td>—</td>
     </tr>
     <tr>
@@ -316,6 +321,13 @@ The integration works locally, but connection to Tuya BLE device requires device
     <tr>
       <td>RGB Strip Light</td>
       <td><code>0qgrjxum</code></td>
+    </tr>
+    <tr>
+      <td><strong>Wireless switches</strong></td>
+      <td><code>wxkg</code></td>
+      <td>Arlec Smart Button</td>
+      <td><code>kpzc6pm8</code>, <code>ja5osu5g</code></td>
+      <td>Single/Double click and Long press support via events.</td>
     </tr>
     <tr>
       <td rowspan="2"><strong>Battery</strong></td>

@@ -272,6 +272,7 @@ class TuyaBLECoordinator(DataUpdateCoordinator[None]):
         self._device = device
         self._disconnected: bool = True
         self._unsub_disconnect: CALLBACK_TYPE | None = None
+        self.last_updates: list[TuyaBLEDataPoint] | None = None
         device.register_connected_callback(self._async_handle_connect)
         device.register_callback(self._async_handle_update)
         device.register_disconnected_callback(self._async_handle_disconnect)
@@ -282,6 +283,7 @@ class TuyaBLECoordinator(DataUpdateCoordinator[None]):
 
     @callback
     def _async_handle_connect(self) -> None:
+        self.last_updates = None
         if self._unsub_disconnect is not None:
             self._unsub_disconnect()
         if self._disconnected:
@@ -292,7 +294,9 @@ class TuyaBLECoordinator(DataUpdateCoordinator[None]):
     def _async_handle_update(self, updates: list[TuyaBLEDataPoint]) -> None:
         """Just trigger the callbacks."""
         self._async_handle_connect()
+        self.last_updates = updates
         self.async_set_updated_data(None)
+        self.last_updates = None
         info = get_device_product_info(self._device)
         if info and info.fingerbot and info.fingerbot.manual_control != 0:
             for update in updates:
@@ -308,6 +312,7 @@ class TuyaBLECoordinator(DataUpdateCoordinator[None]):
     @callback
     def _set_disconnected(self, _: None) -> None:
         """Invoke the idle timeout callback, called when the alarm fires."""
+        self.last_updates = None
         self._disconnected = True
         self._unsub_disconnect = None
         self.async_update_listeners()
@@ -348,6 +353,18 @@ devices_database: dict[str, TuyaBLECategoryInfo] = {
                 name="CO2 Detector",
             ),
         },
+    ),
+    "wxkg": TuyaBLECategoryInfo(
+        products={
+            "kpzc6pm8": TuyaBLEProductInfo(
+                name="Arlec Smart Button",
+                manufacturer="Arlec",
+            ),
+            "ja5osu5g": TuyaBLEProductInfo(
+                name="Arlec Smart Button",
+                manufacturer="Arlec",
+            ),
+        }
     ),
     "ms": TuyaBLECategoryInfo(
         products={
@@ -417,6 +434,9 @@ devices_database: dict[str, TuyaBLECategoryInfo] = {
             "hs21i377": TuyaBLEProductInfo(name="Smart Cylinder Lock"),
             "kholoaew": TuyaBLEProductInfo(name="Smart Lock"),
             "pyawczjj": TuyaBLEProductInfo(name="CS-9 Smart Fingerprint Lock", lock=1),
+            "yfqp0shy": TuyaBLEProductInfo(
+                name="Gainsborough Liberty BLE Lock (GGC01HA)", lock=1
+            ),
         },
     ),
     "szjqr": TuyaBLECategoryInfo(
