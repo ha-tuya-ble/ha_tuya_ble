@@ -1338,7 +1338,7 @@ mapping: dict[str, TuyaBLECategorySensorMapping] = {
                 ),
             ],
             **dict.fromkeys(
-                ["46zia2nz", "1fcnd8xk", "nxquc5lb", "svhikeyq"],
+                ["46zia2nz", "1fcnd8xk", "nxquc5lb", "svhikeyq", "d4vpmigg"],
                 [
                     TuyaBLEBatteryMapping(dp_id=7),
                     TuyaBLEWorkStateMapping(dp_id=12),

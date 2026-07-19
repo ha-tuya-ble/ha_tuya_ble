@@ -305,8 +305,8 @@ The integration works locally, but connection to Tuya BLE device requires device
     </tr>
     <tr>
       <td>Valve controller</td>
-      <td><code>svhikeyq</code>, <code>0axr5s0b</code></td>
-      <td>—</td>
+      <td><code>svhikeyq</code>, <code>0axr5s0b</code>, <code>d4vpmigg</code></td>
+      <td>Also known as YZD05 water valve/irrigation timer.</td>
     </tr>
     <tr>
       <td rowspan="4"><strong>Lights</strong></td>
