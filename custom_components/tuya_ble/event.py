@@ -58,21 +58,7 @@ mapping: dict[str, TuyaBLECategoryEventMapping] = {
                 ],
             )
         }
-    ),
-    "jtmspro": TuyaBLECategoryEventMapping(
-        products={
-            "yfqp0shy": [
-                TuyaBLEEventMapping(
-                    dp_id=24,
-                    description=EventEntityDescription(
-                        key="doorbell",
-                        device_class=EventDeviceClass.DOORBELL,
-                    ),
-                    event_types=["ring"],
-                )
-            ]
-        }
-    ),
+    )
 }
 
 
