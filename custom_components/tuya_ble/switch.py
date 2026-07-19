@@ -106,6 +106,51 @@ def set_fingerbot_program_repeat_forever(
             self._hass.create_task(datapoint.set_value(new_value))
 
 
+def set_16wgjvck_water_valve(
+    self: TuyaBLESwitch, product: TuyaBLEProductInfo, value: bool
+) -> None:
+    if value:
+        # Lese vorher den eingestellten Timer (DP 15 = use_time oder DP 11 = countdown)
+        dp_11_val = 60
+        dp15 = self._device.datapoints[15]
+        dp11 = self._device.datapoints[11]
+        if dp15 and dp15.value:
+            dp_11_val = int(dp15.value)
+        elif dp11 and dp11.value:
+            dp_11_val = int(dp11.value)
+        if dp_11_val <= 0:
+            dp_11_val = 60
+        # Lese die eingestellte Ventilöffnung (DP 2)
+        dp_2_val = 100
+        dp2 = self._device.datapoints[2]
+        if dp2 and dp2.value is not None:
+            dp_2_val = int(dp2.value)
+        if dp_2_val <= 0:
+            dp_2_val = 100
+
+        # Erstelle die Datenpunkte im Cache, FALLS sie noch nicht vom Gerät gesendet wurden,
+        # damit "set_multiple_values" sie nicht einfach ignoriert.
+        self._device.datapoints.get_or_create(1, TuyaBLEDataPointType.DT_BOOL, True)
+        self._device.datapoints.get_or_create(
+            2, TuyaBLEDataPointType.DT_VALUE, dp_2_val
+        )
+        self._device.datapoints.get_or_create(
+            11, TuyaBLEDataPointType.DT_VALUE, dp_11_val
+        )
+
+        # Atomic Multi-Datapoint Payload for turning on
+        dp_updates = {
+            1: True,
+            2: dp_2_val,
+            11: dp_11_val,
+        }
+        self._hass.create_task(self._device.set_multiple_values(dp_updates))
+    else:
+        # Just turn off the switch
+        self._device.datapoints.get_or_create(1, TuyaBLEDataPointType.DT_BOOL, False)
+        self._hass.create_task(self._device.set_multiple_values({1: False}))
+
+
 @dataclass
 class TuyaBLEFingerbotSwitchMapping(TuyaBLESwitchMapping):
     description: SwitchEntityDescription = field(
@@ -187,6 +232,16 @@ mapping: dict[str, TuyaBLECategorySwitchMapping] = {
                         key="water_valve",
                         icon="mdi:valve",
                     ),
+                ),
+            ],
+            "16wgjvck": [  # Aldi/Ferrex Smart Water Valve
+                TuyaBLESwitchMapping(
+                    dp_id=1,
+                    description=SwitchEntityDescription(
+                        key="water_valve",
+                        icon="mdi:valve",
+                    ),
+                    setter=set_16wgjvck_water_valve,
                 ),
             ],
             **dict.fromkeys(
