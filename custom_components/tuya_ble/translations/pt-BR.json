@@ -63,6 +63,11 @@
                 "name": "Desbloquear"
             }
         },
+        "event": {
+            "event": {
+                "name": "Evento"
+            }
+        },
         "number": {
             "brightness": {
                 "name": "Brilho"
@@ -261,6 +266,15 @@
             },
             "unlock_password": {
                 "name": "Última senha utilizada"
+            },
+            "unlock_key": {
+                "name": "Última chave utilizada"
+            },
+            "unlock_dynamic": {
+                "name": "Última senha dinâmica utilizada"
+            },
+            "unlock_ble": {
+                "name": "Último Bluetooth utilizado"
             }
         },
         "switch": {

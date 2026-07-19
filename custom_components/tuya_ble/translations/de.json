@@ -63,6 +63,11 @@
                 "name": "Entriegeln"
             }
         },
+        "event": {
+            "event": {
+                "name": "Ereignis"
+            }
+        },
         "number": {
             "brightness": {
                 "name": "Helligkeit"
@@ -261,6 +266,15 @@
             },
             "unlock_password": {
                 "name": "Zuletzt verwendetes Passwort"
+            },
+            "unlock_key": {
+                "name": "Zuletzt verwendeter Schlüssel"
+            },
+            "unlock_dynamic": {
+                "name": "Zuletzt verwendetes dynamisches Passwort"
+            },
+            "unlock_ble": {
+                "name": "Zuletzt verwendetes Bluetooth"
             }
         },
         "switch": {
