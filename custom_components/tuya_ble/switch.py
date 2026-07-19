@@ -414,6 +414,23 @@ mapping: dict[str, TuyaBLECategorySwitchMapping] = {
                     ),
                 ),
             ],
+            "ajk32biq": [
+                TuyaBLESwitchMapping(
+                    dp_id=33,
+                    description=SwitchEntityDescription(
+                        key="automatic_lock",
+                        icon="mdi:lock-clock",
+                        entity_category=EntityCategory.CONFIG,
+                    ),
+                ),
+                TuyaBLESwitchMapping(
+                    dp_id=46,
+                    description=SwitchEntityDescription(
+                        key="manual_lock",
+                        icon="mdi:lock-plus",
+                    ),
+                ),
+            ],
         }
     ),
     "kg": TuyaBLECategorySwitchMapping(

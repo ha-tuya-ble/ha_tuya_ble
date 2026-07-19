@@ -352,7 +352,6 @@ mapping: dict[str, TuyaBLECategorySelectMapping] = {
                     "xicdxood",  # Raycube K7 Pro+
                     "rlyxv7pe",  # A1 PRO MAX - Experimental
                     "oyqux5vv",  # LA-01 - Experimental
-                    "ajk32biq",  # B16
                     "z7lj676i",  # Smart Cylinder Lock - Experimental
                     "pyawczjj",  # CS-9 Smart Fingerprint Lock - Experimental
                 ],
@@ -386,6 +385,65 @@ mapping: dict[str, TuyaBLECategorySelectMapping] = {
                     ),
                 ],
             ),
+            "ajk32biq": [
+                TuyaBLESelectMapping(
+                    dp_id=31,
+                    description=SelectEntityDescription(
+                        key="beep_volume",
+                        options=[
+                            "Mute",
+                            "Low",
+                            "Normal",
+                            "High",
+                        ],
+                        entity_category=EntityCategory.CONFIG,
+                    ),
+                ),
+                TuyaBLESelectMapping(
+                    dp_id=28,
+                    description=SelectEntityDescription(
+                        key="language",
+                        options=[
+                            "Chinese Simplified",
+                            "English",
+                            "Arabic",
+                            "Indonesian",
+                            "Portuguese",
+                            "Russian",
+                            "Spanish",
+                            "Thai",
+                            "Vietnamese",
+                        ],
+                        entity_category=EntityCategory.CONFIG,
+                    ),
+                ),
+                TuyaBLESelectMapping(
+                    dp_id=89,
+                    description=SelectEntityDescription(
+                        key="autolock_delay",
+                        options=[
+                            "Inactive",
+                            "4s",
+                            "6s",
+                            "8s",
+                            "10s",
+                            "12s",
+                        ],
+                        entity_category=EntityCategory.CONFIG,
+                    ),
+                ),
+                TuyaBLESelectMapping(
+                    dp_id=34,
+                    description=SelectEntityDescription(
+                        key="double_verification",
+                        options=[
+                            "Single Unlock",
+                            "Combination Unlock",
+                        ],
+                        entity_category=EntityCategory.CONFIG,
+                    ),
+                ),
+            ],
             "kholoaew": [
                 TuyaBLESelectMapping(
                     dp_id=31,
