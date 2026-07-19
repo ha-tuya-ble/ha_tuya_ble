@@ -110,7 +110,7 @@ def set_16wgjvck_water_valve(
     self: TuyaBLESwitch, product: TuyaBLEProductInfo, value: bool
 ) -> None:
     if value:
-        # Lese vorher den eingestellten Timer (DP 15 = use_time oder DP 11 = countdown)
+        # Read the set timer beforehand (DP 15 = use_time or DP 11 = countdown).
         dp_11_val = 60
         dp15 = self._device.datapoints[15]
         dp11 = self._device.datapoints[11]
@@ -120,7 +120,7 @@ def set_16wgjvck_water_valve(
             dp_11_val = int(dp11.value)
         if dp_11_val <= 0:
             dp_11_val = 60
-        # Lese die eingestellte Ventilöffnung (DP 2)
+        # Read the set valve opening (DP 2)
         dp_2_val = 100
         dp2 = self._device.datapoints[2]
         if dp2 and dp2.value is not None:
@@ -128,8 +128,8 @@ def set_16wgjvck_water_valve(
         if dp_2_val <= 0:
             dp_2_val = 100
 
-        # Erstelle die Datenpunkte im Cache, FALLS sie noch nicht vom Gerät gesendet wurden,
-        # damit "set_multiple_values" sie nicht einfach ignoriert.
+        # Create the data points in the cache IF they haven't already been sent by the device,
+        # so that "set_multiple_values" doesn't simply ignore them.
         self._device.datapoints.get_or_create(1, TuyaBLEDataPointType.DT_BOOL, True)
         self._device.datapoints.get_or_create(
             2, TuyaBLEDataPointType.DT_VALUE, dp_2_val
