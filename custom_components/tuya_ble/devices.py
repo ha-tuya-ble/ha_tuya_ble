@@ -639,6 +639,10 @@ devices_database: dict[str, TuyaBLECategoryInfo] = {
             "ldcdnigc": TuyaBLEProductInfo(
                 name="ZX-7378 Smart Irrigation Controller",
             ),
+            "ojrvmfkk": TuyaBLEProductInfo(
+                name="Unistyle WT-04W Water Timer",
+                manufacturer="Unistyle",
+            ),
         },
     ),
     "ggq": TuyaBLECategoryInfo(

@@ -653,6 +653,32 @@ mapping: dict[str, TuyaBLECategoryNumberMapping] = {
     ),
     "sfkzq": TuyaBLECategoryNumberMapping(
         products={
+            "ojrvmfkk": [
+                # Valve 1 countdown - DP 11 (0 to 86400)
+                TuyaBLENumberMapping(
+                    dp_id=11,
+                    description=NumberEntityDescription(
+                        key="countdown_duration_z1",
+                        icon="mdi:timer",
+                        native_max_value=86400,
+                        native_min_value=0,
+                        native_unit_of_measurement=UnitOfTime.SECONDS,
+                        native_step=1,
+                    ),
+                ),
+                # Valve 2 countdown - DP 122 (0 to 86400)
+                TuyaBLENumberMapping(
+                    dp_id=122,
+                    description=NumberEntityDescription(
+                        key="countdown_duration_z2",
+                        icon="mdi:timer",
+                        native_max_value=86400,
+                        native_min_value=0,
+                        native_unit_of_measurement=UnitOfTime.SECONDS,
+                        native_step=1,
+                    ),
+                ),
+            ],
             "16wgjvck": [
                 TuyaBLENumberMapping(
                     dp_id=2,
