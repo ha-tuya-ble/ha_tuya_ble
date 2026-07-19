@@ -21,6 +21,7 @@ from homeassistant.const import (
     UnitOfVolume,
     UnitOfElectricCurrent,
     UnitOfElectricPotential,
+    Platform,
 )
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity import EntityCategory
@@ -468,7 +469,7 @@ mapping: dict[str, TuyaBLECategoryNumberMapping] = {
     "kg": TuyaBLECategoryNumberMapping(
         products={
             **dict.fromkeys(
-                ["mknd4lci", "riecov42", "bs3ubslo"],  # Fingerbot Plus
+                ["mknd4lci", "riecov42", "bs3ubslo", "gnpbj0bq"],  # Fingerbot Plus
                 [
                     TuyaBLENumberMapping(
                         dp_id=102,
@@ -668,6 +669,22 @@ mapping: dict[str, TuyaBLECategoryNumberMapping] = {
                     ),
                 ],
             ),
+            **dict.fromkeys(
+                ["ldcdnigc", "e1poaiwa"],  # ZX-7378 / Rainpoint TTV102B
+                [
+                    TuyaBLENumberMapping(
+                        dp_id=11,
+                        description=NumberEntityDescription(
+                            key="countdown",
+                            icon="mdi:timer",
+                            native_max_value=86400,
+                            native_min_value=0,
+                            native_unit_of_measurement=UnitOfTime.SECONDS,
+                            native_step=1,
+                        ),
+                    ),
+                ],
+            ),
             "svhikeyq": [
                 TuyaBLENumberMapping(
                     dp_id=11,
@@ -744,6 +761,8 @@ def get_mapping_by_device(device: TuyaBLEDevice) -> list[TuyaBLECategoryNumberMa
 
 class TuyaBLENumber(TuyaBLEEntity, NumberEntity):
     """Representation of a Tuya BLE Number."""
+
+    platform = Platform.NUMBER
 
     def __init__(
         self,

@@ -11,7 +11,7 @@ from homeassistant.components.select import (
     SelectEntity,
 )
 from homeassistant.config_entries import ConfigEntry
-from homeassistant.const import UnitOfTemperature
+from homeassistant.const import UnitOfTemperature, Platform
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity import EntityCategory
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
@@ -123,7 +123,7 @@ mapping: dict[str, TuyaBLECategorySelectMapping] = {
     "sfkzq": TuyaBLECategorySelectMapping(
         products={
             **dict.fromkeys(
-                ["46zia2nz", "1fcnd8xk", "0axr5s0b"],
+                ["46zia2nz", "1fcnd8xk", "0axr5s0b", "e1poaiwa"],
                 [
                     TuyaBLESelectMapping(
                         dp_id=10,
@@ -222,6 +222,7 @@ mapping: dict[str, TuyaBLECategorySelectMapping] = {
                     "uamrw6h3",
                     "okkyfgfs",
                     "sidhzylo",
+                    "7a4xvbtt",
                 ],  # Smart Lock
                 [
                     TuyaBLESelectMapping(
@@ -291,6 +292,21 @@ mapping: dict[str, TuyaBLECategorySelectMapping] = {
     ),
     "jtmspro": TuyaBLECategorySelectMapping(
         products={
+            "hc7n0urm": [  # A1 Ultra-JM
+                TuyaBLESelectMapping(
+                    dp_id=31,
+                    description=SelectEntityDescription(
+                        key="beep_volume",
+                        icon="mdi:volume-high",
+                        options=[
+                            "mute",
+                            "normal",
+                        ],
+                        entity_category=EntityCategory.CONFIG,
+                    ),
+                    dp_type=TuyaBLEDataPointType.DT_ENUM,
+                ),
+            ],
             **dict.fromkeys(
                 [
                     "xicdxood",  # Raycube K7 Pro+
@@ -298,8 +314,9 @@ mapping: dict[str, TuyaBLECategorySelectMapping] = {
                     "oyqux5vv",  # LA-01 - Experimental
                     "ajk32biq",  # B16
                     "z7lj676i",  # Smart Cylinder Lock - Experimental
+                    "pyawczjj",  # CS-9 Smart Fingerprint Lock - Experimental
                 ],
-                [  # Raycube K7 Pro+
+                [
                     TuyaBLESelectMapping(
                         dp_id=31,
                         description=SelectEntityDescription(
@@ -328,7 +345,33 @@ mapping: dict[str, TuyaBLECategorySelectMapping] = {
                         ),
                     ),
                 ],
-            )
+            ),
+            "kholoaew": [
+                TuyaBLESelectMapping(
+                    dp_id=31,
+                    description=SelectEntityDescription(
+                        key="beep_volume",
+                        options=[
+                            "Mute",
+                            "Low",
+                            "Normal",
+                            "High",
+                        ],
+                        entity_category=EntityCategory.CONFIG,
+                    ),
+                ),
+                TuyaBLESelectMapping(
+                    dp_id=28,
+                    description=SelectEntityDescription(
+                        key="language",
+                        options=[
+                            "Chinese Simplified",
+                            "English",
+                        ],
+                        entity_category=EntityCategory.CONFIG,
+                    ),
+                ),
+            ],
         }
     ),
     "szjqr": TuyaBLECategorySelectMapping(
@@ -372,7 +415,7 @@ mapping: dict[str, TuyaBLECategorySelectMapping] = {
     "kg": TuyaBLECategorySelectMapping(
         products={
             **dict.fromkeys(
-                ["mknd4lci", "riecov42", "bs3ubslo"],  # Fingerbot Plus
+                ["mknd4lci", "riecov42", "bs3ubslo", "gnpbj0bq"],  # Fingerbot Plus
                 [
                     TuyaBLEFingerbotModeMapping(dp_id=101),
                 ],
@@ -422,6 +465,8 @@ def get_mapping_by_device(device: TuyaBLEDevice) -> list[TuyaBLECategorySelectMa
 
 class TuyaBLESelect(TuyaBLEEntity, SelectEntity):
     """Representation of a Tuya BLE select."""
+
+    platform = Platform.SELECT
 
     def __init__(
         self,

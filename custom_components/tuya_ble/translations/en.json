@@ -24,17 +24,32 @@
                     "password": "Password",
                     "username": "Account"
                 },
-                "description": "Tuya BLE requires obtaining encryption key from Tuya cloud. Almost all devices only need to access the cloud once during setup.\n\nRefer to documentation of Tuya integration to retrieve the cloud credentials https://www.home-assistant.io/integrations/tuya/\n\nEnter your Tuya credentials."
+                "description": "Tuya BLE requires obtaining encryption key from Tuya cloud. Almost all devices only need to access the cloud once during setup.\n\nRefer to documentation of Tuya integration to retrieve the cloud credentials {url}\n\nEnter your Tuya credentials."
             }
         }
     },
     "entity": {
         "binary_sensor": {
+            "fault": {
+                "name": "Fault"
+            },
+            "lack_water": {
+                "name": "Lack of water"
+            },
             "low_battery": {
                 "name": "Battery"
             },
             "lock_motor_state": {
                 "name": "Motor State"
+            },
+            "low_temp": {
+                "name": "Low temperature"
+            },
+            "motor_fault": {
+                "name": "Motor fault"
+            },
+            "sensor_fault": {
+                "name": "Sensor fault"
             }
         },
         "button": {
@@ -126,7 +141,16 @@
         },
         "sensor": {
             "alarm_lock": {
-                "name": "Alarm"
+                "name": "Alarm",
+                "state": {
+                    "wrong_finger": "Wrong Fingerprint",
+                    "wrong_password": "Wrong Password",
+                    "low_battery": "Low Battery",
+                    "power_off": "Power off"
+                }
+            },
+            "power_off": {
+                "name": "Power off"
             },
             "battery": {
                 "name": "Battery"
@@ -144,6 +168,7 @@
                 "state": {
                     "high": "High",
                     "low": "Low",
+                    "middle": "Medium",
                     "normal": "Normal"
                 }
             },
@@ -156,6 +181,15 @@
                     "alarm": "Alarm",
                     "normal": "Normal"
                 }
+            },
+            "day_usage_after_reset": {
+                "name": "Daily usage after reset"
+            },
+            "day_water_usage": {
+                "name": "Daily water usage"
+            },
+            "flow_velocity": {
+                "name": "Flow rate"
             },
             "lock_door_status": {
                 "name": "Door status",
@@ -189,6 +223,9 @@
             "time_left": {
                 "name": "Remaining irrigation time"
             },
+            "total_usage_after_reset": {
+                "name": "Total usage after reset"
+            },
             "use_time_z1": {
                 "name": "Last irrigation time - Zone 1"
             },
@@ -203,6 +240,12 @@
             },
             "water_intake": {
                 "name": "Water intake"
+            },
+            "water_once": {
+                "name": "Last session water usage"
+            },
+            "water_use_data": {
+                "name": "Total water usage"
             },
             "wrong_finger": {
                 "name": "Wrong Fingerprint"
@@ -300,7 +343,7 @@
                     "password": "Password",
                     "username": "Account"
                 },
-                "description": "Refer to documentation of Tuya integration to retrieve the cloud credentials https://www.home-assistant.io/integrations/tuya/\n\nEnter your Tuya credentials."
+                "description": "Refer to documentation of Tuya integration to retrieve the cloud credentials {url}\n\nEnter your Tuya credentials."
             }
         }
     }

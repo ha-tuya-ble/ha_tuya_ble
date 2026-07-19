@@ -5,7 +5,7 @@ from dataclasses import dataclass
 from typing import Any
 
 import logging
-from homeassistant.const import CONF_ADDRESS, CONF_DEVICE_ID
+from homeassistant.const import CONF_ADDRESS, CONF_DEVICE_ID, Platform
 
 from homeassistant.core import CALLBACK_TYPE, HomeAssistant, callback
 from homeassistant.helpers import device_registry as dr
@@ -18,11 +18,6 @@ from homeassistant.helpers.event import async_call_later
 from homeassistant.helpers.update_coordinator import (
     CoordinatorEntity,
     DataUpdateCoordinator,
-)
-
-from homeassistant.components.tuya.const import (
-    DPCode,
-    DPType,
 )
 
 from home_assistant_bluetooth import BluetoothServiceInfoBleak
@@ -88,6 +83,8 @@ class TuyaBLEProductInfo:
 class TuyaBLEEntity(CoordinatorEntity):
     """Tuya BLE base entity."""
 
+    platform: Platform = Platform.SENSOR
+
     def __init__(
         self,
         hass: HomeAssistant,
@@ -108,7 +105,7 @@ class TuyaBLEEntity(CoordinatorEntity):
         self._attr_device_info = get_device_info(self._device)
         self._attr_unique_id = f"{self._device.device_id}-{description.key}"
         self.entity_id = generate_entity_id(
-            "sensor.{}", self._attr_unique_id, hass=hass
+            f"{self.platform}.{{}}", self._attr_unique_id, hass=hass
         )
 
     @property
@@ -362,6 +359,8 @@ devices_database: dict[str, TuyaBLECategoryInfo] = {
                     "uamrw6h3",
                     "sidhzylo",
                     "mqc2hevy",
+                    "a6nttc41",
+                    "7a4xvbtt",
                 ],
                 TuyaBLEProductInfo(  # device product_id
                     name="Smart Lock",
@@ -396,12 +395,18 @@ devices_database: dict[str, TuyaBLECategoryInfo] = {
     ),
     "jtmspro": TuyaBLECategoryInfo(
         products={
+            "hc7n0urm": TuyaBLEProductInfo(  # device product_id
+                name="A1 Ultra-JM",
+            ),
             "xicdxood": TuyaBLEProductInfo(name="Raycube K7 Pro+", lock=1),
             "oyqux5vv": TuyaBLEProductInfo(name="LA-01 Smart lock", lock=1),
             "rlyxv7pe": TuyaBLEProductInfo(name="A1 PRO MAX", lock=1),
             "ebd5e0uauqx0vfsp": TuyaBLEProductInfo(name="CentralAcesso"),
             "ajk32biq": TuyaBLEProductInfo(name="B16", lock=1),
             "z7lj676i": TuyaBLEProductInfo(name="Smart Cylinder Lock", lock=1),
+            "hs21i377": TuyaBLEProductInfo(name="Smart Cylinder Lock"),
+            "kholoaew": TuyaBLEProductInfo(name="Smart Lock"),
+            "pyawczjj": TuyaBLEProductInfo(name="CS-9 Smart Fingerprint Lock", lock=1),
         },
     ),
     "szjqr": TuyaBLECategoryInfo(
@@ -491,7 +496,7 @@ devices_database: dict[str, TuyaBLECategoryInfo] = {
     "kg": TuyaBLECategoryInfo(
         products={
             **dict.fromkeys(
-                ["mknd4lci", "riecov42", "bs3ubslo"],  # device product_ids
+                ["mknd4lci", "riecov42", "bs3ubslo", "gnpbj0bq"],  # device product_ids
                 TuyaBLEProductInfo(
                     name="Fingerbot Plus",
                     fingerbot=TuyaBLEFingerbotInfo(
@@ -505,6 +510,9 @@ devices_database: dict[str, TuyaBLECategoryInfo] = {
                         program=109,
                     ),
                 ),
+            ),
+            "4ctjfrzq": TuyaBLEProductInfo(
+                name="Switch Robot",
             ),
         },
     ),
@@ -530,6 +538,7 @@ devices_database: dict[str, TuyaBLECategoryInfo] = {
             "tv6peegl": TuyaBLEProductInfo(name="Soil Thermo-Hygrometer"),
             "vlzqwckk": TuyaBLEProductInfo(name="Temperature Humidity Sensor"),
             "tr0kabuq": TuyaBLEProductInfo(name="Temperature Humidity Sensor"),
+            "6lbesej0": TuyaBLEProductInfo(name="Temperature Humidity Sensor SS302"),
         },
     ),
     "znhsb": TuyaBLECategoryInfo(
@@ -555,6 +564,7 @@ devices_database: dict[str, TuyaBLECategoryInfo] = {
                 [
                     "svhikeyq",
                     "0axr5s0b",
+                    "e1poaiwa",
                 ],  # device product_id
                 TuyaBLEProductInfo(
                     name="Valve controller",
@@ -583,6 +593,9 @@ devices_database: dict[str, TuyaBLECategoryInfo] = {
                         use_time=9,
                     ),
                 ),
+            ),
+            "ldcdnigc": TuyaBLEProductInfo(
+                name="ZX-7378 Smart Irrigation Controller",
             ),
         },
     ),
@@ -623,12 +636,20 @@ devices_database: dict[str, TuyaBLECategoryInfo] = {
             ),
             "kcy0x4pi": TuyaBLEProductInfo(name="Curtain Controller"),
             "dy4dh1q0": TuyaBLEProductInfo(name="AOK AM24 Venetian Blinds Motor"),
+            "v3fzfd2y": TuyaBLEProductInfo(name="AOK AM25 Roller Blinds Motor"),
         }
     ),
     "zwjcy": TuyaBLECategoryInfo(
         products={
             "jabotj1z": TuyaBLEProductInfo(
                 name="SRB-PM01 Soil Moisture Sensor",
+            ),
+        },
+    ),
+    "slj": TuyaBLECategoryInfo(
+        products={
+            "mqqna0px": TuyaBLEProductInfo(
+                name="RESTMO BT Water Meter",
             ),
         },
     ),

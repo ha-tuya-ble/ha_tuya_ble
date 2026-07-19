@@ -1,8 +1,10 @@
 # Contributing Guide
 
-I have a new device that isn't supported.
+This guide is for when:
 
-I have a similar device to one that is already supported.
+- I have a new device that isn't supported.
+- I have a similar device to one that is already supported.
+
 
 ## Vibe Coding Your Robotic Lawnmower
 
@@ -12,14 +14,14 @@ This guide explains how to generate a new PR for a set of **DPIDs** (Device Prop
 
 ---
 
-## 1. Prerequisites
+### 1. Prerequisites
 
 - Access to [Tuya IoT Platform](https://iot.tuya.com/) with a developer account.  
 - Access to **Google Jules** in your browser (with permissions to create PRs on this repo).
 
 ---
 
-## 2. Getting DPIDs from Tuya IoT
+### 2. Getting DPIDs from Tuya IoT
 
 1. **Log in** to [Tuya IoT](https://iot.tuya.com/).  
 2. Go to **Cloud → Development → Devices**.  
@@ -32,11 +34,14 @@ This guide explains how to generate a new PR for a set of **DPIDs** (Device Prop
    DPID 1 → Switch (Boolean)
    DPID 2 → Brightness (Integer, 0–1000)
    DPID 3 → Mode (Enum: white, colour, scene)
-```
-6. Whangjangle this into google jules:
+   ```
+6. Whangjangle this into google jules, claude or your preferred agent:
 
 ```
 Add support for Example Product - SmartLife Finger Robot (category: szjqr - Product ID: yn4x5fa7)
+Add the product details, id to the README.
+Ensure that you have installed `black` and it is run before commit.
+Ensure that any JSON modifications are well formed.
 
 { "result": { "category": "szjqr", "functions": [ { "code": "switch", "dp_id": 1, "type": "Boolean", "values": "{}" }, { "code": "mode", "dp_id": 2, "type": "Enum", "values": "{"range":["click"]}" }, { "code": "click_sustain_time", "dp_id": 3, "type": "Integer", "values": "{"unit":"0.1s","min":3,"max":100,"scale":1,"step":1}" }
 ```
@@ -44,5 +49,9 @@ Add support for Example Product - SmartLife Finger Robot (category: szjqr - Prod
 
 7. Publish PR, clearly indicate it is AI assisted if it is not obvious. You should end up with something like https://github.com/ha-tuya-ble/ha_tuya_ble/pull/78
 8. Test locally and iterate - add your fork via https://www.hacs.xyz/docs/faq/custom_repositories/
-9. Share your test results - pics or didnt happen is a good rule of thumb.
+9. Share your test results - screenshots or didn't happen is a good rule of thumb!
 
+## I am struggling, what are my options?
+
+Raise an issue with the same information as above.
+Search github for your product ID, others may have implemented a fix in a different fork. If found, please mention in issue so fork can be integrated.
