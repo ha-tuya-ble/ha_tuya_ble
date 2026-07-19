@@ -245,7 +245,7 @@ mapping: dict[str, TuyaBLECategorySwitchMapping] = {
                 [TuyaLockMotorStateMapping(dp_id=47)],
             ),
             **dict.fromkeys(
-                ["uamrw6h3", "mqc2hevy"],
+                ["uamrw6h3", "mqc2hevy", "6fibxtph", "99gv5nmz"],
                 [
                     TuyaLockMotorStateMapping(dp_id=47),
                     TuyaBLESwitchMapping(
