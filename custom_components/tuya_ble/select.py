@@ -240,6 +240,36 @@ mapping: dict[str, TuyaBLECategorySelectMapping] = {
                     ),
                 ],
             ),
+            **dict.fromkeys(
+                ["6fibxtph", "99gv5nmz"],
+                [
+                    TuyaBLESelectMapping(
+                        dp_id=31,
+                        description=SelectEntityDescription(
+                            key="beep_volume",
+                            options=[
+                                "mute",
+                                "low",
+                                "normal",
+                                "high",
+                            ],
+                            entity_category=EntityCategory.CONFIG,
+                        ),
+                    ),
+                    TuyaBLESelectMapping(
+                        dp_id=28,
+                        description=SelectEntityDescription(
+                            key="language",
+                            icon="mdi:translate",
+                            options=[
+                                "chinese_simplified",
+                                "english",
+                            ],
+                            entity_category=EntityCategory.CONFIG,
+                        ),
+                    ),
+                ],
+            ),
             "mqc2hevy": [
                 TuyaBLESelectMapping(
                     dp_id=31,
