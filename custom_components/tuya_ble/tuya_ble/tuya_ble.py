@@ -741,12 +741,24 @@ class TuyaBLEDevice:
                         exc_info=True,
                     )
                     continue
-                except BLEAK_EXCEPTIONS:
+                except BLEAK_EXCEPTIONS as ex:
+                    if "Bluetooth is already shutdown" in str(ex):
+                        _LOGGER.debug(
+                            "%s: Bluetooth is already shutdown, terminating connection attempts",
+                            self.address,
+                        )
+                        raise
                     _LOGGER.debug(
                         "%s: communication failed", self.address, exc_info=True
                     )
                     continue
-                except:
+                except Exception as ex:
+                    if "Bluetooth is already shutdown" in str(ex):
+                        _LOGGER.debug(
+                            "%s: Bluetooth is already shutdown, terminating connection attempts",
+                            self.address,
+                        )
+                        raise
                     _LOGGER.debug("%s: unexpected error", self.address, exc_info=True)
                     continue
 
@@ -757,7 +769,13 @@ class TuyaBLEDevice:
                         await self._client.start_notify(
                             CHARACTERISTIC_NOTIFY, self._notification_handler
                         )
-                    except:  # [BLEAK_EXCEPTIONS, BleakNotFoundError]:
+                    except Exception as ex:  # [BLEAK_EXCEPTIONS, BleakNotFoundError]:
+                        if "Bluetooth is already shutdown" in str(ex):
+                            _LOGGER.debug(
+                                "%s: Bluetooth is already shutdown, terminating connection attempts",
+                                self.address,
+                            )
+                            raise
                         self._client = None
                         _LOGGER.error(
                             "%s: starting notifications failed",
@@ -783,7 +801,13 @@ class TuyaBLEDevice:
                                 self.address,
                             )
                             continue
-                    except:  # [BLEAK_EXCEPTIONS, BleakNotFoundError]:
+                    except Exception as ex:  # [BLEAK_EXCEPTIONS, BleakNotFoundError]:
+                        if "Bluetooth is already shutdown" in str(ex):
+                            _LOGGER.debug(
+                                "%s: Bluetooth is already shutdown, terminating connection attempts",
+                                self.address,
+                            )
+                            raise
                         self._client = None
                         _LOGGER.error(
                             "%s: Sending device info request failed",
@@ -809,7 +833,13 @@ class TuyaBLEDevice:
                                 self.address,
                             )
                             continue
-                    except:  # [BLEAK_EXCEPTIONS, BleakNotFoundError]:
+                    except Exception as ex:  # [BLEAK_EXCEPTIONS, BleakNotFoundError]:
+                        if "Bluetooth is already shutdown" in str(ex):
+                            _LOGGER.debug(
+                                "%s: Bluetooth is already shutdown, terminating connection attempts",
+                                self.address,
+                            )
+                            raise
                         self._client = None
                         _LOGGER.error(
                             "%s: Sending pairing request failed",
@@ -846,7 +876,13 @@ class TuyaBLEDevice:
             if self._expected_disconnect:
                 return
             _LOGGER.debug("%s: Reconnect, connection ensured", self.address)
-        except BLEAK_EXCEPTIONS:  # BleakNotFoundError:
+        except BLEAK_EXCEPTIONS as ex:  # BleakNotFoundError:
+            if "Bluetooth is already shutdown" in str(ex):
+                _LOGGER.debug(
+                    "%s: Reconnect failed because Bluetooth is already shutdown; not scheduling another reconnect",
+                    self.address,
+                )
+                return
             _LOGGER.debug(
                 "%s: Reconnect, failed to ensure connection - backing off",
                 self.address,
@@ -1072,6 +1108,12 @@ class TuyaBLEDevice:
         try:
             await self._int_send_packets_locked(packets)
         except BleakDBusError as ex:
+            if "Bluetooth is already shutdown" in str(ex):
+                _LOGGER.debug(
+                    "%s: Bluetooth is already shutdown, not resending packets or reconnecting",
+                    self.address,
+                )
+                raise BleakError("Bluetooth is already shutdown") from ex
             # Disconnect so we can reset state and try again
             await asyncio.sleep(BLEAK_BACKOFF_TIME)
             _LOGGER.debug(
@@ -1087,6 +1129,12 @@ class TuyaBLEDevice:
                 asyncio.create_task(self._reconnect())
             raise BleakError from ex
         except BleakError as ex:
+            if "Bluetooth is already shutdown" in str(ex):
+                _LOGGER.debug(
+                    "%s: Bluetooth is already shutdown, not resending packets or reconnecting",
+                    self.address,
+                )
+                raise
             # Disconnect so we can reset state and try again
             _LOGGER.debug(
                 "%s: RSSI: %s; Disconnecting due to error: %s",
@@ -1111,7 +1159,13 @@ class TuyaBLEDevice:
                         packet,
                         False,
                     )
-                except:
+                except Exception as ex:
+                    if "Bluetooth is already shutdown" in str(ex):
+                        _LOGGER.debug(
+                            "%s: Bluetooth is already shutdown during sending packet",
+                            self.address,
+                        )
+                        raise BleakError("Bluetooth is already shutdown") from ex
                     _LOGGER.error(
                         "%s: Error during sending packet",
                         self.address,
