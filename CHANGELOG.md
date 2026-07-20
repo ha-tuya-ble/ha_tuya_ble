@@ -5,6 +5,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog],
 and this project adheres to [Semantic Versioning].
 
+## [0.7.1](https://github.com/ha-tuya-ble/ha_tuya_ble/compare/0.7.0...v0.7.1) (2026-07-20)
+
+* Add support for HU06 Smart Lock (stugc8dl) by @CloCkWeRX in https://github.com/ha-tuya-ble/ha_tuya_ble/pull/231
+* Add YZD05 water valve (d4vpmigg) support via @hippich by @CloCkWeRX in https://github.com/ha-tuya-ble/ha_tuya_ble/pull/198
+* Update translations to sync with en.json by @CloCkWeRX in https://github.com/ha-tuya-ble/ha_tuya_ble/pull/233
+* Add Home Assistant vacuum platform support for Tuya BLE devices via @buliaksk by @CloCkWeRX in https://github.com/ha-tuya-ble/ha_tuya_ble/pull/237
+* Add support for robotic window cleaner (cxjmb / product pnxl0r3l) by @buliaksk in https://github.com/ha-tuya-ble/ha_tuya_ble/pull/159
+* fix: Add support for TH05 Temperature Sensor (vyfoip9h, 1jvidcsf) by @CloCkWeRX in https://github.com/ha-tuya-ble/ha_tuya_ble/pull/238
+* Add release-please GitHub action by @CloCkWeRX in https://github.com/ha-tuya-ble/ha_tuya_ble/pull/239
+* fix: Update CHANGELOG for version 0.3.1 by @CloCkWeRX in https://github.com/ha-tuya-ble/ha_tuya_ble/pull/240
+
 ## [0.7.0] - 2026-07-19
 
 * Add support for Gainsborough Liberty Lock (yfqp0shy) by @deg3n in https://github.com/ha-tuya-ble/ha_tuya_ble/pull/230
