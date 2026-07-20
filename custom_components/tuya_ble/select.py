@@ -601,7 +601,13 @@ mapping: dict[str, TuyaBLECategorySelectMapping] = {
                     description=SelectEntityDescription(
                         key="direction_control",
                         icon="mdi:navigation",
-                        options=["forward", "backward", "turn_left", "turn_right", "stop"],
+                        options=[
+                            "forward",
+                            "backward",
+                            "turn_left",
+                            "turn_right",
+                            "stop",
+                        ],
                     ),
                 ),
             ],
