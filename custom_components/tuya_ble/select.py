@@ -132,6 +132,37 @@ mapping: dict[str, TuyaBLECategorySelectMapping] = {
                     ),
                 ),
             ],
+            "tqzkwarw": [  # HCT-611 Water Timer
+                TuyaBLESelectMapping(
+                    dp_id=10,
+                    description=SelectEntityDescription(
+                        key="weather_delay",
+                        options=[
+                            "cancel",
+                            "24h",
+                            "48h",
+                            "72h",
+                        ],
+                        entity_category=EntityCategory.CONFIG,
+                    ),
+                ),
+                TuyaBLESelectMapping(
+                    dp_id=13,
+                    description=SelectEntityDescription(
+                        key="smart_weather",
+                        options=[
+                            "sunny",
+                            "clear",
+                            "cloud",
+                            "cloudy",
+                            "rainy",
+                            "snow",
+                            "fog",
+                        ],
+                        entity_category=EntityCategory.CONFIG,
+                    ),
+                ),
+            ],
             **dict.fromkeys(
                 ["46zia2nz", "1fcnd8xk", "0axr5s0b", "e1poaiwa"],
                 [
