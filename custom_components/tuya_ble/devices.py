@@ -422,6 +422,7 @@ devices_database: dict[str, TuyaBLECategoryInfo] = {
     ),
     "jtmspro": TuyaBLECategoryInfo(
         products={
+            "y2yaegze": TuyaBLEProductInfo(name="Drawer Lock CTL20H", lock=1),
             "hc7n0urm": TuyaBLEProductInfo(  # device product_id
                 name="A1 Ultra-JM",
             ),

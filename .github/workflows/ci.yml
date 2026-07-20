@@ -24,7 +24,7 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: ${{env.PY_VERSION}}
-      
+
       - name: "Setup outputs"
         id: setup-outsputs
         run: echo "PY_PATH=${{env.pythonLocation}}" >> $GITHUB_OUTPUT

@@ -293,9 +293,15 @@
             },
             "unlock_ble": {
                 "name": "Last used Bluetooth"
+            },
+            "unlock_phone_remote": {
+                "name": "Last used remote phone"
             }
         },
         "switch": {
+            "automatic_lock": {
+                "name": "Automatic lock"
+            },
             "antifreeze": {
                 "name": "Antifreeze"
             },

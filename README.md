@@ -214,6 +214,11 @@ The integration works locally, but connection to Tuya BLE device requires device
       <td>—</td>
     </tr>
     <tr>
+      <td>Drawer Lock CTL20H</td>
+      <td><code>y2yaegze</code></td>
+      <td>—</td>
+    </tr>
+    <tr>
       <td>Gainsborough Liberty BLE Lock (GGC01HA)</td>
       <td><code>yfqp0shy</code></td>
       <td>—</td>

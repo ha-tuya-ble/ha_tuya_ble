@@ -304,6 +304,9 @@
             }
         },
         "switch": {
+            "automatic_lock": {
+                "name": "Automatic lock"
+            },
             "antifreeze": {
                 "name": "Antifreeze"
             },
