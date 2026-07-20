@@ -8,6 +8,7 @@ from homeassistant.components.lock import (
     LockEntityDescription,
 )
 from homeassistant.config_entries import ConfigEntry
+from homeassistant.const import Platform
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 
@@ -35,6 +36,8 @@ async def async_setup_entry(
 
 
 class TuyaBLELock(TuyaBLEEntity, LockEntity):
+    platform = Platform.LOCK
+
     def __init__(
         self,
         hass: HomeAssistant,

@@ -20,6 +20,7 @@ from homeassistant.const import (
     UnitOfVolume,
     UnitOfElectricCurrent,
     UnitOfElectricPotential,
+    Platform,
 )
 from homeassistant.core import HomeAssistant, callback
 from homeassistant.helpers.entity import EntityCategory
@@ -187,6 +188,16 @@ mapping: dict[str, TuyaBLECategorySensorMapping] = {
             ]
         }
     ),
+    "wxkg": TuyaBLECategorySensorMapping(
+        products={
+            **dict.fromkeys(
+                ["kpzc6pm8", "ja5osu5g"],
+                [
+                    TuyaBLEBatteryMapping(dp_id=10),
+                ],
+            ),
+        }
+    ),
     "ms": TuyaBLECategorySensorMapping(
         products={
             **dict.fromkeys(
@@ -200,6 +211,8 @@ mapping: dict[str, TuyaBLECategorySensorMapping] = {
                     "bvclwu9b",
                     "k53ok3u9",
                     "7a4xvbtt",
+                    "6fibxtph",
+                    "99gv5nmz",
                 ],  # Smart Lock
                 [
                     TuyaBLEAlarmLockStateMapping(dp_id=21),
@@ -333,15 +346,97 @@ mapping: dict[str, TuyaBLECategorySensorMapping] = {
                 ),
                 TuyaBLEBatteryMapping(dp_id=8),
             ],
+            "hc7n0urm": [  # A1 Ultra-JM
+                TuyaBLESensorMapping(
+                    dp_id=21,  # Alarm event
+                    description=SensorEntityDescription(
+                        key="alarm_lock",
+                        icon="mdi:alarm-light-outline",
+                        device_class=SensorDeviceClass.ENUM,
+                        options=[
+                            "low_battery",
+                            "power_off",
+                        ],
+                    ),
+                ),
+            ],
             **dict.fromkeys(
                 [
-                    "xicdxood",  # Raycube K7 Pro+
+                    "stugc8dl",  # HU06 Smart Lock
+                    "xicdxood",  # Raycube K7 Pro+ / Impression ImSmart C502
+                ],
+                [
+                    TuyaBLEAlarmLockStateMapping(dp_id=21),
+                    TuyaBLESensorMapping(
+                        dp_id=43,  # Retrieve last fingerprint used
+                        description=SensorEntityDescription(
+                            key="unlock_fingerprint",
+                            icon="mdi:fingerprint",
+                        ),
+                    ),
+                    TuyaBLESensorMapping(
+                        dp_id=13,  # Retrieve last code used
+                        description=SensorEntityDescription(
+                            key="unlock_password",
+                            icon="mdi:keyboard-outline",
+                        ),
+                    ),
+                    TuyaBLESensorMapping(
+                        dp_id=16,  # Retrieve last physical key unlock used
+                        description=SensorEntityDescription(
+                            key="unlock_key",
+                            icon="mdi:key",
+                        ),
+                    ),
+                    TuyaBLESensorMapping(
+                        dp_id=19,  # Retrieve last bluetooth unlock used
+                        description=SensorEntityDescription(
+                            key="unlock_ble",
+                            icon="mdi:bluetooth",
+                        ),
+                    ),
+                    TuyaBLESensorMapping(
+                        dp_id=62,  # Retrieve last app unlock used
+                        description=SensorEntityDescription(
+                            key="unlock_app",
+                            icon="mdi:cellphone-lock",
+                        ),
+                    ),
+                    TuyaBLESensorMapping(
+                        dp_id=63,  # Retrieve last voice unlock used
+                        description=SensorEntityDescription(
+                            key="unlock_voice",
+                            icon="mdi:microphone",
+                        ),
+                    ),
+                    TuyaBLESensorMapping(
+                        dp_id=105,  # Lock record
+                        description=SensorEntityDescription(
+                            key="lock_record",
+                            icon="mdi:history",
+                        ),
+                    ),
+                    TuyaBLEBatteryMapping(dp_id=8),
+                    TuyaBLEBatteryMapping(
+                        dp_id=103,
+                        description=SensorEntityDescription(
+                            key="keypad_battery",
+                            device_class=SensorDeviceClass.BATTERY,
+                            native_unit_of_measurement=PERCENTAGE,
+                            entity_category=EntityCategory.DIAGNOSTIC,
+                            state_class=SensorStateClass.MEASUREMENT,
+                        ),
+                    ),
+                ],
+            ),
+            **dict.fromkeys(
+                [
                     "rlyxv7pe",  # A1 PRO MAX - Experimental
                     "oyqux5vv",  # LA-01 - Experimental
-                    "ajk32biq",  # B16
                     "z7lj676i",  # Smart Cylinder Lock - Experimental
                     "hs21i377",  # Smart Cylinder Lock (LVD11_BK)
                     "kholoaew",  # Smart Lock
+                    "pyawczjj",  # CS-9 Smart Fingerprint Lock - Experimental
                 ],
                 [
                     TuyaBLEAlarmLockStateMapping(dp_id=21),
@@ -369,6 +464,91 @@ mapping: dict[str, TuyaBLECategorySensorMapping] = {
                     TuyaBLEBatteryMapping(dp_id=8),
                 ],
             ),
+            "ajk32biq": [
+                TuyaBLEAlarmLockStateMapping(dp_id=21),
+                TuyaBLESensorMapping(
+                    dp_id=12,  # Retrieve last fingerprint used
+                    description=SensorEntityDescription(
+                        key="unlock_fingerprint",
+                        icon="mdi:fingerprint",
+                    ),
+                ),
+                TuyaBLESensorMapping(
+                    dp_id=15,  # Retrieve last card used
+                    description=SensorEntityDescription(
+                        key="unlock_card",
+                        icon="mdi:nfc-variant",
+                    ),
+                ),
+                TuyaBLESensorMapping(
+                    dp_id=13,  # Retrieve last code used
+                    description=SensorEntityDescription(
+                        key="unlock_password",
+                        icon="mdi:keyboard-outline",
+                    ),
+                ),
+                TuyaBLESensorMapping(
+                    dp_id=19,  # Retrieve last bluetooth unlock used
+                    description=SensorEntityDescription(
+                        key="unlock_ble",
+                        icon="mdi:bluetooth",
+                    ),
+                ),
+                TuyaBLESensorMapping(
+                    dp_id=14,  # Retrieve last dynamic password used
+                    description=SensorEntityDescription(
+                        key="unlock_dynamic",
+                        icon="mdi:lock-reset",
+                    ),
+                ),
+                TuyaBLEBatteryMapping(dp_id=8),
+            ],
+            "yfqp0shy": [
+                TuyaBLEAlarmLockStateMapping(dp_id=21),
+                TuyaBLESensorMapping(
+                    dp_id=12,  # Retrieve last fingerprint used
+                    description=SensorEntityDescription(
+                        key="unlock_fingerprint",
+                        icon="mdi:fingerprint",
+                    ),
+                ),
+                TuyaBLESensorMapping(
+                    dp_id=15,  # Retrieve last card used
+                    description=SensorEntityDescription(
+                        key="unlock_card",
+                        icon="mdi:nfc-variant",
+                    ),
+                ),
+                TuyaBLESensorMapping(
+                    dp_id=13,  # Retrieve last code used
+                    description=SensorEntityDescription(
+                        key="unlock_password",
+                        icon="mdi:keyboard-outline",
+                    ),
+                ),
+                TuyaBLESensorMapping(
+                    dp_id=19,  # Retrieve last bluetooth unlock used
+                    description=SensorEntityDescription(
+                        key="unlock_ble",
+                        icon="mdi:bluetooth",
+                    ),
+                ),
+                TuyaBLESensorMapping(
+                    dp_id=14,  # Retrieve last dynamic password used
+                    description=SensorEntityDescription(
+                        key="unlock_dynamic",
+                        icon="mdi:lock-reset",
+                    ),
+                ),
+                TuyaBLESensorMapping(
+                    dp_id=16,  # Retrieve last physical key unlock used
+                    description=SensorEntityDescription(
+                        key="unlock_key",
+                        icon="mdi:key",
+                    ),
+                ),
+                TuyaBLEBatteryMapping(dp_id=8),
+            ],
         }
     ),
     "szjqr": TuyaBLECategorySensorMapping(
@@ -961,8 +1141,8 @@ mapping: dict[str, TuyaBLECategorySensorMapping] = {
                     TuyaBLESensorMapping(
                         dp_id=3,
                         description=SensorEntityDescription(
-                            key="humidity",
-                            device_class=SensorDeviceClass.HUMIDITY,
+                            key="moisture",
+                            device_class=SensorDeviceClass.MOISTURE,
                             native_unit_of_measurement=PERCENTAGE,
                             state_class=SensorStateClass.MEASUREMENT,
                         ),
@@ -1074,6 +1254,44 @@ mapping: dict[str, TuyaBLECategorySensorMapping] = {
     ),
     "sfkzq": TuyaBLECategorySensorMapping(
         products={
+            "16wgjvck": [
+                TuyaBLEBatteryMapping(dp_id=7),
+                TuyaBLESensorMapping(
+                    dp_id=7,
+                    dp_type=TuyaBLEDataPointType.DT_VALUE,
+                    description=SensorEntityDescription(
+                        key="battery_percentage",
+                        name="Battery Percentage",
+                        device_class=SensorDeviceClass.BATTERY,
+                        native_unit_of_measurement=PERCENTAGE,
+                        state_class=SensorStateClass.MEASUREMENT,
+                        entity_category=EntityCategory.DIAGNOSTIC,
+                    ),
+                ),
+                TuyaBLESensorMapping(
+                    dp_id=8,
+                    dp_type=TuyaBLEDataPointType.DT_ENUM,
+                    description=SensorEntityDescription(
+                        key="battery_state",
+                        name="Battery State",
+                        device_class=SensorDeviceClass.ENUM,
+                        options=["low", "middle", "high"],
+                        entity_category=EntityCategory.DIAGNOSTIC,
+                    ),
+                ),
+                TuyaBLESensorMapping(
+                    dp_id=104,
+                    dp_type=TuyaBLEDataPointType.DT_VALUE,
+                    description=SensorEntityDescription(
+                        key="battery_percentage_alt",
+                        name="Battery Percentage (Alt)",
+                        device_class=SensorDeviceClass.BATTERY,
+                        native_unit_of_measurement=PERCENTAGE,
+                        state_class=SensorStateClass.MEASUREMENT,
+                        entity_category=EntityCategory.DIAGNOSTIC,
+                    ),
+                ),
+            ],
             "0axr5s0b": [  # Valve Controller
                 TuyaBLEBatteryMapping(dp_id=7),
                 TuyaBLESensorMapping(
@@ -1147,7 +1365,7 @@ mapping: dict[str, TuyaBLECategorySensorMapping] = {
                 ),
             ],
             **dict.fromkeys(
-                ["46zia2nz", "1fcnd8xk", "nxquc5lb", "svhikeyq"],
+                ["46zia2nz", "1fcnd8xk", "nxquc5lb", "svhikeyq", "d4vpmigg"],
                 [
                     TuyaBLEBatteryMapping(dp_id=7),
                     TuyaBLEWorkStateMapping(dp_id=12),
@@ -1305,6 +1523,8 @@ def get_mapping_by_device(device: TuyaBLEDevice) -> list[TuyaBLESensorMapping]:
 
 class TuyaBLESensor(TuyaBLEEntity, SensorEntity):
     """Representation of a Tuya BLE sensor."""
+
+    platform = Platform.SENSOR
 
     def __init__(
         self,

@@ -1,0 +1,364 @@
+{
+    "config": {
+        "abort": {
+            "no_unconfigured_devices": "No se encontraron dispositivos sin configurar."
+        },
+        "error": {
+            "device_not_registered": "El dispositivo no está registrado en la nube de Tuya",
+            "invalid_auth": "Autenticación inválida",
+            "login_error": "Error de inicio de sesión ({code}): {msg}"
+        },
+        "flow_title": "{name}",
+        "step": {
+            "device": {
+                "data": {
+                    "address": "Dispositivo Tuya BLE"
+                },
+                "description": "Seleccione el dispositivo Tuya BLE para configurar. El dispositivo debe estar registrado en la nube mediante la aplicación móvil. Se recomienda desvincular el dispositivo de cualquier puerta de enlace Bluetooth de Tuya."
+            },
+            "login": {
+                "data": {
+                    "access_id": "ID de acceso de Tuya IoT",
+                    "access_secret": "Clave secreta de Tuya IoT",
+                    "country_code": "País",
+                    "password": "Contraseña",
+                    "username": "Cuenta"
+                },
+                "description": "Tuya BLE requiere obtener la clave de cifrado de la nube de Tuya. Casi todos los dispositivos solo necesitan acceder a la nube una vez durante la configuración.\n\nConsulte la documentación de la integración de Tuya para obtener las credenciales de la nube {url}\n\nIntroduzca sus credenciales de Tuya."
+            }
+        }
+    },
+    "entity": {
+        "binary_sensor": {
+            "fault": {
+                "name": "Fallo"
+            },
+            "lack_water": {
+                "name": "Falta de agua"
+            },
+            "low_battery": {
+                "name": "Batería"
+            },
+            "lock_motor_state": {
+                "name": "Estado del motor"
+            },
+            "low_temp": {
+                "name": "Baja temperatura"
+            },
+            "motor_fault": {
+                "name": "Fallo del motor"
+            },
+            "sensor_fault": {
+                "name": "Fallo del sensor"
+            }
+        },
+        "button": {
+            "push": {
+                "name": "Pulsar"
+            },
+            "ble_unlock_check": {
+                "name": "Desbloquear"
+            },
+            "bluetooth_unlock": {
+                "name": "Desbloquear"
+            }
+        },
+        "event": {
+            "event": {
+                "name": "Evento"
+            }
+        },
+        "number": {
+            "brightness": {
+                "name": "Brillo"
+            },
+            "carbon_dioxide_alarm_level": {
+                "name": "Nivel de alarma"
+            },
+            "countdown_duration": {
+                "name": "Duración del riego"
+            },
+            "countdown_duration_z1": {
+                "name": "Duración del riego - Zona 1"
+            },
+            "countdown_duration_z2": {
+                "name": "Duración del riego - Zona 2"
+            },
+            "countdown": {
+                "name": "Duración del riego"
+            },
+            "down_position": {
+                "name": "Posición abajo"
+            },
+            "hold_time": {
+                "name": "Tiempo de espera"
+            },
+            "program_idle_position": {
+                "name": "Posición de reposo"
+            },
+            "program_repeats_count": {
+                "name": "Número de repeticiones"
+            },
+            "recommended_water_intake": {
+                "name": "Consumo de agua recomendado"
+            },
+            "reporting_period": {
+                "name": "Período de reporte"
+            },
+            "up_position": {
+                "name": "Posición arriba"
+            },
+            "ble_unlock_check": {
+                "name": "Desbloquear"
+            }
+        },
+        "select": {
+            "beep_volume": {
+                "name": "Volumen de la cerradura"
+            },
+            "language": {
+                "name": "Idioma de la cerradura"
+            },
+            "fingerbot_mode": {
+                "name": "Modo",
+                "state": {
+                    "program": "Programa",
+                    "push": "Pulsar",
+                    "switch": "Interruptor"
+                }
+            },
+            "weather_delay": {
+                "name": "Retraso meteorológico"
+            },
+            "smart_weather": {
+                "name": "Clima inteligente"
+            },
+            "reminder_mode": {
+                "name": "Modo de recordatorio",
+                "state": {
+                    "interval_reminder": "Intervalo",
+                    "schedule_reminder": "Programación"
+                }
+            },
+            "temperature_unit": {
+                "name": "Unidad de temperatura"
+            }
+        },
+        "sensor": {
+            "alarm_lock": {
+                "name": "Alarma",
+                "state": {
+                    "wrong_finger": "Huella incorrecta",
+                    "wrong_password": "Contraseña incorrecta",
+                    "low_battery": "Batería baja",
+                    "power_off": "Apagado"
+                }
+            },
+            "power_off": {
+                "name": "Apagado"
+            },
+            "battery": {
+                "name": "Batería"
+            },
+            "battery_charging": {
+                "name": "Carga de batería",
+                "state": {
+                    "charged": "Cargada",
+                    "charging": "Cargando",
+                    "not_charging": "No cargando"
+                }
+            },
+            "battery_state": {
+                "name": "Estado de la batería",
+                "state": {
+                    "high": "Alto",
+                    "low": "Bajo",
+                    "middle": "Medio",
+                    "normal": "Normal"
+                }
+            },
+            "carbon_dioxide": {
+                "name": "Dióxido de carbono"
+            },
+            "carbon_dioxide_alarm": {
+                "name": "Nivel de dióxido de carbono",
+                "state": {
+                    "alarm": "Alarma",
+                    "normal": "Normal"
+                }
+            },
+            "day_usage_after_reset": {
+                "name": "Uso diario después del reinicio"
+            },
+            "day_water_usage": {
+                "name": "Consumo de agua diario"
+            },
+            "flow_velocity": {
+                "name": "Caudal"
+            },
+            "lock_door_status": {
+                "name": "Estado de la puerta",
+                "state": {
+                    "door_status_unknown": "Desconocido",
+                    "door_status_open": "Abierto",
+                    "door_status_closed": "Cerrado"
+                }
+            },
+            "humidity": {
+                "name": "Humedad"
+            },
+            "low_battery": {
+                "name": "Batería baja"
+            },
+            "moisture": {
+                "name": "Humedad de suelo"
+            },
+            "work_state": {
+                "name": "Estado de funcionamiento"
+            },
+            "residual_electricity": {
+                "name": "Batería"
+            },
+            "signal_strength": {
+                "name": "Fuerza de la señal"
+            },
+            "temperature": {
+                "name": "Temperatura"
+            },
+            "time_left": {
+                "name": "Tiempo de riego restante"
+            },
+            "total_usage_after_reset": {
+                "name": "Uso total después del reinicio"
+            },
+            "use_time_z1": {
+                "name": "Último tiempo de riego - Zona 1"
+            },
+            "use_time_z2": {
+                "name": "Último tiempo de riego - Zona 2"
+            },
+            "use_time": {
+                "name": "Tiempo de uso acumulado"
+            },
+            "use_time_one": {
+                "name": "Último tiempo de riego"
+            },
+            "water_intake": {
+                "name": "Consumo de agua"
+            },
+            "water_once": {
+                "name": "Consumo de agua de la última sesión"
+            },
+            "water_use_data": {
+                "name": "Consumo de agua total"
+            },
+            "wrong_finger": {
+                "name": "Huella incorrecta"
+            },
+            "wrong_password": {
+                "name": "Contraseña incorrecta"
+            },
+            "unlock_fingerprint": {
+                "name": "Última huella utilizada"
+            },
+            "unlock_card": {
+                "name": "Última tarjeta utilizada"
+            },
+            "unlock_password": {
+                "name": "Última contraseña utilizada"
+            },
+            "unlock_key": {
+                "name": "Última llave utilizada"
+            },
+            "unlock_dynamic": {
+                "name": "Última contraseña dinámica utilizada"
+            },
+            "unlock_ble": {
+                "name": "Último Bluetooth utilizado"
+            }
+        },
+        "switch": {
+            "antifreeze": {
+                "name": "Anticongelante"
+            },
+            "carbon_dioxide_alarm_switch": {
+                "name": "Alarma habilitada"
+            },
+            "carbon_dioxide_severely_exceed_alarm": {
+                "name": "Alarma de exceso severo"
+            },
+            "child_lock": {
+                "name": "Cierre infantil"
+            },
+            "lock_motor_state": {
+                "name": "Estado del motor"
+            },
+            "low_battery_alarm": {
+                "name": "Alarma de batería baja"
+            },
+            "manual_control": {
+                "name": "Control manual"
+            },
+            "program": {
+                "name": "Programa"
+            },
+            "program_repeat_forever": {
+                "name": "Repetir indefinidamente"
+            },
+            "programming_mode": {
+                "name": "Modo programación"
+            },
+            "programming_switch": {
+                "name": "Interruptor de programación"
+            },
+            "reverse_positions": {
+                "name": "Invertir posiciones"
+            },
+            "switch": {
+                "name": "Interruptor"
+            },
+            "water_scale_proof": {
+                "name": "Antical"
+            },
+            "water_valve": {
+                "name": "Válvula de riego"
+            },
+            "water_valve_z1": {
+                "name": "Válvula de riego - Zona 1"
+            },
+            "water_valve_z2": {
+                "name": "Válvula de riego - Zona 2"
+            },
+            "weather_switch": {
+                "name": "Interruptor de clima"
+            },
+            "window_check": {
+                "name": "Detección de ventanas"
+            }
+        },
+        "text": {
+            "program": {
+                "name": "Programa: posición[/tiempo];..."
+            }
+        }
+    },
+    "options": {
+        "error": {
+            "device_not_registered": "El dispositivo no está registrado en la nube de Tuya",
+            "invalid_auth": "Autenticación inválida",
+            "login_error": "Error de inicio de sesión ({code}): {msg}"
+        },
+        "step": {
+            "login": {
+                "data": {
+                    "access_id": "ID de acceso de Tuya IoT",
+                    "access_secret": "Clave secreta de Tuya IoT",
+                    "country_code": "País",
+                    "password": "Contraseña",
+                    "username": "Cuenta"
+                },
+                "description": "Consulte la documentación de la integración de Tuya para obtener las credenciales de la nube {url}\n\nIntroduzca sus credenciales de Tuya."
+            }
+        }
+    }
+}

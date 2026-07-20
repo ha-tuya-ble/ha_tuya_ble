@@ -11,7 +11,7 @@ from homeassistant.components.select import (
     SelectEntity,
 )
 from homeassistant.config_entries import ConfigEntry
-from homeassistant.const import UnitOfTemperature
+from homeassistant.const import UnitOfTemperature, Platform
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity import EntityCategory
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
@@ -122,6 +122,16 @@ class TuyaBLETemperatureUnitMapping(TuyaBLESelectMapping):
 mapping: dict[str, TuyaBLECategorySelectMapping] = {
     "sfkzq": TuyaBLECategorySelectMapping(
         products={
+            "16wgjvck": [
+                TuyaBLESelectMapping(
+                    dp_id=12,
+                    description=SelectEntityDescription(
+                        key="work_state",
+                        options=["auto", "manual"],
+                        entity_category=EntityCategory.CONFIG,
+                    ),
+                ),
+            ],
             **dict.fromkeys(
                 ["46zia2nz", "1fcnd8xk", "0axr5s0b", "e1poaiwa"],
                 [
@@ -163,6 +173,30 @@ mapping: dict[str, TuyaBLECategorySelectMapping] = {
                             "48h",
                             "72h",
                         ],
+                        entity_category=EntityCategory.CONFIG,
+                    ),
+                ),
+                TuyaBLESmartWeatherMapping(dp_id=13),
+            ],
+            "d4vpmigg": [
+                TuyaBLESelectMapping(
+                    dp_id=10,
+                    description=SelectEntityDescription(
+                        key="weather_delay",
+                        options=[
+                            "cancel",
+                            "24h",
+                            "48h",
+                            "72h",
+                        ],
+                        entity_category=EntityCategory.CONFIG,
+                    ),
+                ),
+                TuyaBLESelectMapping(
+                    dp_id=12,
+                    description=SelectEntityDescription(
+                        key="work_state",
+                        options=["auto", "manual", "idle"],
                         entity_category=EntityCategory.CONFIG,
                     ),
                 ),
@@ -240,6 +274,36 @@ mapping: dict[str, TuyaBLECategorySelectMapping] = {
                     ),
                 ],
             ),
+            **dict.fromkeys(
+                ["6fibxtph", "99gv5nmz"],
+                [
+                    TuyaBLESelectMapping(
+                        dp_id=31,
+                        description=SelectEntityDescription(
+                            key="beep_volume",
+                            options=[
+                                "mute",
+                                "low",
+                                "normal",
+                                "high",
+                            ],
+                            entity_category=EntityCategory.CONFIG,
+                        ),
+                    ),
+                    TuyaBLESelectMapping(
+                        dp_id=28,
+                        description=SelectEntityDescription(
+                            key="language",
+                            icon="mdi:translate",
+                            options=[
+                                "chinese_simplified",
+                                "english",
+                            ],
+                            entity_category=EntityCategory.CONFIG,
+                        ),
+                    ),
+                ],
+            ),
             "mqc2hevy": [
                 TuyaBLESelectMapping(
                     dp_id=31,
@@ -292,13 +356,29 @@ mapping: dict[str, TuyaBLECategorySelectMapping] = {
     ),
     "jtmspro": TuyaBLECategorySelectMapping(
         products={
+            "hc7n0urm": [  # A1 Ultra-JM
+                TuyaBLESelectMapping(
+                    dp_id=31,
+                    description=SelectEntityDescription(
+                        key="beep_volume",
+                        icon="mdi:volume-high",
+                        options=[
+                            "mute",
+                            "normal",
+                        ],
+                        entity_category=EntityCategory.CONFIG,
+                    ),
+                    dp_type=TuyaBLEDataPointType.DT_ENUM,
+                ),
+            ],
             **dict.fromkeys(
                 [
+                    "stugc8dl",  # HU06 Smart Lock
                     "xicdxood",  # Raycube K7 Pro+
                     "rlyxv7pe",  # A1 PRO MAX - Experimental
                     "oyqux5vv",  # LA-01 - Experimental
-                    "ajk32biq",  # B16
                     "z7lj676i",  # Smart Cylinder Lock - Experimental
+                    "pyawczjj",  # CS-9 Smart Fingerprint Lock - Experimental
                 ],
                 [
                     TuyaBLESelectMapping(
@@ -330,6 +410,78 @@ mapping: dict[str, TuyaBLECategorySelectMapping] = {
                     ),
                 ],
             ),
+            "ajk32biq": [
+                TuyaBLESelectMapping(
+                    dp_id=31,
+                    description=SelectEntityDescription(
+                        key="beep_volume",
+                        options=[
+                            "Mute",
+                            "Low",
+                            "Normal",
+                            "High",
+                        ],
+                        entity_category=EntityCategory.CONFIG,
+                    ),
+                ),
+                TuyaBLESelectMapping(
+                    dp_id=28,
+                    description=SelectEntityDescription(
+                        key="language",
+                        options=[
+                            "Chinese Simplified",
+                            "English",
+                            "Arabic",
+                            "Indonesian",
+                            "Portuguese",
+                            "Russian",
+                            "Spanish",
+                            "Thai",
+                            "Vietnamese",
+                        ],
+                        entity_category=EntityCategory.CONFIG,
+                    ),
+                ),
+                TuyaBLESelectMapping(
+                    dp_id=89,
+                    description=SelectEntityDescription(
+                        key="autolock_delay",
+                        options=[
+                            "Inactive",
+                            "4s",
+                            "6s",
+                            "8s",
+                            "10s",
+                            "12s",
+                        ],
+                        entity_category=EntityCategory.CONFIG,
+                    ),
+                ),
+                TuyaBLESelectMapping(
+                    dp_id=34,
+                    description=SelectEntityDescription(
+                        key="double_verification",
+                        options=[
+                            "Single Unlock",
+                            "Combination Unlock",
+                        ],
+                        entity_category=EntityCategory.CONFIG,
+                    ),
+                ),
+            ],
+            "yfqp0shy": [
+                TuyaBLESelectMapping(
+                    dp_id=34,
+                    description=SelectEntityDescription(
+                        key="double_verification",
+                        options=[
+                            "Single Unlock",
+                            "Combination Unlock",
+                        ],
+                        entity_category=EntityCategory.CONFIG,
+                    ),
+                ),
+            ],
             "kholoaew": [
                 TuyaBLESelectMapping(
                     dp_id=31,
@@ -449,6 +601,8 @@ def get_mapping_by_device(device: TuyaBLEDevice) -> list[TuyaBLECategorySelectMa
 
 class TuyaBLESelect(TuyaBLEEntity, SelectEntity):
     """Representation of a Tuya BLE select."""
+
+    platform = Platform.SELECT
 
     def __init__(
         self,

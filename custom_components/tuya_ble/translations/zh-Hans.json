@@ -1,0 +1,364 @@
+{
+    "config": {
+        "abort": {
+            "no_unconfigured_devices": "未找到未配置的的设备。"
+        },
+        "error": {
+            "device_not_registered": "设备未在涂鸦云端注册",
+            "invalid_auth": "身份验证无效",
+            "login_error": "登录错误 ({code}): {msg}"
+        },
+        "flow_title": "{name}",
+        "step": {
+            "device": {
+                "data": {
+                    "address": "涂鸦 BLE 设备"
+                },
+                "description": "选择要设置的涂鸦 BLE 设备。设备必须使用手机应用在云端进行注册。最好将设备从涂鸦蓝牙网关（如果有）中解绑。"
+            },
+            "login": {
+                "data": {
+                    "access_id": "涂鸦 IoT Access ID",
+                    "access_secret": "涂鸦 IoT Access Secret",
+                    "country_code": "国家/地区",
+                    "password": "密码",
+                    "username": "账号"
+                },
+                "description": "涂鸦 BLE 需要从涂鸦云端获取加密密钥。几乎所有设备在设置期间只需访问云端一次。\n\n请参考涂鸦集成的文档来检索云端凭据 {url}\n\n输入您的涂鸦凭据。"
+            }
+        }
+    },
+    "entity": {
+        "binary_sensor": {
+            "fault": {
+                "name": "故障"
+            },
+            "lack_water": {
+                "name": "缺水"
+            },
+            "low_battery": {
+                "name": "电量"
+            },
+            "lock_motor_state": {
+                "name": "电机状态"
+            },
+            "low_temp": {
+                "name": "低温"
+            },
+            "motor_fault": {
+                "name": "电机故障"
+            },
+            "sensor_fault": {
+                "name": "传感器故障"
+            }
+        },
+        "button": {
+            "push": {
+                "name": "按下"
+            },
+            "ble_unlock_check": {
+                "name": "解锁"
+            },
+            "bluetooth_unlock": {
+                "name": "解锁"
+            }
+        },
+        "event": {
+            "event": {
+                "name": "事件"
+            }
+        },
+        "number": {
+            "brightness": {
+                "name": "亮度"
+            },
+            "carbon_dioxide_alarm_level": {
+                "name": "报警级别"
+            },
+            "countdown_duration": {
+                "name": "灌溉时长"
+            },
+            "countdown_duration_z1": {
+                "name": "灌溉时长 - 区域 1"
+            },
+            "countdown_duration_z2": {
+                "name": "灌溉时长 - 区域 2"
+            },
+            "countdown": {
+                "name": "灌溉时长"
+            },
+            "down_position": {
+                "name": "下限位置"
+            },
+            "hold_time": {
+                "name": "保持时间"
+            },
+            "program_idle_position": {
+                "name": "空闲位置"
+            },
+            "program_repeats_count": {
+                "name": "重复次数"
+            },
+            "recommended_water_intake": {
+                "name": "推荐摄水量"
+            },
+            "reporting_period": {
+                "name": "上报周期"
+            },
+            "up_position": {
+                "name": "上限位置"
+            },
+            "ble_unlock_check": {
+                "name": "解锁"
+            }
+        },
+        "select": {
+            "beep_volume": {
+                "name": "锁音量"
+            },
+            "language": {
+                "name": "锁语言"
+            },
+            "fingerbot_mode": {
+                "name": "模式",
+                "state": {
+                    "program": "程序",
+                    "push": "按下",
+                    "switch": "开关"
+                }
+            },
+            "weather_delay": {
+                "name": "天气延时"
+            },
+            "smart_weather": {
+                "name": "智能天气"
+            },
+            "reminder_mode": {
+                "name": "提醒模式",
+                "state": {
+                    "interval_reminder": "间隔",
+                    "schedule_reminder": "日程"
+                }
+            },
+            "temperature_unit": {
+                "name": "温度单位"
+            }
+        },
+        "sensor": {
+            "alarm_lock": {
+                "name": "报警",
+                "state": {
+                    "wrong_finger": "指纹错误",
+                    "wrong_password": "密码错误",
+                    "low_battery": "低电量",
+                    "power_off": "关机"
+                }
+            },
+            "power_off": {
+                "name": "关机"
+            },
+            "battery": {
+                "name": "电量"
+            },
+            "battery_charging": {
+                "name": "电池充电",
+                "state": {
+                    "charged": "已充满",
+                    "charging": "正在充电",
+                    "not_charging": "未充电"
+                }
+            },
+            "battery_state": {
+                "name": "电池状态",
+                "state": {
+                    "high": "高",
+                    "low": "低",
+                    "middle": "中",
+                    "normal": "正常"
+                }
+            },
+            "carbon_dioxide": {
+                "name": "二氧化碳"
+            },
+            "carbon_dioxide_alarm": {
+                "name": "二氧化碳浓度",
+                "state": {
+                    "alarm": "报警",
+                    "normal": "正常"
+                }
+            },
+            "day_usage_after_reset": {
+                "name": "重置后的每日用量"
+            },
+            "day_water_usage": {
+                "name": "每日用水量"
+            },
+            "flow_velocity": {
+                "name": "流速"
+            },
+            "lock_door_status": {
+                "name": "门状态",
+                "state": {
+                    "door_status_unknown": "未知",
+                    "door_status_open": "开启",
+                    "door_status_closed": "关闭"
+                }
+            },
+            "humidity": {
+                "name": "湿度"
+            },
+            "low_battery": {
+                "name": "低电量"
+            },
+            "moisture": {
+                "name": "水分"
+            },
+            "work_state": {
+                "name": "工作状态"
+            },
+            "residual_electricity": {
+                "name": "电量"
+            },
+            "signal_strength": {
+                "name": "信号强度"
+            },
+            "temperature": {
+                "name": "温度"
+            },
+            "time_left": {
+                "name": "剩余灌溉时间"
+            },
+            "total_usage_after_reset": {
+                "name": "重置后的总用量"
+            },
+            "use_time_z1": {
+                "name": "上次灌溉时间 - 区域 1"
+            },
+            "use_time_z2": {
+                "name": "上次灌溉时间 - 区域 2"
+            },
+            "use_time": {
+                "name": "累计使用时间"
+            },
+            "use_time_one": {
+                "name": "上次灌溉时间"
+            },
+            "water_intake": {
+                "name": "摄水量"
+            },
+            "water_once": {
+                "name": "上次用水量"
+            },
+            "water_use_data": {
+                "name": "总用水量"
+            },
+            "wrong_finger": {
+                "name": "指纹错误"
+            },
+            "wrong_password": {
+                "name": "密码错误"
+            },
+            "unlock_fingerprint": {
+                "name": "上次使用的指纹"
+            },
+            "unlock_card": {
+                "name": "上次使用的卡片"
+            },
+            "unlock_password": {
+                "name": "上次使用的密码"
+            },
+            "unlock_key": {
+                "name": "上次使用的钥匙"
+            },
+            "unlock_dynamic": {
+                "name": "上次使用的动态密码"
+            },
+            "unlock_ble": {
+                "name": "上次使用的蓝牙"
+            }
+        },
+        "switch": {
+            "antifreeze": {
+                "name": "防冻"
+            },
+            "carbon_dioxide_alarm_switch": {
+                "name": "报警已启用"
+            },
+            "carbon_dioxide_severely_exceed_alarm": {
+                "name": "严重超标报警"
+            },
+            "child_lock": {
+                "name": "童锁"
+            },
+            "lock_motor_state": {
+                "name": "电机状态"
+            },
+            "low_battery_alarm": {
+                "name": "低电量报警"
+            },
+            "manual_control": {
+                "name": "手动控制"
+            },
+            "program": {
+                "name": "程序"
+            },
+            "program_repeat_forever": {
+                "name": "无限重复"
+            },
+            "programming_mode": {
+                "name": "编程模式"
+            },
+            "programming_switch": {
+                "name": "编程开关"
+            },
+            "reverse_positions": {
+                "name": "反向位置"
+            },
+            "switch": {
+                "name": "开关"
+            },
+            "water_scale_proof": {
+                "name": "防垢"
+            },
+            "water_valve": {
+                "name": "灌溉阀"
+            },
+            "water_valve_z1": {
+                "name": "灌溉阀 - 区域 1"
+            },
+            "water_valve_z2": {
+                "name": "灌溉阀 - 区域 2"
+            },
+            "weather_switch": {
+                "name": "天气开关"
+            },
+            "window_check": {
+                "name": "开窗检测"
+            }
+        },
+        "text": {
+            "program": {
+                "name": "程序：位置[/时间];..."
+            }
+        }
+    },
+    "options": {
+        "error": {
+            "device_not_registered": "设备未在涂鸦云端注册",
+            "invalid_auth": "身份验证无效",
+            "login_error": "登录错误 ({code}): {msg}"
+        },
+        "step": {
+            "login": {
+                "data": {
+                    "access_id": "涂鸦 IoT Access ID",
+                    "access_secret": "涂鸦 IoT Access Secret",
+                    "country_code": "国家/地区",
+                    "password": "密码",
+                    "username": "账号"
+                },
+                "description": "请参考涂鸦集成的文档来检索云端凭据 {url}\n\n输入您的涂鸦凭据。"
+            }
+        }
+    }
+}

@@ -18,7 +18,7 @@ from homeassistant.components.climate.const import (
     PRESET_NONE,
 )
 from homeassistant.config_entries import ConfigEntry
-from homeassistant.const import UnitOfTemperature
+from homeassistant.const import UnitOfTemperature, Platform
 from homeassistant.core import HomeAssistant, callback
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator
@@ -105,7 +105,7 @@ mapping: dict[str, TuyaBLECategoryClimateMapping] = {
                     # - [ ] 121 - Historical data (Month-motor opening degree)
                     # - [ ] 122 - Historical data (Year-motor opening degree)
                     # - [ ] 123 - Programming data (Monday)
-                    # - [ ] 124 - Programming data (Tuseday)
+                    # - [ ] 124 - Programming data (Tuesday)
                     # - [ ] 125 - Programming data (Wednesday)
                     # - [ ] 126 - Programming data (Thursday)
                     # - [ ] 127 - Programming data (Friday)
@@ -149,6 +149,8 @@ def get_mapping_by_device(device: TuyaBLEDevice) -> list[TuyaBLECategoryClimateM
 
 class TuyaBLEClimate(TuyaBLEEntity, ClimateEntity):
     """Representation of a Tuya BLE Climate."""
+
+    platform = Platform.CLIMATE
 
     def __init__(
         self,

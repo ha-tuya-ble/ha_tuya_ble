@@ -63,6 +63,11 @@
                 "name": "Unlock"
             }
         },
+        "event": {
+            "event": {
+                "name": "Event"
+            }
+        },
         "number": {
             "brightness": {
                 "name": "Brightness"
@@ -141,7 +146,16 @@
         },
         "sensor": {
             "alarm_lock": {
-                "name": "Alarm"
+                "name": "Alarm",
+                "state": {
+                    "wrong_finger": "Wrong Fingerprint",
+                    "wrong_password": "Wrong Password",
+                    "low_battery": "Low Battery",
+                    "power_off": "Power off"
+                }
+            },
+            "power_off": {
+                "name": "Power off"
             },
             "battery": {
                 "name": "Battery"
@@ -245,8 +259,14 @@
             "unlock_password": {
                 "name": "Last used Password"
             },
+            "unlock_key": {
+                "name": "Last used Key"
+            },
+            "unlock_dynamic": {
+                "name": "Last used Dynamic Password"
+            },
             "unlock_ble": {
-                "name": "Last used BLE"
+                "name": "Last used Bluetooth"
             },
             "unlock_phone_remote": {
                 "name": "Last used remote phone"
