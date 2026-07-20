@@ -69,6 +69,7 @@ _LOGGER = logging.getLogger(__name__)
 STATUS_MAP_WINDOW_CLEANER: dict[str, VacuumActivity] = {
     "standby": VacuumActivity.IDLE,
     "cleaning": VacuumActivity.CLEANING,
+    "smart_clean": VacuumActivity.CLEANING,
     "z_clean": VacuumActivity.CLEANING,
     "n_clean": VacuumActivity.CLEANING,
     "edge_clean": VacuumActivity.CLEANING,
