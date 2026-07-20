@@ -292,8 +292,8 @@ The integration works locally, but connection to Tuya BLE device requires device
       <td>Experimental.</td>
     </tr>
     <tr>
-      <td rowspan="6"><strong>Water valve controller</strong></td>
-      <td rowspan="6"><code>sfkzq</code></td>
+      <td rowspan="7"><strong>Water valve controller</strong></td>
+      <td rowspan="7"><code>sfkzq</code></td>
       <td>Water valve controller</td>
       <td><code>nxquc5lb</code></td>
       <td>—</td>
@@ -322,6 +322,11 @@ The integration works locally, but connection to Tuya BLE device requires device
       <td>Valve controller</td>
       <td><code>svhikeyq</code>, <code>0axr5s0b</code>, <code>d4vpmigg</code></td>
       <td>Also known as YZD05 water valve/irrigation timer.</td>
+    </tr>
+    <tr>
+      <td>HCT-611 Water Timer</td>
+      <td><code>tqzkwarw</code></td>
+      <td>—</td>
     </tr>
     <tr>
       <td rowspan="4"><strong>Lights</strong></td>

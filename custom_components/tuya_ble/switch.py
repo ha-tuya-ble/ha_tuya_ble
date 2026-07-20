@@ -244,6 +244,16 @@ mapping: dict[str, TuyaBLECategorySwitchMapping] = {
                     setter=set_16wgjvck_water_valve,
                 ),
             ],
+            "tqzkwarw": [  # HCT-611 Water Timer
+                TuyaBLESwitchMapping(
+                    dp_id=1,
+                    description=SwitchEntityDescription(
+                        key="water_valve",
+                        icon="mdi:valve",
+                    ),
+                ),
+                TuyaBLEWaterValveWeatherSwitchMapping(dp_id=14),
+            ],
             **dict.fromkeys(
                 ["nxquc5lb", "svhikeyq"],
                 [  # Smart water timer - SOP10

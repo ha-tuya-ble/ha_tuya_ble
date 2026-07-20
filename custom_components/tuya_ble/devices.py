@@ -647,6 +647,9 @@ devices_database: dict[str, TuyaBLECategoryInfo] = {
             "ldcdnigc": TuyaBLEProductInfo(
                 name="ZX-7378 Smart Irrigation Controller",
             ),
+            "tqzkwarw": TuyaBLEProductInfo(
+                name="HCT-611 Water Timer",
+            ),
         },
     ),
     "ggq": TuyaBLECategoryInfo(
