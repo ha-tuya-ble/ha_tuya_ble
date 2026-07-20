@@ -619,14 +619,6 @@ def get_mapping_by_device(device: TuyaBLEDevice) -> list[TuyaBLECategorySelectMa
         if category.mapping is not None:
             return category.mapping
 
-
-    # Fallback: scan all categories by product_id (handles unknown category)
-    for cat_info in mapping.values():
-        if cat_info.products:
-            product_mapping = cat_info.products.get(device.product_id)
-            if product_mapping is not None:
-                return product_mapping
-
     return []
 
 class TuyaBLESelect(TuyaBLEEntity, SelectEntity):
