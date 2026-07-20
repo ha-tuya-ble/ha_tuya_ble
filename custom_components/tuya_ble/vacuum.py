@@ -173,20 +173,6 @@ class TuyaBLECategoryVacuumMapping:
 
 mapping: dict[str, TuyaBLECategoryVacuumMapping] = {
     # ------------------------------------------------------------------
-    # cxjmb – Robotic Window Cleaner
-    # ------------------------------------------------------------------
-    "cxjmb": TuyaBLECategoryVacuumMapping(
-        products={
-            "pnxl0r3l": TuyaBLEVacuumMapping(  # CHYW200.ABIR
-                dp_start_bool=1,  # switch_go (bool)
-                dp_mode=2,  # mode (enum): smart/z_mode/n_mode/edge/spot
-                dp_status=4,  # status (enum, RO)
-                status_map=STATUS_MAP_WINDOW_CLEANER,
-                fan_speed_list=["smart", "z_mode", "n_mode", "edge", "spot"],
-            ),
-        },
-    ),
-    # ------------------------------------------------------------------
     # Add more categories below as needed, for example:
     #
     # "sweeprobotv2": TuyaBLECategoryVacuumMapping(
