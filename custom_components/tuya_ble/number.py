@@ -556,6 +556,36 @@ mapping: dict[str, TuyaBLECategoryNumberMapping] = {
                     ),
                 ),
             ],
+            **dict.fromkeys(
+                ["vyfoip9h", "1jvidcsf"],
+                [
+                    TuyaBLENumberMapping(
+                        dp_id=23,
+                        description=NumberEntityDescription(
+                            key="temperature_calibration",
+                            icon="mdi:thermometer-lines",
+                            native_max_value=2.0,
+                            native_min_value=-2.0,
+                            native_unit_of_measurement=UnitOfTemperature.CELSIUS,
+                            native_step=0.1,
+                            entity_category=EntityCategory.CONFIG,
+                        ),
+                        coefficient=10.0,
+                    ),
+                    TuyaBLENumberMapping(
+                        dp_id=24,
+                        description=NumberEntityDescription(
+                            key="humidity_calibration",
+                            icon="mdi:water-check",
+                            native_max_value=10,
+                            native_min_value=-10,
+                            native_unit_of_measurement=PERCENTAGE,
+                            native_step=1,
+                            entity_category=EntityCategory.CONFIG,
+                        ),
+                    ),
+                ],
+            ),
         },
     ),
     "znhsb": TuyaBLECategoryNumberMapping(

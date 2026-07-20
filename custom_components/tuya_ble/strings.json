@@ -69,11 +69,17 @@
             }
         },
         "number": {
+            "ble_unlock_check": {
+                "name": "Unlock"
+            },
             "brightness": {
                 "name": "Brightness"
             },
             "carbon_dioxide_alarm_level": {
                 "name": "Alarm level"
+            },
+            "countdown": {
+                "name": "Irrigation duration"
             },
             "countdown_duration": {
                 "name": "Irrigation duration"
@@ -84,14 +90,14 @@
             "countdown_duration_z2": {
                 "name": "Irrigation duration - Zone 2"
             },
-            "countdown": {
-                "name": "Irrigation duration"
-            },
             "down_position": {
                 "name": "Down position"
             },
             "hold_time": {
                 "name": "Hold time"
+            },
+            "humidity_calibration": {
+                "name": "Humidity calibration"
             },
             "program_idle_position": {
                 "name": "Idle position"
@@ -105,11 +111,11 @@
             "reporting_period": {
                 "name": "Reporting period"
             },
+            "temperature_calibration": {
+                "name": "Temperature calibration"
+            },
             "up_position": {
                 "name": "Up position"
-            },
-            "ble_unlock_check": {
-                "name": "Unlock"
             }
         },
         "select": {
@@ -354,4 +360,3 @@
         }
     }
 }
-
