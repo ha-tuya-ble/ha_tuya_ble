@@ -281,6 +281,15 @@
             },
             "unlock_ble": {
                 "name": "Último Bluetooth utilizado"
+            },
+            "unlock_app": {
+                "name": "Último aplicativo utilizado"
+            },
+            "unlock_voice": {
+                "name": "Último comando de voz utilizado"
+            },
+            "unlock_temp_pwd": {
+                "name": "Última senha temporária utilizada"
             }
         },
         "switch": {

@@ -439,6 +439,11 @@ devices_database: dict[str, TuyaBLECategoryInfo] = {
             "yfqp0shy": TuyaBLEProductInfo(
                 name="Gainsborough Liberty BLE Lock (GGC01HA)", lock=1
             ),
+            "qicggi0m": TuyaBLEProductInfo(
+                name="XCase NX-4964 Lock Box",
+                manufacturer="XCase",
+                lock=1,
+            ),
         },
     ),
     "szjqr": TuyaBLECategoryInfo(
