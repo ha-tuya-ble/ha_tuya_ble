@@ -475,69 +475,69 @@
       }
     },
     "switch": {
-      "antifreeze": {
-          "name": "Antifreeze"
-      },
-      "carbon_dioxide_alarm_switch": {
-          "name": "Alarm enabled"
-      },
-      "carbon_dioxide_severely_exceed_alarm": {
-          "name": "Severely exceed alarm"
-      },
-      "child_lock": {
-          "name": "Child Lock"
-      },
-      "lock_motor_state": {
-          "name": "Motor State"
-      },
-      "low_battery_alarm": {
-          "name": "Low battery alarm"
-      },
-      "manual_control": {
-          "name": "Manual control"
-      },
-      "program": {
-          "name": "Program"
-      },
-      "program_repeat_forever": {
-          "name": "Repeat forever"
-      },
-      "programming_mode": {
-          "name": "Programming Mode"
-      },
-      "programming_switch": {
-          "name": "Programming Switch"
-      },
-      "reverse_positions": {
-          "name": "Reverse positions"
-      },
-      "switch": {
-          "name": "Switch"
-      },
-      "water_scale_proof": {
-          "name": "Anti-scale"
-      },
-      "water_valve": {
-          "name": "Irrigation valve"
-      },
-      "water_valve_z1": {
-          "name": "Irrigation valve - Zone 1"
-      },
-      "water_valve_z2": {
-          "name": "Irrigation valve - Zone 2"
-      },
-      "weather_switch": {
-          "name": "Weather switch"
-      },
-      "window_check": {
-          "name": "Window Check"
-      },
-      "window_cleaner_switch": {
-          "name": "Cleaning"
-      },
-      "water_auto": {
-          "name": "Auto water spray"
-      }
+        "antifreeze": {
+            "name": "Antifreeze"
+        },
+        "carbon_dioxide_alarm_switch": {
+            "name": "Alarm enabled"
+        },
+        "carbon_dioxide_severely_exceed_alarm": {
+            "name": "Severely exceed alarm"
+        },
+        "child_lock": {
+            "name": "Child Lock"
+        },
+        "lock_motor_state": {
+            "name": "Motor State"
+        },
+        "low_battery_alarm": {
+            "name": "Low battery alarm"
+        },
+        "manual_control": {
+            "name": "Manual control"
+        },
+        "program": {
+            "name": "Program"
+        },
+        "program_repeat_forever": {
+            "name": "Repeat forever"
+        },
+        "programming_mode": {
+            "name": "Programming Mode"
+        },
+        "programming_switch": {
+            "name": "Programming Switch"
+        },
+        "reverse_positions": {
+            "name": "Reverse positions"
+        },
+        "switch": {
+            "name": "Switch"
+        },
+        "water_scale_proof": {
+            "name": "Anti-scale"
+        },
+        "water_valve": {
+            "name": "Irrigation valve"
+        },
+        "water_valve_z1": {
+            "name": "Irrigation valve - Zone 1"
+        },
+        "water_valve_z2": {
+            "name": "Irrigation valve - Zone 2"
+        },
+        "weather_switch": {
+            "name": "Weather switch"
+        },
+        "window_check": {
+            "name": "Window Check"
+        },
+        "window_cleaner_switch": {
+            "name": "Cleaning"
+        },
+        "water_auto": {
+            "name": "Auto water spray"
+        }
     },
     "text": {
         "program": {
@@ -552,18 +552,18 @@
   },
     "options": {
         "error": {
-          "device_not_registered": "Device is not registered in Tuya cloud",
-          "invalid_auth": "Invalid authentication",
-          "login_error": "Login error ({code}): {msg}"
+            "device_not_registered": "Device is not registered in Tuya cloud",
+            "invalid_auth": "Invalid authentication",
+            "login_error": "Login error ({code}): {msg}"
         },
         "step": {
             "login": {
                 "data": {
-                      "access_id": "Tuya IoT Access ID",
-                      "access_secret": "Tuya IoT Access Secret",
-                      "country_code": "Country",
-                      "password": "Password",
-                      "username": "Account"
+                    "access_id": "Tuya IoT Access ID",
+                    "access_secret": "Tuya IoT Access Secret",
+                    "country_code": "Country",
+                    "password": "Password",
+                    "username": "Account"
                 },
                 "description": "Refer to documentation of Tuya integration to retrieve the cloud credentials {url}\n\nEnter your Tuya credentials."
             }
