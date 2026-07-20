@@ -707,6 +707,28 @@ mapping: dict[str, TuyaBLECategorySwitchMapping] = {
             ),
         },
     ),
+    "cxjmb": TuyaBLECategorySwitchMapping(
+        products={
+            "pnxl0r3l": [  # Window Cleaner Robot
+                TuyaBLESwitchMapping(
+                    dp_id=1,
+                    description=SwitchEntityDescription(
+                        key="window_cleaner_switch",
+                        icon="mdi:window-open",
+                        device_class=SwitchDeviceClass.SWITCH,
+                    ),
+                ),
+                TuyaBLESwitchMapping(
+                    dp_id=103,
+                    description=SwitchEntityDescription(
+                        key="water_auto",
+                        icon="mdi:water-auto",
+                        entity_category=EntityCategory.CONFIG,
+                    ),
+                ),
+            ],
+        },
+    ),
 }
 
 

@@ -69,11 +69,17 @@
             }
         },
         "number": {
+            "ble_unlock_check": {
+                "name": "Sblocca"
+            },
             "brightness": {
                 "name": "Luminosità"
             },
             "carbon_dioxide_alarm_level": {
                 "name": "Livello d'allarme"
+            },
+            "countdown": {
+                "name": "Durata irrigazione"
             },
             "countdown_duration": {
                 "name": "Durata irrigazione"
@@ -84,14 +90,14 @@
             "countdown_duration_z2": {
                 "name": "Durata irrigazione - Zona 2"
             },
-            "countdown": {
-                "name": "Durata irrigazione"
-            },
             "down_position": {
                 "name": "Posizione giù"
             },
             "hold_time": {
                 "name": "Tempo di mantenimento"
+            },
+            "humidity_calibration": {
+                "name": "Calibrazione dell'umidità"
             },
             "program_idle_position": {
                 "name": "Posizione di riposo"
@@ -105,11 +111,11 @@
             "reporting_period": {
                 "name": "Periodo di segnalazione"
             },
+            "temperature_calibration": {
+                "name": "Calibrazione della temperatura"
+            },
             "up_position": {
                 "name": "Posizione su"
-            },
-            "ble_unlock_check": {
-                "name": "Sblocca"
             }
         },
         "select": {
@@ -339,6 +345,11 @@
         "text": {
             "program": {
                 "name": "Programma: posizione[/tempo];..."
+            }
+        },
+        "vacuum": {
+            "vacuum": {
+                "name": "Lavavetri"
             }
         }
     },

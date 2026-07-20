@@ -83,8 +83,8 @@ The integration works locally, but connection to Tuya BLE device requires device
       <td>—</td>
     </tr>
     <tr>
-      <td rowspan="5"><strong>Temperature and humidity sensors</strong></td>
-      <td rowspan="5"><code>wsdcg</code>, <code>zwjcy</code></td>
+      <td rowspan="6"><strong>Temperature and humidity sensors</strong></td>
+      <td rowspan="6"><code>wsdcg</code>, <code>zwjcy</code></td>
       <td>Soil moisture sensor</td>
       <td><code>ojzlzzsw</code></td>
       <td>—</td>
@@ -105,6 +105,11 @@ The integration works locally, but connection to Tuya BLE device requires device
       <td>—</td>
     </tr>
     <tr>
+      <td>TH05 Temperature Sensor</td>
+      <td><code>vyfoip9h</code>, <code>1jvidcsf</code></td>
+      <td>—</td>
+    </tr>
+    <tr>
       <td>Soil Thermo-Hygrometer</td>
       <td><code>tv6peegl</code></td>
       <td>—</td>
@@ -117,13 +122,8 @@ The integration works locally, but connection to Tuya BLE device requires device
       <td>—</td>
     </tr>
     <tr>
-<<<<<<< HEAD
-      <td rowspan="14"><strong>Smart Locks</strong></td>
-      <td rowspan="14"><code>ms</code>, <code>jtmspro</code></td>
-=======
       <td rowspan="19"><strong>Smart Locks</strong></td>
       <td rowspan="19"><code>ms</code>, <code>jtmspro</code></td>
->>>>>>> origin/main
       <td>Smart Lock</td>
       <td><code>ludzroix</code>, <code>isk2p555</code>, <code>gumrixyt</code>, <code>uamrw6h3</code>, <code>sidhzylo</code>, <code>mqc2hevy</code>, <code>7a4xvbtt</code></td>
       <td>—</td>
@@ -214,13 +214,13 @@ The integration works locally, but connection to Tuya BLE device requires device
       <td>—</td>
     </tr>
     <tr>
-<<<<<<< HEAD
       <td>Drawer Lock CTL20H</td>
       <td><code>y2yaegze</code></td>
-=======
+      <td>—</td>
+    </tr>
+    <tr>
       <td>Gainsborough Liberty BLE Lock (GGC01HA)</td>
       <td><code>yfqp0shy</code></td>
->>>>>>> origin/main
       <td>—</td>
     </tr>
     <tr>
