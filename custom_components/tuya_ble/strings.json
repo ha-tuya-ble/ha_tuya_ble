@@ -362,10 +362,10 @@
         "vacuum": {
             "vacuum": {
                 "name": "Window Cleaner"
+            },
+            "clean_time": {
+                "name": "Clean time"
             }
-        },
-        "clean_time": {
-            "name": "Clean time"
         }
     },
     "options": {
