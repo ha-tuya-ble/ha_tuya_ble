@@ -100,6 +100,18 @@ def battery_enum_getter(self: TuyaBLESensor) -> None:
         self._attr_native_value = datapoint.value * 20.0
 
 
+def bstuokey_battery_getter(self: TuyaBLESensor) -> None:
+    """Get battery percentage from string values for BSTUOKEY."""
+    datapoint = self._device.datapoints[9]
+    if datapoint and datapoint.value is not None:
+        self._attr_native_value = {
+            "high": 90,
+            "medium": 60,
+            "low": 30,
+            "poweroff": 0,
+        }.get(datapoint.value)
+
+
 @dataclass
 class TuyaBLECategorySensorMapping:
     """Models a dict of products and their mappings"""
@@ -312,6 +324,28 @@ mapping: dict[str, TuyaBLECategorySensorMapping] = {
                         icon="mdi:fingerprint",
                         suggested_display_precision=0,
                         entity_category=EntityCategory.DIAGNOSTIC,
+                    ),
+                ),
+            ],
+            "kpn4zaf7": [
+                TuyaBLEAlarmLockStateMapping(dp_id=21),
+                TuyaBLEBatteryMapping(
+                    dp_id=9,
+                    getter=bstuokey_battery_getter,
+                    dp_type=TuyaBLEDataPointType.DT_STRING,
+                ),
+                TuyaBLESensorMapping(
+                    dp_id=15,  # Retrieve last card used
+                    description=SensorEntityDescription(
+                        key="unlock_card",
+                        icon="mdi:nfc-variant",
+                    ),
+                ),
+                TuyaBLESensorMapping(
+                    dp_id=19,  # Retrieve last bluetooth unlock used
+                    description=SensorEntityDescription(
+                        key="unlock_ble",
+                        icon="mdi:bluetooth",
                     ),
                 ),
             ],
