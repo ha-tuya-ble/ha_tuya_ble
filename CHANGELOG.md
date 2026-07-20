@@ -5,6 +5,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog],
 and this project adheres to [Semantic Versioning].
 
+## [0.7.1](https://github.com/ha-tuya-ble/ha_tuya_ble/compare/0.7.0...v0.7.1) (2026-07-20)
+
+
+### Bug Fixes
+
+* Update CHANGELOG for version 0.3.1 (and attempt to get release please happy) ([#240](https://github.com/ha-tuya-ble/ha_tuya_ble/issues/240)) ([2d66b04](https://github.com/ha-tuya-ble/ha_tuya_ble/commit/2d66b04ef4d665703e148a221db2b03667653b5f))
+* Update release version ([09517ce](https://github.com/ha-tuya-ble/ha_tuya_ble/commit/09517cedf7521d829e047fcf31fd71be282e3420))
+* Update workflow token ([17b90eb](https://github.com/ha-tuya-ble/ha_tuya_ble/commit/17b90eb6ddfbfc81fab5cba36f0b1a4246414ae9))
+
 ## [0.3.1]
 
 * Add hassfest validation by @CloCkWeRX in https://github.com/ha-tuya-ble/ha_tuya_ble/pull/36
