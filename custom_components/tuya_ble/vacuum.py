@@ -99,7 +99,6 @@ STATUS_MAP_ROBOT_VACUUM: dict[str, VacuumActivity] = {
 }
 
 
-
 @dataclass
 class TuyaBLEVacuumMapping:
     """Defines how a Tuya BLE vacuum device maps to HA vacuum entity.
@@ -177,6 +176,7 @@ mapping: dict[str, TuyaBLECategoryVacuumMapping] = {
         },
     ),
 }
+
 
 async def async_setup_entry(
     hass: HomeAssistant,
