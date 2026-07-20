@@ -575,6 +575,8 @@ devices_database: dict[str, TuyaBLECategoryInfo] = {
             "vlzqwckk": TuyaBLEProductInfo(name="Temperature Humidity Sensor"),
             "tr0kabuq": TuyaBLEProductInfo(name="Temperature Humidity Sensor"),
             "6lbesej0": TuyaBLEProductInfo(name="Temperature Humidity Sensor SS302"),
+            "vyfoip9h": TuyaBLEProductInfo(name="Temperature Humidity Sensor"),
+            "1jvidcsf": TuyaBLEProductInfo(name="Temperature Humidity Sensor"),
         },
     ),
     "znhsb": TuyaBLECategoryInfo(
@@ -685,6 +687,13 @@ devices_database: dict[str, TuyaBLECategoryInfo] = {
             "dy4dh1q0": TuyaBLEProductInfo(name="AOK AM24 Venetian Blinds Motor"),
             "v3fzfd2y": TuyaBLEProductInfo(name="AOK AM25 Roller Blinds Motor"),
         }
+    ),
+    "cxjmb": TuyaBLECategoryInfo(
+        products={
+            "pnxl0r3l": TuyaBLEProductInfo(
+                name="Window Cleaner Robot",
+            ),
+        },
     ),
     "zwjcy": TuyaBLECategoryInfo(
         products={

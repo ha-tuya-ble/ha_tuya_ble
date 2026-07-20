@@ -63,12 +63,23 @@
                 "name": "Entriegeln"
             }
         },
+        "event": {
+            "event": {
+                "name": "Ereignis"
+            }
+        },
         "number": {
+            "ble_unlock_check": {
+                "name": "Entriegeln"
+            },
             "brightness": {
                 "name": "Helligkeit"
             },
             "carbon_dioxide_alarm_level": {
                 "name": "Alarmstufe"
+            },
+            "countdown": {
+                "name": "Bewässerungsdauer"
             },
             "countdown_duration": {
                 "name": "Bewässerungsdauer"
@@ -79,14 +90,14 @@
             "countdown_duration_z2": {
                 "name": "Bewässerungsdauer - Zone 2"
             },
-            "countdown": {
-                "name": "Bewässerungsdauer"
-            },
             "down_position": {
                 "name": "Untere Position"
             },
             "hold_time": {
                 "name": "Haltezeit"
+            },
+            "humidity_calibration": {
+                "name": "Luftfeuchtigkeitskalibrierung"
             },
             "program_idle_position": {
                 "name": "Ruheposition"
@@ -100,11 +111,11 @@
             "reporting_period": {
                 "name": "Berichtszeitraum"
             },
+            "temperature_calibration": {
+                "name": "Temperaturkalibrierung"
+            },
             "up_position": {
                 "name": "Obere Position"
-            },
-            "ble_unlock_check": {
-                "name": "Entriegeln"
             }
         },
         "select": {
@@ -261,6 +272,15 @@
             },
             "unlock_password": {
                 "name": "Zuletzt verwendetes Passwort"
+            },
+            "unlock_key": {
+                "name": "Zuletzt verwendeter Schlüssel"
+            },
+            "unlock_dynamic": {
+                "name": "Zuletzt verwendetes dynamisches Passwort"
+            },
+            "unlock_ble": {
+                "name": "Zuletzt verwendetes Bluetooth"
             }
         },
         "switch": {
@@ -325,6 +345,11 @@
         "text": {
             "program": {
                 "name": "Programm: Position[/Zeit];..."
+            }
+        },
+        "vacuum": {
+            "vacuum": {
+                "name": "Fensterreiniger"
             }
         }
     },

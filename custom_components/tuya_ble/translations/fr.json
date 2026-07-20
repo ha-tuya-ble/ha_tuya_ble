@@ -63,12 +63,23 @@
                 "name": "Déverrouiller"
             }
         },
+        "event": {
+            "event": {
+                "name": "Événement"
+            }
+        },
         "number": {
+            "ble_unlock_check": {
+                "name": "Déverrouiller"
+            },
             "brightness": {
                 "name": "Luminosité"
             },
             "carbon_dioxide_alarm_level": {
                 "name": "Niveau d'alarme"
+            },
+            "countdown": {
+                "name": "Durée d'arrosage"
             },
             "countdown_duration": {
                 "name": "Durée d'arrosage"
@@ -79,14 +90,14 @@
             "countdown_duration_z2": {
                 "name": "Durée d'arrosage - Zone 2"
             },
-            "countdown": {
-                "name": "Durée d'arrosage"
-            },
             "down_position": {
                 "name": "Position basse"
             },
             "hold_time": {
                 "name": "Temps de maintien"
+            },
+            "humidity_calibration": {
+                "name": "Calibrage de l'humidité"
             },
             "program_idle_position": {
                 "name": "Position de repos"
@@ -100,11 +111,11 @@
             "reporting_period": {
                 "name": "Période de rapport"
             },
+            "temperature_calibration": {
+                "name": "Calibrage de la température"
+            },
             "up_position": {
                 "name": "Position haute"
-            },
-            "ble_unlock_check": {
-                "name": "Déverrouiller"
             }
         },
         "select": {
@@ -261,6 +272,15 @@
             },
             "unlock_password": {
                 "name": "Dernier mot de passe utilisé"
+            },
+            "unlock_key": {
+                "name": "Dernière clé utilisée"
+            },
+            "unlock_dynamic": {
+                "name": "Dernier mot de passe dynamique utilisé"
+            },
+            "unlock_ble": {
+                "name": "Dernier Bluetooth utilisé"
             }
         },
         "switch": {
@@ -325,6 +345,11 @@
         "text": {
             "program": {
                 "name": "Programme : position[/temps] ; ..."
+            }
+        },
+        "vacuum": {
+            "vacuum": {
+                "name": "Nettoyeur de vitres"
             }
         }
     },

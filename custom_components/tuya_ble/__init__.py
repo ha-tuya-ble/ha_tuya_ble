@@ -32,6 +32,7 @@ PLATFORMS: list[Platform] = [
     Platform.TEXT,
     Platform.COVER,
     Platform.EVENT,
+    Platform.VACUUM,
 ]
 
 _LOGGER = logging.getLogger(__name__)
