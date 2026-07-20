@@ -1,3 +1,4 @@
 {
+  "include-v-in-tag": false,
   ".": "0.7.1"
 }
