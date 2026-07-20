@@ -1,164 +1,164 @@
 {
-  "config": {
-    "abort": {
-      "no_unconfigured_devices": "No unconfigured devices found."
-    },
-    "error": {
-      "device_not_registered": "Device is not registered in Tuya cloud",
-      "invalid_auth": "Invalid authentication",
-      "login_error": "Login error ({code}): {msg}"
-    },
-    "flow_title": "{name}",
-    "step": {
-      "device": {
-        "data": {
-          "address": "Tuya BLE device"
+    "config": {
+        "abort": {
+            "no_unconfigured_devices": "No unconfigured devices found."
         },
-        "description": "Select Tuya BLE device to setup. Device must be registered in the cloud using the mobile application. It's better to unbind the device from Tuya Bluetooth gateway, if any."
-      },
-      "login": {
-        "data": {
-          "access_id": "Tuya IoT Access ID",
-          "access_secret": "Tuya IoT Access Secret",
-          "country_code": "Country",
-          "password": "Password",
-          "username": "Account"
+        "error": {
+            "device_not_registered": "Device is not registered in Tuya cloud",
+            "invalid_auth": "Invalid authentication",
+            "login_error": "Login error ({code}): {msg}"
         },
-        "description": "Tuya BLE requires obtaining encryption key from Tuya cloud. Almost all devices only need to access the cloud once during setup.\n\nRefer to documentation of Tuya integration to retrieve the cloud credentials {url}\n\nEnter your Tuya credentials."
-      }
-    }
-  },
-  "entity": {
-    "binary_sensor": {
-      "fault": {
-        "name": "Fault"
-      },
-      "lack_water": {
-        "name": "Lack of water"
-      },
-      "low_battery": {
-        "name": "Battery"
-      },
-      "lock_motor_state": {
-        "name": "Motor State"
-      },
-      "low_temp": {
-        "name": "Low temperature"
-      },
-      "motor_fault": {
-        "name": "Motor fault"
-      },
-      "sensor_fault": {
-        "name": "Sensor fault"
-      }
+        "flow_title": "{name}",
+        "step": {
+            "device": {
+                "data": {
+                    "address": "Tuya BLE device"
+                },
+                "description": "Select Tuya BLE device to setup. Device must be registered in the cloud using the mobile application. It's better to unbind the device from Tuya Bluetooth gateway, if any."
+            },
+            "login": {
+                "data": {
+                    "access_id": "Tuya IoT Access ID",
+                    "access_secret": "Tuya IoT Access Secret",
+                    "country_code": "Country",
+                    "password": "Password",
+                    "username": "Account"
+                },
+                "description": "Tuya BLE requires obtaining encryption key from Tuya cloud. Almost all devices only need to access the cloud once during setup.\n\nRefer to documentation of Tuya integration to retrieve the cloud credentials {url}\n\nEnter your Tuya credentials."
+            }
+        }
     },
-    "button": {
-      "push": {
-        "name": "Push"
+    "entity": {
+        "binary_sensor": {
+            "fault": {
+                "name": "Fault"
+            },
+            "lack_water": {
+                "name": "Lack of water"
+            },
+            "low_battery": {
+                "name": "Battery"
+            },
+            "lock_motor_state": {
+                "name": "Motor State"
+            },
+            "low_temp": {
+                "name": "Low temperature"
+            },
+            "motor_fault": {
+                "name": "Motor fault"
+            },
+            "sensor_fault": {
+                "name": "Sensor fault"
+            }
       },
-      "ble_unlock_check": {
-        "name": "Unlock"
+      "button": {
+          "push": {
+            "name": "Push"
+          },
+          "ble_unlock_check": {
+            "name": "Unlock"
+          },
+          "bluetooth_unlock": {
+            "name": "Unlock"
+          }
       },
-      "bluetooth_unlock": {
-        "name": "Unlock"
-      }
-    },
-    "number": {
-      "brightness": {
-        "name": "Brightness"
+      "number": {
+          "brightness": {
+              "name": "Brightness"
+          },
+          "carbon_dioxide_alarm_level": {
+              "name": "Alarm level"
+          },
+          "countdown_duration": {
+              "name": "Irrigation duration"
+          },
+          "countdown_duration_z1": {
+              "name": "Irrigation duration - Zone 1"
+          },
+          "countdown_duration_z2": {
+              "name": "Irrigation duration - Zone 2"
+          },
+          "countdown": {
+              "name": "Irrigation duration"
+          },
+          "down_position": {
+              "name": "Down position"
+          },
+          "hold_time": {
+              "name": "Hold time"
+          },
+          "program_idle_position": {
+              "name": "Idle position"
+          },
+          "program_repeats_count": {
+              "name": "Repeats count"
+          },
+          "recommended_water_intake": {
+              "name": "Recommended water intake"
+          },
+          "reporting_period": {
+              "name": "Reporting period"
+          },
+          "up_position": {
+              "name": "Up position"
+          },
+          "ble_unlock_check": {
+              "name": "Unlock"
+          }
       },
-      "carbon_dioxide_alarm_level": {
-        "name": "Alarm level"
-      },
-      "countdown_duration": {
-        "name": "Irrigation duration"
-      },
-      "countdown_duration_z1": {
-        "name": "Irrigation duration - Zone 1"
-      },
-      "countdown_duration_z2": {
-        "name": "Irrigation duration - Zone 2"
-      },
-      "countdown": {
-        "name": "Irrigation duration"
-      },
-      "down_position": {
-        "name": "Down position"
-      },
-      "hold_time": {
-        "name": "Hold time"
-      },
-      "program_idle_position": {
-        "name": "Idle position"
-      },
-      "program_repeats_count": {
-        "name": "Repeats count"
-      },
-      "recommended_water_intake": {
-        "name": "Recommended water intake"
-      },
-      "reporting_period": {
-        "name": "Reporting period"
-      },
-      "up_position": {
-        "name": "Up position"
-      },
-      "ble_unlock_check": {
-        "name": "Unlock"
-      }
-    },
-    "select": {
-      "beep_volume": {
-        "name": "Lock Volume"
-      },
-      "language": {
-        "name": "Lock Language"
-      },
-      "fingerbot_mode": {
-        "name": "Mode",
-        "state": {
-          "program": "Program",
-          "push": "Push",
-          "switch": "Switch"
+      "select": {
+        "beep_volume": {
+          "name": "Lock Volume"
+        },
+        "language": {
+          "name": "Lock Language"
+        },
+        "fingerbot_mode": {
+          "name": "Mode",
+          "state": {
+            "program": "Program",
+            "push": "Push",
+            "switch": "Switch"
+          }
+        },
+        "weather_delay": {
+          "name": "Weather delay"
+        },
+        "smart_weather": {
+          "name": "Smart weather"
+        },
+        "reminder_mode": {
+          "name": "Reminder mode",
+          "state": {
+            "interval_reminder": "Interval",
+            "schedule_reminder": "Schedule"
+          }
+        },
+        "temperature_unit": {
+          "name": "Temperature unit"
+        },
+        "mode": {
+          "name": "Cleaning mode",
+          "state": {
+            "smart": "Smart",
+            "z_mode": "Z-Mode",
+            "n_mode": "N-Mode",
+            "edge": "Edge",
+            "spot": "Spot"
+          }
+        },
+        "direction_control": {
+          "name": "Direction",
+          "state": {
+            "forward": "Forward",
+            "backward": "Backward",
+            "turn_left": "Turn left",
+            "turn_right": "Turn right",
+            "stop": "Stop"
+          }
         }
       },
-      "weather_delay": {
-        "name": "Weather delay"
-      },
-      "smart_weather": {
-        "name": "Smart weather"
-      },
-      "reminder_mode": {
-        "name": "Reminder mode",
-        "state": {
-          "interval_reminder": "Interval",
-          "schedule_reminder": "Schedule"
-        }
-      },
-      "temperature_unit": {
-        "name": "Temperature unit"
-      },
-      "mode": {
-        "name": "Cleaning mode",
-        "state": {
-          "smart": "Smart",
-          "z_mode": "Z-Mode",
-          "n_mode": "N-Mode",
-          "edge": "Edge",
-          "spot": "Spot"
-        }
-      },
-      "direction_control": {
-        "name": "Direction",
-        "state": {
-          "forward": "Forward",
-          "backward": "Backward",
-          "turn_left": "Turn left",
-          "turn_right": "Turn right",
-          "stop": "Stop"
-        }
-      }
-    },
     "entity": {
         "binary_sensor": {
             "fault": {
