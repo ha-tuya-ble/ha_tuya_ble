@@ -10,4 +10,4 @@ When adding a new device, ensure that strings are translated.
 Ensure that
 * `black` is run
 * JSON is well formatted, valid and consistent with existing conventions
-* Commit messages follow Conventional Commits style.
+* Commit messages follow Conventional Commits style. As new devices are common, use "fix:" when adding a basic mapping
