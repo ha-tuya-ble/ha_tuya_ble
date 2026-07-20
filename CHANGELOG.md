@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog],
 and this project adheres to [Semantic Versioning].
 
+## [0.7.2](https://github.com/ha-tuya-ble/ha_tuya_ble/compare/0.7.1...0.7.2) (2026-07-20)
+
+
+### Bug Fixes
+
+* Add support for Drawer Lock CTL20H (y2yaegze) - Experimental ([#166](https://github.com/ha-tuya-ble/ha_tuya_ble/issues/166)) ([de320e0](https://github.com/ha-tuya-ble/ha_tuya_ble/commit/de320e0417dd5b8e779a7e58f36a4a143a36b2e3))
+* Support XCase NX-4964 Lock Box (qicggi0m) - Experimental ([#246](https://github.com/ha-tuya-ble/ha_tuya_ble/issues/246)) ([71b4980](https://github.com/ha-tuya-ble/ha_tuya_ble/commit/71b49808850b23b4017e5b5d35a6ce247735826a))
+
 ## [0.7.1](https://github.com/ha-tuya-ble/ha_tuya_ble/releases/tag/0.7.1) - 2026-07-20
 
 ### Features

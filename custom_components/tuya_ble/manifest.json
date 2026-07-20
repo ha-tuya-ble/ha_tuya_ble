@@ -26,5 +26,5 @@
     "tuya-iot-py-sdk==0.6.6",
     "pycountry>23.0.0"
   ],
-  "version": "0.7.1"
+  "version": "0.7.2"
 }
