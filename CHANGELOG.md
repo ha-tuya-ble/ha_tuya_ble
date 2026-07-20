@@ -160,7 +160,7 @@ and this project adheres to [Semantic Versioning].
 ### What's Changed
 * Add support for AOK AM24 Venetian Blinds Motor (product_id 'dy4dh1q0') - Experimental by @google-labs-jules[bot] in https://github.com/ha-tuya-ble/ha_tuya_ble/pull/85
 * Add generic smart lock 'sidhzylo' based on @akelmanson 's work by @CloCkWeRX in https://github.com/ha-tuya-ble/ha_tuya_ble/pull/104
-* Create CONTIBUTING.md by @CloCkWeRX in https://github.com/ha-tuya-ble/ha_tuya_ble/pull/77
+* Create CONTRIBUTING.md by @CloCkWeRX in https://github.com/ha-tuya-ble/ha_tuya_ble/pull/77
 * feat: Add support for SRB-PM01 soil moisture device by @google-labs-jules[bot] in https://github.com/ha-tuya-ble/ha_tuya_ble/pull/91
 * Add support for MHO-C402 'tr0kabuq' - experimental by @CloCkWeRX in https://github.com/ha-tuya-ble/ha_tuya_ble/pull/106
 * Add experimental support for RGB Strip Light '0qgrjxum' by @CloCkWeRX in https://github.com/ha-tuya-ble/ha_tuya_ble/pull/107
@@ -238,7 +238,7 @@ Review and consolidation of all of the active forks.
 ## [0.3.3](https://github.com/ha-tuya-ble/ha_tuya_ble/releases/tag/0.3.3) - 2025-07-08
 
 ### What's Changed
-* Add support for Parkside Performace Smart Battery 4Ah and 8Ah by @Koky05 in https://github.com/ha-tuya-ble/ha_tuya_ble/pull/54
+* Add support for Parkside Performance Smart Battery 4Ah and 8Ah by @Koky05 in https://github.com/ha-tuya-ble/ha_tuya_ble/pull/54
 
 ### New Contributors
 * @Koky05 made their first contribution in https://github.com/ha-tuya-ble/ha_tuya_ble/pull/54
@@ -278,7 +278,7 @@ Be warned, this is still very much an unstable quality project
 #### Code style and cleanup:
 * Remove dud constants by @CloCkWeRX in https://github.com/ha-tuya-ble/ha_tuya_ble/pull/8
 * Fix spelling by @CloCkWeRX in https://github.com/ha-tuya-ble/ha_tuya_ble/pull/9
-* Add debugging for when a light device isnt found by @CloCkWeRX in https://github.com/ha-tuya-ble/ha_tuya_ble/pull/12
+* Add debugging for when a light device isn't found by @CloCkWeRX in https://github.com/ha-tuya-ble/ha_tuya_ble/pull/12
 * Fix ATTR_COLOR_TEMP by @CloCkWeRX in https://github.com/ha-tuya-ble/ha_tuya_ble/pull/14
 * Smartoctopus's Fork - merge (1 of many) by @CloCkWeRX in https://github.com/ha-tuya-ble/ha_tuya_ble/pull/15
 * Smartoctopus merge (part 2 of many) by @CloCkWeRX in https://github.com/ha-tuya-ble/ha_tuya_ble/pull/16
