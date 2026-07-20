@@ -244,6 +244,15 @@ mapping: dict[str, TuyaBLECategoryButtonMapping] = {
                     # ),
                 ],
             ),
+            "kpn4zaf7": [
+                TuyaBLEButtonMapping(
+                    dp_id=71,  # BLE unlock check
+                    description=ButtonEntityDescription(
+                        key="ble_unlock_check",
+                        icon="mdi:lock-open-variant-outline",
+                    ),
+                ),
+            ],
         }
     ),
 }

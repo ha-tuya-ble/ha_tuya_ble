@@ -402,6 +402,11 @@ devices_database: dict[str, TuyaBLECategoryInfo] = {
                 manufacturer="Foxgard",
                 lock=1,
             ),
+            "kpn4zaf7": TuyaBLEProductInfo(
+                name="Invisible induction lock",
+                manufacturer="BSTUOKEY",
+                lock=1,
+            ),
         },
     ),
     "dcb": TuyaBLECategoryInfo(

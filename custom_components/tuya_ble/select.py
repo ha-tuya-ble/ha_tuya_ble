@@ -275,7 +275,7 @@ mapping: dict[str, TuyaBLECategorySelectMapping] = {
                 ],
             ),
             **dict.fromkeys(
-                ["6fibxtph", "99gv5nmz"],
+                ["6fibxtph", "99gv5nmz", "kpn4zaf7"],
                 [
                     TuyaBLESelectMapping(
                         dp_id=31,

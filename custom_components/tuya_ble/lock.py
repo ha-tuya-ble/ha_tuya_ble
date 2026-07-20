@@ -57,29 +57,53 @@ class TuyaBLELock(TuyaBLEEntity, LockEntity):
     @property
     def is_locked(self) -> bool | None:
         """Return true if lock is locked."""
+        dpid = self.find_dpid(DPCode.LOCK_MOTOR_STATE)
+        if dpid is None:
+            dpid = DPCode.LOCK_MOTOR_STATE
         if motor_state := self._device.datapoints.get_or_create(
-            DPCode.LOCK_MOTOR_STATE, TuyaBLEDataPointType.DT_BOOL, False
+            dpid, TuyaBLEDataPointType.DT_BOOL, False
         ):
             return not motor_state.value
         return None
 
     async def async_lock(self, **kwargs: Any) -> None:
         """Lock the lock."""
-        if manual_lock := self._device.datapoints.get_or_create(
-            DPCode.MANUAL_LOCK, TuyaBLEDataPointType.DT_BOOL, True
-        ):
-            await manual_lock.set_value(True)
+        manual_lock_id = self.find_dpid(DPCode.MANUAL_LOCK)
+        if manual_lock_id is not None:
+            if manual_lock := self._device.datapoints.get_or_create(
+                manual_lock_id, TuyaBLEDataPointType.DT_BOOL, True
+            ):
+                await manual_lock.set_value(True)
+        elif self.find_dpid(DPCode.LOCK_MOTOR_STATE) is not None:
+            if motor_state := self._device.datapoints.get_or_create(
+                self.find_dpid(DPCode.LOCK_MOTOR_STATE), TuyaBLEDataPointType.DT_BOOL, False
+            ):
+                await motor_state.set_value(False)
+        else:
+            if manual_lock := self._device.datapoints.get_or_create(
+                DPCode.MANUAL_LOCK, TuyaBLEDataPointType.DT_BOOL, True
+            ):
+                await manual_lock.set_value(True)
 
     async def async_unlock(self, **kwargs: Any) -> None:
         """Unlock the lock."""
-        if manual_lock := self._device.datapoints.get_or_create(
-            DPCode.MANUAL_LOCK, TuyaBLEDataPointType.DT_BOOL, False
-        ):
-            await manual_lock.set_value(False)
+        manual_lock_id = self.find_dpid(DPCode.MANUAL_LOCK)
+        if manual_lock_id is not None:
+            if manual_lock := self._device.datapoints.get_or_create(
+                manual_lock_id, TuyaBLEDataPointType.DT_BOOL, False
+            ):
+                await manual_lock.set_value(False)
+        elif self.find_dpid(DPCode.LOCK_MOTOR_STATE) is not None:
+            if motor_state := self._device.datapoints.get_or_create(
+                self.find_dpid(DPCode.LOCK_MOTOR_STATE), TuyaBLEDataPointType.DT_BOOL, True
+            ):
+                await motor_state.set_value(True)
+        else:
+            if manual_lock := self._device.datapoints.get_or_create(
+                DPCode.MANUAL_LOCK, TuyaBLEDataPointType.DT_BOOL, False
+            ):
+                await manual_lock.set_value(False)
 
     async def async_open(self, **kwargs: Any) -> None:
         """Open the covering."""
-        if manual_lock := self._device.datapoints.get_or_create(
-            DPCode.MANUAL_LOCK, TuyaBLEDataPointType.DT_BOOL, False
-        ):
-            await manual_lock.set_value(False)
+        await self.async_unlock(**kwargs)
