@@ -76,7 +76,9 @@ class TuyaBLELock(TuyaBLEEntity, LockEntity):
                 await manual_lock.set_value(True)
         elif self.find_dpid(DPCode.LOCK_MOTOR_STATE) is not None:
             if motor_state := self._device.datapoints.get_or_create(
-                self.find_dpid(DPCode.LOCK_MOTOR_STATE), TuyaBLEDataPointType.DT_BOOL, False
+                self.find_dpid(DPCode.LOCK_MOTOR_STATE),
+                TuyaBLEDataPointType.DT_BOOL,
+                False,
             ):
                 await motor_state.set_value(False)
         else:
@@ -95,7 +97,9 @@ class TuyaBLELock(TuyaBLEEntity, LockEntity):
                 await manual_lock.set_value(False)
         elif self.find_dpid(DPCode.LOCK_MOTOR_STATE) is not None:
             if motor_state := self._device.datapoints.get_or_create(
-                self.find_dpid(DPCode.LOCK_MOTOR_STATE), TuyaBLEDataPointType.DT_BOOL, True
+                self.find_dpid(DPCode.LOCK_MOTOR_STATE),
+                TuyaBLEDataPointType.DT_BOOL,
+                True,
             ):
                 await motor_state.set_value(True)
         else:
