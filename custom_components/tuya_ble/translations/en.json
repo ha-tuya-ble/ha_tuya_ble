@@ -30,11 +30,26 @@
     },
     "entity": {
         "binary_sensor": {
+            "fault": {
+                "name": "Fault"
+            },
+            "lack_water": {
+                "name": "Lack of water"
+            },
             "low_battery": {
                 "name": "Battery"
             },
             "lock_motor_state": {
                 "name": "Motor State"
+            },
+            "low_temp": {
+                "name": "Low temperature"
+            },
+            "motor_fault": {
+                "name": "Motor fault"
+            },
+            "sensor_fault": {
+                "name": "Sensor fault"
             }
         },
         "button": {
@@ -48,12 +63,23 @@
                 "name": "Unlock"
             }
         },
+        "event": {
+            "event": {
+                "name": "Event"
+            }
+        },
         "number": {
+            "ble_unlock_check": {
+                "name": "Unlock"
+            },
             "brightness": {
                 "name": "Brightness"
             },
             "carbon_dioxide_alarm_level": {
                 "name": "Alarm level"
+            },
+            "countdown": {
+                "name": "Irrigation duration"
             },
             "countdown_duration": {
                 "name": "Irrigation duration"
@@ -64,14 +90,14 @@
             "countdown_duration_z2": {
                 "name": "Irrigation duration - Zone 2"
             },
-            "countdown": {
-                "name": "Irrigation duration"
-            },
             "down_position": {
                 "name": "Down position"
             },
             "hold_time": {
                 "name": "Hold time"
+            },
+            "humidity_calibration": {
+                "name": "Humidity calibration"
             },
             "program_idle_position": {
                 "name": "Idle position"
@@ -85,11 +111,11 @@
             "reporting_period": {
                 "name": "Reporting period"
             },
+            "temperature_calibration": {
+                "name": "Temperature calibration"
+            },
             "up_position": {
                 "name": "Up position"
-            },
-            "ble_unlock_check": {
-                "name": "Unlock"
             }
         },
         "select": {
@@ -122,11 +148,40 @@
             },
             "temperature_unit": {
                 "name": "Temperature unit"
+            },
+            "mode": {
+                "name": "Cleaning mode",
+                "state": {
+                    "smart": "Smart",
+                    "z_mode": "Z-Mode",
+                    "n_mode": "N-Mode",
+                    "edge": "Edge",
+                    "spot": "Spot"
+                }
+            },
+            "direction_control": {
+                "name": "Direction",
+                "state": {
+                    "forward": "Forward",
+                    "backward": "Backward",
+                    "turn_left": "Turn left",
+                    "turn_right": "Turn right",
+                    "stop": "Stop"
+                }
             }
         },
         "sensor": {
             "alarm_lock": {
-                "name": "Alarm"
+                "name": "Alarm",
+                "state": {
+                    "wrong_finger": "Wrong Fingerprint",
+                    "wrong_password": "Wrong Password",
+                    "low_battery": "Low Battery",
+                    "power_off": "Power off"
+                }
+            },
+            "power_off": {
+                "name": "Power off"
             },
             "battery": {
                 "name": "Battery"
@@ -144,6 +199,7 @@
                 "state": {
                     "high": "High",
                     "low": "Low",
+                    "middle": "Medium",
                     "normal": "Normal"
                 }
             },
@@ -156,6 +212,15 @@
                     "alarm": "Alarm",
                     "normal": "Normal"
                 }
+            },
+            "day_usage_after_reset": {
+                "name": "Daily usage after reset"
+            },
+            "day_water_usage": {
+                "name": "Daily water usage"
+            },
+            "flow_velocity": {
+                "name": "Flow rate"
             },
             "lock_door_status": {
                 "name": "Door status",
@@ -189,6 +254,9 @@
             "time_left": {
                 "name": "Remaining irrigation time"
             },
+            "total_usage_after_reset": {
+                "name": "Total usage after reset"
+            },
             "use_time_z1": {
                 "name": "Last irrigation time - Zone 1"
             },
@@ -204,6 +272,12 @@
             "water_intake": {
                 "name": "Water intake"
             },
+            "water_once": {
+                "name": "Last session water usage"
+            },
+            "water_use_data": {
+                "name": "Total water usage"
+            },
             "wrong_finger": {
                 "name": "Wrong Fingerprint"
             },
@@ -218,9 +292,21 @@
             },
             "unlock_password": {
                 "name": "Last used Password"
+            },
+            "unlock_key": {
+                "name": "Last used Key"
+            },
+            "unlock_dynamic": {
+                "name": "Last used Dynamic Password"
+            },
+            "unlock_ble": {
+                "name": "Last used Bluetooth"
             }
         },
         "switch": {
+            "automatic_lock": {
+                "name": "Automatic lock"
+            },
             "antifreeze": {
                 "name": "Antifreeze"
             },
@@ -277,11 +363,25 @@
             },
             "window_check": {
                 "name": "Window Check"
+            },
+            "window_cleaner_switch": {
+                "name": "Cleaning"
+            },
+            "water_auto": {
+                "name": "Auto water spray"
             }
         },
         "text": {
             "program": {
                 "name": "Program: position[/time];..."
+            }
+        },
+        "vacuum": {
+            "vacuum": {
+                "name": "Window Cleaner"
+            },
+            "clean_time": {
+                "name": "Clean time"
             }
         }
     },
@@ -305,4 +405,3 @@
         }
     }
 }
-

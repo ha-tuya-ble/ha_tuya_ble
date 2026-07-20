@@ -648,6 +648,7 @@ class TuyaBLEDevice:
         """Disconnected callback."""
         was_paired = self._is_paired
         self._is_paired = False
+        self._clean_input()
         if self._expected_disconnect:
             _LOGGER.debug(
                 "%s: Disconnected from device; RSSI: %s",
@@ -691,6 +692,7 @@ class TuyaBLEDevice:
             if client and client.is_connected:
                 await client.stop_notify(self._char_notify)
                 await client.disconnect()
+        self._clean_input()
         async with self._seq_num_lock:
             self._current_seq_num = 1
 
@@ -744,12 +746,24 @@ class TuyaBLEDevice:
                         exc_info=True,
                     )
                     continue
-                except BLEAK_EXCEPTIONS:
+                except BLEAK_EXCEPTIONS as ex:
+                    if "Bluetooth is already shutdown" in str(ex):
+                        _LOGGER.debug(
+                            "%s: Bluetooth is already shutdown, terminating connection attempts",
+                            self.address,
+                        )
+                        raise
                     _LOGGER.debug(
                         "%s: communication failed", self.address, exc_info=True
                     )
                     continue
-                except:
+                except Exception as ex:
+                    if "Bluetooth is already shutdown" in str(ex):
+                        _LOGGER.debug(
+                            "%s: Bluetooth is already shutdown, terminating connection attempts",
+                            self.address,
+                        )
+                        raise
                     _LOGGER.debug("%s: unexpected error", self.address, exc_info=True)
                     continue
 
@@ -800,7 +814,13 @@ class TuyaBLEDevice:
                         await self._client.start_notify(
                             self._char_notify, self._notification_handler
                         )
-                    except:  # [BLEAK_EXCEPTIONS, BleakNotFoundError]:
+                    except Exception as ex:  # [BLEAK_EXCEPTIONS, BleakNotFoundError]:
+                        if "Bluetooth is already shutdown" in str(ex):
+                            _LOGGER.debug(
+                                "%s: Bluetooth is already shutdown, terminating connection attempts",
+                                self.address,
+                            )
+                            raise
                         self._client = None
                         _LOGGER.error(
                             "%s: starting notifications failed",
@@ -833,7 +853,13 @@ class TuyaBLEDevice:
                                 self.address,
                             )
                             continue
-                    except:  # [BLEAK_EXCEPTIONS, BleakNotFoundError]:
+                    except Exception as ex:  # [BLEAK_EXCEPTIONS, BleakNotFoundError]:
+                        if "Bluetooth is already shutdown" in str(ex):
+                            _LOGGER.debug(
+                                "%s: Bluetooth is already shutdown, terminating connection attempts",
+                                self.address,
+                            )
+                            raise
                         self._client = None
                         _LOGGER.error(
                             "%s: Sending device info request failed",
@@ -859,7 +885,13 @@ class TuyaBLEDevice:
                                 self.address,
                             )
                             continue
-                    except:  # [BLEAK_EXCEPTIONS, BleakNotFoundError]:
+                    except Exception as ex:  # [BLEAK_EXCEPTIONS, BleakNotFoundError]:
+                        if "Bluetooth is already shutdown" in str(ex):
+                            _LOGGER.debug(
+                                "%s: Bluetooth is already shutdown, terminating connection attempts",
+                                self.address,
+                            )
+                            raise
                         self._client = None
                         _LOGGER.error(
                             "%s: Sending pairing request failed",
@@ -896,7 +928,13 @@ class TuyaBLEDevice:
             if self._expected_disconnect:
                 return
             _LOGGER.debug("%s: Reconnect, connection ensured", self.address)
-        except BLEAK_EXCEPTIONS:  # BleakNotFoundError:
+        except BLEAK_EXCEPTIONS as ex:  # BleakNotFoundError:
+            if "Bluetooth is already shutdown" in str(ex):
+                _LOGGER.debug(
+                    "%s: Reconnect failed because Bluetooth is already shutdown; not scheduling another reconnect",
+                    self.address,
+                )
+                return
             _LOGGER.debug(
                 "%s: Reconnect, failed to ensure connection - backing off",
                 self.address,
@@ -1122,6 +1160,12 @@ class TuyaBLEDevice:
         try:
             await self._int_send_packets_locked(packets)
         except BleakDBusError as ex:
+            if "Bluetooth is already shutdown" in str(ex):
+                _LOGGER.debug(
+                    "%s: Bluetooth is already shutdown, not resending packets or reconnecting",
+                    self.address,
+                )
+                raise BleakError("Bluetooth is already shutdown") from ex
             # Disconnect so we can reset state and try again
             await asyncio.sleep(BLEAK_BACKOFF_TIME)
             _LOGGER.debug(
@@ -1137,6 +1181,12 @@ class TuyaBLEDevice:
                 asyncio.create_task(self._reconnect())
             raise BleakError from ex
         except BleakError as ex:
+            if "Bluetooth is already shutdown" in str(ex):
+                _LOGGER.debug(
+                    "%s: Bluetooth is already shutdown, not resending packets or reconnecting",
+                    self.address,
+                )
+                raise
             # Disconnect so we can reset state and try again
             _LOGGER.debug(
                 "%s: RSSI: %s; Disconnecting due to error: %s",
@@ -1161,7 +1211,13 @@ class TuyaBLEDevice:
                         packet,
                         False,
                     )
-                except:
+                except Exception as ex:
+                    if "Bluetooth is already shutdown" in str(ex):
+                        _LOGGER.debug(
+                            "%s: Bluetooth is already shutdown during sending packet",
+                            self.address,
+                        )
+                        raise BleakError("Bluetooth is already shutdown") from ex
                     _LOGGER.error(
                         "%s: Error during sending packet",
                         self.address,
@@ -1508,6 +1564,14 @@ class TuyaBLEDevice:
         packet_num, pos = self._unpack_int(data, pos)
 
         if packet_num < self._input_expected_packet_num:
+            if packet_num != 0:
+                _LOGGER.warning(
+                    "%s: Unexpected packet (number %s) in notifications, expected %s. Ignoring.",
+                    self.address,
+                    packet_num,
+                    self._input_expected_packet_num,
+                )
+                return
             _LOGGER.error(
                 "%s: Unexpected packet (number %s) in notifications, " "expected %s",
                 self.address,
@@ -1580,3 +1644,36 @@ class TuyaBLEDevice:
             await self._send_datapoints_v3(datapoint_ids)
         else:
             raise TuyaBLEDeviceError(0)
+
+    async def set_multiple_values(self, dp_updates: dict[int, Any]) -> None:
+        """Set multiple datapoint values in a single atomic BLE payload."""
+        data = bytearray()
+        updated_dps = []
+        for dp_id, value in dp_updates.items():
+            dp = self._datapoints[dp_id]
+            if not dp:
+                continue
+
+            # Update the internal state safely
+            if dp.type in [TuyaBLEDataPointType.DT_RAW, TuyaBLEDataPointType.DT_BITMAP]:
+                dp._value = bytes(value)
+            elif dp.type == TuyaBLEDataPointType.DT_BOOL:
+                dp._value = bool(value)
+            elif dp.type == TuyaBLEDataPointType.DT_VALUE:
+                dp._value = int(value)
+            elif dp.type == TuyaBLEDataPointType.DT_ENUM:
+                dp._value = int(value)
+            elif dp.type == TuyaBLEDataPointType.DT_STRING:
+                dp._value = str(value)
+            dp._changed_by_device = False
+            updated_dps.append(dp)
+
+            # Build the payload according to protocol version 3
+            val_bytes = dp._get_value()
+            data += pack(">BBB", dp.id, int(dp.type.value), len(val_bytes))
+            data += val_bytes
+
+        if not data:
+            return
+        await self._send_packet(TuyaBLECode.FUN_SENDER_DPS, data)
+        self._fire_callbacks(updated_dps)

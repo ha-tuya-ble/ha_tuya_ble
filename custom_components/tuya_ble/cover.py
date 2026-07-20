@@ -17,6 +17,7 @@ from homeassistant.components.cover import (
     ATTR_TILT_POSITION,
 )
 from homeassistant.config_entries import ConfigEntry
+from homeassistant.const import Platform
 from homeassistant.core import HomeAssistant, callback
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator
@@ -106,6 +107,17 @@ mapping: dict[str, TuyaBLECategoryCoverMapping] = {
                     )
                 ],
             ),
+            "v3fzfd2y": [
+                TuyaBLECoverMapping(
+                    description=CoverEntityDescription(key="ble_blind_controller"),
+                    cover_state_dp_id=1,
+                    cover_position_set_dp=2,
+                    cover_position_dp_id=3,
+                    cover_work_state_dp_id=7,
+                    cover_battery_dp_id=13,
+                    cover_factory_reset_dp_id=102,
+                )
+            ],
             "kcy0x4pi": [
                 TuyaBLECoverMapping(
                     description=CoverEntityDescription(key="ble_curtain_controller"),
@@ -144,6 +156,8 @@ def get_mapping_by_device(device: TuyaBLEDevice) -> list[TuyaBLECategoryCoverMap
 
 class TuyaBLECover(TuyaBLEEntity, CoverEntity):
     """Representation of a Tuya BLE Cover."""
+
+    platform = Platform.COVER
 
     _attr_is_closed = False
     _attr_current_cover_position = 0
