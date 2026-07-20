@@ -715,13 +715,6 @@ def get_product_info_by_ids(
             return product_info
         return category_info.info
 
-    # Fallback: scan all categories by product_id (handles unknown category)
-    for cat_info in devices_database.values():
-        if cat_info.products:
-            product_info = cat_info.products.get(product_id)
-            if product_info is not None:
-                return product_info
-
     return None
 
 
