@@ -126,7 +126,7 @@ and this project adheres to [Semantic Versioning].
 
 ## [0.3.3] - 2025-07-08
 
-* Add support for Parkside Performace Smart Battery 4Ah and 8Ah by @Koky05 in https://github.com/ha-tuya-ble/ha_tuya_ble/pull/54
+* Add support for Parkside Smart Battery 4Ah and 8Ah by @Koky05 in https://github.com/ha-tuya-ble/ha_tuya_ble/pull/54
 
 **Full Changelog**: https://github.com/ha-tuya-ble/ha_tuya_ble/compare/0.3.2...0.3.3
 
