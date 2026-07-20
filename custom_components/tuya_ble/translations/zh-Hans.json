@@ -63,6 +63,11 @@
                 "name": "解锁"
             }
         },
+        "event": {
+            "event": {
+                "name": "事件"
+            }
+        },
         "number": {
             "brightness": {
                 "name": "亮度"
@@ -261,6 +266,15 @@
             },
             "unlock_password": {
                 "name": "上次使用的密码"
+            },
+            "unlock_key": {
+                "name": "上次使用的钥匙"
+            },
+            "unlock_dynamic": {
+                "name": "上次使用的动态密码"
+            },
+            "unlock_ble": {
+                "name": "上次使用的蓝牙"
             }
         },
         "switch": {

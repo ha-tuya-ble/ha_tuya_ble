@@ -63,6 +63,11 @@
                 "name": "Déverrouiller"
             }
         },
+        "event": {
+            "event": {
+                "name": "Événement"
+            }
+        },
         "number": {
             "brightness": {
                 "name": "Luminosité"
@@ -261,6 +266,15 @@
             },
             "unlock_password": {
                 "name": "Dernier mot de passe utilisé"
+            },
+            "unlock_key": {
+                "name": "Dernière clé utilisée"
+            },
+            "unlock_dynamic": {
+                "name": "Dernier mot de passe dynamique utilisé"
+            },
+            "unlock_ble": {
+                "name": "Dernier Bluetooth utilisé"
             }
         },
         "switch": {
