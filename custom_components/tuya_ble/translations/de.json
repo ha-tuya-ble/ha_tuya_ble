@@ -340,6 +340,11 @@
             "program": {
                 "name": "Programm: Position[/Zeit];..."
             }
+        },
+        "vacuum": {
+            "vacuum": {
+                "name": "Fensterreiniger"
+            }
         }
     },
     "options": {

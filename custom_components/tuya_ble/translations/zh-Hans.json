@@ -340,6 +340,11 @@
             "program": {
                 "name": "程序：位置[/时间];..."
             }
+        },
+        "vacuum": {
+            "vacuum": {
+                "name": "擦窗机器人"
+            }
         }
     },
     "options": {

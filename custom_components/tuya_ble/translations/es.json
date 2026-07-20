@@ -340,6 +340,11 @@
             "program": {
                 "name": "Programa: posición[/tiempo];..."
             }
+        },
+        "vacuum": {
+            "vacuum": {
+                "name": "Limpiacristales"
+            }
         }
     },
     "options": {
