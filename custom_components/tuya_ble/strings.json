@@ -471,102 +471,102 @@
         }
       },
       "clean_time": {
-        "name": "Clean time"
+          "name": "Clean time"
       }
     },
     "switch": {
       "antifreeze": {
-        "name": "Antifreeze"
+          "name": "Antifreeze"
       },
       "carbon_dioxide_alarm_switch": {
-        "name": "Alarm enabled"
+          "name": "Alarm enabled"
       },
       "carbon_dioxide_severely_exceed_alarm": {
-        "name": "Severely exceed alarm"
+          "name": "Severely exceed alarm"
       },
       "child_lock": {
-        "name": "Child Lock"
+          "name": "Child Lock"
       },
       "lock_motor_state": {
-        "name": "Motor State"
+          "name": "Motor State"
       },
       "low_battery_alarm": {
-        "name": "Low battery alarm"
+          "name": "Low battery alarm"
       },
       "manual_control": {
-        "name": "Manual control"
+          "name": "Manual control"
       },
       "program": {
-        "name": "Program"
+          "name": "Program"
       },
       "program_repeat_forever": {
-        "name": "Repeat forever"
+          "name": "Repeat forever"
       },
       "programming_mode": {
-        "name": "Programming Mode"
+          "name": "Programming Mode"
       },
       "programming_switch": {
-        "name": "Programming Switch"
+          "name": "Programming Switch"
       },
       "reverse_positions": {
-        "name": "Reverse positions"
+          "name": "Reverse positions"
       },
       "switch": {
-        "name": "Switch"
+          "name": "Switch"
       },
       "water_scale_proof": {
-        "name": "Anti-scale"
+          "name": "Anti-scale"
       },
       "water_valve": {
-        "name": "Irrigation valve"
+          "name": "Irrigation valve"
       },
       "water_valve_z1": {
-        "name": "Irrigation valve - Zone 1"
+          "name": "Irrigation valve - Zone 1"
       },
       "water_valve_z2": {
-        "name": "Irrigation valve - Zone 2"
+          "name": "Irrigation valve - Zone 2"
       },
       "weather_switch": {
-        "name": "Weather switch"
+          "name": "Weather switch"
       },
       "window_check": {
-        "name": "Window Check"
+          "name": "Window Check"
       },
       "window_cleaner_switch": {
-        "name": "Cleaning"
+          "name": "Cleaning"
       },
       "water_auto": {
-        "name": "Auto water spray"
+          "name": "Auto water spray"
       }
     },
     "text": {
-      "program": {
-        "name": "Program: position[/time];..."
-      }
+        "program": {
+            "name": "Program: position[/time];..."
+        }
     },
     "vacuum": {
-      "vacuum": {
-        "name": "Window Cleaner"
-      }
+        "vacuum": {
+            "name": "Window Cleaner"
+        }
     }
   },
-  "options": {
-    "error": {
-      "device_not_registered": "Device is not registered in Tuya cloud",
-      "invalid_auth": "Invalid authentication",
-      "login_error": "Login error ({code}): {msg}"
-    },
-    "step": {
-      "login": {
-        "data": {
-          "access_id": "Tuya IoT Access ID",
-          "access_secret": "Tuya IoT Access Secret",
-          "country_code": "Country",
-          "password": "Password",
-          "username": "Account"
+    "options": {
+        "error": {
+          "device_not_registered": "Device is not registered in Tuya cloud",
+          "invalid_auth": "Invalid authentication",
+          "login_error": "Login error ({code}): {msg}"
         },
-        "description": "Refer to documentation of Tuya integration to retrieve the cloud credentials {url}\n\nEnter your Tuya credentials."
-      }
+        "step": {
+            "login": {
+                "data": {
+                      "access_id": "Tuya IoT Access ID",
+                      "access_secret": "Tuya IoT Access Secret",
+                      "country_code": "Country",
+                      "password": "Password",
+                      "username": "Account"
+                },
+                "description": "Refer to documentation of Tuya integration to retrieve the cloud credentials {url}\n\nEnter your Tuya credentials."
+            }
+        }
     }
-  }
 }
