@@ -5,6 +5,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog],
 and this project adheres to [Semantic Versioning].
 
+## [0.3.1]
+
+* Add hassfest validation by @CloCkWeRX in https://github.com/ha-tuya-ble/ha_tuya_ble/pull/36
+* Fix hassfest errors by @CloCkWeRX in https://github.com/ha-tuya-ble/ha_tuya_ble/pull/44
+* Attempt to bring back eslint by @CloCkWeRX in https://github.com/ha-tuya-ble/ha_tuya_ble/pull/45
+* add support for '46zia2nz' and '1fcnd8xk' water valve controllers by @tabascoz in https://github.com/ha-tuya-ble/ha_tuya_ble/pull/49
+
+**Full Changelog**: https://github.com/ha-tuya-ble/ha_tuya_ble/compare/0.3.0...0.3.1
+
 ## [0.3.0] - 2025-04-01
 
 Integrate multiple community maintained forks (#1)
