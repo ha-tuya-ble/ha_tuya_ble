@@ -1281,6 +1281,49 @@ mapping: dict[str, TuyaBLECategorySensorMapping] = {
                     ),
                 ),
             ],
+            "ojrvmfkk": [  # Unistyle WT-04W Water Timer
+                TuyaBLEBatteryMapping(dp_id=101),
+                # Valve 1 remaining time (DP 103)
+                TuyaBLESensorMapping(
+                    dp_id=103,
+                    description=SensorEntityDescription(
+                        key="time_left_z1",
+                        device_class=SensorDeviceClass.DURATION,
+                        native_unit_of_measurement=UnitOfTime.SECONDS,
+                        state_class=SensorStateClass.MEASUREMENT,
+                    ),
+                ),
+                # Valve 2 remaining time (DP 124)
+                TuyaBLESensorMapping(
+                    dp_id=124,
+                    description=SensorEntityDescription(
+                        key="time_left_z2",
+                        device_class=SensorDeviceClass.DURATION,
+                        native_unit_of_measurement=UnitOfTime.SECONDS,
+                        state_class=SensorStateClass.MEASUREMENT,
+                    ),
+                ),
+                # Valve 1 status (DP 12)
+                TuyaBLESensorMapping(
+                    dp_id=12,
+                    dp_type=TuyaBLEDataPointType.DT_ENUM,
+                    description=SensorEntityDescription(
+                        key="work_state_z1",
+                        device_class=SensorDeviceClass.ENUM,
+                        options=["auto", "manual", "idle", "working", "rain_delay"],
+                    ),
+                ),
+                # Valve 2 status (DP 123)
+                TuyaBLESensorMapping(
+                    dp_id=123,
+                    dp_type=TuyaBLEDataPointType.DT_ENUM,
+                    description=SensorEntityDescription(
+                        key="work_state_z2",
+                        device_class=SensorDeviceClass.ENUM,
+                        options=["auto", "manual", "idle", "working", "rain_delay"],
+                    ),
+                ),
+            ],
             **dict.fromkeys(
                 ["ldcdnigc", "e1poaiwa"],  # ZX-7378 / Rainpoint TTV102B
                 [

@@ -234,6 +234,35 @@ mapping: dict[str, TuyaBLECategorySwitchMapping] = {
                     ),
                 ),
             ],
+            "ojrvmfkk": [
+                # Valve 1 (z1) switch - DP 1
+                TuyaBLESwitchMapping(
+                    dp_id=1,
+                    description=SwitchEntityDescription(
+                        key="water_valve_z1",
+                        icon="mdi:valve",
+                        entity_registry_enabled_default=True,
+                    ),
+                ),
+                # Use weather switch - DP 14
+                TuyaBLESwitchMapping(
+                    dp_id=14,
+                    description=SwitchEntityDescription(
+                        key="weather_switch",
+                        icon="mdi:weather-cloudy",
+                        entity_category=EntityCategory.CONFIG,
+                    ),
+                ),
+                # Valve 2 (z2) switch - DP 121
+                TuyaBLESwitchMapping(
+                    dp_id=121,
+                    description=SwitchEntityDescription(
+                        key="water_valve_z2",
+                        icon="mdi:valve",
+                        entity_registry_enabled_default=True,
+                    ),
+                ),
+            ],
             "16wgjvck": [  # Aldi/Ferrex Smart Water Valve
                 TuyaBLESwitchMapping(
                     dp_id=1,

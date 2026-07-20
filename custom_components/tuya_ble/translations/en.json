@@ -134,7 +134,24 @@
                 }
             },
             "weather_delay": {
-                "name": "Weather delay"
+                "name": "Weather delay",
+                "state": {
+                    "cancel": "Cancel",
+                    "1day": "1 day",
+                    "2day": "2 days",
+                    "3day": "3 days",
+                    "4day": "4 days",
+                    "5day": "5 days",
+                    "6day": "6 days",
+                    "7day": "7 days"
+                }
+            },
+            "weather": {
+                "name": "Weather",
+                "state": {
+                    "sunny": "Sunny",
+                    "rainy": "Rainy"
+                }
             },
             "smart_weather": {
                 "name": "Smart weather"
@@ -242,6 +259,26 @@
             "work_state": {
                 "name": "Work state"
             },
+            "work_state_z1": {
+                "name": "Zone 1 status",
+                "state": {
+                    "auto": "Auto",
+                    "manual": "Manual",
+                    "idle": "Idle",
+                    "working": "Working",
+                    "rain_delay": "Rain Delay"
+                }
+            },
+            "work_state_z2": {
+                "name": "Zone 2 status",
+                "state": {
+                    "auto": "Auto",
+                    "manual": "Manual",
+                    "idle": "Idle",
+                    "working": "Working",
+                    "rain_delay": "Rain Delay"
+                }
+            },
             "residual_electricity": {
                 "name": "Battery"
             },
@@ -253,6 +290,12 @@
             },
             "time_left": {
                 "name": "Remaining irrigation time"
+            },
+            "time_left_z1": {
+                "name": "Remaining irrigation time - Zone 1"
+            },
+            "time_left_z2": {
+                "name": "Remaining irrigation time - Zone 2"
             },
             "total_usage_after_reset": {
                 "name": "Total usage after reset"

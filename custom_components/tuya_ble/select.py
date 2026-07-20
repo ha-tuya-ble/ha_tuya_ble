@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass, field
+from typing import Callable
 
 import logging
 
@@ -122,6 +123,40 @@ class TuyaBLETemperatureUnitMapping(TuyaBLESelectMapping):
 mapping: dict[str, TuyaBLECategorySelectMapping] = {
     "sfkzq": TuyaBLECategorySelectMapping(
         products={
+            "ojrvmfkk": [
+                # Weather delay - DP 10
+                TuyaBLESelectMapping(
+                    dp_id=10,
+                    description=SelectEntityDescription(
+                        key="weather_delay",
+                        options=[
+                            "cancel",
+                            "1day",
+                            "2day",
+                            "3day",
+                            "4day",
+                            "5day",
+                            "6day",
+                            "7day",
+                        ],
+                        entity_category=EntityCategory.CONFIG,
+                    ),
+                    dp_type=TuyaBLEDataPointType.DT_STRING,
+                ),
+                # Weather - DP 13
+                TuyaBLESelectMapping(
+                    dp_id=13,
+                    description=SelectEntityDescription(
+                        key="weather",
+                        options=[
+                            "sunny",
+                            "rainy",
+                        ],
+                        entity_category=EntityCategory.CONFIG,
+                    ),
+                    dp_type=TuyaBLEDataPointType.DT_STRING,
+                ),
+            ],
             "16wgjvck": [
                 TuyaBLESelectMapping(
                     dp_id=12,
@@ -656,28 +691,35 @@ class TuyaBLESelect(TuyaBLEEntity, SelectEntity):
     @property
     def current_option(self) -> str | None:
         """Return the selected entity option to represent the entity state."""
-        # Raw value
-        value: str | None = None
         datapoint = self._device.datapoints[self._mapping.dp_id]
         if datapoint:
             value = datapoint.value
-            if 0 <= value < len(self._attr_options):
+            if isinstance(value, int) and 0 <= value < len(self._attr_options):
                 return self._attr_options[value]
 
-            return value
+            return str(value) if value is not None else None
         return None
 
     def select_option(self, value: str) -> None:
         """Change the selected option."""
         if value in self._attr_options:
-            int_value = self._attr_options.index(value)
-            datapoint = self._device.datapoints.get_or_create(
-                self._mapping.dp_id,
-                TuyaBLEDataPointType.DT_ENUM,
-                int_value,
-            )
-            if datapoint:
-                self._hass.create_task(datapoint.set_value(int_value))
+            if self._mapping.dp_type == TuyaBLEDataPointType.DT_STRING:
+                datapoint = self._device.datapoints.get_or_create(
+                    self._mapping.dp_id,
+                    TuyaBLEDataPointType.DT_STRING,
+                    value,
+                )
+                if datapoint:
+                    self._hass.create_task(datapoint.set_value(value))
+            else:
+                int_value = self._attr_options.index(value)
+                datapoint = self._device.datapoints.get_or_create(
+                    self._mapping.dp_id,
+                    TuyaBLEDataPointType.DT_ENUM,
+                    int_value,
+                )
+                if datapoint:
+                    self._hass.create_task(datapoint.set_value(int_value))
 
 
 async def async_setup_entry(
