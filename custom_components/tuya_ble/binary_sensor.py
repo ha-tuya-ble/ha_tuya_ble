@@ -354,6 +354,7 @@ def get_mapping_by_device(device: TuyaBLEDevice) -> list[TuyaBLEBinarySensorMapp
 
     return []
 
+
 class TuyaBLEBinarySensor(TuyaBLEEntity, BinarySensorEntity):
     """Representation of a Tuya BLE binary sensor."""
 
