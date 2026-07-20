@@ -690,7 +690,7 @@ mapping: dict[str, TuyaBLECategorySensorMapping] = {
                             state_class=SensorStateClass.MEASUREMENT,
                         ),
                     ),
-                ]
+                ],
             ),
             "jm6iasmb": [  # Bluetooth Temperature Humidity Sensor
                 TuyaBLETemperatureMapping(
