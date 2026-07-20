@@ -332,6 +332,11 @@
             "program": {
                 "name": "Program: position[/time];..."
             }
+        },
+        "vacuum": {
+            "vacuum": {
+                "name": "Window Cleaner"
+            }
         }
     },
     "options": {
