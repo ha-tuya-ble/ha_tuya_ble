@@ -14,6 +14,7 @@ from homeassistant.components.binary_sensor import (
 )
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant, callback
+from homeassistant.const import Platform
 from homeassistant.helpers.entity import EntityCategory
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator
@@ -39,6 +40,17 @@ def _bitmap_value_to_int(value: bytes | bytearray | int) -> int:
     if isinstance(value, bytes | bytearray):
         return int.from_bytes(value, "big")
     return int(value)
+
+
+def door_status_getter(self: TuyaBLEBinarySensor) -> None:
+    datapoint = self._device.datapoints[self._mapping.dp_id]
+    if datapoint and datapoint.value is not None:
+        if datapoint.value == "open":
+            self._attr_is_on = True
+        elif datapoint.value == "closed":
+            self._attr_is_on = False
+        else:
+            self._attr_is_on = None
 
 
 @dataclass
@@ -110,7 +122,13 @@ mapping: dict[str, TuyaBLECategoryBinarySensorMapping] = {
         products={
             # TODO: Review how many of these are better off as a switch only?
             **dict.fromkeys(
-                ["okkyfgfs", "sidhzylo", "mqc2hevy"],  # Smart Lock
+                [
+                    "okkyfgfs",
+                    "sidhzylo",
+                    "mqc2hevy",
+                    "6fibxtph",
+                    "99gv5nmz",
+                ],  # Smart Lock
                 [
                     TuyaBLEBinarySensorMapping(
                         dp_id=47,
@@ -206,11 +224,76 @@ mapping: dict[str, TuyaBLECategoryBinarySensorMapping] = {
     ),
     "jtmspro": TuyaBLECategoryBinarySensorMapping(
         products={
-            "hs21i377": [
+            **dict.fromkeys(
+                [
+                    "stugc8dl",
+                    "xicdxood",
+                ],
+                [
+                    TuyaBLEBinarySensorMapping(
+                        dp_id=22,
+                        description=BinarySensorEntityDescription(
+                            key="duress",
+                            device_class=BinarySensorDeviceClass.SAFETY,
+                            entity_category=EntityCategory.DIAGNOSTIC,
+                        ),
+                    ),
+                    TuyaBLEBinarySensorMapping(
+                        dp_id=40,
+                        description=BinarySensorEntityDescription(
+                            key="door_status",
+                            device_class=BinarySensorDeviceClass.DOOR,
+                            entity_category=EntityCategory.DIAGNOSTIC,
+                        ),
+                        getter=door_status_getter,
+                    ),
+                    TuyaBLEBinarySensorMapping(
+                        dp_id=102,
+                        description=BinarySensorEntityDescription(
+                            key="keypad_reset",
+                            device_class=BinarySensorDeviceClass.RUNNING,
+                            entity_category=EntityCategory.DIAGNOSTIC,
+                        ),
+                    ),
+                    TuyaBLEBinarySensorMapping(
+                        dp_id=107,
+                        description=BinarySensorEntityDescription(
+                            key="connectivity",
+                            device_class=BinarySensorDeviceClass.CONNECTIVITY,
+                            entity_category=EntityCategory.DIAGNOSTIC,
+                        ),
+                    ),
+                ],
+            ),
+            **dict.fromkeys(
+                [
+                    "hs21i377",
+                    "kholoaew",
+                ],
+                [
+                    TuyaBLEBinarySensorMapping(
+                        dp_id=47,
+                        description=BinarySensorEntityDescription(
+                            key="lock_motor_state",
+                            entity_category=EntityCategory.DIAGNOSTIC,
+                        ),
+                    ),
+                ],
+            ),
+            "yfqp0shy": [
                 TuyaBLEBinarySensorMapping(
                     dp_id=47,
                     description=BinarySensorEntityDescription(
                         key="lock_motor_state",
+                        device_class=BinarySensorDeviceClass.LOCK,
+                        entity_category=EntityCategory.DIAGNOSTIC,
+                    ),
+                ),
+                TuyaBLEBinarySensorMapping(
+                    dp_id=22,
+                    description=BinarySensorEntityDescription(
+                        key="hijack",
+                        device_class=BinarySensorDeviceClass.TAMPER,
                         entity_category=EntityCategory.DIAGNOSTIC,
                     ),
                 ),
@@ -281,6 +364,8 @@ def get_mapping_by_device(device: TuyaBLEDevice) -> list[TuyaBLEBinarySensorMapp
 
 class TuyaBLEBinarySensor(TuyaBLEEntity, BinarySensorEntity):
     """Representation of a Tuya BLE binary sensor."""
+
+    platform = Platform.BINARY_SENSOR
 
     def __init__(
         self,

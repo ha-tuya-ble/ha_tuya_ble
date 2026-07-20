@@ -14,6 +14,7 @@ from homeassistant.components.button import (
 )
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
+from homeassistant.const import Platform
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator
 from homeassistant.helpers.entity import EntityCategory
@@ -149,7 +150,7 @@ mapping: dict[str, TuyaBLECategoryButtonMapping] = {
     "kg": TuyaBLECategoryButtonMapping(
         products={
             **dict.fromkeys(
-                ["mknd4lci", "riecov42", "bs3ubslo"],  # Fingerbot Plus
+                ["mknd4lci", "riecov42", "bs3ubslo", "gnpbj0bq"],  # Fingerbot Plus
                 [
                     TuyaBLEFingerbotModeMapping(dp_id=108),
                 ],
@@ -170,8 +171,18 @@ mapping: dict[str, TuyaBLECategoryButtonMapping] = {
     ),
     "jtmspro": TuyaBLECategoryButtonMapping(
         products={
+            "hc7n0urm": [  # A1 Ultra-JM
+                TuyaBLEButtonMapping(
+                    dp_id=71,  # BLE unlock check
+                    description=ButtonEntityDescription(
+                        key="ble_unlock_check",
+                        icon="mdi:lock-open-variant-outline",
+                    ),
+                ),
+            ],
             **dict.fromkeys(
                 [
+                    "stugc8dl",  # HU06 Smart Lock
                     "xicdxood",  # Raycube K7 Pro+
                     "rlyxv7pe",  # A1 PRO MAX
                     "oyqux5vv",  # LA-01
@@ -188,7 +199,21 @@ mapping: dict[str, TuyaBLECategoryButtonMapping] = {
                     ),
                 ],
             ),
-            "hs21i377": [
+            "hs21i377": [  # Raycube K7 Pro+
+                TuyaBLEButtonMapping(
+                    dp_id=71,
+                    description=ButtonEntityDescription(
+                        key="bluetooth_unlock",
+                        icon="mdi:lock-open-check-outline",
+                    ),
+                    dp_type=TuyaBLEDataPointType.DT_RAW,
+                ),
+            ],
+            "kholoaew": [  # Smart Lock
+                TuyaBLEButtonMapping(
+                    dp_id=46,
+                    description=ButtonEntityDescription(key="manual_lock"),
+                ),
                 TuyaBLEButtonMapping(
                     dp_id=71,
                     description=ButtonEntityDescription(
@@ -239,6 +264,8 @@ def get_mapping_by_device(device: TuyaBLEDevice) -> list[TuyaBLECategoryButtonMa
 class TuyaBLEButton(TuyaBLEEntity, ButtonEntity):
     """Representation of a Tuya BLE Button."""
 
+    platform = Platform.BUTTON
+
     def __init__(
         self,
         hass: HomeAssistant,
@@ -267,8 +294,26 @@ class TuyaBLEButton(TuyaBLEEntity, ButtonEntity):
         if dp71:
             await dp71.set_value(dp71_value)
 
+    async def _run_kholoaew_unlock(self) -> None:
+        """Run the validated dp71 unlock flow for kholoaew."""
+        # It seems like kholoaew requires the same type of unlock as hs21i377
+        # but I haven't been able to make it work.
+        dp71_value = bytes.fromhex("0001ffff3038383532353836016a1f49270000")
+
+        dp71 = self._device.datapoints.get_or_create(
+            71,
+            TuyaBLEDataPointType.DT_RAW,
+            b"",
+        )
+        if dp71:
+            await dp71.set_value(dp71_value)
+
     def press(self) -> None:
         """Press the button."""
+        if self._device.product_id == "kholoaew":
+            if self._mapping.description.key == "bluetooth_unlock":
+                self._hass.create_task(self._run_kholoaew_unlock())
+                return
         if self._device.product_id == "hs21i377":
             if self._mapping.description.key == "bluetooth_unlock":
                 self._hass.create_task(self._run_hs21i377_unlock())

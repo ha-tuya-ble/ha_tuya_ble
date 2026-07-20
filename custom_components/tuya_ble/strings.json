@@ -159,106 +159,315 @@
         }
       }
     },
-    "sensor": {
-      "alarm_lock": {
-        "name": "Alarm"
-      },
-      "battery": {
-        "name": "Battery"
-      },
-      "battery_charging": {
-        "name": "Battery charging",
-        "state": {
-          "charged": "Charged",
-          "charging": "Charging",
-          "not_charging": "Not charging"
-        }
-      },
-      "battery_state": {
-        "name": "Battery state",
-        "state": {
-          "high": "High",
-          "low": "Low",
-          "normal": "Normal"
-        }
-      },
-      "carbon_dioxide": {
-        "name": "Carbon dioxide"
-      },
-      "carbon_dioxide_alarm": {
-        "name": "Carbon dioxide level",
-        "state": {
-          "alarm": "Alarm",
-          "normal": "Normal"
-        }
-      },
-      "humidity": {
-        "name": "Humidity"
-      },
-      "low_battery": {
-        "name": "Low Battery"
-      },
-      "moisture": {
-        "name": "Moisture"
-      },
-      "work_state": {
-        "name": "Work state"
-      },
-      "residual_electricity": {
-        "name": "Battery"
-      },
-      "signal_strength": {
-        "name": "Signal strength"
-      },
-      "temperature": {
-        "name": "Temperature"
-      },
-      "time_left": {
-        "name": "Remaining irrigation time"
-      },
-      "use_time_z1": {
-        "name": "Last irrigation time - Zone 1"
-      },
-      "use_time_z2": {
-        "name": "Last irrigation time - Zone 2"
-      },
-      "use_time": {
-        "name": "Accumulated use time"
-      },
-      "use_time_one": {
-        "name": "Last irrigation time"
-      },
-      "water_intake": {
-        "name": "Water intake"
-      },
-      "wrong_finger": {
-        "name": "Wrong Fingerprint"
-      },
-      "wrong_password": {
-        "name": "Wrong Password"
-      },
-      "unlock_fingerprint": {
-        "name": "Last used Fingerprint"
-      },
-      "unlock_card": {
-        "name": "Last used Card"
-      },
-      "unlock_password": {
-        "name": "Last used Password"
-      },
-      "status": {
-        "name": "Status",
-        "state": {
-          "standby": "Standby",
-          "cleaning": "Cleaning",
-          "smart_clean": "Smart clean",
-          "z_clean": "Z-Mode clean",
-          "n_clean": "N-Mode clean",
-          "edge_clean": "Edge clean",
-          "spot_clean": "Spot clean",
-          "pause": "Paused",
-          "stop": "Stopped",
-          "charge": "Charging"
+    "entity": {
+        "binary_sensor": {
+            "fault": {
+                "name": "Fault"
+            },
+            "lack_water": {
+                "name": "Lack of water"
+            },
+            "low_battery": {
+                "name": "Battery"
+            },
+            "lock_motor_state": {
+                "name": "Motor State"
+            },
+            "low_temp": {
+                "name": "Low temperature"
+            },
+            "motor_fault": {
+                "name": "Motor fault"
+            },
+            "sensor_fault": {
+                "name": "Sensor fault"
+            }
+        },
+        "button": {
+            "push": {
+                "name": "Push"
+            },
+            "ble_unlock_check": {
+                "name": "Unlock"
+            },
+            "bluetooth_unlock": {
+                "name": "Unlock"
+            }
+        },
+        "event": {
+            "event": {
+                "name": "Event"
+            }
+        },
+        "number": {
+            "brightness": {
+                "name": "Brightness"
+            },
+            "carbon_dioxide_alarm_level": {
+                "name": "Alarm level"
+            },
+            "countdown_duration": {
+                "name": "Irrigation duration"
+            },
+            "countdown_duration_z1": {
+                "name": "Irrigation duration - Zone 1"
+            },
+            "countdown_duration_z2": {
+                "name": "Irrigation duration - Zone 2"
+            },
+            "countdown": {
+                "name": "Irrigation duration"
+            },
+            "down_position": {
+                "name": "Down position"
+            },
+            "hold_time": {
+                "name": "Hold time"
+            },
+            "program_idle_position": {
+                "name": "Idle position"
+            },
+            "program_repeats_count": {
+                "name": "Repeats count"
+            },
+            "recommended_water_intake": {
+                "name": "Recommended water intake"
+            },
+            "reporting_period": {
+                "name": "Reporting period"
+            },
+            "up_position": {
+                "name": "Up position"
+            },
+            "ble_unlock_check": {
+                "name": "Unlock"
+            }
+        },
+        "select": {
+            "beep_volume": {
+                "name": "Lock Volume"
+            },
+            "language": {
+                "name": "Lock Language"
+            },
+            "fingerbot_mode": {
+                "name": "Mode",
+                "state": {
+                    "program": "Program",
+                    "push": "Push",
+                    "switch": "Switch"
+                }
+            },
+            "weather_delay": {
+                "name": "Weather delay"
+            },
+            "smart_weather": {
+                "name": "Smart weather"
+            },
+            "reminder_mode": {
+                "name": "Reminder mode",
+                "state": {
+                    "interval_reminder": "Interval",
+                    "schedule_reminder": "Schedule"
+                }
+            },
+            "temperature_unit": {
+                "name": "Temperature unit"
+            }
+        },
+        "sensor": {
+            "alarm_lock": {
+                "name": "Alarm",
+                "state": {
+                    "wrong_finger": "Wrong Fingerprint",
+                    "wrong_password": "Wrong Password",
+                    "low_battery": "Low Battery",
+                    "power_off": "Power off"
+                }
+            },
+            "power_off": {
+                "name": "Power off"
+            },
+            "battery": {
+                "name": "Battery"
+            },
+            "battery_charging": {
+                "name": "Battery charging",
+                "state": {
+                    "charged": "Charged",
+                    "charging": "Charging",
+                    "not_charging": "Not charging"
+                }
+            },
+            "battery_state": {
+                "name": "Battery state",
+                "state": {
+                    "high": "High",
+                    "low": "Low",
+                    "middle": "Medium",
+                    "normal": "Normal"
+                }
+            },
+            "carbon_dioxide": {
+                "name": "Carbon dioxide"
+            },
+            "carbon_dioxide_alarm": {
+                "name": "Carbon dioxide level",
+                "state": {
+                    "alarm": "Alarm",
+                    "normal": "Normal"
+                }
+            },
+            "day_usage_after_reset": {
+                "name": "Daily usage after reset"
+            },
+            "day_water_usage": {
+                "name": "Daily water usage"
+            },
+            "flow_velocity": {
+                "name": "Flow rate"
+            },
+            "humidity": {
+                "name": "Humidity"
+            },
+            "low_battery": {
+                "name": "Low Battery"
+            },
+            "moisture": {
+                "name": "Moisture"
+            },
+            "work_state": {
+                "name": "Work state"
+            },
+            "residual_electricity": {
+                "name": "Battery"
+            },
+            "signal_strength": {
+                "name": "Signal strength"
+            },
+            "temperature": {
+                "name": "Temperature"
+            },
+            "time_left": {
+                "name": "Remaining irrigation time"
+            },
+            "total_usage_after_reset": {
+                "name": "Total usage after reset"
+            },
+            "use_time_z1": {
+                "name": "Last irrigation time - Zone 1"
+            },
+            "use_time_z2": {
+                "name": "Last irrigation time - Zone 2"
+            },
+            "use_time": {
+                "name": "Accumulated use time"
+            },
+            "use_time_one": {
+                "name": "Last irrigation time"
+            },
+            "water_intake": {
+                "name": "Water intake"
+            },
+            "water_once": {
+                "name": "Last session water usage"
+            },
+            "water_use_data": {
+                "name": "Total water usage"
+            },
+            "wrong_finger": {
+                "name": "Wrong Fingerprint"
+            },
+            "wrong_password": {
+                "name": "Wrong Password"
+            },
+            "unlock_fingerprint": {
+                "name": "Last used Fingerprint"
+            },
+            "unlock_card": {
+                "name": "Last used Card"
+            },
+            "unlock_password": {
+                "name": "Last used Password"
+            },
+            "unlock_key": {
+                "name": "Last used Key"
+            },
+            "unlock_dynamic": {
+                "name": "Last used Dynamic Password"
+            },
+            "unlock_ble": {
+                "name": "Last used Bluetooth"
+            }
+        },
+        "switch": {
+            "antifreeze": {
+                "name": "Antifreeze"
+            },
+            "carbon_dioxide_alarm_switch": {
+                "name": "Alarm enabled"
+            },
+            "carbon_dioxide_severely_exceed_alarm": {
+                "name": "Severely exceed alarm"
+            },
+            "child_lock": {
+                "name": "Child Lock"
+            },
+            "lock_motor_state": {
+                "name": "Motor State"
+            },
+            "low_battery_alarm": {
+                "name": "Low battery alarm"
+            },
+            "manual_control": {
+                "name": "Manual control"
+            },
+            "program": {
+                "name": "Program"
+            },
+            "program_repeat_forever": {
+                "name": "Repeat forever"
+            },
+            "programming_mode": {
+                "name": "Programming Mode"
+            },
+            "programming_switch": {
+                "name": "Programming Switch"
+            },
+            "reverse_positions": {
+                "name": "Reverse positions"
+            },
+            "switch": {
+                "name": "Switch"
+            },
+            "water_scale_proof": {
+                "name": "Anti-scale"
+            },
+            "water_valve": {
+                "name": "Irrigation valve"
+            },
+            "water_valve_z1": {
+                "name": "Irrigation valve - Zone 1"
+            },
+            "water_valve_z2": {
+                "name": "Irrigation valve - Zone 2"
+            },
+            "weather_switch": {
+                "name": "Weather switch"
+            },
+            "window_check": {
+                "name": "Window Check"
+            }
+        },
+        "text": {
+            "program": {
+                "name": "Program: position[/time];..."
+            }
+        },
+        "vacuum": {
+            "vacuum": {
+                "name": "Window Cleaner"
+            }
         }
       },
       "clean_time": {

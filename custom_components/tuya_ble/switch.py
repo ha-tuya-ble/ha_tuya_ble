@@ -13,6 +13,7 @@ from homeassistant.components.switch import (
     SwitchDeviceClass,
 )
 from homeassistant.config_entries import ConfigEntry
+from homeassistant.const import Platform
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity import EntityCategory
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
@@ -105,6 +106,51 @@ def set_fingerbot_program_repeat_forever(
             self._hass.create_task(datapoint.set_value(new_value))
 
 
+def set_16wgjvck_water_valve(
+    self: TuyaBLESwitch, product: TuyaBLEProductInfo, value: bool
+) -> None:
+    if value:
+        # Read the set timer beforehand (DP 15 = use_time or DP 11 = countdown).
+        dp_11_val = 60
+        dp15 = self._device.datapoints[15]
+        dp11 = self._device.datapoints[11]
+        if dp15 and dp15.value:
+            dp_11_val = int(dp15.value)
+        elif dp11 and dp11.value:
+            dp_11_val = int(dp11.value)
+        if dp_11_val <= 0:
+            dp_11_val = 60
+        # Read the set valve opening (DP 2)
+        dp_2_val = 100
+        dp2 = self._device.datapoints[2]
+        if dp2 and dp2.value is not None:
+            dp_2_val = int(dp2.value)
+        if dp_2_val <= 0:
+            dp_2_val = 100
+
+        # Create the data points in the cache IF they haven't already been sent by the device,
+        # so that "set_multiple_values" doesn't simply ignore them.
+        self._device.datapoints.get_or_create(1, TuyaBLEDataPointType.DT_BOOL, True)
+        self._device.datapoints.get_or_create(
+            2, TuyaBLEDataPointType.DT_VALUE, dp_2_val
+        )
+        self._device.datapoints.get_or_create(
+            11, TuyaBLEDataPointType.DT_VALUE, dp_11_val
+        )
+
+        # Atomic Multi-Datapoint Payload for turning on
+        dp_updates = {
+            1: True,
+            2: dp_2_val,
+            11: dp_11_val,
+        }
+        self._hass.create_task(self._device.set_multiple_values(dp_updates))
+    else:
+        # Just turn off the switch
+        self._device.datapoints.get_or_create(1, TuyaBLEDataPointType.DT_BOOL, False)
+        self._hass.create_task(self._device.set_multiple_values({1: False}))
+
+
 @dataclass
 class TuyaBLEFingerbotSwitchMapping(TuyaBLESwitchMapping):
     description: SwitchEntityDescription = field(
@@ -168,7 +214,7 @@ mapping: dict[str, TuyaBLECategorySwitchMapping] = {
     "sfkzq": TuyaBLECategorySwitchMapping(
         products={
             **dict.fromkeys(
-                ["0axr5s0b", "46zia2nz", "1fcnd8xk"],
+                ["0axr5s0b", "46zia2nz", "1fcnd8xk", "e1poaiwa", "d4vpmigg"],
                 [
                     TuyaBLESwitchMapping(
                         dp_id=1,
@@ -186,6 +232,16 @@ mapping: dict[str, TuyaBLECategorySwitchMapping] = {
                         key="water_valve",
                         icon="mdi:valve",
                     ),
+                ),
+            ],
+            "16wgjvck": [  # Aldi/Ferrex Smart Water Valve
+                TuyaBLESwitchMapping(
+                    dp_id=1,
+                    description=SwitchEntityDescription(
+                        key="water_valve",
+                        icon="mdi:valve",
+                    ),
+                    setter=set_16wgjvck_water_valve,
                 ),
             ],
             **dict.fromkeys(
@@ -234,7 +290,13 @@ mapping: dict[str, TuyaBLECategorySwitchMapping] = {
     "ms": TuyaBLECategorySwitchMapping(
         products={
             **dict.fromkeys(
-                ["ludzroix", "isk2p555", "gumrixyt", "sidhzylo"],  # Smart Lock
+                [
+                    "ludzroix",
+                    "isk2p555",
+                    "gumrixyt",
+                    "sidhzylo",
+                    "7a4xvbtt",
+                ],  # Smart Lock
                 [TuyaLockMotorStateMapping(dp_id=47)],
             ),
             **dict.fromkeys(
@@ -244,6 +306,24 @@ mapping: dict[str, TuyaBLECategorySwitchMapping] = {
                     TuyaBLESwitchMapping(
                         dp_id=46,
                         description=SwitchEntityDescription(key="manual_lock"),
+                    ),
+                ],
+            ),
+            **dict.fromkeys(
+                ["6fibxtph", "99gv5nmz"],
+                [
+                    TuyaLockMotorStateMapping(dp_id=47),
+                    TuyaBLESwitchMapping(
+                        dp_id=46,
+                        description=SwitchEntityDescription(key="manual_lock"),
+                    ),
+                    TuyaBLESwitchMapping(
+                        dp_id=33,
+                        description=SwitchEntityDescription(
+                            key="automatic_lock",
+                            icon="mdi:lock-clock",
+                            entity_category=EntityCategory.CONFIG,
+                        ),
                     ),
                 ],
             ),
@@ -322,10 +402,75 @@ mapping: dict[str, TuyaBLECategorySwitchMapping] = {
             ],
         },
     ),
+    "jtmspro": TuyaBLECategorySwitchMapping(
+        products={
+            **dict.fromkeys(
+                [
+                    "stugc8dl",
+                    "xicdxood",
+                ],
+                [
+                    TuyaBLESwitchMapping(
+                        dp_id=33,
+                        description=SwitchEntityDescription(
+                            key="automatic_lock",
+                            icon="mdi:lock-clock",
+                            entity_category=EntityCategory.CONFIG,
+                        ),
+                    ),
+                ],
+            ),
+            "kholoaew": [  # Smart Lock
+                TuyaBLESwitchMapping(
+                    dp_id=33,
+                    description=SwitchEntityDescription(
+                        key="automatic_lock",
+                        icon="mdi:lock-clock",
+                        entity_category=EntityCategory.CONFIG,
+                    ),
+                ),
+            ],
+            "ajk32biq": [
+                TuyaBLESwitchMapping(
+                    dp_id=33,
+                    description=SwitchEntityDescription(
+                        key="automatic_lock",
+                        icon="mdi:lock-clock",
+                        entity_category=EntityCategory.CONFIG,
+                    ),
+                ),
+                TuyaBLESwitchMapping(
+                    dp_id=46,
+                    description=SwitchEntityDescription(
+                        key="manual_lock",
+                        icon="mdi:lock-plus",
+                    ),
+                ),
+            ],
+            "yfqp0shy": [
+                TuyaLockMotorStateMapping(dp_id=47),
+                TuyaBLESwitchMapping(
+                    dp_id=46,
+                    description=SwitchEntityDescription(
+                        key="manual_lock",
+                        icon="mdi:lock-plus",
+                    ),
+                ),
+                TuyaBLESwitchMapping(
+                    dp_id=33,
+                    description=SwitchEntityDescription(
+                        key="automatic_lock",
+                        icon="mdi:lock-clock",
+                        entity_category=EntityCategory.CONFIG,
+                    ),
+                ),
+            ],
+        }
+    ),
     "kg": TuyaBLECategorySwitchMapping(
         products={
             **dict.fromkeys(
-                ["mknd4lci", "riecov42", "bs3ubslo"],  # Fingerbot Plus
+                ["mknd4lci", "riecov42", "bs3ubslo", "gnpbj0bq"],  # Fingerbot Plus
                 [
                     TuyaBLEFingerbotSwitchMapping(dp_id=1),
                     TuyaBLEReversePositionsMapping(dp_id=104),
@@ -599,6 +744,8 @@ def get_mapping_by_device(device: TuyaBLEDevice) -> list[TuyaBLECategorySwitchMa
 
 class TuyaBLESwitch(TuyaBLEEntity, SwitchEntity):
     """Representation of a Tuya BLE Switch."""
+
+    platform = Platform.SWITCH
 
     def __init__(
         self,

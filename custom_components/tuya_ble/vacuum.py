@@ -53,6 +53,7 @@ from homeassistant.components.vacuum import (
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
+from homeassistant.const import Platform
 
 from .const import DOMAIN
 from .devices import TuyaBLEData, TuyaBLEEntity, TuyaBLEProductInfo
@@ -66,45 +67,45 @@ _LOGGER = logging.getLogger(__name__)
 
 # Window cleaner robot status values
 STATUS_MAP_WINDOW_CLEANER: dict[str, VacuumActivity] = {
-    "standby":    VacuumActivity.IDLE,
-    "cleaning":   VacuumActivity.CLEANING,
-    "smart_clean": VacuumActivity.CLEANING,
-    "z_clean":    VacuumActivity.CLEANING,
-    "n_clean":    VacuumActivity.CLEANING,
+    "standby": VacuumActivity.IDLE,
+    "cleaning": VacuumActivity.CLEANING,
+    "z_clean": VacuumActivity.CLEANING,
+    "n_clean": VacuumActivity.CLEANING,
     "edge_clean": VacuumActivity.CLEANING,
     "spot_clean": VacuumActivity.CLEANING,
-    "pause":      VacuumActivity.PAUSED,
-    "stop":       VacuumActivity.IDLE,
-    "charge":     VacuumActivity.DOCKED,
+    "pause": VacuumActivity.PAUSED,
+    "stop": VacuumActivity.IDLE,
+    "charge": VacuumActivity.DOCKED,
 }
 
 # Generic floor robot vacuum status values (common Tuya convention)
 STATUS_MAP_ROBOT_VACUUM: dict[str, VacuumActivity] = {
-    "standby":    VacuumActivity.IDLE,
-    "random":     VacuumActivity.CLEANING,
-    "smart":      VacuumActivity.CLEANING,
+    "standby": VacuumActivity.IDLE,
+    "random": VacuumActivity.CLEANING,
+    "smart": VacuumActivity.CLEANING,
     "wall_follow": VacuumActivity.CLEANING,
-    "mop":        VacuumActivity.CLEANING,
-    "spiral":     VacuumActivity.CLEANING,
+    "mop": VacuumActivity.CLEANING,
+    "spiral": VacuumActivity.CLEANING,
     "left_spiral": VacuumActivity.CLEANING,
     "right_spiral": VacuumActivity.CLEANING,
     "partial_bow": VacuumActivity.CLEANING,
-    "cleaning":   VacuumActivity.CLEANING,
-    "paused":     VacuumActivity.PAUSED,
-    "pause":      VacuumActivity.PAUSED,
-    "docking":    VacuumActivity.RETURNING,
-    "returning":  VacuumActivity.RETURNING,
-    "charging":   VacuumActivity.DOCKED,
-    "charged":    VacuumActivity.DOCKED,
-    "charge":     VacuumActivity.DOCKED,
-    "sleep":      VacuumActivity.IDLE,
-    "fault":      VacuumActivity.ERROR,
+    "cleaning": VacuumActivity.CLEANING,
+    "paused": VacuumActivity.PAUSED,
+    "pause": VacuumActivity.PAUSED,
+    "docking": VacuumActivity.RETURNING,
+    "returning": VacuumActivity.RETURNING,
+    "charging": VacuumActivity.DOCKED,
+    "charged": VacuumActivity.DOCKED,
+    "charge": VacuumActivity.DOCKED,
+    "sleep": VacuumActivity.IDLE,
+    "fault": VacuumActivity.ERROR,
 }
 
 
 # ---------------------------------------------------------------------------
 # Data classes
 # ---------------------------------------------------------------------------
+
 
 @dataclass
 class TuyaBLEVacuumMapping:
@@ -209,6 +210,7 @@ mapping: dict[str, TuyaBLECategoryVacuumMapping] = {
 # Platform setup
 # ---------------------------------------------------------------------------
 
+
 async def async_setup_entry(
     hass: HomeAssistant,
     entry: ConfigEntry,
@@ -221,7 +223,11 @@ async def async_setup_entry(
         return
 
     async_add_entities(
-        [TuyaBLEVacuumEntity(hass, data.coordinator, data.device, data.product, vac_mapping)]
+        [
+            TuyaBLEVacuumEntity(
+                hass, data.coordinator, data.device, data.product, vac_mapping
+            )
+        ]
     )
 
 
@@ -250,8 +256,11 @@ def _get_mapping(device: TuyaBLEDevice) -> TuyaBLEVacuumMapping | None:
 # Entity
 # ---------------------------------------------------------------------------
 
+
 class TuyaBLEVacuumEntity(TuyaBLEEntity, StateVacuumEntity):
     """Tuya BLE vacuum / window cleaner robot entity."""
+
+    platform = Platform.VACUUM
 
     def __init__(
         self,
@@ -266,12 +275,12 @@ class TuyaBLEVacuumEntity(TuyaBLEEntity, StateVacuumEntity):
 
         # Build supported features dynamically from configured DPs
         features = VacuumEntityFeature.STATE
-        if vac_mapping.dp_start_bool is not None or vac_mapping.dp_start_enum is not None:
-            features |= VacuumEntityFeature.START | VacuumEntityFeature.STOP
         if (
-            vac_mapping.dp_pause is not None
-            or vac_mapping.pause_enum_value is not None
+            vac_mapping.dp_start_bool is not None
+            or vac_mapping.dp_start_enum is not None
         ):
+            features |= VacuumEntityFeature.START | VacuumEntityFeature.STOP
+        if vac_mapping.dp_pause is not None or vac_mapping.pause_enum_value is not None:
             features |= VacuumEntityFeature.PAUSE
         if vac_mapping.dp_return_home is not None:
             features |= VacuumEntityFeature.RETURN_HOME
@@ -310,7 +319,10 @@ class TuyaBLEVacuumEntity(TuyaBLEEntity, StateVacuumEntity):
     def _send_stop(self) -> None:
         if self._vac.dp_start_bool is not None:
             self._send_bool(self._vac.dp_start_bool, False)
-        elif self._vac.dp_start_enum is not None and self._vac.stop_enum_value is not None:
+        elif (
+            self._vac.dp_start_enum is not None
+            and self._vac.stop_enum_value is not None
+        ):
             self._send_enum(self._vac.dp_start_enum, self._vac.stop_enum_value)
 
     # --------------------------------------------------------------- HA state
@@ -356,7 +368,10 @@ class TuyaBLEVacuumEntity(TuyaBLEEntity, StateVacuumEntity):
     async def async_pause(self) -> None:
         if self._vac.dp_pause is not None:
             self._send_bool(self._vac.dp_pause, True)
-        elif self._vac.pause_enum_value is not None and self._vac.dp_start_enum is not None:
+        elif (
+            self._vac.pause_enum_value is not None
+            and self._vac.dp_start_enum is not None
+        ):
             self._send_enum(self._vac.dp_start_enum, self._vac.pause_enum_value)
         else:
             self._send_stop()

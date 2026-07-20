@@ -427,6 +427,8 @@ class DPCode(StrEnum):
     CUR_CURRENT = "cur_current"  # Actual current
     CUR_POWER = "cur_power"  # Actual power
     CUR_VOLTAGE = "cur_voltage"  # Actual voltage
+    DAY_USAGE_AFTER_RESET = "day_usage_after_reset"
+    DAY_WATER_USAGE = "day_water_usage"
     DECIBEL_SENSITIVITY = "decibel_sensitivity"
     DECIBEL_SWITCH = "decibel_switch"
     DEHUMIDITY_SET_ENUM = "dehumidify_set_enum"
@@ -460,6 +462,7 @@ class DPCode(StrEnum):
     FILTER_RESET = "filter_reset"  # Filter (cartridge) reset
     FLOODLIGHT_LIGHTNESS = "floodlight_lightness"
     FLOODLIGHT_SWITCH = "floodlight_switch"
+    FLOW_VELOCITY = "flow_velocity"
     FORWARD_ENERGY_TOTAL = "forward_energy_total"
     GAS_SENSOR_STATE = "gas_sensor_state"
     GAS_SENSOR_STATUS = "gas_sensor_status"
@@ -604,6 +607,7 @@ class DPCode(StrEnum):
     TOTAL_CLEAN_TIME = "total_clean_time"
     TOTAL_FORWARD_ENERGY = "total_forward_energy"
     TOTAL_TIME = "total_time"
+    TOTAL_USAGE_AFTER_RESET = "total_usage_after_reset"
     TOTAL_PM = "total_pm"
     TVOC = "tvoc"
     UNLOCK_BLE = "unlock_ble"
@@ -618,11 +622,14 @@ class DPCode(StrEnum):
     VOICE_SWITCH = "voice_switch"
     VOICE_TIMES = "voice_times"
     VOLUME_SET = "volume_set"
+    VOLTAGE_CURRENT = "voltage_current"
     WARM = "warm"  # Heat preservation
     WARM_TIME = "warm_time"  # Heat preservation time
     WATER = "water"
+    WATER_ONCE = "water_once"
     WATER_RESET = "water_reset"  # Resetting of water usage days
     WATER_SET = "water_set"  # Water level
+    WATER_USE_DATA = "water_use_data"
     WATERSENSOR_STATE = "watersensor_state"
     WEATHER_DELAY = "weather_delay"
     WET = "wet"  # Humidification

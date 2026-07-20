@@ -21,6 +21,7 @@ from homeassistant.const import (
     UnitOfVolume,
     UnitOfElectricCurrent,
     UnitOfElectricPotential,
+    Platform,
 )
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity import EntityCategory
@@ -468,7 +469,7 @@ mapping: dict[str, TuyaBLECategoryNumberMapping] = {
     "kg": TuyaBLECategoryNumberMapping(
         products={
             **dict.fromkeys(
-                ["mknd4lci", "riecov42", "bs3ubslo"],  # Fingerbot Plus
+                ["mknd4lci", "riecov42", "bs3ubslo", "gnpbj0bq"],  # Fingerbot Plus
                 [
                     TuyaBLENumberMapping(
                         dp_id=102,
@@ -652,8 +653,43 @@ mapping: dict[str, TuyaBLECategoryNumberMapping] = {
     ),
     "sfkzq": TuyaBLECategoryNumberMapping(
         products={
+            "16wgjvck": [
+                TuyaBLENumberMapping(
+                    dp_id=2,
+                    description=NumberEntityDescription(
+                        key="valve_opening_percentage",
+                        icon="mdi:valve",
+                        native_max_value=100,
+                        native_min_value=0,
+                        native_unit_of_measurement=PERCENTAGE,
+                        native_step=1,
+                    ),
+                ),
+                TuyaBLENumberMapping(
+                    dp_id=11,
+                    description=NumberEntityDescription(
+                        key="countdown",
+                        icon="mdi:timer",
+                        native_max_value=86400,
+                        native_min_value=0,
+                        native_unit_of_measurement=UnitOfTime.SECONDS,
+                        native_step=1,
+                    ),
+                ),
+                TuyaBLENumberMapping(
+                    dp_id=15,
+                    description=NumberEntityDescription(
+                        key="use_time",
+                        icon="mdi:timer",
+                        native_max_value=86400,
+                        native_min_value=0,
+                        native_unit_of_measurement=UnitOfTime.SECONDS,
+                        native_step=1,
+                    ),
+                ),
+            ],
             **dict.fromkeys(
-                ["46zia2nz", "1fcnd8xk", "0axr5s0b"],
+                ["46zia2nz", "1fcnd8xk", "0axr5s0b", "d4vpmigg"],
                 [
                     TuyaBLENumberMapping(
                         dp_id=11,
@@ -668,19 +704,22 @@ mapping: dict[str, TuyaBLECategoryNumberMapping] = {
                     ),
                 ],
             ),
-            "ldcdnigc": [
-                TuyaBLENumberMapping(
-                    dp_id=11,
-                    description=NumberEntityDescription(
-                        key="countdown",
-                        icon="mdi:timer",
-                        native_max_value=86400,
-                        native_min_value=0,
-                        native_unit_of_measurement=UnitOfTime.SECONDS,
-                        native_step=1,
+            **dict.fromkeys(
+                ["ldcdnigc", "e1poaiwa"],  # ZX-7378 / Rainpoint TTV102B
+                [
+                    TuyaBLENumberMapping(
+                        dp_id=11,
+                        description=NumberEntityDescription(
+                            key="countdown",
+                            icon="mdi:timer",
+                            native_max_value=86400,
+                            native_min_value=0,
+                            native_unit_of_measurement=UnitOfTime.SECONDS,
+                            native_step=1,
+                        ),
                     ),
-                ),
-            ],
+                ],
+            ),
             "svhikeyq": [
                 TuyaBLENumberMapping(
                     dp_id=11,
@@ -715,6 +754,77 @@ mapping: dict[str, TuyaBLECategoryNumberMapping] = {
                         native_min_value=60,
                         native_unit_of_measurement=UnitOfTime.SECONDS,
                         native_step=1,
+                    ),
+                ),
+            ],
+        },
+    ),
+    "ms": TuyaBLECategoryNumberMapping(
+        products={
+            **dict.fromkeys(
+                ["6fibxtph", "99gv5nmz"],
+                [
+                    TuyaBLENumberMapping(
+                        dp_id=36,
+                        description=NumberEntityDescription(
+                            key="auto_lock_time",
+                            icon="mdi:lock-clock",
+                            native_max_value=1800,
+                            native_min_value=0,
+                            native_unit_of_measurement=UnitOfTime.SECONDS,
+                            native_step=1,
+                            entity_category=EntityCategory.CONFIG,
+                        ),
+                    ),
+                ],
+            ),
+        },
+    ),
+    "jtmspro": TuyaBLECategoryNumberMapping(
+        products={
+            **dict.fromkeys(
+                [
+                    "stugc8dl",
+                    "xicdxood",
+                ],
+                [
+                    TuyaBLENumberMapping(
+                        dp_id=27,
+                        description=NumberEntityDescription(
+                            key="doorbell_volume",
+                            icon="mdi:volume-high",
+                            native_max_value=100,
+                            native_min_value=0,
+                            native_unit_of_measurement=PERCENTAGE,
+                            native_step=1,
+                            entity_category=EntityCategory.CONFIG,
+                        ),
+                    ),
+                    TuyaBLENumberMapping(
+                        dp_id=36,
+                        description=NumberEntityDescription(
+                            key="auto_lock_time",
+                            icon="mdi:lock-clock",
+                            native_max_value=180,
+                            native_min_value=10,
+                            native_unit_of_measurement=UnitOfTime.SECONDS,
+                            native_step=10,
+                            entity_category=EntityCategory.CONFIG,
+                        ),
+                    ),
+                ],
+            ),
+            "yfqp0shy": [
+                TuyaBLENumberMapping(
+                    dp_id=36,
+                    description=NumberEntityDescription(
+                        key="auto_lock_time",
+                        icon="mdi:lock-clock",
+                        native_max_value=1800,
+                        native_min_value=0,
+                        native_unit_of_measurement=UnitOfTime.SECONDS,
+                        native_step=1,
+                        entity_category=EntityCategory.CONFIG,
                     ),
                 ),
             ],
@@ -757,6 +867,8 @@ def get_mapping_by_device(device: TuyaBLEDevice) -> list[TuyaBLECategoryNumberMa
 
 class TuyaBLENumber(TuyaBLEEntity, NumberEntity):
     """Representation of a Tuya BLE Number."""
+
+    platform = Platform.NUMBER
 
     def __init__(
         self,
