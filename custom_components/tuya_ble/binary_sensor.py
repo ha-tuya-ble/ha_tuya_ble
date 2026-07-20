@@ -329,9 +329,7 @@ mapping: dict[str, TuyaBLECategoryBinarySensorMapping] = {
                         sensor,
                         "_attr_is_on",
                         bool(
-                            _bitmap_value_to_int(
-                                sensor._device.datapoints[11].value
-                            )
+                            _bitmap_value_to_int(sensor._device.datapoints[11].value)
                             if sensor._device.datapoints[11]
                             else False
                         ),
