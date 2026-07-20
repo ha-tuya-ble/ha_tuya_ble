@@ -313,6 +313,31 @@ mapping: dict[str, TuyaBLECategoryBinarySensorMapping] = {
     #         ],
     #     }
     # ),
+    "cxjmb": TuyaBLECategoryBinarySensorMapping(
+        products={
+            "pnxl0r3l": [  # Window Cleaner Robot - fault bitmap (DP11)
+                TuyaBLEBinarySensorMapping(
+                    dp_id=11,
+                    description=BinarySensorEntityDescription(
+                        key="fault",
+                        icon="mdi:alert-circle-outline",
+                        device_class=BinarySensorDeviceClass.PROBLEM,
+                        entity_category=EntityCategory.DIAGNOSTIC,
+                    ),
+                    # bit=None → is_on = bool(value), non-zero bitmap means fault
+                    getter=lambda sensor: setattr(
+                        sensor,
+                        "_attr_is_on",
+                        bool(
+                            _bitmap_value_to_int(sensor._device.datapoints[11].value)
+                            if sensor._device.datapoints[11]
+                            else False
+                        ),
+                    ),
+                ),
+            ],
+        },
+    ),
 }
 
 

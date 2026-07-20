@@ -584,6 +584,35 @@ mapping: dict[str, TuyaBLECategorySelectMapping] = {
             ],
         },
     ),
+    "cxjmb": TuyaBLECategorySelectMapping(
+        products={
+            "pnxl0r3l": [  # Window Cleaner Robot
+                TuyaBLESelectMapping(
+                    dp_id=2,
+                    description=SelectEntityDescription(
+                        key="mode",
+                        icon="mdi:robot-mower",
+                        options=["smart", "z_mode", "n_mode", "edge", "spot"],
+                        entity_category=EntityCategory.CONFIG,
+                    ),
+                ),
+                TuyaBLESelectMapping(
+                    dp_id=3,
+                    description=SelectEntityDescription(
+                        key="direction_control",
+                        icon="mdi:navigation",
+                        options=[
+                            "forward",
+                            "backward",
+                            "turn_left",
+                            "turn_right",
+                            "stop",
+                        ],
+                    ),
+                ),
+            ],
+        },
+    ),
 }
 
 

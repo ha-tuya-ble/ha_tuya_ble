@@ -142,6 +142,26 @@
             },
             "temperature_unit": {
                 "name": "Temperature unit"
+            },
+            "mode": {
+                "name": "Cleaning mode",
+                "state": {
+                    "smart": "Smart",
+                    "z_mode": "Z-Mode",
+                    "n_mode": "N-Mode",
+                    "edge": "Edge",
+                    "spot": "Spot"
+                }
+            },
+            "direction_control": {
+                "name": "Direction",
+                "state": {
+                    "forward": "Forward",
+                    "backward": "Backward",
+                    "turn_left": "Turn left",
+                    "turn_right": "Turn right",
+                    "stop": "Stop"
+                }
             }
         },
         "sensor": {
@@ -326,6 +346,12 @@
             },
             "window_check": {
                 "name": "Window Check"
+            },
+            "window_cleaner_switch": {
+                "name": "Cleaning"
+            },
+            "water_auto": {
+                "name": "Auto water spray"
             }
         },
         "text": {
@@ -336,6 +362,9 @@
         "vacuum": {
             "vacuum": {
                 "name": "Window Cleaner"
+            },
+            "clean_time": {
+                "name": "Clean time"
             }
         }
     },
@@ -359,4 +388,3 @@
         }
     }
 }
-

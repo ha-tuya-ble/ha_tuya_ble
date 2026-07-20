@@ -681,6 +681,13 @@ devices_database: dict[str, TuyaBLECategoryInfo] = {
             "v3fzfd2y": TuyaBLEProductInfo(name="AOK AM25 Roller Blinds Motor"),
         }
     ),
+    "cxjmb": TuyaBLECategoryInfo(
+        products={
+            "pnxl0r3l": TuyaBLEProductInfo(
+                name="Window Cleaner Robot",
+            ),
+        },
+    ),
     "zwjcy": TuyaBLECategoryInfo(
         products={
             "jabotj1z": TuyaBLEProductInfo(

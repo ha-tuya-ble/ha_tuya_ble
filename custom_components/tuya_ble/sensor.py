@@ -1389,6 +1389,42 @@ mapping: dict[str, TuyaBLECategorySensorMapping] = {
             ),
         }
     ),
+    "cxjmb": TuyaBLECategorySensorMapping(
+        products={
+            "pnxl0r3l": [  # Window Cleaner Robot
+                TuyaBLESensorMapping(
+                    dp_id=4,
+                    description=SensorEntityDescription(
+                        key="status",
+                        icon="mdi:robot",
+                        device_class=SensorDeviceClass.ENUM,
+                        options=[
+                            "standby",
+                            "cleaning",
+                            "smart_clean",
+                            "z_clean",
+                            "n_clean",
+                            "edge_clean",
+                            "spot_clean",
+                            "pause",
+                            "stop",
+                            "charge",
+                        ],
+                    ),
+                ),
+                TuyaBLESensorMapping(
+                    dp_id=6,
+                    description=SensorEntityDescription(
+                        key="clean_time",
+                        icon="mdi:timer-outline",
+                        device_class=SensorDeviceClass.DURATION,
+                        native_unit_of_measurement=UnitOfTime.MINUTES,
+                        state_class=SensorStateClass.MEASUREMENT,
+                    ),
+                ),
+            ],
+        },
+    ),
     "slj": TuyaBLECategorySensorMapping(
         products={
             "mqqna0px": [

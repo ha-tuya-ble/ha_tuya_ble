@@ -61,10 +61,6 @@ from .tuya_ble import TuyaBLEDataPointType, TuyaBLEDevice
 
 _LOGGER = logging.getLogger(__name__)
 
-# ---------------------------------------------------------------------------
-# Default status → HA activity mappings (reusable across devices)
-# ---------------------------------------------------------------------------
-
 # Window cleaner robot status values
 STATUS_MAP_WINDOW_CLEANER: dict[str, VacuumActivity] = {
     "standby": VacuumActivity.IDLE,
@@ -101,11 +97,6 @@ STATUS_MAP_ROBOT_VACUUM: dict[str, VacuumActivity] = {
     "sleep": VacuumActivity.IDLE,
     "fault": VacuumActivity.ERROR,
 }
-
-
-# ---------------------------------------------------------------------------
-# Data classes
-# ---------------------------------------------------------------------------
 
 
 @dataclass
@@ -172,27 +163,19 @@ class TuyaBLECategoryVacuumMapping:
 # ---------------------------------------------------------------------------
 
 mapping: dict[str, TuyaBLECategoryVacuumMapping] = {
-    # ------------------------------------------------------------------
-    # Add more categories below as needed, for example:
-    #
-    # "sweeprobotv2": TuyaBLECategoryVacuumMapping(
-    #     products={
-    #         "your_product_id": TuyaBLEVacuumMapping(
-    #             dp_start_bool=1,
-    #             dp_status=3,
-    #             dp_mode=4,
-    #             status_map=STATUS_MAP_ROBOT_VACUUM,
-    #             fan_speed_list=["smart", "wall_follow", "spiral", "random"],
-    #         ),
-    #     },
-    # ),
-    # ------------------------------------------------------------------
+    "cxjmb": TuyaBLECategoryVacuumMapping(
+        products={
+            "pnxl0r3l": TuyaBLEVacuumMapping(  # CHYW200.ABIR
+                dp_start_bool=1,  # switch_go (bool)
+                dp_mode=2,  # mode (enum): smart/z_mode/n_mode/edge/spot
+                dp_status=4,  # status (enum, RO)
+                # dp_direction handled separately via select entity (select.py)
+                status_map=STATUS_MAP_WINDOW_CLEANER,
+                fan_speed_list=["smart", "z_mode", "n_mode", "edge", "spot"],
+            ),
+        },
+    ),
 }
-
-
-# ---------------------------------------------------------------------------
-# Platform setup
-# ---------------------------------------------------------------------------
 
 
 async def async_setup_entry(
@@ -234,11 +217,6 @@ def _get_mapping(device: TuyaBLEDevice) -> TuyaBLEVacuumMapping | None:
                 return result
 
     return None
-
-
-# ---------------------------------------------------------------------------
-# Entity
-# ---------------------------------------------------------------------------
 
 
 class TuyaBLEVacuumEntity(TuyaBLEEntity, StateVacuumEntity):
