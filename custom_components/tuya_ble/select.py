@@ -621,6 +621,7 @@ def get_mapping_by_device(device: TuyaBLEDevice) -> list[TuyaBLECategorySelectMa
 
     return []
 
+
 class TuyaBLESelect(TuyaBLEEntity, SelectEntity):
     """Representation of a Tuya BLE select."""
 
