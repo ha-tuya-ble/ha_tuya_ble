@@ -128,10 +128,24 @@
                 }
             },
             "weather_delay": {
-                "name": "Weather delay"
+                "name": "Weather delay",
+                "state": {
+                    "cancel": "Cancel",
+                    "1day": "1 day",
+                    "2day": "2 days",
+                    "3day": "3 days",
+                    "4day": "4 days",
+                    "5day": "5 days",
+                    "6day": "6 days",
+                    "7day": "7 days"
+                }
             },
             "weather": {
-                "name": "Weather"
+                "name": "Weather",
+                "state": {
+                    "sunny": "Sunny",
+                    "rainy": "Rainy"
+                }
             },
             "smart_weather": {
                 "name": "Smart weather"

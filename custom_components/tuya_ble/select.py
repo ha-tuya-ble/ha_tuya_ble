@@ -30,10 +30,6 @@ from .tuya_ble import TuyaBLEDataPointType, TuyaBLEDevice
 _LOGGER = logging.getLogger(__name__)
 
 
-TuyaBLESelectGetter = Callable[["TuyaBLESelect"], str | None] | None
-TuyaBLESelectSetter = Callable[["TuyaBLESelect", str], None] | None
-
-
 @dataclass
 class TuyaBLESelectMapping:
     """Model a DP, description and default values"""
@@ -42,8 +38,6 @@ class TuyaBLESelectMapping:
     description: SelectEntityDescription
     force_add: bool = True
     dp_type: TuyaBLEDataPointType | None = None
-    getter: TuyaBLESelectGetter = None
-    setter: TuyaBLESelectSetter = None
 
 
 @dataclass
@@ -126,91 +120,41 @@ class TuyaBLETemperatureUnitMapping(TuyaBLESelectMapping):
     )
 
 
-def get_ojrvmfkk_weather_delay(self: TuyaBLESelect) -> str | None:
-    datapoint = self._device.datapoints[10]
-    if datapoint and datapoint.value is not None:
-        val = str(datapoint.value)
-        if val == "cancel":
-            return "cancel"
-        if val.endswith("day"):
-            return val[:-2]
-        return val
-    return None
-
-
-def set_ojrvmfkk_weather_delay(self: TuyaBLESelect, value: str) -> None:
-    val = value
-    if val != "cancel" and val.endswith("d"):
-        val = val + "ay"
-    datapoint = self._device.datapoints.get_or_create(
-        10,
-        TuyaBLEDataPointType.DT_STRING,
-        val,
-    )
-    if datapoint:
-        self._hass.create_task(datapoint.set_value(val))
-
-
-def get_ojrvmfkk_weather(self: TuyaBLESelect) -> str | None:
-    datapoint = self._device.datapoints[13]
-    if datapoint and datapoint.value is not None:
-        val = str(datapoint.value)
-        return val.capitalize()
-    return None
-
-
-def set_ojrvmfkk_weather(self: TuyaBLESelect, value: str) -> None:
-    val = value.lower()
-    datapoint = self._device.datapoints.get_or_create(
-        13,
-        TuyaBLEDataPointType.DT_STRING,
-        val,
-    )
-    if datapoint:
-        self._hass.create_task(datapoint.set_value(val))
-
-
 mapping: dict[str, TuyaBLECategorySelectMapping] = {
     "sfkzq": TuyaBLECategorySelectMapping(
         products={
             "ojrvmfkk": [
                 # Weather delay - DP 10
-                # Mapping: cancel -> cancel, 1day -> 1d, 2day -> 2d, 3day -> 3d, 4day -> 4d, 5day -> 5d, 6day -> 6d, 7day -> 7d
                 TuyaBLESelectMapping(
                     dp_id=10,
                     description=SelectEntityDescription(
                         key="weather_delay",
                         options=[
                             "cancel",
-                            "1d",
-                            "2d",
-                            "3d",
-                            "4d",
-                            "5d",
-                            "6d",
-                            "7d",
+                            "1day",
+                            "2day",
+                            "3day",
+                            "4day",
+                            "5day",
+                            "6day",
+                            "7day",
                         ],
                         entity_category=EntityCategory.CONFIG,
                     ),
                     dp_type=TuyaBLEDataPointType.DT_STRING,
-                    getter=get_ojrvmfkk_weather_delay,
-                    setter=set_ojrvmfkk_weather_delay,
                 ),
                 # Weather - DP 13
-                # Mapping: sunny -> Sunny, rainy -> Rainy
                 TuyaBLESelectMapping(
                     dp_id=13,
                     description=SelectEntityDescription(
                         key="weather",
                         options=[
-                            "Sunny",
-                            "Rainy",
+                            "sunny",
+                            "rainy",
                         ],
                         entity_category=EntityCategory.CONFIG,
                     ),
                     dp_type=TuyaBLEDataPointType.DT_STRING,
-                    getter=get_ojrvmfkk_weather,
-                    setter=set_ojrvmfkk_weather,
                 ),
             ],
             "16wgjvck": [
@@ -710,9 +654,6 @@ class TuyaBLESelect(TuyaBLEEntity, SelectEntity):
     @property
     def current_option(self) -> str | None:
         """Return the selected entity option to represent the entity state."""
-        if self._mapping.getter:
-            return self._mapping.getter(self)
-
         datapoint = self._device.datapoints[self._mapping.dp_id]
         if datapoint:
             value = datapoint.value
@@ -724,19 +665,24 @@ class TuyaBLESelect(TuyaBLEEntity, SelectEntity):
 
     def select_option(self, value: str) -> None:
         """Change the selected option."""
-        if self._mapping.setter:
-            self._mapping.setter(self, value)
-            return
-
         if value in self._attr_options:
-            int_value = self._attr_options.index(value)
-            datapoint = self._device.datapoints.get_or_create(
-                self._mapping.dp_id,
-                self._mapping.dp_type or TuyaBLEDataPointType.DT_ENUM,
-                int_value,
-            )
-            if datapoint:
-                self._hass.create_task(datapoint.set_value(int_value))
+            if self._mapping.dp_type == TuyaBLEDataPointType.DT_STRING:
+                datapoint = self._device.datapoints.get_or_create(
+                    self._mapping.dp_id,
+                    TuyaBLEDataPointType.DT_STRING,
+                    value,
+                )
+                if datapoint:
+                    self._hass.create_task(datapoint.set_value(value))
+            else:
+                int_value = self._attr_options.index(value)
+                datapoint = self._device.datapoints.get_or_create(
+                    self._mapping.dp_id,
+                    TuyaBLEDataPointType.DT_ENUM,
+                    int_value,
+                )
+                if datapoint:
+                    self._hass.create_task(datapoint.set_value(int_value))
 
 
 async def async_setup_entry(
