@@ -83,8 +83,8 @@ The integration works locally, but connection to Tuya BLE device requires device
       <td>—</td>
     </tr>
     <tr>
-      <td rowspan="5"><strong>Temperature and humidity sensors</strong></td>
-      <td rowspan="5"><code>wsdcg</code>, <code>zwjcy</code></td>
+      <td rowspan="6"><strong>Temperature and humidity sensors</strong></td>
+      <td rowspan="6"><code>wsdcg</code>, <code>zwjcy</code></td>
       <td>Soil moisture sensor</td>
       <td><code>ojzlzzsw</code></td>
       <td>—</td>
@@ -102,6 +102,11 @@ The integration works locally, but connection to Tuya BLE device requires device
     <tr>
       <td>Temperature Humidity Sensor SS302</td>
       <td><code>6lbesej0</code></td>
+      <td>—</td>
+    </tr>
+    <tr>
+      <td>TH05 Temperature Sensor</td>
+      <td><code>vyfoip9h</code>, <code>1jvidcsf</code></td>
       <td>—</td>
     </tr>
     <tr>

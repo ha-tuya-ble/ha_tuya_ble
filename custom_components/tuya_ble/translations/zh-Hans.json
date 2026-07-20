@@ -69,11 +69,17 @@
             }
         },
         "number": {
+            "ble_unlock_check": {
+                "name": "解锁"
+            },
             "brightness": {
                 "name": "亮度"
             },
             "carbon_dioxide_alarm_level": {
                 "name": "报警级别"
+            },
+            "countdown": {
+                "name": "灌溉时长"
             },
             "countdown_duration": {
                 "name": "灌溉时长"
@@ -84,14 +90,14 @@
             "countdown_duration_z2": {
                 "name": "灌溉时长 - 区域 2"
             },
-            "countdown": {
-                "name": "灌溉时长"
-            },
             "down_position": {
                 "name": "下限位置"
             },
             "hold_time": {
                 "name": "保持时间"
+            },
+            "humidity_calibration": {
+                "name": "湿度校准"
             },
             "program_idle_position": {
                 "name": "空闲位置"
@@ -105,11 +111,11 @@
             "reporting_period": {
                 "name": "上报周期"
             },
+            "temperature_calibration": {
+                "name": "温度校准"
+            },
             "up_position": {
                 "name": "上限位置"
-            },
-            "ble_unlock_check": {
-                "name": "解锁"
             }
         },
         "select": {
@@ -339,6 +345,11 @@
         "text": {
             "program": {
                 "name": "程序：位置[/时间];..."
+            }
+        },
+        "vacuum": {
+            "vacuum": {
+                "name": "擦窗机器人"
             }
         }
     },

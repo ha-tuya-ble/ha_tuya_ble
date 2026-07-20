@@ -596,7 +596,15 @@ mapping: dict[str, TuyaBLECategorySelectMapping] = {
     "wsdcg": TuyaBLECategorySelectMapping(
         products={
             **dict.fromkeys(
-                ["ojzlzzsw", "iv7hudlj", "jm6iasmb", "vlzqwckk", "tr0kabuq"],
+                [
+                    "ojzlzzsw",
+                    "iv7hudlj",
+                    "jm6iasmb",
+                    "vlzqwckk",
+                    "tr0kabuq",
+                    "vyfoip9h",
+                    "1jvidcsf",
+                ],
                 [TuyaBLETemperatureUnitMapping(dp_id=9)],
             )
         },
@@ -614,6 +622,35 @@ mapping: dict[str, TuyaBLECategorySelectMapping] = {
                             "alarm_reminder",  # TODO: schedule_reminder?
                         ],
                         entity_category=EntityCategory.CONFIG,
+                    ),
+                ),
+            ],
+        },
+    ),
+    "cxjmb": TuyaBLECategorySelectMapping(
+        products={
+            "pnxl0r3l": [  # Window Cleaner Robot
+                TuyaBLESelectMapping(
+                    dp_id=2,
+                    description=SelectEntityDescription(
+                        key="mode",
+                        icon="mdi:robot-mower",
+                        options=["smart", "z_mode", "n_mode", "edge", "spot"],
+                        entity_category=EntityCategory.CONFIG,
+                    ),
+                ),
+                TuyaBLESelectMapping(
+                    dp_id=3,
+                    description=SelectEntityDescription(
+                        key="direction_control",
+                        icon="mdi:navigation",
+                        options=[
+                            "forward",
+                            "backward",
+                            "turn_left",
+                            "turn_right",
+                            "stop",
+                        ],
                     ),
                 ),
             ],

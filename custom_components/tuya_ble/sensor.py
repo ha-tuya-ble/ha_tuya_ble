@@ -658,37 +658,40 @@ mapping: dict[str, TuyaBLECategorySensorMapping] = {
                     ),
                 ),
             ],
-            "6lbesej0": [  # Temperature Humidity Sensor SS302
-                TuyaBLETemperatureMapping(
-                    dp_id=1,
-                    coefficient=10.0,
-                    description=SensorEntityDescription(
-                        key="temp_current",
-                        device_class=SensorDeviceClass.TEMPERATURE,
-                        native_unit_of_measurement=UnitOfTemperature.CELSIUS,
-                        state_class=SensorStateClass.MEASUREMENT,
+            **dict.fromkeys(
+                ["6lbesej0", "vyfoip9h", "1jvidcsf"],
+                [
+                    TuyaBLETemperatureMapping(
+                        dp_id=1,
+                        coefficient=10.0,
+                        description=SensorEntityDescription(
+                            key="temp_current",
+                            device_class=SensorDeviceClass.TEMPERATURE,
+                            native_unit_of_measurement=UnitOfTemperature.CELSIUS,
+                            state_class=SensorStateClass.MEASUREMENT,
+                        ),
                     ),
-                ),
-                TuyaBLESensorMapping(
-                    dp_id=2,
-                    description=SensorEntityDescription(
-                        key="humidity_value",
-                        device_class=SensorDeviceClass.HUMIDITY,
-                        native_unit_of_measurement=PERCENTAGE,
-                        state_class=SensorStateClass.MEASUREMENT,
+                    TuyaBLESensorMapping(
+                        dp_id=2,
+                        description=SensorEntityDescription(
+                            key="humidity_value",
+                            device_class=SensorDeviceClass.HUMIDITY,
+                            native_unit_of_measurement=PERCENTAGE,
+                            state_class=SensorStateClass.MEASUREMENT,
+                        ),
                     ),
-                ),
-                TuyaBLEBatteryMapping(
-                    dp_id=4,
-                    description=SensorEntityDescription(
-                        key="battery_percentage",
-                        device_class=SensorDeviceClass.BATTERY,
-                        native_unit_of_measurement=PERCENTAGE,
-                        entity_category=EntityCategory.DIAGNOSTIC,
-                        state_class=SensorStateClass.MEASUREMENT,
+                    TuyaBLEBatteryMapping(
+                        dp_id=4,
+                        description=SensorEntityDescription(
+                            key="battery_percentage",
+                            device_class=SensorDeviceClass.BATTERY,
+                            native_unit_of_measurement=PERCENTAGE,
+                            entity_category=EntityCategory.DIAGNOSTIC,
+                            state_class=SensorStateClass.MEASUREMENT,
+                        ),
                     ),
-                ),
-            ],
+                ],
+            ),
             "jm6iasmb": [  # Bluetooth Temperature Humidity Sensor
                 TuyaBLETemperatureMapping(
                     dp_id=1,
@@ -1431,6 +1434,42 @@ mapping: dict[str, TuyaBLECategorySensorMapping] = {
                 ],
             ),
         }
+    ),
+    "cxjmb": TuyaBLECategorySensorMapping(
+        products={
+            "pnxl0r3l": [  # Window Cleaner Robot
+                TuyaBLESensorMapping(
+                    dp_id=4,
+                    description=SensorEntityDescription(
+                        key="status",
+                        icon="mdi:robot",
+                        device_class=SensorDeviceClass.ENUM,
+                        options=[
+                            "standby",
+                            "cleaning",
+                            "smart_clean",
+                            "z_clean",
+                            "n_clean",
+                            "edge_clean",
+                            "spot_clean",
+                            "pause",
+                            "stop",
+                            "charge",
+                        ],
+                    ),
+                ),
+                TuyaBLESensorMapping(
+                    dp_id=6,
+                    description=SensorEntityDescription(
+                        key="clean_time",
+                        icon="mdi:timer-outline",
+                        device_class=SensorDeviceClass.DURATION,
+                        native_unit_of_measurement=UnitOfTime.MINUTES,
+                        state_class=SensorStateClass.MEASUREMENT,
+                    ),
+                ),
+            ],
+        },
     ),
     "slj": TuyaBLECategorySensorMapping(
         products={
