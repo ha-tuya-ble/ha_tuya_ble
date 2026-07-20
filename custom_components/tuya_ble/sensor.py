@@ -549,6 +549,52 @@ mapping: dict[str, TuyaBLECategorySensorMapping] = {
                 ),
                 TuyaBLEBatteryMapping(dp_id=8),
             ],
+            "qicggi0m": [
+                TuyaBLEAlarmLockStateMapping(dp_id=21),
+                TuyaBLESensorMapping(
+                    dp_id=13,  # Retrieve last code used
+                    description=SensorEntityDescription(
+                        key="unlock_password",
+                        icon="mdi:keyboard-outline",
+                    ),
+                ),
+                TuyaBLESensorMapping(
+                    dp_id=14,  # Retrieve last dynamic password used
+                    description=SensorEntityDescription(
+                        key="unlock_dynamic",
+                        icon="mdi:lock-reset",
+                    ),
+                ),
+                TuyaBLESensorMapping(
+                    dp_id=19,  # Retrieve last bluetooth unlock used
+                    description=SensorEntityDescription(
+                        key="unlock_ble",
+                        icon="mdi:bluetooth",
+                    ),
+                ),
+                TuyaBLESensorMapping(
+                    dp_id=55,  # Retrieve last temporary password unlock used
+                    description=SensorEntityDescription(
+                        key="unlock_temp_pwd",
+                        icon="mdi:lock-clock",
+                    ),
+                ),
+                TuyaBLESensorMapping(
+                    dp_id=62,  # Retrieve last app unlock used
+                    description=SensorEntityDescription(
+                        key="unlock_app",
+                        icon="mdi:cellphone-lock",
+                    ),
+                ),
+                TuyaBLESensorMapping(
+                    dp_id=63,  # Retrieve last voice unlock used
+                    description=SensorEntityDescription(
+                        key="unlock_voice",
+                        icon="mdi:microphone",
+                    ),
+                ),
+                TuyaBLEBatteryMapping(dp_id=8),
+            ],
         }
     ),
     "szjqr": TuyaBLECategorySensorMapping(

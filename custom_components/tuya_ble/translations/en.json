@@ -301,6 +301,15 @@
             },
             "unlock_ble": {
                 "name": "Last used Bluetooth"
+            },
+            "unlock_app": {
+                "name": "Last used App"
+            },
+            "unlock_voice": {
+                "name": "Last used Voice"
+            },
+            "unlock_temp_pwd": {
+                "name": "Last used Temporary Password"
             }
         },
         "switch": {

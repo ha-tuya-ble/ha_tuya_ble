@@ -122,8 +122,8 @@ The integration works locally, but connection to Tuya BLE device requires device
       <td>—</td>
     </tr>
     <tr>
-      <td rowspan="19"><strong>Smart Locks</strong></td>
-      <td rowspan="19"><code>ms</code>, <code>jtmspro</code></td>
+      <td rowspan="21"><strong>Smart Locks</strong></td>
+      <td rowspan="21"><code>ms</code>, <code>jtmspro</code></td>
       <td>Smart Lock</td>
       <td><code>ludzroix</code>, <code>isk2p555</code>, <code>gumrixyt</code>, <code>uamrw6h3</code>, <code>sidhzylo</code>, <code>mqc2hevy</code>, <code>7a4xvbtt</code></td>
       <td>—</td>
@@ -221,6 +221,11 @@ The integration works locally, but connection to Tuya BLE device requires device
     <tr>
       <td>Gainsborough Liberty BLE Lock (GGC01HA)</td>
       <td><code>yfqp0shy</code></td>
+      <td>—</td>
+    </tr>
+    <tr>
+      <td>XCase NX-4964 Lock Box</td>
+      <td><code>qicggi0m</code></td>
       <td>—</td>
     </tr>
     <tr>
