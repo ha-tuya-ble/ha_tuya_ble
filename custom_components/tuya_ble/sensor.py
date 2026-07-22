@@ -1390,6 +1390,93 @@ mapping: dict[str, TuyaBLECategorySensorMapping] = {
                 ),
                 TuyaBLEWorkStateMapping(dp_id=12),
             ],
+            "smd9kj1n": [  # HCT-626 Dual Water Timer
+                TuyaBLEBatteryMapping(
+                    dp_id=47,
+                    coefficient=20.0,
+                ),
+                TuyaBLESensorMapping(
+                    dp_id=42,
+                    description=SensorEntityDescription(
+                        key="weather_delay_remaining",
+                        icon="mdi:weather-cloudy-clock",
+                        device_class=SensorDeviceClass.DURATION,
+                        native_unit_of_measurement=UnitOfTime.HOURS,
+                        entity_category=EntityCategory.DIAGNOSTIC,
+                        state_class=SensorStateClass.MEASUREMENT,
+                    ),
+                ),
+                TuyaBLESensorMapping(
+                    dp_id=44,
+                    dp_type=TuyaBLEDataPointType.DT_STRING,
+                    description=SensorEntityDescription(
+                        key="weather",
+                        device_class=SensorDeviceClass.ENUM,
+                        options=["sunny", "cloudy", "rainy", "snowy", "null"],
+                        entity_category=EntityCategory.DIAGNOSTIC,
+                    ),
+                ),
+                TuyaBLESensorMapping(
+                    dp_id=101,
+                    description=SensorEntityDescription(
+                        key="use_time_z1",
+                        device_class=SensorDeviceClass.DURATION,
+                        native_unit_of_measurement=UnitOfTime.SECONDS,
+                        entity_category=EntityCategory.DIAGNOSTIC,
+                        state_class=SensorStateClass.MEASUREMENT,
+                    ),
+                ),
+                TuyaBLESensorMapping(
+                    dp_id=102,
+                    description=SensorEntityDescription(
+                        key="use_time_z2",
+                        device_class=SensorDeviceClass.DURATION,
+                        native_unit_of_measurement=UnitOfTime.SECONDS,
+                        entity_category=EntityCategory.DIAGNOSTIC,
+                        state_class=SensorStateClass.MEASUREMENT,
+                    ),
+                ),
+                TuyaBLESensorMapping(
+                    dp_id=103,
+                    description=SensorEntityDescription(
+                        key="spray_time_z1",
+                        device_class=SensorDeviceClass.DURATION,
+                        native_unit_of_measurement=UnitOfTime.SECONDS,
+                        entity_category=EntityCategory.DIAGNOSTIC,
+                        state_class=SensorStateClass.MEASUREMENT,
+                    ),
+                ),
+                TuyaBLESensorMapping(
+                    dp_id=104,
+                    description=SensorEntityDescription(
+                        key="spray_time_z2",
+                        device_class=SensorDeviceClass.DURATION,
+                        native_unit_of_measurement=UnitOfTime.SECONDS,
+                        entity_category=EntityCategory.DIAGNOSTIC,
+                        state_class=SensorStateClass.MEASUREMENT,
+                    ),
+                ),
+                TuyaBLESensorMapping(
+                    dp_id=105,
+                    dp_type=TuyaBLEDataPointType.DT_STRING,
+                    description=SensorEntityDescription(
+                        key="work_state_z1",
+                        device_class=SensorDeviceClass.ENUM,
+                        options=["idle", "manual", "spray", "timing"],
+                        entity_category=EntityCategory.DIAGNOSTIC,
+                    ),
+                ),
+                TuyaBLESensorMapping(
+                    dp_id=106,
+                    dp_type=TuyaBLEDataPointType.DT_STRING,
+                    description=SensorEntityDescription(
+                        key="work_state_z2",
+                        device_class=SensorDeviceClass.ENUM,
+                        options=["idle", "manual", "spray", "timing"],
+                        entity_category=EntityCategory.DIAGNOSTIC,
+                    ),
+                ),
+            ],
             "0axr5s0b": [  # Valve Controller
                 TuyaBLEBatteryMapping(dp_id=7),
                 TuyaBLESensorMapping(

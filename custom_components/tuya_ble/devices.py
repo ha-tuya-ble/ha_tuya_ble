@@ -650,6 +650,9 @@ devices_database: dict[str, TuyaBLECategoryInfo] = {
             "tqzkwarw": TuyaBLEProductInfo(
                 name="HCT-611 Water Timer",
             ),
+            "smd9kj1n": TuyaBLEProductInfo(
+                name="HCT-626 Dual Water Timer",
+            ),
         },
     ),
     "ggq": TuyaBLECategoryInfo(
