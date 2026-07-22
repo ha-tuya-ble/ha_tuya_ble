@@ -220,6 +220,16 @@ mapping: dict[str, TuyaBLECategoryBinarySensorMapping] = {
                     ),
                 ),
             ],
+            "smd9kj1n": [  # HCT-626 Dual Water Timer
+                TuyaBLEBinarySensorMapping(
+                    dp_id=53,
+                    description=BinarySensorEntityDescription(
+                        key="low_battery",
+                        device_class=BinarySensorDeviceClass.BATTERY,
+                        entity_category=EntityCategory.DIAGNOSTIC,
+                    ),
+                ),
+            ],
         },
     ),
     "jtmspro": TuyaBLECategoryBinarySensorMapping(

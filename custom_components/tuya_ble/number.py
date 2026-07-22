@@ -731,6 +731,32 @@ mapping: dict[str, TuyaBLECategoryNumberMapping] = {
                     ),
                 ),
             ],
+            "smd9kj1n": [  # HCT-626 Dual Water Timer
+                TuyaBLENumberMapping(
+                    dp_id=17,
+                    description=NumberEntityDescription(
+                        key="countdown_duration_z1",
+                        icon="mdi:timer",
+                        native_max_value=60,
+                        native_min_value=1,
+                        native_unit_of_measurement=UnitOfTime.MINUTES,
+                        native_step=1,
+                    ),
+                    coefficient=60.0,
+                ),
+                TuyaBLENumberMapping(
+                    dp_id=18,
+                    description=NumberEntityDescription(
+                        key="countdown_duration_z2",
+                        icon="mdi:timer",
+                        native_max_value=60,
+                        native_min_value=1,
+                        native_unit_of_measurement=UnitOfTime.MINUTES,
+                        native_step=1,
+                    ),
+                    coefficient=60.0,
+                ),
+            ],
             **dict.fromkeys(
                 ["46zia2nz", "1fcnd8xk", "0axr5s0b", "d4vpmigg"],
                 [

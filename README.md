@@ -292,10 +292,15 @@ The integration works locally, but connection to Tuya BLE device requires device
       <td>Experimental.</td>
     </tr>
     <tr>
-      <td rowspan="7"><strong>Water valve controller</strong></td>
-      <td rowspan="7"><code>sfkzq</code></td>
+      <td rowspan="8"><strong>Water valve controller</strong></td>
+      <td rowspan="8"><code>sfkzq</code></td>
       <td>Water valve controller</td>
       <td><code>nxquc5lb</code></td>
+      <td>—</td>
+    </tr>
+    <tr>
+      <td>HCT-626 Dual Water Timer</td>
+      <td><code>smd9kj1n</code></td>
       <td>—</td>
     </tr>
     <tr>

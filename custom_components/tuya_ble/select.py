@@ -3,8 +3,8 @@
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-
 import logging
+from typing import Callable
 
 from homeassistant.components.select import (
     SelectEntityDescription,
@@ -29,6 +29,10 @@ from .tuya_ble import TuyaBLEDataPointType, TuyaBLEDevice
 _LOGGER = logging.getLogger(__name__)
 
 
+TuyaBLESelectGetter = Callable[["TuyaBLESelect", TuyaBLEProductInfo], str | None] | None
+TuyaBLESelectSetter = Callable[["TuyaBLESelect", TuyaBLEProductInfo, str], None] | None
+
+
 @dataclass
 class TuyaBLESelectMapping:
     """Model a DP, description and default values"""
@@ -37,6 +41,8 @@ class TuyaBLESelectMapping:
     description: SelectEntityDescription
     force_add: bool = True
     dp_type: TuyaBLEDataPointType | None = None
+    getter: TuyaBLESelectGetter = None
+    setter: TuyaBLESelectSetter = None
 
 
 @dataclass
@@ -119,6 +125,43 @@ class TuyaBLETemperatureUnitMapping(TuyaBLESelectMapping):
     )
 
 
+# Bidirectional mapping for Weather Delay on HCT-626
+WEATHER_DELAY_MAP = {
+    "cancel": "cancel",
+    "1": "24h",
+    "2": "48h",
+    "3": "72h",
+    "4": "96h",
+    "5": "120h",
+    "6": "144h",
+    "7": "168h",
+}
+WEATHER_DELAY_REV_MAP = {v: k for k, v in WEATHER_DELAY_MAP.items()}
+
+
+def get_hct626_weather_delay(
+    self: TuyaBLESelect, product: TuyaBLEProductInfo
+) -> str | None:
+    datapoint = self._device.datapoints[self._mapping.dp_id]
+    if datapoint and datapoint.value is not None:
+        val = str(datapoint.value)
+        return WEATHER_DELAY_MAP.get(val, val)
+    return None
+
+
+def set_hct626_weather_delay(
+    self: TuyaBLESelect, product: TuyaBLEProductInfo, value: str
+) -> None:
+    dp_val = WEATHER_DELAY_REV_MAP.get(value, value)
+    datapoint = self._device.datapoints.get_or_create(
+        self._mapping.dp_id,
+        TuyaBLEDataPointType.DT_STRING,
+        dp_val,
+    )
+    if datapoint:
+        self._hass.create_task(datapoint.set_value(dp_val))
+
+
 mapping: dict[str, TuyaBLECategorySelectMapping] = {
     "sfkzq": TuyaBLECategorySelectMapping(
         products={
@@ -161,6 +204,14 @@ mapping: dict[str, TuyaBLECategorySelectMapping] = {
                         ],
                         entity_category=EntityCategory.CONFIG,
                     ),
+                ),
+            ],
+            "smd9kj1n": [  # HCT-626 Dual Water Timer
+                TuyaBLEWeatherDelayMapping(
+                    dp_id=45,
+                    dp_type=TuyaBLEDataPointType.DT_STRING,
+                    getter=get_hct626_weather_delay,
+                    setter=set_hct626_weather_delay,
                 ),
             ],
             **dict.fromkeys(
@@ -687,12 +738,15 @@ class TuyaBLESelect(TuyaBLEEntity, SelectEntity):
     @property
     def current_option(self) -> str | None:
         """Return the selected entity option to represent the entity state."""
+        if self._mapping.getter:
+            return self._mapping.getter(self, self._product)
+
         # Raw value
         value: str | None = None
         datapoint = self._device.datapoints[self._mapping.dp_id]
         if datapoint:
             value = datapoint.value
-            if 0 <= value < len(self._attr_options):
+            if isinstance(value, int) and 0 <= value < len(self._attr_options):
                 return self._attr_options[value]
 
             return value
@@ -700,6 +754,10 @@ class TuyaBLESelect(TuyaBLEEntity, SelectEntity):
 
     def select_option(self, value: str) -> None:
         """Change the selected option."""
+        if self._mapping.setter:
+            self._mapping.setter(self, self._product, value)
+            return
+
         if value in self._attr_options:
             int_value = self._attr_options.index(value)
             datapoint = self._device.datapoints.get_or_create(
