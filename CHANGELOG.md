@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog],
 and this project adheres to [Semantic Versioning].
 
+## [0.8.0](https://github.com/ha-tuya-ble/ha_tuya_ble/compare/0.7.2...0.8.0) (2026-07-23)
+
+
+### Features
+
+* add dynamic GATT characteristics selection for Tuya BLE devices ([#249](https://github.com/ha-tuya-ble/ha_tuya_ble/issues/249)) via @Shirkamdev ([706b02c](https://github.com/ha-tuya-ble/ha_tuya_ble/commit/706b02c43005207259fb22b88928a37289fac231))
+* add support for HCT-611 Water Timer (tqzkwarw) ([#247](https://github.com/ha-tuya-ble/ha_tuya_ble/issues/247)) ([e6f4815](https://github.com/ha-tuya-ble/ha_tuya_ble/commit/e6f481558f7bb0e97ce068b47ccc5dab72ac5233))
+
 ## [0.7.2](https://github.com/ha-tuya-ble/ha_tuya_ble/compare/0.7.1...0.7.2) (2026-07-20)
 
 
