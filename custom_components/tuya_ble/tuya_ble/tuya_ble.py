@@ -32,7 +32,9 @@ from .const import (
     GATT_MTU,
     MANUFACTURER_DATA_ID,
     RESPONSE_WAIT_TIMEOUT,
+    SERVICE_CHARACTERISTICS,
     SERVICE_UUID_TEMP,
+    SERVICE_UUIDS,
     TuyaBLECode,
     TuyaBLEDataPointType,
 )
@@ -286,6 +288,8 @@ class TuyaBLEDevice:
         self._operation_lock = asyncio.Lock()
         self._connect_lock = asyncio.Lock()
         self._client: BleakClientWithServiceCache | None = None
+        self._characteristic_notify = CHARACTERISTIC_NOTIFY
+        self._characteristic_write = CHARACTERISTIC_WRITE
         self._expected_disconnect = False
         self._connected_callbacks: list[Callable[[], None]] = []
         self._callbacks: list[Callable[[list[TuyaBLEDataPoint]], None]] = []
@@ -414,9 +418,13 @@ class TuyaBLEDevice:
         raw_uuid: bytes | None = None
         if self._advertisement_data:
             if self._advertisement_data.service_data:
-                service_data = self._advertisement_data.service_data.get(
-                    SERVICE_UUID_TEMP
-                )
+                service_data = None
+                for service_uuid in SERVICE_UUIDS:
+                    service_data = self._advertisement_data.service_data.get(
+                        service_uuid
+                    )
+                    if service_data:
+                        break
                 if service_data and len(service_data) > 1:
                     match service_data[0]:
                         case 0:
@@ -685,7 +693,7 @@ class TuyaBLEDevice:
             self._expected_disconnect = True
             self._client = None
             if client and client.is_connected:
-                await client.stop_notify(CHARACTERISTIC_NOTIFY)
+                await client.stop_notify(self._characteristic_notify)
                 await client.disconnect()
         self._clean_input()
         async with self._seq_num_lock:
@@ -765,9 +773,17 @@ class TuyaBLEDevice:
                 if client and client.is_connected:
                     _LOGGER.debug("%s: Connected; RSSI: %s", self.address, self.rssi)
                     self._client = client
+                    self._characteristic_notify = CHARACTERISTIC_NOTIFY
+                    self._characteristic_write = CHARACTERISTIC_WRITE
+                    # Support for additional GATT characteristics from @Shirkamdev
+                    for notify_uuid, write_uuid in SERVICE_CHARACTERISTICS.values():
+                        if client.services.get_characteristic(notify_uuid):
+                            self._characteristic_notify = notify_uuid
+                            self._characteristic_write = write_uuid
+                            break
                     try:
                         await self._client.start_notify(
-                            CHARACTERISTIC_NOTIFY, self._notification_handler
+                            self._characteristic_notify, self._notification_handler
                         )
                     except Exception as ex:  # [BLEAK_EXCEPTIONS, BleakNotFoundError]:
                         if "Bluetooth is already shutdown" in str(ex):
@@ -1155,7 +1171,7 @@ class TuyaBLEDevice:
                 try:
                     # _LOGGER.debug("%s: Sending packet: %s", self.address, packet.hex())
                     await self._client.write_gatt_char(
-                        CHARACTERISTIC_WRITE,
+                        self._characteristic_write,
                         packet,
                         False,
                     )
