@@ -306,6 +306,7 @@ mapping: dict[str, TuyaBLECategorySwitchMapping] = {
                     "gumrixyt",
                     "sidhzylo",
                     "7a4xvbtt",
+                    "wgv4haro",
                 ],  # Smart Lock
                 [TuyaLockMotorStateMapping(dp_id=47)],
             ),

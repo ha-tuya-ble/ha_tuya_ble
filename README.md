@@ -122,8 +122,8 @@ The integration works locally, but connection to Tuya BLE device requires device
       <td>—</td>
     </tr>
     <tr>
-      <td rowspan="21"><strong>Smart Locks</strong></td>
-      <td rowspan="21"><code>ms</code>, <code>jtmspro</code></td>
+      <td rowspan="22"><strong>Smart Locks</strong></td>
+      <td rowspan="22"><code>ms</code>, <code>jtmspro</code></td>
       <td>Smart Lock</td>
       <td><code>ludzroix</code>, <code>isk2p555</code>, <code>gumrixyt</code>, <code>uamrw6h3</code>, <code>sidhzylo</code>, <code>mqc2hevy</code>, <code>7a4xvbtt</code></td>
       <td>—</td>
@@ -136,6 +136,11 @@ The integration works locally, but connection to Tuya BLE device requires device
     <tr>
       <td>Foxgard Smart Fingerprint Door Lock</td>
       <td><code>99gv5nmz</code></td>
+      <td>—</td>
+    </tr>
+    <tr>
+      <td>Guard Dog Security Smart Lock (BS_PLD01)</td>
+      <td><code>wgv4haro</code></td>
       <td>—</td>
     </tr>
     <tr>
