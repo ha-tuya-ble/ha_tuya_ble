@@ -1237,13 +1237,23 @@ class TuyaBLEDevice:
         )
         return (timestamp, end_pos)
 
-    def _parse_datapoints_v3(
-        self, timestamp: float, flags: int, data: bytes, start_pos: int
+    def _parse_datapoints(
+        self,
+        timestamp: float,
+        flags: int,
+        data: bytes,
+        start_pos: int,
+        length_size: int,
     ) -> int:
+        """Parse Tuya KLV datapoints with the requested value-length width."""
+        if length_size not in (1, 2):
+            raise ValueError("Tuya KLV length width must be one or two bytes")
+
         datapoints: list[TuyaBLEDataPoint] = []
 
         pos = start_pos
-        while len(data) - pos >= 4:
+        header_size = 2 + length_size
+        while len(data) - pos >= header_size:
             id: int = data[pos]
             pos += 1
             _type: int = data[pos]
@@ -1251,8 +1261,8 @@ class TuyaBLEDevice:
                 raise TuyaBLEDataFormatError()
             type: TuyaBLEDataPointType = TuyaBLEDataPointType(_type)
             pos += 1
-            data_len: int = data[pos]
-            pos += 1
+            data_len = int.from_bytes(data[pos : pos + length_size], "big")
+            pos += length_size
             next_pos = pos + data_len
             if next_pos > len(data):
                 raise TuyaBLEDataLengthError()
@@ -1279,6 +1289,19 @@ class TuyaBLEDevice:
             pos = next_pos
 
         self._fire_callbacks(datapoints)
+        return pos
+
+    def _parse_datapoints_v3(
+        self, timestamp: float, flags: int, data: bytes, start_pos: int
+    ) -> int:
+        """Parse Tuya BLE protocol-v3 datapoints."""
+        return self._parse_datapoints(timestamp, flags, data, start_pos, 1)
+
+    def _parse_datapoints_v4(
+        self, timestamp: float, flags: int, data: bytes, start_pos: int
+    ) -> int:
+        """Parse Tuya BLE protocol-v4 datapoints."""
+        return self._parse_datapoints(timestamp, flags, data, start_pos, 2)
 
     def _handle_command_or_response(
         self, seq_num: int, response_to: int, code: TuyaBLECode, data: bytes
@@ -1318,6 +1341,11 @@ class TuyaBLEDevice:
                 if len(data) != 1:
                     raise TuyaBLEDataLengthError()
                 result = data[0]
+
+            case TuyaBLECode.FUN_SENDER_DPS_V4:
+                if len(data) != 6:
+                    raise TuyaBLEDataLengthError()
+                result = data[5]
 
             case TuyaBLECode.FUN_RECEIVE_TIME1_REQ:
                 if len(data) != 0:
@@ -1374,6 +1402,33 @@ class TuyaBLEDevice:
                 self._parse_datapoints_v3(time.time(), flags, data, pos)
                 data = pack(">HBB", dp_seq_num, flags, 0)
                 asyncio.create_task(self._send_response(code, data, seq_num))
+
+            case TuyaBLECode.FUN_RECEIVE_DP_V4:
+                if len(data) < 7:
+                    raise TuyaBLEDataLengthError()
+                if data[0] != 0:
+                    raise TuyaBLEDataFormatError()
+                send_flags = data[5]
+                mode = data[6]
+                self._parse_datapoints_v4(time.time(), mode, data, 7)
+                if (send_flags & 0x80) == 0:
+                    asyncio.create_task(
+                        self._send_response(code, data[:7] + b"\x00", seq_num)
+                    )
+
+            case TuyaBLECode.FUN_RECEIVE_TIME_DP_V4:
+                if len(data) < 8:
+                    raise TuyaBLEDataLengthError()
+                if data[0] != 0:
+                    raise TuyaBLEDataFormatError()
+                send_flags = data[5]
+                mode = data[6]
+                timestamp, pos = self._parse_timestamp(data, 7)
+                self._parse_datapoints_v4(timestamp, mode, data, pos)
+                if (send_flags & 0x80) == 0:
+                    asyncio.create_task(
+                        self._send_response(code, data[:7] + b"\x00", seq_num)
+                    )
 
         if response_to != 0:
             future = self._input_expected_responses.pop(response_to, None)
@@ -1523,8 +1578,11 @@ class TuyaBLEDevice:
                 self._clean_input()
                 return
 
-    async def _send_datapoints_v3(self, datapoint_ids: list[int]) -> None:
-        """Send new values of datapoints to the device."""
+    def _encode_datapoints(self, datapoint_ids: list[int], length_size: int) -> bytes:
+        """Encode datapoints with the requested Tuya KLV value-length width."""
+        if length_size not in (1, 2):
+            raise ValueError("Tuya KLV length width must be one or two bytes")
+
         data = bytearray()
         for dp_id in datapoint_ids:
             dp = self._datapoints[dp_id]
@@ -1536,21 +1594,37 @@ class TuyaBLEDevice:
                 dp.type.name,
                 dp.value,
             )
-            data += pack(">BBB", dp.id, int(dp.type.value), len(value))
+            if length_size == 1:
+                data += pack(">BBB", dp.id, int(dp.type.value), len(value))
+            else:
+                data += pack(">BBH", dp.id, int(dp.type.value), len(value))
             data += value
 
+        return bytes(data)
+
+    async def _send_datapoints_v3(self, datapoint_ids: list[int]) -> None:
+        """Send new values using the protocol-v3 DP command."""
+        data = self._encode_datapoints(datapoint_ids, 1)
         await self._send_packet(TuyaBLECode.FUN_SENDER_DPS, data)
+
+    async def _send_datapoints_v4(self, datapoint_ids: list[int]) -> None:
+        """Send new values using the protocol-v4 DP command."""
+        dp_seq_num = await self._get_seq_num()
+        data = pack(">BI", 0, dp_seq_num)
+        data += self._encode_datapoints(datapoint_ids, 2)
+        await self._send_packet(TuyaBLECode.FUN_SENDER_DPS_V4, data)
 
     async def _send_datapoints(self, datapoint_ids: list[int]) -> None:
         """Send new values of datapoints to the device."""
         if self._protocol_version == 3:
             await self._send_datapoints_v3(datapoint_ids)
+        elif self._protocol_version >= 4:
+            await self._send_datapoints_v4(datapoint_ids)
         else:
             raise TuyaBLEDeviceError(0)
 
     async def set_multiple_values(self, dp_updates: dict[int, Any]) -> None:
         """Set multiple datapoint values in a single atomic BLE payload."""
-        data = bytearray()
         updated_dps = []
         for dp_id, value in dp_updates.items():
             dp = self._datapoints[dp_id]
@@ -1571,12 +1645,7 @@ class TuyaBLEDevice:
             dp._changed_by_device = False
             updated_dps.append(dp)
 
-            # Build the payload according to protocol version 3
-            val_bytes = dp._get_value()
-            data += pack(">BBB", dp.id, int(dp.type.value), len(val_bytes))
-            data += val_bytes
-
-        if not data:
+        if not updated_dps:
             return
-        await self._send_packet(TuyaBLECode.FUN_SENDER_DPS, data)
+        await self._send_datapoints([dp.id for dp in updated_dps])
         self._fire_callbacks(updated_dps)
