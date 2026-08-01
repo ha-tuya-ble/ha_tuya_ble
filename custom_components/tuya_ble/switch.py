@@ -626,6 +626,7 @@ mapping: dict[str, TuyaBLECategorySwitchMapping] = {
                     "qycalacn",
                     "fnlw6npo",
                     "jjqi2syk",
+                    "jntxv3q4",
                 ],  # Irrigation computer - dual outlet
                 [
                     TuyaBLESwitchMapping(

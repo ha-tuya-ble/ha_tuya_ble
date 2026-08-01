@@ -654,12 +654,15 @@ devices_database: dict[str, TuyaBLECategoryInfo] = {
     ),
     "ggq": TuyaBLECategoryInfo(
         products={
+            "jntxv3q4": TuyaBLEProductInfo(
+                name="YZD02B dual irrigation timer",
+            ),
             **dict.fromkeys(
                 ["6pahkcau", "hfgdqhho"],  # PPB A1  # SGW08  # device product_id
                 TuyaBLEProductInfo(
                     name="Irrigation computer",
                 ),
-            )
+            ),
         },
     ),
     "dd": TuyaBLECategoryInfo(

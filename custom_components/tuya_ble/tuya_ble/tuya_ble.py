@@ -28,6 +28,7 @@ from Crypto.Cipher import AES
 
 from .const import (
     CHARACTERISTIC_NOTIFY,
+    CHARACTERISTIC_NOTIFY_FD50,
     CHARACTERISTIC_WRITE,
     GATT_MTU,
     MANUFACTURER_DATA_ID,
@@ -58,6 +59,9 @@ _LOGGER = logging.getLogger(__name__)
 
 
 BLEAK_EXCEPTIONS = (*BLEAK_RETRY_EXCEPTIONS, OSError)
+
+
+FD50_DEVICE_INFO_PRODUCT_IDS = frozenset({"jntxv3q4"})
 
 
 # @dataclass
@@ -336,6 +340,13 @@ class TuyaBLEDevice:
         _LOGGER.debug("%s: Initializing", self.address)
         if await self._update_device_info():
             self._decode_advertisement_data()
+
+    def _requires_fd50_device_info_handshake(self) -> bool:
+        """Return whether this device needs the TuyaOS FD50 login framing."""
+        return (
+            self._characteristic_notify == CHARACTERISTIC_NOTIFY_FD50
+            and self.product_id in FD50_DEVICE_INFO_PRODUCT_IDS
+        )
 
     def _build_pairing_request(self) -> bytes:
         result = bytearray()
@@ -782,8 +793,15 @@ class TuyaBLEDevice:
                             self._characteristic_write = write_uuid
                             break
                     try:
+                        notify_kwargs = (
+                            {"bluez": {"use_start_notify": True}}
+                            if self._requires_fd50_device_info_handshake()
+                            else {}
+                        )
                         await self._client.start_notify(
-                            self._characteristic_notify, self._notification_handler
+                            self._characteristic_notify,
+                            self._notification_handler,
+                            **notify_kwargs,
                         )
                     except Exception as ex:  # [BLEAK_EXCEPTIONS, BleakNotFoundError]:
                         if "Bluetooth is already shutdown" in str(ex):
@@ -807,7 +825,11 @@ class TuyaBLEDevice:
                     try:
                         if not await self._send_packet_while_connected(
                             TuyaBLECode.FUN_SENDER_DEVICE_INFO,
-                            bytes(0),
+                            (
+                                b"\x00\xf3"
+                                if self._requires_fd50_device_info_handshake()
+                                else bytes(0)
+                            ),
                             0,
                             True,
                         ):
@@ -962,6 +984,10 @@ class TuyaBLEDevice:
         key: bytes
         iv = secrets.token_bytes(16)
         security_flag: bytes
+        fd50_device_info = (
+            code == TuyaBLECode.FUN_SENDER_DEVICE_INFO
+            and self._requires_fd50_device_info_handshake()
+        )
         if code == TuyaBLECode.FUN_SENDER_DEVICE_INFO:
             key = self._login_key
             security_flag = b"\x04"
@@ -990,7 +1016,10 @@ class TuyaBLEDevice:
 
             if packet_num == 0:
                 packet += self._pack_int(length)
-                packet += pack(">B", self._protocol_version << 4)
+                packet_protocol_version = (
+                    2 if fd50_device_info else self._protocol_version
+                )
+                packet += pack(">B", packet_protocol_version << 4)
 
             data_part = encrypted[
                 pos:pos + GATT_MTU - len(packet)  # fmt: skip
