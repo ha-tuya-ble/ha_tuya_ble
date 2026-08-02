@@ -190,3 +190,52 @@ async def test_guard_dog_lock(hass: HomeAssistant) -> None:
     await hass.async_block_till_done()
     device._send_datapoints.assert_called_with([DPCode.MANUAL_LOCK])
     assert device.datapoints[DPCode.MANUAL_LOCK].value is False
+
+    # Verify refined sensor mappings for wgv4haro
+    from custom_components.tuya_ble.sensor import (
+        get_mapping_by_device as get_sensor_mapping,
+    )
+
+    sensor_mappings = get_sensor_mapping(device)
+    assert any(
+        m.description.key == "unlock_fingerprint" and m.dp_id == 12
+        for m in sensor_mappings
+    )
+    assert any(
+        m.description.key == "unlock_password" and m.dp_id == 13
+        for m in sensor_mappings
+    )
+    assert any(
+        m.description.key == "unlock_dynamic" and m.dp_id == 14 for m in sensor_mappings
+    )
+    assert any(
+        m.description.key == "unlock_ble" and m.dp_id == 19 for m in sensor_mappings
+    )
+    assert any(
+        m.description.key == "unlock_temp_pwd" and m.dp_id == 55
+        for m in sensor_mappings
+    )
+    assert any(
+        m.description.key == "unlock_app" and m.dp_id == 62 for m in sensor_mappings
+    )
+
+    # Verify button mappings for wgv4haro
+    from custom_components.tuya_ble.button import (
+        get_mapping_by_device as get_button_mapping,
+    )
+
+    button_mappings = get_button_mapping(device)
+    assert any(
+        m.description.key == "bluetooth_unlock" and m.dp_id == 6
+        for m in button_mappings
+    )
+
+    # Verify select mappings for wgv4haro
+    from custom_components.tuya_ble.select import (
+        get_mapping_by_device as get_select_mapping,
+    )
+
+    select_mappings = get_select_mapping(device)
+    assert any(
+        m.description.key == "beep_volume" and m.dp_id == 31 for m in select_mappings
+    )

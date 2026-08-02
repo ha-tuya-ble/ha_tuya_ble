@@ -213,7 +213,6 @@ mapping: dict[str, TuyaBLECategorySensorMapping] = {
                     "7a4xvbtt",
                     "6fibxtph",
                     "99gv5nmz",
-                    "wgv4haro",
                 ],  # Smart Lock
                 [
                     TuyaBLEAlarmLockStateMapping(dp_id=21),
@@ -233,6 +232,52 @@ mapping: dict[str, TuyaBLECategorySensorMapping] = {
                     ),
                 ],
             ),
+            "wgv4haro": [
+                TuyaBLEAlarmLockStateMapping(dp_id=21),
+                TuyaBLEBatteryMapping(dp_id=8),
+                TuyaBLESensorMapping(
+                    dp_id=12,  # Retrieve last fingerprint used
+                    description=SensorEntityDescription(
+                        key="unlock_fingerprint",
+                        icon="mdi:fingerprint",
+                    ),
+                ),
+                TuyaBLESensorMapping(
+                    dp_id=13,  # Retrieve last password used
+                    description=SensorEntityDescription(
+                        key="unlock_password",
+                        icon="mdi:keyboard-outline",
+                    ),
+                ),
+                TuyaBLESensorMapping(
+                    dp_id=14,  # Retrieve last dynamic password used
+                    description=SensorEntityDescription(
+                        key="unlock_dynamic",
+                        icon="mdi:cellphone-key",
+                    ),
+                ),
+                TuyaBLESensorMapping(
+                    dp_id=19,  # Retrieve last BLE used
+                    description=SensorEntityDescription(
+                        key="unlock_ble",
+                        icon="mdi:bluetooth",
+                    ),
+                ),
+                TuyaBLESensorMapping(
+                    dp_id=55,  # Retrieve last temporary password unlock used
+                    description=SensorEntityDescription(
+                        key="unlock_temp_pwd",
+                        icon="mdi:lock-clock",
+                    ),
+                ),
+                TuyaBLESensorMapping(
+                    dp_id=62,  # Retrieve last app unlock used
+                    description=SensorEntityDescription(
+                        key="unlock_app",
+                        icon="mdi:cellphone-lock",
+                    ),
+                ),
+            ],
             "mqc2hevy": [  # Smart Lock - YSG_T8_8G_htr
                 # TODO: TuyaBLEAlarmLockStateMapping(dp_id=21) ?
                 TuyaBLESensorMapping(
