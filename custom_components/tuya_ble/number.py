@@ -943,6 +943,23 @@ mapping: dict[str, TuyaBLECategoryNumberMapping] = {
             )
         },
     ),
+    "dj": TuyaBLECategoryNumberMapping(
+        products={
+            "bpqbwf8y": [  # LED BULB B509Z2
+                TuyaBLENumberMapping(
+                    dp_id=0,
+                    description=NumberEntityDescription(
+                        key="countdown",
+                        icon="mdi:timer",
+                        native_max_value=86400,
+                        native_min_value=0,
+                        native_unit_of_measurement=UnitOfTime.SECONDS,
+                        native_step=1,
+                    ),
+                ),
+            ],
+        },
+    ),
 }
 
 

@@ -79,7 +79,7 @@
                 "name": "Alarmstufe"
             },
             "countdown": {
-                "name": "Bewässerungsdauer"
+                "name": "Countdown"
             },
             "countdown_duration": {
                 "name": "Bewässerungsdauer"

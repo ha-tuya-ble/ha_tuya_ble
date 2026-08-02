@@ -79,7 +79,7 @@
                 "name": "Livello d'allarme"
             },
             "countdown": {
-                "name": "Durata irrigazione"
+                "name": "Conto alla rovescia"
             },
             "countdown_duration": {
                 "name": "Durata irrigazione"

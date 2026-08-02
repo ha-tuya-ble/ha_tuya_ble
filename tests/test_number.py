@@ -19,7 +19,7 @@ CONFIG = {
                 "id": "11",
                 "platform": "number",
                 "restore_on_reconnect": False,
-                "address": "12:23:44"
+                "address": "12:23:44",
             }
         ],
     }
@@ -30,7 +30,12 @@ async def test_number(hass: HomeAssistant) -> None:
     from pytest_homeassistant_custom_component.common import MockConfigEntry
     from custom_components.tuya_ble.const import DOMAIN
     from custom_components.tuya_ble.cloud import HASSTuyaBLEDeviceManager
-    from custom_components.tuya_ble.devices import TuyaBLEDevice, TuyaBLEProductInfo, TuyaBLECoordinator, TuyaBLEData
+    from custom_components.tuya_ble.devices import (
+        TuyaBLEDevice,
+        TuyaBLEProductInfo,
+        TuyaBLECoordinator,
+        TuyaBLEData,
+    )
     from bleak.backends.device import BLEDevice
 
     entry = MockConfigEntry(
@@ -76,9 +81,7 @@ async def test_number(hass: HomeAssistant) -> None:
         force_add=True,
     )
 
-    entity = TuyaBLENumber(
-        hass, coordinator, device, product_info, mapping
-    )
+    entity = TuyaBLENumber(hass, coordinator, device, product_info, mapping)
     entity.async_write_ha_state = Mock()
 
     # Initial state

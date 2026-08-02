@@ -79,7 +79,7 @@
                 "name": "报警级别"
             },
             "countdown": {
-                "name": "灌溉时长"
+                "name": "倒计时"
             },
             "countdown_duration": {
                 "name": "灌溉时长"

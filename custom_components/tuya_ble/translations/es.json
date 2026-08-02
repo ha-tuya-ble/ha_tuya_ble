@@ -79,7 +79,7 @@
                 "name": "Nivel de alarma"
             },
             "countdown": {
-                "name": "Duración del riego"
+                "name": "Cuenta atrás"
             },
             "countdown_duration": {
                 "name": "Duración del riego"

@@ -80,7 +80,7 @@
                 "name": "Alarm level"
             },
             "countdown": {
-                "name": "Irrigation duration"
+                "name": "Countdown"
             },
             "countdown_duration": {
                 "name": "Irrigation duration"
