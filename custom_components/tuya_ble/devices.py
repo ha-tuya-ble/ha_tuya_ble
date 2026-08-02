@@ -354,6 +354,18 @@ devices_database: dict[str, TuyaBLECategoryInfo] = {
             ),
         },
     ),
+    "wkf": TuyaBLECategoryInfo(
+        products={
+            **dict.fromkeys(
+                [
+                    "llflaywg",
+                ],  # device product_id
+                TuyaBLEProductInfo(
+                    name="Thermostatic Radiator Valve",
+                ),
+            ),
+        },
+    ),
     "wxkg": TuyaBLECategoryInfo(
         products={
             "kpzc6pm8": TuyaBLEProductInfo(

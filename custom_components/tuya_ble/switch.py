@@ -292,6 +292,65 @@ mapping: dict[str, TuyaBLECategorySwitchMapping] = {
             ),
         },
     ),
+    "wkf": TuyaBLECategorySwitchMapping(
+        products={
+            **dict.fromkeys(
+                [
+                    "llflaywg",
+                ],  # Thermostatic Radiator Valve
+                [
+                    TuyaBLESwitchMapping(
+                        dp_id=8,
+                        description=SwitchEntityDescription(
+                            key="window_check",
+                            icon="mdi:window-closed",
+                            entity_category=EntityCategory.CONFIG,
+                        ),
+                    ),
+                    TuyaBLESwitchMapping(
+                        dp_id=10,
+                        description=SwitchEntityDescription(
+                            key="antifreeze",
+                            icon="mdi:snowflake-off",
+                            entity_category=EntityCategory.CONFIG,
+                        ),
+                    ),
+                    TuyaBLESwitchMapping(
+                        dp_id=40,
+                        description=SwitchEntityDescription(
+                            key="child_lock",
+                            icon="mdi:account-lock",
+                            entity_category=EntityCategory.CONFIG,
+                        ),
+                    ),
+                    TuyaBLESwitchMapping(
+                        dp_id=130,
+                        description=SwitchEntityDescription(
+                            key="water_scale_proof",
+                            icon="mdi:water-check",
+                            entity_category=EntityCategory.CONFIG,
+                        ),
+                    ),
+                    TuyaBLESwitchMapping(
+                        dp_id=107,
+                        description=SwitchEntityDescription(
+                            key="programming_mode",
+                            icon="mdi:calendar-edit",
+                            entity_category=EntityCategory.CONFIG,
+                        ),
+                    ),
+                    TuyaBLESwitchMapping(
+                        dp_id=108,
+                        description=SwitchEntityDescription(
+                            key="programming_switch",
+                            icon="mdi:calendar-clock",
+                            entity_category=EntityCategory.CONFIG,
+                        ),
+                    ),
+                ],
+            ),
+        },
+    ),
     "co2bj": TuyaBLECategorySwitchMapping(
         products={
             "59s19z5m": [  # CO2 Detector

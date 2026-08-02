@@ -323,6 +323,29 @@ mapping: dict[str, TuyaBLECategoryNumberMapping] = {
             ),
         },
     ),
+    "wkf": TuyaBLECategoryNumberMapping(
+        products={
+            **dict.fromkeys(
+                [
+                    "llflaywg",
+                ],  # Thermostatic Radiator Valve
+                [
+                    TuyaBLENumberMapping(
+                        dp_id=27,
+                        description=NumberEntityDescription(
+                            key="temperature_calibration",
+                            icon="mdi:thermometer-lines",
+                            native_max_value=6,
+                            native_min_value=-6,
+                            native_unit_of_measurement=UnitOfTemperature.CELSIUS,
+                            native_step=1,
+                            entity_category=EntityCategory.CONFIG,
+                        ),
+                    ),
+                ],
+            ),
+        },
+    ),
     "szjqr": TuyaBLECategoryNumberMapping(
         products={
             **dict.fromkeys(
