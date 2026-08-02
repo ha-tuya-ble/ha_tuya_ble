@@ -27,6 +27,9 @@ After adding to Home Assistant integration should discover all supported Bluetoo
 
 The integration works locally, but connection to Tuya BLE device requires device ID and encryption key from Tuya IOT cloud. It could be obtained using the same credentials as in the previous official Tuya integration. To obtain the credentials, please refer to official Tuya integration [documentation](https://web.archive.org/web/20231228044831/https://www.home-assistant.io/integrations/tuya/) [[1]](https://github.com/home-assistant/home-assistant.io/blob/a4e6d4819f1db584cc66ba2082508d3978f83f7e/source/_integrations/tuya.markdown)
 
+Newer protocol-v2 devices may also require a 16-character `secKey`. Enter it in
+the optional **Tuya BLE SecKey** field when configuring such a device.
+
 ## Supported devices list
 
 <table>
