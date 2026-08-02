@@ -370,7 +370,7 @@ devices_database: dict[str, TuyaBLECategoryInfo] = {
     ),
     "wxkg": TuyaBLECategoryInfo(
         products={
-            "kpzc6pm8": TuyaBLEProductInfo(
+            "kpzc6pm8": TuyaBLEProductInfo(  # Arlec Smart Button SG022HA (issue #204)
                 name="Arlec Smart Button",
                 manufacturer="Arlec",
             ),
