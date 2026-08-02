@@ -1039,8 +1039,6 @@ async def async_setup_entry(
     for mapping in mappings:
         if mapping.dp_id == 0:
             dp_codes = [DPCode(mapping.description.key)]
-            if mapping.description.key == "countdown":
-                dp_codes.append(DPCode.COUNTDOWN)
 
             resolved_dp_id = None
             for dp_code in dp_codes:
