@@ -154,10 +154,12 @@ class TuyaBLEEntity(CoordinatorEntity):
                         int_value = 0
                         values = self.device.function[code].values
                         if isinstance(values, dict):
-                            range = values.get("range")
-                            if isinstance(range, list):
+                            values_range = values.get("range")
+                            if isinstance(values_range, list):
                                 int_value = (
-                                    range.index(value) if value in range else None
+                                    values_range.index(value)
+                                    if value in values_range
+                                    else None
                                 )
                         self.send_dp_value(
                             code, TuyaBLEDataPointType.DT_ENUM, int_value
