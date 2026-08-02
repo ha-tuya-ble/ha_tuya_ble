@@ -949,7 +949,7 @@ mapping: dict[str, TuyaBLECategoryNumberMapping] = {
                 TuyaBLENumberMapping(
                     dp_id=0,
                     description=NumberEntityDescription(
-                        key="countdown_1",
+                        key="countdown",
                         icon="mdi:timer",
                         native_max_value=86400,
                         native_min_value=0,
@@ -1038,13 +1038,20 @@ async def async_setup_entry(
     entities: list[TuyaBLENumber] = []
     for mapping in mappings:
         if mapping.dp_id == 0:
-            dp_code = DPCode(mapping.description.key)
+            dp_codes = [DPCode(mapping.description.key)]
+            if mapping.description.key == "countdown":
+                dp_codes.append(DPCode.COUNTDOWN_1)
+
             resolved_dp_id = None
-            for key in ["function", "status_range"]:
-                funcs = getattr(data.device, key)
-                if dp_code in funcs:
-                    resolved_dp_id = funcs[dp_code].dp_id
+            for dp_code in dp_codes:
+                for key in ["function", "status_range"]:
+                    funcs = getattr(data.device, key)
+                    if dp_code in funcs:
+                        resolved_dp_id = funcs[dp_code].dp_id
+                        break
+                if resolved_dp_id is not None:
                     break
+
             if resolved_dp_id is not None:
                 import copy
 

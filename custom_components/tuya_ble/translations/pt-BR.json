@@ -79,7 +79,7 @@
                 "name": "Nível do alarme"
             },
             "countdown": {
-                "name": "Duração da irrigação"
+                "name": "Contagem regressiva"
             },
             "countdown_duration": {
                 "name": "Duração da irrigação"
@@ -116,9 +116,6 @@
             },
             "up_position": {
                 "name": "Posição para cima"
-            },
-            "countdown_1": {
-                "name": "Contagem regressiva"
             }
         },
         "select": {

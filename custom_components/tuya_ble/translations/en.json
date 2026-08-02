@@ -80,7 +80,7 @@
                 "name": "Alarm level"
             },
             "countdown": {
-                "name": "Irrigation duration"
+                "name": "Countdown"
             },
             "countdown_duration": {
                 "name": "Irrigation duration"
@@ -117,9 +117,6 @@
             },
             "up_position": {
                 "name": "Up position"
-            },
-            "countdown_1": {
-                "name": "Countdown"
             }
         },
         "select": {

@@ -181,7 +181,7 @@ async def test_dynamic_number_resolution(hass: HomeAssistant) -> None:
     assert len(added_entities) == 1
     entity = added_entities[0]
     entity.async_write_ha_state = Mock()
-    assert entity.entity_description.key == "countdown_1"
+    assert entity.entity_description.key == "countdown"
     assert entity._mapping.dp_id == 26
 
     # Initial state

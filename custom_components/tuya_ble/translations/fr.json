@@ -79,7 +79,7 @@
                 "name": "Niveau d'alarme"
             },
             "countdown": {
-                "name": "Durée d'arrosage"
+                "name": "Compte à rebours"
             },
             "countdown_duration": {
                 "name": "Durée d'arrosage"
@@ -116,9 +116,6 @@
             },
             "up_position": {
                 "name": "Position haute"
-            },
-            "countdown_1": {
-                "name": "Compte à rebours"
             }
         },
         "select": {
