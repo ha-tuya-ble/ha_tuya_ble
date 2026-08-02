@@ -305,8 +305,8 @@ the optional **Tuya BLE SecKey** field when configuring such a device.
       <td>Experimental.</td>
     </tr>
     <tr>
-      <td rowspan="7"><strong>Water valve controller</strong></td>
-      <td rowspan="7"><code>sfkzq</code></td>
+      <td rowspan="8"><strong>Water valve controller</strong></td>
+      <td rowspan="8"><code>sfkzq</code></td>
       <td>Water valve controller</td>
       <td><code>nxquc5lb</code></td>
       <td>—</td>
