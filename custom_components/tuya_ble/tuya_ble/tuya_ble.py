@@ -1604,7 +1604,8 @@ class TuyaBLEDevice:
             )
             self._clean_input()
             return
-        elif len(self._input_buffer) == self._input_expected_length:
+
+        if len(self._input_buffer) == self._input_expected_length:
             try:
                 self._parse_input()
             except TuyaBLEError as err:
