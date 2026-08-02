@@ -150,9 +150,9 @@ async def test_dynamic_number_resolution(hass: HomeAssistant) -> None:
     # Mock _send_datapoints to prevent actual BLE calls and exceptions
     device._send_datapoints = AsyncMock()
 
-    # Populate device.status_range with DPCode.COUNTDOWN_1 having DP ID 26
-    device.status_range[DPCode.COUNTDOWN_1] = TuyaBLEDeviceFunction(
-        code=DPCode.COUNTDOWN_1,
+    # Populate device.status_range with DPCode.COUNTDOWN having DP ID 26
+    device.status_range[DPCode.COUNTDOWN] = TuyaBLEDeviceFunction(
+        code=DPCode.COUNTDOWN,
         dp_id=26,
         type=DPType.INTEGER,
         values=None,
