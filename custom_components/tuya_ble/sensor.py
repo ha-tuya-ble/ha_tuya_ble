@@ -1307,6 +1307,7 @@ mapping: dict[str, TuyaBLECategorySensorMapping] = {
                     "qycalacn",
                     "fnlw6npo",
                     "jjqi2syk",
+                    "jntxv3q4",
                 ],  # Irrigation computer - dual outlet
                 [
                     TuyaBLEBatteryMapping(dp_id=11),

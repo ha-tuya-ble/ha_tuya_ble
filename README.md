@@ -254,8 +254,8 @@ the optional **Tuya BLE SecKey** field when configuring such a device.
     </tr>
     <tr>
       <td>2-outlet irrigation computer</td>
-      <td><code>hfgdqhho</code>, <code>fnlw6npo</code>, <code>qycalacn</code>, <code>jjqi2syk</code></td>
-      <td>Also known as: SGW02, SGW08, MOES BWV-YC02-EU-GY, Kogan SmarterHome KASMWATMRDA / KASMWTV2LVA.</td>
+      <td><code>hfgdqhho</code>, <code>fnlw6npo</code>, <code>qycalacn</code>, <code>jjqi2syk</code>, <code>jntxv3q4</code></td>
+      <td>Also known as: SGW02, SGW08, YZD02B, MOES BWV-YC02-EU-GY, Kogan SmarterHome KASMWATMRDA / KASMWTV2LVA.</td>
     </tr>
     <tr>
       <td>RESTMO BT Water Meter (FML026A)</td>
