@@ -136,6 +136,12 @@
       "weather_delay": {
         "name": "天气延时"
       },
+      "weather_delay_z1": {
+        "name": "天气延时 - 区域 1"
+      },
+      "weather_delay_z2": {
+        "name": "天气延时 - 区域 2"
+      },
       "smart_weather": {
         "name": "智能天气"
       },
@@ -221,6 +227,24 @@
       },
       "work_state": {
         "name": "工作状态"
+      },
+      "work_state_z1": {
+        "name": "工作状态 - 1区",
+        "state": {
+          "idle": "空闲",
+          "manual": "手动",
+          "spray": "喷雾",
+          "timing": "定时"
+        }
+      },
+      "work_state_z2": {
+        "name": "工作状态 - 2区",
+        "state": {
+          "idle": "空闲",
+          "manual": "手动",
+          "spray": "喷雾",
+          "timing": "定时"
+        }
       },
       "residual_electricity": {
         "name": "电量"
@@ -309,24 +333,6 @@
       },
       "spray_time_z2": {
         "name": "喷雾时长 - 2区"
-      },
-      "work_state_z1": {
-        "name": "工作状态 - 1区",
-        "state": {
-          "idle": "空闲",
-          "manual": "手动",
-          "spray": "喷雾",
-          "timing": "定时"
-        }
-      },
-      "work_state_z2": {
-        "name": "工作状态 - 2区",
-        "state": {
-          "idle": "空闲",
-          "manual": "手动",
-          "spray": "喷雾",
-          "timing": "定时"
-        }
       }
     },
     "switch": {

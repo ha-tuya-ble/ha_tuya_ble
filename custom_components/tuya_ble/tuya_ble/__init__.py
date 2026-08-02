@@ -5,6 +5,7 @@ __version__ = "0.2.3"
 
 from .const import (
     SERVICE_UUID,
+    SERVICE_UUIDS,
     TuyaBLEDataPointType,
 )
 from .manager import (
@@ -21,4 +22,5 @@ __all__ = [
     "TuyaBLEDevice",
     "TuyaBLEDeviceCredentials",
     "SERVICE_UUID",
+    "SERVICE_UUIDS",
 ]

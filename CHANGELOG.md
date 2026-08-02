@@ -5,6 +5,25 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog],
 and this project adheres to [Semantic Versioning].
 
+## [0.8.0](https://github.com/ha-tuya-ble/ha_tuya_ble/compare/0.7.2...0.8.0) (2026-08-02)
+
+
+### Features
+
+* add dynamic GATT characteristics selection for Tuya BLE devices ([#249](https://github.com/ha-tuya-ble/ha_tuya_ble/issues/249)) via @Shirkamdev ([706b02c](https://github.com/ha-tuya-ble/ha_tuya_ble/commit/706b02c43005207259fb22b88928a37289fac231))
+* add support for HCT-611 Water Timer (tqzkwarw) ([#247](https://github.com/ha-tuya-ble/ha_tuya_ble/issues/247)) ([e6f4815](https://github.com/ha-tuya-ble/ha_tuya_ble/commit/e6f481558f7bb0e97ce068b47ccc5dab72ac5233))
+* **device:** Support YZD02B irrigation timer ([aae29cf](https://github.com/ha-tuya-ble/ha_tuya_ble/commit/aae29cf00a26ea2857c3631a687ce5445758a25b))
+* **protocol:** Add Tuya BLE v4 datapoint transport ([ad9d694](https://github.com/ha-tuya-ble/ha_tuya_ble/commit/ad9d6945adba0e7fa09776ef27805e701dcc438d))
+* **protocol:** Add Tuya BLE v4 datapoint transport ([#254](https://github.com/ha-tuya-ble/ha_tuya_ble/issues/254)) ([13948ad](https://github.com/ha-tuya-ble/ha_tuya_ble/commit/13948ad916d85c1a2faf5e1fc6fde73e93ec0587))
+* **security:** Support Tuya BLE SecKey authentication ([c55aa6b](https://github.com/ha-tuya-ble/ha_tuya_ble/commit/c55aa6bb64975af1250209257c9cb03e1dd81a8e))
+* **security:** Support Tuya BLE SecKey authentication ([f0bd8f5](https://github.com/ha-tuya-ble/ha_tuya_ble/commit/f0bd8f5718ba52670cab0fe919931f6798db31bb))
+
+
+### Bug Fixes
+
+* **device:** add Guard Dog Security BS_PLD01 smart lock support (fix [#251](https://github.com/ha-tuya-ble/ha_tuya_ble/issues/251)) ([1833e2e](https://github.com/ha-tuya-ble/ha_tuya_ble/commit/1833e2e5be48998e1c208581cd6e942123baaf57))
+* **device:** Support YZD02B irrigation timer ([3feb418](https://github.com/ha-tuya-ble/ha_tuya_ble/commit/3feb418e62c24d329579646a56ad665ff1519196))
+
 ## [0.7.2](https://github.com/ha-tuya-ble/ha_tuya_ble/compare/0.7.1...0.7.2) (2026-07-20)
 
 

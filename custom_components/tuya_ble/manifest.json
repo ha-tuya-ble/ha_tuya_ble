@@ -5,6 +5,10 @@
     {
       "connectable": true,
       "service_data_uuid": "0000a201-0000-1000-8000-00805f9b34fb"
+    },
+    {
+      "connectable": true,
+      "service_data_uuid": "0000fd50-0000-1000-8000-00805f9b34fb"
     }
   ],
   "codeowners": [
@@ -26,5 +30,5 @@
     "tuya-iot-py-sdk==0.6.6",
     "pycountry>23.0.0"
   ],
-  "version": "0.7.2"
+  "version": "0.8.0"
 }

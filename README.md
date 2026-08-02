@@ -27,6 +27,9 @@ After adding to Home Assistant integration should discover all supported Bluetoo
 
 The integration works locally, but connection to Tuya BLE device requires device ID and encryption key from Tuya IOT cloud. It could be obtained using the same credentials as in the previous official Tuya integration. To obtain the credentials, please refer to official Tuya integration [documentation](https://web.archive.org/web/20231228044831/https://www.home-assistant.io/integrations/tuya/) [[1]](https://github.com/home-assistant/home-assistant.io/blob/a4e6d4819f1db584cc66ba2082508d3978f83f7e/source/_integrations/tuya.markdown)
 
+Newer protocol-v2 devices may also require a 16-character `secKey`. Enter it in
+the optional **Tuya BLE SecKey** field when configuring such a device.
+
 ## Supported devices list
 
 <table>
@@ -122,8 +125,8 @@ The integration works locally, but connection to Tuya BLE device requires device
       <td>—</td>
     </tr>
     <tr>
-      <td rowspan="21"><strong>Smart Locks</strong></td>
-      <td rowspan="21"><code>ms</code>, <code>jtmspro</code></td>
+      <td rowspan="23"><strong>Smart Locks</strong></td>
+      <td rowspan="23"><code>ms</code>, <code>jtmspro</code></td>
       <td>Smart Lock</td>
       <td><code>ludzroix</code>, <code>isk2p555</code>, <code>gumrixyt</code>, <code>uamrw6h3</code>, <code>sidhzylo</code>, <code>mqc2hevy</code>, <code>7a4xvbtt</code></td>
       <td>—</td>
@@ -136,6 +139,11 @@ The integration works locally, but connection to Tuya BLE device requires device
     <tr>
       <td>Foxgard Smart Fingerprint Door Lock</td>
       <td><code>99gv5nmz</code></td>
+      <td>—</td>
+    </tr>
+    <tr>
+      <td>Guard Dog Security Smart Lock (BS_PLD01)</td>
+      <td><code>wgv4haro</code></td>
       <td>—</td>
     </tr>
     <tr>
@@ -224,6 +232,11 @@ The integration works locally, but connection to Tuya BLE device requires device
       <td>—</td>
     </tr>
     <tr>
+      <td>BSTUOKEY Invisible Lock</td>
+      <td><code>kpn4zaf7</code></td>
+      <td>Invisible induction lock.</td>
+    </tr>
+    <tr>
       <td>XCase NX-4964 Lock Box</td>
       <td><code>qicggi0m</code></td>
       <td>—</td>
@@ -251,8 +264,8 @@ The integration works locally, but connection to Tuya BLE device requires device
     </tr>
     <tr>
       <td>2-outlet irrigation computer</td>
-      <td><code>hfgdqhho</code>, <code>fnlw6npo</code>, <code>qycalacn</code>, <code>jjqi2syk</code></td>
-      <td>Also known as: SGW02, SGW08, MOES BWV-YC02-EU-GY, Kogan SmarterHome KASMWATMRDA / KASMWTV2LVA.</td>
+      <td><code>hfgdqhho</code>, <code>fnlw6npo</code>, <code>qycalacn</code>, <code>jjqi2syk</code>, <code>jntxv3q4</code></td>
+      <td>Also known as: SGW02, SGW08, YZD02B, MOES BWV-YC02-EU-GY, Kogan SmarterHome KASMWATMRDA / KASMWTV2LVA.</td>
     </tr>
     <tr>
       <td>RESTMO BT Water Meter (FML026A)</td>

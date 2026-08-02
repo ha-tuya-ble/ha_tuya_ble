@@ -136,6 +136,12 @@
       "weather_delay": {
         "name": "Ritardo meteorologico"
       },
+      "weather_delay_z1": {
+        "name": "Ritardo meteorologico - Zona 1"
+      },
+      "weather_delay_z2": {
+        "name": "Ritardo meteorologico - Zona 2"
+      },
       "smart_weather": {
         "name": "Meteo intelligente"
       },
@@ -221,6 +227,24 @@
       },
       "work_state": {
         "name": "Stato di funzionamento"
+      },
+      "work_state_z1": {
+        "name": "Stato operativo - Zona 1",
+        "state": {
+          "idle": "Inattivo",
+          "manual": "Manuale",
+          "spray": "Spruzzo",
+          "timing": "Programmato"
+        }
+      },
+      "work_state_z2": {
+        "name": "Stato operativo - Zona 2",
+        "state": {
+          "idle": "Inattivo",
+          "manual": "Manuale",
+          "spray": "Spruzzo",
+          "timing": "Programmato"
+        }
       },
       "residual_electricity": {
         "name": "Batteria"
@@ -309,24 +333,6 @@
       },
       "spray_time_z2": {
         "name": "Durata spruzzo - Zona 2"
-      },
-      "work_state_z1": {
-        "name": "Stato operativo - Zona 1",
-        "state": {
-          "idle": "Inattivo",
-          "manual": "Manuale",
-          "spray": "Spruzzo",
-          "timing": "Programmato"
-        }
-      },
-      "work_state_z2": {
-        "name": "Stato operativo - Zona 2",
-        "state": {
-          "idle": "Inattivo",
-          "manual": "Manuale",
-          "spray": "Spruzzo",
-          "timing": "Programmato"
-        }
       }
     },
     "switch": {

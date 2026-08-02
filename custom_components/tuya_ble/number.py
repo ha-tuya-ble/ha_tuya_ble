@@ -653,6 +653,7 @@ mapping: dict[str, TuyaBLECategoryNumberMapping] = {
                     "qycalacn",
                     "fnlw6npo",
                     "jjqi2syk",
+                    "jntxv3q4",
                 ],  # Irrigation computer - dual outlet
                 [
                     TuyaBLENumberMapping(

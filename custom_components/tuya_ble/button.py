@@ -228,7 +228,13 @@ mapping: dict[str, TuyaBLECategoryButtonMapping] = {
     "ms": TuyaBLECategoryButtonMapping(
         products={
             **dict.fromkeys(
-                ["okkyfgfs", "k53ok3u9", "sidhzylo", "a6nttc41"],  # Smart Lock
+                [
+                    "okkyfgfs",
+                    "k53ok3u9",
+                    "sidhzylo",
+                    "a6nttc41",
+                    "wgv4haro",
+                ],  # Smart Lock
                 [
                     TuyaBLEButtonMapping(
                         dp_id=6,
@@ -244,6 +250,15 @@ mapping: dict[str, TuyaBLECategoryButtonMapping] = {
                     # ),
                 ],
             ),
+            "kpn4zaf7": [
+                TuyaBLEButtonMapping(
+                    dp_id=71,  # BLE unlock check
+                    description=ButtonEntityDescription(
+                        key="ble_unlock_check",
+                        icon="mdi:lock-open-variant-outline",
+                    ),
+                ),
+            ],
         }
     ),
 }

@@ -38,6 +38,7 @@ from .const import (
     CONF_PRODUCT_MODEL,
     CONF_UUID,
     CONF_LOCAL_KEY,
+    CONF_SEC_KEY,
     CONF_CATEGORY,
     CONF_PRODUCT_ID,
     CONF_DEVICE_NAME,
@@ -204,6 +205,9 @@ class HASSTuyaBLEDeviceManager(AbstaractTuyaBLEDeviceManager):
                                 CONF_PRODUCT_MODEL: device.get("model"),
                                 CONF_PRODUCT_NAME: device.get("product_name"),
                             }
+                            sec_key = device.get("sec_key") or device.get("secKey")
+                            if sec_key:
+                                item.credentials[mac][CONF_SEC_KEY] = sec_key
 
                             spec_response = await self._hass.async_add_executor_job(
                                 item.api.get,
@@ -306,6 +310,7 @@ class HASSTuyaBLEDeviceManager(AbstaractTuyaBLEDeviceManager):
                 credentials = item.credentials.get(address)
 
         if credentials:
+            sec_key = credentials.get(CONF_SEC_KEY) or self._data.get(CONF_SEC_KEY)
             result = TuyaBLEDeviceCredentials(
                 credentials.get(CONF_UUID, ""),
                 credentials.get(CONF_LOCAL_KEY, ""),
@@ -317,12 +322,15 @@ class HASSTuyaBLEDeviceManager(AbstaractTuyaBLEDeviceManager):
                 credentials.get(CONF_PRODUCT_NAME, ""),
                 credentials.get(CONF_FUNCTIONS, []),
                 credentials.get(CONF_STATUS_RANGE, []),
+                sec_key=sec_key,
             )
             _LOGGER.debug("Retrieved: %s", result)
             if save_data:
                 if item:
                     self._data.update(item.login)
                 self._data.update(credentials)
+                if sec_key:
+                    self._data[CONF_SEC_KEY] = sec_key
 
         return result
 

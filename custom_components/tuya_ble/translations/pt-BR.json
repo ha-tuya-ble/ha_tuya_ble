@@ -136,6 +136,12 @@
       "weather_delay": {
         "name": "Atraso devido ao clima"
       },
+      "weather_delay_z1": {
+        "name": "Atraso devido ao clima - Zona 1"
+      },
+      "weather_delay_z2": {
+        "name": "Atraso devido ao clima - Zona 2"
+      },
       "smart_weather": {
         "name": "Clima inteligente"
       },
@@ -221,6 +227,24 @@
       },
       "work_state": {
         "name": "Estado de funcionamento"
+      },
+      "work_state_z1": {
+        "name": "Estado de trabalho - Zona 1",
+        "state": {
+          "idle": "Ocioso",
+          "manual": "Manual",
+          "spray": "Spray",
+          "timing": "Agendado"
+        }
+      },
+      "work_state_z2": {
+        "name": "Estado de trabalho - Zona 2",
+        "state": {
+          "idle": "Ocioso",
+          "manual": "Manual",
+          "spray": "Spray",
+          "timing": "Agendado"
+        }
       },
       "residual_electricity": {
         "name": "Bateria"
@@ -309,24 +333,6 @@
       },
       "spray_time_z2": {
         "name": "Duração do spray - Zona 2"
-      },
-      "work_state_z1": {
-        "name": "Estado de trabalho - Zona 1",
-        "state": {
-          "idle": "Ocioso",
-          "manual": "Manual",
-          "spray": "Spray",
-          "timing": "Agendado"
-        }
-      },
-      "work_state_z2": {
-        "name": "Estado de trabalho - Zona 2",
-        "state": {
-          "idle": "Ocioso",
-          "manual": "Manual",
-          "spray": "Spray",
-          "timing": "Agendado"
-        }
       }
     },
     "switch": {

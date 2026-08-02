@@ -286,6 +286,48 @@ mapping: dict[str, TuyaBLECategorySelectMapping] = {
             ],
         },
     ),
+    "ggq": TuyaBLECategorySelectMapping(
+        products={
+            "jntxv3q4": [  # YZD02B dual irrigation timer
+                TuyaBLESelectMapping(
+                    dp_id=117,
+                    dp_type=TuyaBLEDataPointType.DT_ENUM,
+                    description=SelectEntityDescription(
+                        key="weather_delay_z1",
+                        options=[
+                            "cancel",
+                            "24h",
+                            "48h",
+                            "72h",
+                            "96h",
+                            "120h",
+                            "144h",
+                            "168h",
+                        ],
+                        entity_category=EntityCategory.CONFIG,
+                    ),
+                ),
+                TuyaBLESelectMapping(
+                    dp_id=114,
+                    dp_type=TuyaBLEDataPointType.DT_ENUM,
+                    description=SelectEntityDescription(
+                        key="weather_delay_z2",
+                        options=[
+                            "cancel",
+                            "24h",
+                            "48h",
+                            "72h",
+                            "96h",
+                            "120h",
+                            "144h",
+                            "168h",
+                        ],
+                        entity_category=EntityCategory.CONFIG,
+                    ),
+                ),
+            ],
+        },
+    ),
     "co2bj": TuyaBLECategorySelectMapping(
         products={
             "59s19z5m": [TuyaBLETemperatureUnitMapping(dp_id=101)],  # CO2 Detector
@@ -339,6 +381,7 @@ mapping: dict[str, TuyaBLECategorySelectMapping] = {
                     "okkyfgfs",
                     "sidhzylo",
                     "7a4xvbtt",
+                    "wgv4haro",
                 ],  # Smart Lock
                 [
                     TuyaBLESelectMapping(
@@ -357,7 +400,7 @@ mapping: dict[str, TuyaBLECategorySelectMapping] = {
                 ],
             ),
             **dict.fromkeys(
-                ["6fibxtph", "99gv5nmz"],
+                ["6fibxtph", "99gv5nmz", "kpn4zaf7"],
                 [
                     TuyaBLESelectMapping(
                         dp_id=31,

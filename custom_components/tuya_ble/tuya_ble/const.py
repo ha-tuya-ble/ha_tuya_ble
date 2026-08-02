@@ -6,11 +6,28 @@ GATT_MTU = 20
 
 DEFAULT_ATTEMPTS = 0xFFFF
 
+# GATT characteristics and services. Added support for multiple generations/services.
+# Dynamic selection mechanism contributed by @Shirkamdev (https://github.com/Shirkamdev/ha_tuya_ble).
+
 CHARACTERISTIC_NOTIFY = "00002b10-0000-1000-8000-00805f9b34fb"
 CHARACTERISTIC_WRITE = "00002b11-0000-1000-8000-00805f9b34fb"
 
-# SERVICE_UUID = "0000a201-0000-1000-8000-00805f9b34fb"
+CHARACTERISTIC_NOTIFY_FD50 = "00000002-0000-1001-8001-00805f9b07d0"
+CHARACTERISTIC_WRITE_FD50 = "00000001-0000-1001-8001-00805f9b07d0"
+
 SERVICE_UUID = "0000fd50-0000-1000-8000-00805f9b34fb"
+SERVICE_UUID_A201 = "0000a201-0000-1000-8000-00805f9b34fb"
+
+# Tuple of all supported Service UUIDs
+SERVICE_UUIDS = (SERVICE_UUID_A201, SERVICE_UUID)
+
+# Maps each Tuya BLE GATT service UUID to its (notify, write) characteristic UUIDs.
+# Different protocol/firmware generations expose the same data over different
+# characteristic UUIDs, so the actual pair must be picked per connected device.
+SERVICE_CHARACTERISTICS = {
+    SERVICE_UUID_A201: (CHARACTERISTIC_NOTIFY, CHARACTERISTIC_WRITE),
+    SERVICE_UUID: (CHARACTERISTIC_NOTIFY_FD50, CHARACTERISTIC_WRITE_FD50),
+}
 
 SERVICE_UUID_TEMP = "0000a201-0000-1000-8000-00805f9b34fb"
 
