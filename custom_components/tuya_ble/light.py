@@ -171,6 +171,14 @@ LIGHTS: dict[str, tuple[TuyaLightEntityDescription, ...]] = {
             entity_category=EntityCategory.CONFIG,
         ),
     ),
+    # Water quality tester
+    "sh": (
+        TuyaLightEntityDescription(
+            key=DPCode.SWITCH_LED,
+            translation_key="backlight",
+            entity_category=EntityCategory.CONFIG,
+        ),
+    ),
     # String Lights
     # https://developer.tuya.com/en/docs/iot/dc?id=Kaof7taxmvadu
     "dc": (

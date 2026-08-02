@@ -169,6 +169,30 @@ mapping: dict[str, TuyaBLECategoryButtonMapping] = {
             ],
         },
     ),
+    "sh": TuyaBLECategoryButtonMapping(
+        products={
+            "v1jqz5cy": [
+                TuyaBLEButtonMapping(
+                    dp_id=105,
+                    dp_type=TuyaBLEDataPointType.DT_VALUE,
+                    description=ButtonEntityDescription(
+                        key="update",
+                        icon="mdi:update",
+                        entity_category=EntityCategory.CONFIG,
+                    ),
+                ),
+                TuyaBLEButtonMapping(
+                    dp_id=118,
+                    dp_type=TuyaBLEDataPointType.DT_BOOL,
+                    description=ButtonEntityDescription(
+                        key="ph_reset",
+                        device_class=ButtonDeviceClass.RESTART,
+                        entity_category=EntityCategory.CONFIG,
+                    ),
+                ),
+            ]
+        }
+    ),
     "jtmspro": TuyaBLECategoryButtonMapping(
         products={
             "hc7n0urm": [  # A1 Ultra-JM
@@ -334,15 +358,18 @@ class TuyaBLEButton(TuyaBLEEntity, ButtonEntity):
                 self._hass.create_task(self._run_hs21i377_unlock())
                 return
 
+        dp_type = self._mapping.dp_type or TuyaBLEDataPointType.DT_BOOL
         datapoint = self._device.datapoints.get_or_create(
             self._mapping.dp_id,
-            TuyaBLEDataPointType.DT_BOOL,
-            False,
+            dp_type,
+            1 if dp_type == TuyaBLEDataPointType.DT_VALUE else False,
         )
         if datapoint:
             if self._product.lock:
                 # Lock needs true to activate lock/unlock commands
                 self._hass.create_task(datapoint.set_value(True))
+            elif dp_type == TuyaBLEDataPointType.DT_VALUE:
+                self._hass.create_task(datapoint.set_value(1))
             else:
                 self._hass.create_task(datapoint.set_value(not bool(datapoint.value)))
 

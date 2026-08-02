@@ -61,6 +61,12 @@
             },
             "bluetooth_unlock": {
                 "name": "Entriegeln"
+            },
+            "update": {
+                "name": "Update"
+            },
+            "ph_reset": {
+                "name": "pH reset"
             }
         },
         "event": {
@@ -116,6 +122,39 @@
             },
             "up_position": {
                 "name": "Obere Position"
+            },
+            "max_ph": {
+                "name": "Maximum pH"
+            },
+            "min_ph": {
+                "name": "Minimum pH"
+            },
+            "max_ec": {
+                "name": "Maximum EC"
+            },
+            "min_ec": {
+                "name": "Minimum EC"
+            },
+            "max_orp": {
+                "name": "Maximum ORP"
+            },
+            "min_orp": {
+                "name": "Minimum ORP"
+            },
+            "max_cl": {
+                "name": "Maximum Chlorine"
+            },
+            "min_cl": {
+                "name": "Minimum Chlorine"
+            },
+            "ph_calibration": {
+                "name": "pH calibration"
+            },
+            "ec_calibration": {
+                "name": "EC calibration"
+            },
+            "orp_calibration": {
+                "name": "ORP calibration"
             }
         },
         "select": {
@@ -182,6 +221,13 @@
                 "state": {
                     "small": "Niedrig",
                     "large": "Hoch"
+                }
+            },
+            "ph_buffer_standard": {
+                "name": "pH buffer standard",
+                "state": {
+                    "AsiaStandard": "Asia",
+                    "EUStandard": "EU"
                 }
             }
         },
@@ -334,6 +380,24 @@
             },
             "time_remaining": {
                 "name": "Restzeit"
+            },
+            "tds": {
+                "name": "TDS"
+            },
+            "ph": {
+                "name": "pH"
+            },
+            "ec": {
+                "name": "EC"
+            },
+            "orp": {
+                "name": "ORP"
+            },
+            "cl": {
+                "name": "Chlorine"
+            },
+            "salinity": {
+                "name": "Salinity"
             }
         },
         "switch": {
@@ -406,6 +470,11 @@
         "vacuum": {
             "vacuum": {
                 "name": "Fensterreiniger"
+            }
+        },
+        "light": {
+            "backlight": {
+                "name": "Backlight"
             }
         }
     },

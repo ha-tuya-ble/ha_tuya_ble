@@ -356,6 +356,14 @@ devices_database: dict[str, TuyaBLECategoryInfo] = {
             ),
         },
     ),
+    "sh": TuyaBLECategoryInfo(
+        products={
+            "v1jqz5cy": TuyaBLEProductInfo(
+                name="Water quality monitor",
+                manufacturer="Yieryi",
+            ),
+        },
+    ),
     "wkf": TuyaBLECategoryInfo(
         products={
             **dict.fromkeys(

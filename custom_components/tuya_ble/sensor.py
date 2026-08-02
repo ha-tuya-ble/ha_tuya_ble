@@ -200,6 +200,72 @@ mapping: dict[str, TuyaBLECategorySensorMapping] = {
             ]
         }
     ),
+    "sh": TuyaBLECategorySensorMapping(
+        products={
+            "v1jqz5cy": [
+                TuyaBLESensorMapping(
+                    dp_id=1,
+                    description=SensorEntityDescription(
+                        key="tds",
+                        icon="mdi:water-percent",
+                        native_unit_of_measurement="ppm",
+                        state_class=SensorStateClass.MEASUREMENT,
+                    ),
+                ),
+                TuyaBLETemperatureMapping(
+                    dp_id=2,
+                    coefficient=10.0,
+                ),
+                TuyaBLEBatteryMapping(dp_id=7),
+                TuyaBLESensorMapping(
+                    dp_id=10,
+                    coefficient=10.0,
+                    description=SensorEntityDescription(
+                        key="ph",
+                        icon="mdi:ph",
+                        state_class=SensorStateClass.MEASUREMENT,
+                    ),
+                ),
+                TuyaBLESensorMapping(
+                    dp_id=11,
+                    description=SensorEntityDescription(
+                        key="ec",
+                        icon="mdi:omega",
+                        native_unit_of_measurement="µS/cm",
+                        state_class=SensorStateClass.MEASUREMENT,
+                    ),
+                ),
+                TuyaBLESensorMapping(
+                    dp_id=101,
+                    description=SensorEntityDescription(
+                        key="orp",
+                        icon="mdi:virus-off",
+                        native_unit_of_measurement="mV",
+                        state_class=SensorStateClass.MEASUREMENT,
+                    ),
+                ),
+                TuyaBLESensorMapping(
+                    dp_id=102,
+                    coefficient=10.0,
+                    description=SensorEntityDescription(
+                        key="cl",
+                        icon="mdi:water",
+                        native_unit_of_measurement="mg/L",
+                        state_class=SensorStateClass.MEASUREMENT,
+                    ),
+                ),
+                TuyaBLESensorMapping(
+                    dp_id=117,
+                    description=SensorEntityDescription(
+                        key="salinity",
+                        icon="mdi:water-percent",
+                        native_unit_of_measurement="ppm",
+                        state_class=SensorStateClass.MEASUREMENT,
+                    ),
+                ),
+            ]
+        }
+    ),
     "wxkg": TuyaBLECategorySensorMapping(
         products={
             **dict.fromkeys(

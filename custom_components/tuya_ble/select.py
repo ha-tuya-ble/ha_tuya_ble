@@ -317,6 +317,25 @@ mapping: dict[str, TuyaBLECategorySelectMapping] = {
             "59s19z5m": [TuyaBLETemperatureUnitMapping(dp_id=101)],  # CO2 Detector
         },
     ),
+    "sh": TuyaBLECategorySelectMapping(
+        products={
+            "v1jqz5cy": [
+                TuyaBLESelectMapping(
+                    dp_id=103,
+                    description=SelectEntityDescription(
+                        key="ph_buffer_standard",
+                        icon="mdi:ph",
+                        options=[
+                            "AsiaStandard",
+                            "EUStandard",
+                        ],
+                        entity_category=EntityCategory.CONFIG,
+                    ),
+                    dp_type=TuyaBLEDataPointType.DT_STRING,
+                ),
+            ]
+        }
+    ),
     "dcb": TuyaBLECategorySelectMapping(
         products={
             **dict.fromkeys(
