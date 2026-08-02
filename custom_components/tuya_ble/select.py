@@ -733,7 +733,7 @@ mapping: dict[str, TuyaBLECategorySelectMapping] = {
                             "rest",
                             "grassland",
                             "colorful",
-                            "Dazzle",
+                            "dazzle",
                             "gorgeous",
                         ],
                         entity_category=EntityCategory.CONFIG,
