@@ -136,6 +136,12 @@
             "weather_delay": {
                 "name": "天气延时"
             },
+            "weather_delay_z1": {
+                "name": "天气延时 - 区域 1"
+            },
+            "weather_delay_z2": {
+                "name": "天气延时 - 区域 2"
+            },
             "smart_weather": {
                 "name": "智能天气"
             },

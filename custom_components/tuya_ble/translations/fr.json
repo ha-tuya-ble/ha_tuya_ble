@@ -136,6 +136,12 @@
             "weather_delay": {
                 "name": "Délai météo"
             },
+            "weather_delay_z1": {
+                "name": "Délai météo - Zone 1"
+            },
+            "weather_delay_z2": {
+                "name": "Délai météo - Zone 2"
+            },
             "smart_weather": {
                 "name": "Météo intelligente"
             },
