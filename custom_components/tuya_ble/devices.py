@@ -402,6 +402,11 @@ devices_database: dict[str, TuyaBLECategoryInfo] = {
                 manufacturer="Foxgard",
                 lock=1,
             ),
+            "wgv4haro": TuyaBLEProductInfo(
+                name="Guard Dog Security Smart Lock",
+                manufacturer="Guard Dog Security",
+                lock=1,
+            ),
         },
     ),
     "dcb": TuyaBLECategoryInfo(
