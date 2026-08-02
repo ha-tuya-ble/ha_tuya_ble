@@ -407,6 +407,11 @@ devices_database: dict[str, TuyaBLECategoryInfo] = {
                 manufacturer="BSTUOKEY",
                 lock=1,
             ),
+            "wgv4haro": TuyaBLEProductInfo(
+                name="Guard Dog Security Smart Lock",
+                manufacturer="Guard Dog Security",
+                lock=1,
+            ),
         },
     ),
     "dcb": TuyaBLECategoryInfo(
@@ -427,6 +432,7 @@ devices_database: dict[str, TuyaBLECategoryInfo] = {
     ),
     "jtmspro": TuyaBLECategoryInfo(
         products={
+            "y2yaegze": TuyaBLEProductInfo(name="Drawer Lock CTL20H", lock=1),
             "hc7n0urm": TuyaBLEProductInfo(  # device product_id
                 name="A1 Ultra-JM",
             ),
@@ -442,6 +448,11 @@ devices_database: dict[str, TuyaBLECategoryInfo] = {
             "pyawczjj": TuyaBLEProductInfo(name="CS-9 Smart Fingerprint Lock", lock=1),
             "yfqp0shy": TuyaBLEProductInfo(
                 name="Gainsborough Liberty BLE Lock (GGC01HA)", lock=1
+            ),
+            "qicggi0m": TuyaBLEProductInfo(
+                name="XCase NX-4964 Lock Box",
+                manufacturer="XCase",
+                lock=1,
             ),
         },
     ),
@@ -646,16 +657,22 @@ devices_database: dict[str, TuyaBLECategoryInfo] = {
             "ldcdnigc": TuyaBLEProductInfo(
                 name="ZX-7378 Smart Irrigation Controller",
             ),
+            "tqzkwarw": TuyaBLEProductInfo(
+                name="HCT-611 Water Timer",
+            ),
         },
     ),
     "ggq": TuyaBLECategoryInfo(
         products={
+            "jntxv3q4": TuyaBLEProductInfo(
+                name="YZD02B dual irrigation timer",
+            ),
             **dict.fromkeys(
                 ["6pahkcau", "hfgdqhho"],  # PPB A1  # SGW08  # device product_id
                 TuyaBLEProductInfo(
                     name="Irrigation computer",
                 ),
-            )
+            ),
         },
     ),
     "dd": TuyaBLECategoryInfo(

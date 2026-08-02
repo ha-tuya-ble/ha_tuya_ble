@@ -20,6 +20,7 @@
                 "data": {
                     "access_id": "Tuya IoT Access ID",
                     "access_secret": "Tuya IoT Access Secret",
+                    "sec_key": "Tuya BLE SecKey (optional)",
                     "country_code": "Country",
                     "password": "Password",
                     "username": "Account"
@@ -301,9 +302,21 @@
             },
             "unlock_ble": {
                 "name": "Last used Bluetooth"
+            },
+            "unlock_app": {
+                "name": "Last used App"
+            },
+            "unlock_voice": {
+                "name": "Last used Voice"
+            },
+            "unlock_temp_pwd": {
+                "name": "Last used Temporary Password"
             }
         },
         "switch": {
+            "automatic_lock": {
+                "name": "Automatic lock"
+            },
             "antifreeze": {
                 "name": "Antifreeze"
             },

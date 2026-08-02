@@ -653,6 +653,7 @@ mapping: dict[str, TuyaBLECategoryNumberMapping] = {
                     "qycalacn",
                     "fnlw6npo",
                     "jjqi2syk",
+                    "jntxv3q4",
                 ],  # Irrigation computer - dual outlet
                 [
                     TuyaBLENumberMapping(
@@ -710,6 +711,19 @@ mapping: dict[str, TuyaBLECategoryNumberMapping] = {
                     dp_id=15,
                     description=NumberEntityDescription(
                         key="use_time",
+                        icon="mdi:timer",
+                        native_max_value=86400,
+                        native_min_value=0,
+                        native_unit_of_measurement=UnitOfTime.SECONDS,
+                        native_step=1,
+                    ),
+                ),
+            ],
+            "tqzkwarw": [  # HCT-611 Water Timer
+                TuyaBLENumberMapping(
+                    dp_id=11,
+                    description=NumberEntityDescription(
+                        key="countdown",
                         icon="mdi:timer",
                         native_max_value=86400,
                         native_min_value=0,
