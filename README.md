@@ -125,8 +125,8 @@ the optional **Tuya BLE SecKey** field when configuring such a device.
       <td>—</td>
     </tr>
     <tr>
-      <td rowspan="22"><strong>Smart Locks</strong></td>
-      <td rowspan="22"><code>ms</code>, <code>jtmspro</code></td>
+      <td rowspan="23"><strong>Smart Locks</strong></td>
+      <td rowspan="23"><code>ms</code>, <code>jtmspro</code></td>
       <td>Smart Lock</td>
       <td><code>ludzroix</code>, <code>isk2p555</code>, <code>gumrixyt</code>, <code>uamrw6h3</code>, <code>sidhzylo</code>, <code>mqc2hevy</code>, <code>7a4xvbtt</code></td>
       <td>—</td>
@@ -230,6 +230,11 @@ the optional **Tuya BLE SecKey** field when configuring such a device.
       <td>Gainsborough Liberty BLE Lock (GGC01HA)</td>
       <td><code>yfqp0shy</code></td>
       <td>—</td>
+    </tr>
+    <tr>
+      <td>BSTUOKEY Invisible Lock</td>
+      <td><code>kpn4zaf7</code></td>
+      <td>Invisible induction lock.</td>
     </tr>
     <tr>
       <td>XCase NX-4964 Lock Box</td>
