@@ -52,6 +52,7 @@ from .exceptions import (
     TuyaBLEEnumValueError,
 )
 from .manager import AbstaractTuyaBLEDeviceManager, TuyaBLEDeviceCredentials
+from .security import TuyaBLESecurityMaterial
 
 
 _LOGGER = logging.getLogger(__name__)
@@ -311,6 +312,7 @@ class TuyaBLEDevice:
         self._local_key: bytes | None = None
         self._login_key: bytes | None = None
         self._session_key: bytes | None = None
+        self._security_material: TuyaBLESecurityMaterial | None = None
 
         self._is_paired = False
 
@@ -369,8 +371,12 @@ class TuyaBLEDevice:
                     self._ble_device.address, False
                 )
             if self._device_info:
-                self._local_key = self._device_info.local_key[:6].encode()
-                self._login_key = hashlib.md5(self._local_key).digest()
+                self._security_material = TuyaBLESecurityMaterial(
+                    self._device_info.local_key,
+                    self._device_info.sec_key,
+                )
+                self._local_key = self._security_material.pairing_login_key
+                self._login_key = self._security_material.login_key
 
                 self.append_functions(
                     self._device_info.functions, self._device_info.status_range
@@ -964,10 +970,10 @@ class TuyaBLEDevice:
         security_flag: bytes
         if code == TuyaBLECode.FUN_SENDER_DEVICE_INFO:
             key = self._login_key
-            security_flag = b"\x04"
+            security_flag = pack(">B", self._security_material.login_flag)
         else:
             key = self._session_key
-            security_flag = b"\x05"
+            security_flag = pack(">B", self._security_material.session_flag)
 
         raw = bytearray()
         raw += pack(">IIHH", seq_num, response_to, code.value, len(data))
@@ -1205,6 +1211,10 @@ class TuyaBLEDevice:
             return self._login_key
         if security_flag == 5:
             return self._session_key
+        if security_flag == 14:
+            return self._login_key
+        if security_flag == 15:
+            return self._session_key
 
     def _parse_timestamp(self, data: bytes, start_pos: int) -> tuple(float, int):
         timestamp: float
@@ -1322,7 +1332,7 @@ class TuyaBLEDevice:
                 self._is_bound = data[5] != 0
 
                 srand = data[6:12]
-                self._session_key = hashlib.md5(self._local_key + srand).digest()
+                self._session_key = self._security_material.session_key(srand)
                 self._auth_key = data[14:46]
 
             case TuyaBLECode.FUN_SENDER_PAIR:
