@@ -1037,27 +1037,6 @@ async def async_setup_entry(
     mappings = get_mapping_by_device(data.device)
     entities: list[TuyaBLENumber] = []
     for mapping in mappings:
-        if mapping.dp_id == 0:
-            dp_codes = [DPCode(mapping.description.key)]
-
-            resolved_dp_id = None
-            for dp_code in dp_codes:
-                for key in ["function", "status_range"]:
-                    funcs = getattr(data.device, key)
-                    if dp_code in funcs:
-                        resolved_dp_id = funcs[dp_code].dp_id
-                        break
-                if resolved_dp_id is not None:
-                    break
-
-            if resolved_dp_id is not None:
-                import copy
-
-                mapping = copy.copy(mapping)
-                mapping.dp_id = resolved_dp_id
-            else:
-                continue
-
         if mapping.force_add or data.device.datapoints.has_id(
             mapping.dp_id, mapping.dp_type
         ):
