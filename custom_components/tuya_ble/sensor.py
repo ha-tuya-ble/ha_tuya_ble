@@ -1301,13 +1301,53 @@ mapping: dict[str, TuyaBLECategorySensorMapping] = {
                     ),
                 ),
             ],
+            "jntxv3q4": [  # YZD02B dual irrigation timer
+                TuyaBLEBatteryMapping(dp_id=11),
+                TuyaBLESensorMapping(
+                    dp_id=111,
+                    description=SensorEntityDescription(
+                        key="use_time_z1",
+                        device_class=SensorDeviceClass.DURATION,
+                        native_unit_of_measurement=UnitOfTime.SECONDS,
+                        state_class=SensorStateClass.MEASUREMENT,
+                    ),
+                ),
+                TuyaBLESensorMapping(
+                    dp_id=110,
+                    description=SensorEntityDescription(
+                        key="use_time_z2",
+                        device_class=SensorDeviceClass.DURATION,
+                        native_unit_of_measurement=UnitOfTime.SECONDS,
+                        state_class=SensorStateClass.MEASUREMENT,
+                    ),
+                ),
+                TuyaBLESensorMapping(
+                    dp_id=112,
+                    dp_type=TuyaBLEDataPointType.DT_ENUM,
+                    description=SensorEntityDescription(
+                        key="work_state_z1",
+                        device_class=SensorDeviceClass.ENUM,
+                        options=["manual", "auto", "idle"],
+                        entity_category=EntityCategory.DIAGNOSTIC,
+                    ),
+                ),
+                TuyaBLESensorMapping(
+                    dp_id=113,
+                    dp_type=TuyaBLEDataPointType.DT_ENUM,
+                    description=SensorEntityDescription(
+                        key="work_state_z2",
+                        device_class=SensorDeviceClass.ENUM,
+                        options=["manual", "auto", "idle"],
+                        entity_category=EntityCategory.DIAGNOSTIC,
+                    ),
+                ),
+            ],
             **dict.fromkeys(
                 [
                     "hfgdqhho",
                     "qycalacn",
                     "fnlw6npo",
                     "jjqi2syk",
-                    "jntxv3q4",
                 ],  # Irrigation computer - dual outlet
                 [
                     TuyaBLEBatteryMapping(dp_id=11),

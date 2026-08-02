@@ -222,6 +222,12 @@
             "work_state": {
                 "name": "工作状态"
             },
+            "work_state_z1": {
+                "name": "工作状态 - 区域 1"
+            },
+            "work_state_z2": {
+                "name": "工作状态 - 区域 2"
+            },
             "residual_electricity": {
                 "name": "电量"
             },

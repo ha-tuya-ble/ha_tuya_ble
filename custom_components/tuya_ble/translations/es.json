@@ -222,6 +222,12 @@
             "work_state": {
                 "name": "Estado de funcionamiento"
             },
+            "work_state_z1": {
+                "name": "Estado de funcionamiento - Zona 1"
+            },
+            "work_state_z2": {
+                "name": "Estado de funcionamiento - Zona 2"
+            },
             "residual_electricity": {
                 "name": "Batería"
             },

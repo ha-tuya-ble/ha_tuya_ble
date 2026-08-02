@@ -243,6 +243,12 @@
             "work_state": {
                 "name": "Work state"
             },
+            "work_state_z1": {
+                "name": "Work state - Zone 1"
+            },
+            "work_state_z2": {
+                "name": "Work state - Zone 2"
+            },
             "residual_electricity": {
                 "name": "Battery"
             },
