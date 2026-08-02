@@ -116,6 +116,9 @@
             },
             "up_position": {
                 "name": "Posición arriba"
+            },
+            "countdown_1": {
+                "name": "Cuenta atrás"
             }
         },
         "select": {

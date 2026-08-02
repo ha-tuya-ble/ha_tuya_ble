@@ -711,6 +711,13 @@ devices_database: dict[str, TuyaBLECategoryInfo] = {
             name="Lights",
         ),
     ),
+    "dj": TuyaBLECategoryInfo(
+        products={
+            "bpqbwf8y": TuyaBLEProductInfo(
+                name="LED BULB B509Z2",
+            ),
+        },
+    ),
     "cl": TuyaBLECategoryInfo(
         products={
             **dict.fromkeys(

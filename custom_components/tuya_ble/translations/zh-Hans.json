@@ -116,6 +116,9 @@
             },
             "up_position": {
                 "name": "上限位置"
+            },
+            "countdown_1": {
+                "name": "倒计时"
             }
         },
         "select": {

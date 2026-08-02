@@ -19,7 +19,7 @@ CONFIG = {
                 "id": "11",
                 "platform": "number",
                 "restore_on_reconnect": False,
-                "address": "12:23:44"
+                "address": "12:23:44",
             }
         ],
     }
@@ -30,7 +30,12 @@ async def test_number(hass: HomeAssistant) -> None:
     from pytest_homeassistant_custom_component.common import MockConfigEntry
     from custom_components.tuya_ble.const import DOMAIN
     from custom_components.tuya_ble.cloud import HASSTuyaBLEDeviceManager
-    from custom_components.tuya_ble.devices import TuyaBLEDevice, TuyaBLEProductInfo, TuyaBLECoordinator, TuyaBLEData
+    from custom_components.tuya_ble.devices import (
+        TuyaBLEDevice,
+        TuyaBLEProductInfo,
+        TuyaBLECoordinator,
+        TuyaBLEData,
+    )
     from bleak.backends.device import BLEDevice
 
     entry = MockConfigEntry(
@@ -76,9 +81,7 @@ async def test_number(hass: HomeAssistant) -> None:
         force_add=True,
     )
 
-    entity = TuyaBLENumber(
-        hass, coordinator, device, product_info, mapping
-    )
+    entity = TuyaBLENumber(hass, coordinator, device, product_info, mapping)
     entity.async_write_ha_state = Mock()
 
     # Initial state
@@ -98,3 +101,102 @@ async def test_number(hass: HomeAssistant) -> None:
     device._send_datapoints.assert_called_once_with([11])
     assert device.datapoints[11].value == 250
     assert entity.native_value == 25.0
+
+
+async def test_dynamic_number_resolution(hass: HomeAssistant) -> None:
+    from pytest_homeassistant_custom_component.common import MockConfigEntry
+    from custom_components.tuya_ble.const import DOMAIN
+    from custom_components.tuya_ble.cloud import HASSTuyaBLEDeviceManager
+    from custom_components.tuya_ble.devices import (
+        TuyaBLEDevice,
+        TuyaBLEProductInfo,
+        TuyaBLECoordinator,
+        TuyaBLEData,
+    )
+    from custom_components.tuya_ble.tuya_ble.tuya_ble import TuyaBLEDeviceFunction
+    from custom_components.tuya_ble.const import DPCode, DPType
+    from custom_components.tuya_ble.number import async_setup_entry
+    from bleak.backends.device import BLEDevice
+    from custom_components.tuya_ble.tuya_ble.manager import TuyaBLEDeviceCredentials
+
+    entry = MockConfigEntry(
+        domain=DOMAIN,
+        data={
+            "devices": CONFIG,
+            "address": DEVICE_ADDRESS,
+        },
+        title="Mock TuyaBLE",
+    )
+    entry.add_to_hass(hass)
+
+    ble_device = BLEDevice(name="bob", address="11:22:33", details="", rssi=-50)
+    manager = HASSTuyaBLEDeviceManager(hass, entry.options.copy())
+    device = TuyaBLEDevice(manager, ble_device)
+    await device.initialize()
+
+    device._device_info = TuyaBLEDeviceCredentials(
+        uuid="uuid123",
+        local_key="wV[NcWGUSFF`dSgO",
+        device_id="767823809c9c1f458745",
+        category="dj",
+        product_id="bpqbwf8y",
+        device_name="LED Bulb",
+        product_model="LED BULB B509Z2",
+        product_name="LED BULB B509Z2",
+        functions=[],
+        status_range=[],
+    )
+
+    # Mock _send_datapoints to prevent actual BLE calls and exceptions
+    device._send_datapoints = AsyncMock()
+
+    # Populate device.status_range with DPCode.COUNTDOWN_1 having DP ID 26
+    device.status_range[DPCode.COUNTDOWN_1] = TuyaBLEDeviceFunction(
+        code=DPCode.COUNTDOWN_1,
+        dp_id=26,
+        type=DPType.INTEGER,
+        values=None,
+    )
+
+    hass.data.setdefault(DOMAIN, {})
+    coordinator = TuyaBLECoordinator(hass, device)
+    product_info = TuyaBLEProductInfo("LED BULB B509Z2")
+
+    tuya_ble_hass_data = TuyaBLEData(
+        title="Hello",
+        device=device,
+        manager=manager,
+        product=product_info,
+        coordinator=coordinator,
+    )
+    hass.data[DOMAIN][entry.entry_id] = tuya_ble_hass_data
+
+    added_entities = []
+
+    def async_add_entities(entities):
+        added_entities.extend(entities)
+
+    await async_setup_entry(hass, entry, async_add_entities)
+
+    assert len(added_entities) == 1
+    entity = added_entities[0]
+    entity.async_write_ha_state = Mock()
+    assert entity.entity_description.key == "countdown_1"
+    assert entity._mapping.dp_id == 26
+
+    # Initial state
+    assert entity.available is False
+    coordinator._async_handle_connect()
+    assert entity.available is True
+
+    # Update coordinator state: 3600 -> 3600 (coefficient=1.0)
+    device.datapoints._update_from_device(26, 0, 0, TuyaBLEDataPointType.DT_VALUE, 3600)
+    entity._handle_coordinator_update()
+    assert entity.native_value == 3600.0
+
+    # Call set_native_value
+    entity.set_native_value(600.0)
+    await hass.async_block_till_done()
+    device._send_datapoints.assert_called_once_with([26])
+    assert device.datapoints[26].value == 600
+    assert entity.native_value == 600.0

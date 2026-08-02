@@ -116,6 +116,9 @@
             },
             "up_position": {
                 "name": "Posizione su"
+            },
+            "countdown_1": {
+                "name": "Conto alla rovescia"
             }
         },
         "select": {

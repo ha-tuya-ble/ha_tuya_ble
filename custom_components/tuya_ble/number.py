@@ -28,7 +28,7 @@ from homeassistant.helpers.entity import EntityCategory
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator
 
-from .const import DOMAIN
+from .const import DOMAIN, DPCode
 from .devices import TuyaBLEData, TuyaBLEEntity, TuyaBLEProductInfo
 from .tuya_ble import TuyaBLEDataPointType, TuyaBLEDevice
 
@@ -943,6 +943,23 @@ mapping: dict[str, TuyaBLECategoryNumberMapping] = {
             )
         },
     ),
+    "dj": TuyaBLECategoryNumberMapping(
+        products={
+            "bpqbwf8y": [  # LED BULB B509Z2
+                TuyaBLENumberMapping(
+                    dp_id=0,
+                    description=NumberEntityDescription(
+                        key="countdown_1",
+                        icon="mdi:timer",
+                        native_max_value=86400,
+                        native_min_value=0,
+                        native_unit_of_measurement=UnitOfTime.SECONDS,
+                        native_step=1,
+                    ),
+                ),
+            ],
+        },
+    ),
 }
 
 
@@ -1020,6 +1037,22 @@ async def async_setup_entry(
     mappings = get_mapping_by_device(data.device)
     entities: list[TuyaBLENumber] = []
     for mapping in mappings:
+        if mapping.dp_id == 0:
+            dp_code = DPCode(mapping.description.key)
+            resolved_dp_id = None
+            for key in ["function", "status_range"]:
+                funcs = getattr(data.device, key)
+                if dp_code in funcs:
+                    resolved_dp_id = funcs[dp_code].dp_id
+                    break
+            if resolved_dp_id is not None:
+                import copy
+
+                mapping = copy.copy(mapping)
+                mapping.dp_id = resolved_dp_id
+            else:
+                continue
+
         if mapping.force_add or data.device.datapoints.has_id(
             mapping.dp_id, mapping.dp_type
         ):

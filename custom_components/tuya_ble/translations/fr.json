@@ -116,6 +116,9 @@
             },
             "up_position": {
                 "name": "Position haute"
+            },
+            "countdown_1": {
+                "name": "Compte à rebours"
             }
         },
         "select": {
