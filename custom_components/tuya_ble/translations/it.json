@@ -226,8 +226,8 @@
             "ph_buffer_standard": {
                 "name": "pH buffer standard",
                 "state": {
-                    "AsiaStandard": "Asia",
-                    "EUStandard": "EU"
+                    "asia_standard": "Asia",
+                    "eu_standard": "EU"
                 }
             }
         },

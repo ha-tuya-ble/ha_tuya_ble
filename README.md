@@ -129,7 +129,7 @@ the optional **Tuya BLE SecKey** field when configuring such a device.
       <td><code>sh</code></td>
       <td>Yieryi Water Quality Tester (BLE-YL01)</td>
       <td><code>v1jqz5cy</code></td>
-      <td>7-in-1 monitor for pH, TDS, EC, ORP, Chlorine, Salinity, and Temperature. Experimental</td>
+      <td>Experimental. 7-in-1 monitor for pH, TDS, EC, ORP, Chlorine, Salinity, and Temperature.</td>
     </tr>
     <tr>
       <td rowspan="23"><strong>Smart Locks</strong></td>

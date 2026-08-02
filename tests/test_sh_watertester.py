@@ -177,10 +177,10 @@ async def test_sh_watertester_select(hass: HomeAssistant) -> None:
     # Update state to EUStandard
     device.datapoints._update_from_device(103, 0, 0, TuyaBLEDataPointType.DT_STRING, "EUStandard")
     select_entity._handle_coordinator_update()
-    assert select_entity.current_option == "EUStandard"
+    assert select_entity.current_option == "eu_standard"
 
     # Select another option
-    select_entity.select_option("AsiaStandard")
+    select_entity.select_option("asia_standard")
     await hass.async_block_till_done()
     device._send_datapoints.assert_called_once_with([103])
     assert device.datapoints[103].value == "AsiaStandard"

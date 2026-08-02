@@ -30,6 +30,15 @@ from .tuya_ble import TuyaBLEDataPointType, TuyaBLEDevice
 _LOGGER = logging.getLogger(__name__)
 
 
+TuyaBLESelectGetter = (
+    Callable[["TuyaBLESelect"], str | None] | None
+)
+
+TuyaBLESelectSetter = (
+    Callable[["TuyaBLESelect", str], None] | None
+)
+
+
 @dataclass
 class TuyaBLESelectMapping:
     """Model a DP, description and default values"""
@@ -38,6 +47,35 @@ class TuyaBLESelectMapping:
     description: SelectEntityDescription
     force_add: bool = True
     dp_type: TuyaBLEDataPointType | None = None
+    getter: TuyaBLESelectGetter = None
+    setter: TuyaBLESelectSetter = None
+
+
+def ph_buffer_standard_getter(self: TuyaBLESelect) -> str | None:
+    datapoint = self._device.datapoints[self._mapping.dp_id]
+    if datapoint and datapoint.value is not None:
+        val = datapoint.value
+        if isinstance(val, bytes):
+            val = val.decode("utf-8")
+        return {
+            "AsiaStandard": "asia_standard",
+            "EUStandard": "eu_standard",
+        }.get(val, val)
+    return None
+
+
+def ph_buffer_standard_setter(self: TuyaBLESelect, value: str) -> None:
+    raw_val = {
+        "asia_standard": "AsiaStandard",
+        "eu_standard": "EUStandard",
+    }.get(value, value)
+    datapoint = self._device.datapoints.get_or_create(
+        self._mapping.dp_id,
+        TuyaBLEDataPointType.DT_STRING,
+        raw_val,
+    )
+    if datapoint:
+        self._hass.create_task(datapoint.set_value(raw_val))
 
 
 @dataclass
@@ -326,12 +364,14 @@ mapping: dict[str, TuyaBLECategorySelectMapping] = {
                         key="ph_buffer_standard",
                         icon="mdi:ph",
                         options=[
-                            "AsiaStandard",
-                            "EUStandard",
+                            "asia_standard",
+                            "eu_standard",
                         ],
                         entity_category=EntityCategory.CONFIG,
                     ),
                     dp_type=TuyaBLEDataPointType.DT_STRING,
+                    getter=ph_buffer_standard_getter,
+                    setter=ph_buffer_standard_setter,
                 ),
             ]
         }
@@ -831,6 +871,9 @@ class TuyaBLESelect(TuyaBLEEntity, SelectEntity):
     @property
     def current_option(self) -> str | None:
         """Return the selected entity option to represent the entity state."""
+        if self._mapping.getter is not None:
+            return self._mapping.getter(self)
+
         datapoint = self._device.datapoints[self._mapping.dp_id]
         if datapoint:
             value = datapoint.value
@@ -842,6 +885,10 @@ class TuyaBLESelect(TuyaBLEEntity, SelectEntity):
 
     def select_option(self, value: str) -> None:
         """Change the selected option."""
+        if self._mapping.setter is not None:
+            self._mapping.setter(self, value)
+            return
+
         if value in self._attr_options:
             if self._mapping.dp_type == TuyaBLEDataPointType.DT_STRING:
                 datapoint = self._device.datapoints.get_or_create(
