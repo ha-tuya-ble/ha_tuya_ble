@@ -136,6 +136,12 @@
             "weather_delay": {
                 "name": "Atraso devido ao clima"
             },
+            "weather_delay_z1": {
+                "name": "Atraso devido ao clima - Zona 1"
+            },
+            "weather_delay_z2": {
+                "name": "Atraso devido ao clima - Zona 2"
+            },
             "smart_weather": {
                 "name": "Clima inteligente"
             },
@@ -222,6 +228,12 @@
             "work_state": {
                 "name": "Estado de funcionamento"
             },
+            "work_state_z1": {
+                "name": "Estado de funcionamento - Zona 1"
+            },
+            "work_state_z2": {
+                "name": "Estado de funcionamento - Zona 2"
+            },
             "residual_electricity": {
                 "name": "Bateria"
             },
@@ -281,6 +293,15 @@
             },
             "unlock_ble": {
                 "name": "Último Bluetooth utilizado"
+            },
+            "unlock_app": {
+                "name": "Último aplicativo utilizado"
+            },
+            "unlock_voice": {
+                "name": "Último comando de voz utilizado"
+            },
+            "unlock_temp_pwd": {
+                "name": "Última senha temporária utilizada"
             }
         },
         "switch": {

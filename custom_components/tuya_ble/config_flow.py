@@ -26,8 +26,13 @@ from homeassistant.const import (
 )
 from homeassistant.core import callback
 from homeassistant.data_entry_flow import FlowHandler, FlowResult
+from homeassistant.helpers.selector import (
+    TextSelector,
+    TextSelectorConfig,
+    TextSelectorType,
+)
 
-from .tuya_ble import SERVICE_UUID, TuyaBLEDeviceCredentials
+from .tuya_ble import SERVICE_UUIDS, TuyaBLEDeviceCredentials
 
 from .const import (
     TUYA_COUNTRIES,
@@ -41,6 +46,7 @@ from .const import (
     CONF_APP_TYPE,
     CONF_AUTH_TYPE,
     CONF_ENDPOINT,
+    CONF_SEC_KEY,
     DOMAIN,
 )
 from .devices import TuyaBLEData, get_device_readable_name
@@ -73,6 +79,8 @@ async def _try_login(
         CONF_PASSWORD: user_input[CONF_PASSWORD],
         CONF_COUNTRY_CODE: country.country_code,
     }
+    if sec_key := user_input.get(CONF_SEC_KEY):
+        data[CONF_SEC_KEY] = sec_key
 
     for app_type in (TUYA_SMART_APP, SMARTLIFE_APP, ""):
         data[CONF_APP_TYPE] = app_type
@@ -139,6 +147,10 @@ def _show_login_form(
                     CONF_ACCESS_SECRET,
                     default=user_input.get(CONF_ACCESS_SECRET, ""),
                 ): str,
+                vol.Optional(
+                    CONF_SEC_KEY,
+                    default=user_input.get(CONF_SEC_KEY, ""),
+                ): TextSelector(TextSelectorConfig(type=TextSelectorType.PASSWORD)),
                 vol.Required(
                     CONF_USERNAME, default=user_input.get(CONF_USERNAME, "")
                 ): str,
@@ -187,6 +199,8 @@ class TuyaBLEOptionsFlow(OptionsFlowWithConfigEntry):
                     placeholders,
                 )
                 if login_data:
+                    entry.manager.data.pop(CONF_SEC_KEY, None)
+                    entry.manager.data.update(login_data)
                     credentials = await entry.manager.get_device_credentials(
                         address, True, True
                     )
@@ -317,7 +331,7 @@ class TuyaBLEConfigFlow(ConfigFlow, domain=DOMAIN):
                     discovery.address in current_addresses
                     or discovery.address in self._discovered_devices
                     or discovery.service_data is None
-                    or not SERVICE_UUID in discovery.service_data.keys()
+                    or not any(uuid in discovery.service_data for uuid in SERVICE_UUIDS)
                 ):
                     continue
                 self._discovered_devices[discovery.address] = discovery

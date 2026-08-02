@@ -273,6 +273,16 @@ mapping: dict[str, TuyaBLECategorySwitchMapping] = {
                     setter=set_16wgjvck_water_valve,
                 ),
             ],
+            "tqzkwarw": [  # HCT-611 Water Timer
+                TuyaBLESwitchMapping(
+                    dp_id=1,
+                    description=SwitchEntityDescription(
+                        key="water_valve",
+                        icon="mdi:valve",
+                    ),
+                ),
+                TuyaBLEWaterValveWeatherSwitchMapping(dp_id=14),
+            ],
             **dict.fromkeys(
                 ["nxquc5lb", "svhikeyq"],
                 [  # Smart water timer - SOP10
@@ -433,6 +443,16 @@ mapping: dict[str, TuyaBLECategorySwitchMapping] = {
     ),
     "jtmspro": TuyaBLECategorySwitchMapping(
         products={
+            "y2yaegze": [
+                TuyaBLESwitchMapping(
+                    dp_id=33,
+                    description=SwitchEntityDescription(
+                        key="automatic_lock",
+                        icon="mdi:lock-clock",
+                        entity_category=EntityCategory.CONFIG,
+                    ),
+                ),
+            ],
             **dict.fromkeys(
                 [
                     "stugc8dl",
@@ -635,6 +655,7 @@ mapping: dict[str, TuyaBLECategorySwitchMapping] = {
                     "qycalacn",
                     "fnlw6npo",
                     "jjqi2syk",
+                    "jntxv3q4",
                 ],  # Irrigation computer - dual outlet
                 [
                     TuyaBLESwitchMapping(

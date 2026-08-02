@@ -136,6 +136,12 @@
             "weather_delay": {
                 "name": "天气延时"
             },
+            "weather_delay_z1": {
+                "name": "天气延时 - 区域 1"
+            },
+            "weather_delay_z2": {
+                "name": "天气延时 - 区域 2"
+            },
             "smart_weather": {
                 "name": "智能天气"
             },
@@ -222,6 +228,12 @@
             "work_state": {
                 "name": "工作状态"
             },
+            "work_state_z1": {
+                "name": "工作状态 - 区域 1"
+            },
+            "work_state_z2": {
+                "name": "工作状态 - 区域 2"
+            },
             "residual_electricity": {
                 "name": "电量"
             },
@@ -281,6 +293,15 @@
             },
             "unlock_ble": {
                 "name": "上次使用的蓝牙"
+            },
+            "unlock_app": {
+                "name": "上次使用的应用"
+            },
+            "unlock_voice": {
+                "name": "上次使用的语音"
+            },
+            "unlock_temp_pwd": {
+                "name": "上次使用的临时密码"
             }
         },
         "switch": {

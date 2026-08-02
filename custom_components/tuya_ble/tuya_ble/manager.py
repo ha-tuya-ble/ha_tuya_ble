@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from abc import ABC, abstractmethod
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from typing import List
 
 
@@ -10,7 +10,7 @@ class TuyaBLEDeviceCredentials:
     """Model of credentials"""
 
     uuid: str
-    local_key: str
+    local_key: str = field(repr=False)
     device_id: str
     category: str
     product_id: str
@@ -19,11 +19,13 @@ class TuyaBLEDeviceCredentials:
     product_name: str | None
     functions: List | None
     status_range: List | None
+    sec_key: str | None = field(default=None, repr=False)
 
     def __str__(self):
         return (
             "uuid: %s, "
             "local_key: %s, "
+            "sec_key: %s, "
             "device_id: %s, "
             "category: %s, "
             "product_id: %s, "
@@ -34,7 +36,8 @@ class TuyaBLEDeviceCredentials:
             "status_range: %s"
         ) % (
             self.uuid,
-            f'{"x" * 10}{self.local_key[10:]}',  # Mask the majority of the local key
+            "**REDACTED**",
+            "**REDACTED**" if self.sec_key else None,
             self.device_id,
             self.category,
             self.product_id,
@@ -72,6 +75,7 @@ class AbstaractTuyaBLEDeviceManager(ABC):
         product_name: str | None,
         functions: List | None,
         status_range: List | None,
+        sec_key: str | None = None,
     ) -> TuyaBLEDeviceCredentials | None:
         """Checks and creates credentials of the Tuya BLE device."""
         if uuid and local_key and device_id and category and product_id:
@@ -86,6 +90,7 @@ class AbstaractTuyaBLEDeviceManager(ABC):
                 product_name,
                 functions,
                 status_range,
+                sec_key,
             )
 
         return None
