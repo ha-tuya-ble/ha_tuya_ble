@@ -242,10 +242,16 @@ the optional **Tuya BLE SecKey** field when configuring such a device.
       <td>—</td>
     </tr>
     <tr>
-      <td><strong>Climate</strong></td>
+      <td rowspan="2"><strong>Climate</strong></td>
       <td><code>wk</code></td>
       <td>Thermostatic Radiator Valve</td>
       <td><code>drlajpqc</code>, <code>nhj2j7su</code>, <code>zmachryv</code></td>
+      <td>—</td>
+    </tr>
+    <tr>
+      <td><code>wkf</code></td>
+      <td>Thermostatic Radiator Valve</td>
+      <td><code>llflaywg</code></td>
       <td>—</td>
     </tr>
     <tr>

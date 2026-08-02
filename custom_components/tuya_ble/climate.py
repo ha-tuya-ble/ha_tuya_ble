@@ -132,6 +132,34 @@ mapping: dict[str, TuyaBLECategoryClimateMapping] = {
             ),
         },
     ),
+    "wkf": TuyaBLECategoryClimateMapping(
+        products={
+            **dict.fromkeys(
+                [
+                    "llflaywg",
+                ],  # Thermostatic Radiator Valve
+                [
+                    # Thermostatic Radiator Valve
+                    TuyaBLEClimateMapping(
+                        description=ClimateEntityDescription(
+                            key="thermostatic_radiator_valve",
+                        ),
+                        hvac_switch_dp_id=101,
+                        hvac_switch_mode=HVACMode.HEAT,
+                        hvac_modes=[HVACMode.OFF, HVACMode.HEAT],
+                        preset_mode_dp_ids={PRESET_AWAY: 106, PRESET_NONE: 106},
+                        current_temperature_dp_id=102,
+                        current_temperature_coefficient=10.0,
+                        target_temperature_coefficient=10.0,
+                        target_temperature_step=0.5,
+                        target_temperature_dp_id=103,
+                        target_temperature_min=5.0,
+                        target_temperature_max=30.0,
+                    ),
+                ],
+            ),
+        },
+    ),
 }
 
 
