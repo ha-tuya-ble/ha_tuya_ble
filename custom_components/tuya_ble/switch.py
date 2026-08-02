@@ -326,6 +326,26 @@ mapping: dict[str, TuyaBLECategorySwitchMapping] = {
             ],
         },
     ),
+    "jsq": TuyaBLECategorySwitchMapping(
+        products={
+            "if1nolcm": [
+                TuyaBLESwitchMapping(
+                    dp_id=1,
+                    description=SwitchEntityDescription(
+                        key="switch",
+                        icon="mdi:power",
+                    ),
+                ),
+                TuyaBLESwitchMapping(
+                    dp_id=2,
+                    description=SwitchEntityDescription(
+                        key="switch_spray",
+                        icon="mdi:spray",
+                    ),
+                ),
+            ],
+        },
+    ),
     "ms": TuyaBLECategorySwitchMapping(
         products={
             **dict.fromkeys(

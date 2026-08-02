@@ -198,6 +198,35 @@
                     "turn_right": "Turn right",
                     "stop": "Stop"
                 }
+            },
+            "timer": {
+                "name": "Timer",
+                "state": {
+                    "cancel": "Cancel",
+                    "1h": "1 hour",
+                    "3h": "3 hours",
+                    "6h": "6 hours"
+                }
+            },
+            "scene": {
+                "name": "Scene",
+                "state": {
+                    "night": "Night",
+                    "read": "Reading",
+                    "work": "Working",
+                    "rest": "Relax",
+                    "grassland": "Grassland",
+                    "colorful": "Party",
+                    "gorgeous": "Gorgeous",
+                    "dazzle": "Dazzle"
+                }
+            },
+            "spray_mode": {
+                "name": "Spray mode",
+                "state": {
+                    "small": "Low",
+                    "large": "High"
+                }
             }
         },
         "sensor": {
@@ -352,6 +381,9 @@
             },
             "unlock_phone_remote": {
                 "name": "Last used remote phone"
+            },
+            "time_remaining": {
+                "name": "Time remaining"
             }
         },
         "switch": {
@@ -420,6 +452,9 @@
             },
             "water_auto": {
                 "name": "Auto water spray"
+            },
+            "switch_spray": {
+                "name": "Spraying"
             }
         },
         "text": {

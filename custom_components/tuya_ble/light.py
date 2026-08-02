@@ -142,7 +142,22 @@ ProductsMapping: dict[str, dict[str, tuple[TuyaLightEntityDescription, ...]]] = 
                 },
             ),
         )
-    }
+    },
+    "jsq": {
+        "if1nolcm": (
+            TuyaLightEntityDescription(
+                key=DPCode.SWITCH_LED,
+                name=None,
+                color_mode=DPCode.WORK_MODE,
+                brightness=(DPCode.BRIGHT_VALUE_V2, DPCode.BRIGHT_VALUE),
+                color_data=(
+                    DPCode.COLOUR_DATA_V2,
+                    DPCode.COLOUR_DATA,
+                    DPCode.COLOUR_DATA_HSV,
+                ),
+            ),
+        )
+    },
 }
 
 # Copied from standard Tuya light component - we could add some default values here too
@@ -248,8 +263,12 @@ LIGHTS: dict[str, tuple[TuyaLightEntityDescription, ...]] = {
             key=DPCode.SWITCH_LED,
             name=None,
             color_mode=DPCode.WORK_MODE,
-            brightness=DPCode.BRIGHT_VALUE,
-            color_data=DPCode.COLOUR_DATA_HSV,
+            brightness=(DPCode.BRIGHT_VALUE_V2, DPCode.BRIGHT_VALUE),
+            color_data=(
+                DPCode.COLOUR_DATA_V2,
+                DPCode.COLOUR_DATA,
+                DPCode.COLOUR_DATA_HSV,
+            ),
         ),
     ),
     # Switch

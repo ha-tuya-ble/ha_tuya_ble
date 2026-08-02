@@ -154,6 +154,35 @@
             },
             "temperature_unit": {
                 "name": "Unidade de temperatura"
+            },
+            "timer": {
+                "name": "Temporizador",
+                "state": {
+                    "cancel": "Cancelar",
+                    "1h": "1 hora",
+                    "3h": "3 horas",
+                    "6h": "6 horas"
+                }
+            },
+            "scene": {
+                "name": "Cena",
+                "state": {
+                    "night": "Noite",
+                    "read": "Leitura",
+                    "work": "Trabalho",
+                    "rest": "Relaxar",
+                    "grassland": "Gramado",
+                    "colorful": "Festa",
+                    "gorgeous": "Deslumbrante",
+                    "dazzle": "Ofuscante"
+                }
+            },
+            "spray_mode": {
+                "name": "Modo de pulverização",
+                "state": {
+                    "small": "Baixo",
+                    "large": "Alto"
+                }
             }
         },
         "sensor": {
@@ -302,6 +331,9 @@
             },
             "unlock_temp_pwd": {
                 "name": "Última senha temporária utilizada"
+            },
+            "time_remaining": {
+                "name": "Tempo restante"
             }
         },
         "switch": {
@@ -361,6 +393,9 @@
             },
             "window_check": {
                 "name": "Detecção de janela"
+            },
+            "switch_spray": {
+                "name": "Pulverização"
             }
         },
         "text": {

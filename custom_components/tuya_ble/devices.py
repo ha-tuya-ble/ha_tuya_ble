@@ -730,6 +730,14 @@ devices_database: dict[str, TuyaBLECategoryInfo] = {
             ),
         },
     ),
+    "jsq": TuyaBLECategoryInfo(
+        products={
+            "if1nolcm": TuyaBLEProductInfo(
+                name="DT-T2190A Aroma Diffuser",
+                manufacturer="Dituo",
+            ),
+        },
+    ),
 }
 
 

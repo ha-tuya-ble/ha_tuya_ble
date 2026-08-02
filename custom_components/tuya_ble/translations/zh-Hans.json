@@ -154,6 +154,35 @@
             },
             "temperature_unit": {
                 "name": "温度单位"
+            },
+            "timer": {
+                "name": "定时",
+                "state": {
+                    "cancel": "取消",
+                    "1h": "1小时",
+                    "3h": "3小时",
+                    "6h": "6小时"
+                }
+            },
+            "scene": {
+                "name": "场景",
+                "state": {
+                    "night": "夜晚",
+                    "read": "阅读",
+                    "work": "工作",
+                    "rest": "休闲",
+                    "grassland": "草原",
+                    "colorful": "派对",
+                    "gorgeous": "华丽",
+                    "dazzle": "炫彩"
+                }
+            },
+            "spray_mode": {
+                "name": "喷雾模式",
+                "state": {
+                    "small": "小",
+                    "large": "大"
+                }
             }
         },
         "sensor": {
@@ -302,6 +331,9 @@
             },
             "unlock_temp_pwd": {
                 "name": "上次使用的临时密码"
+            },
+            "time_remaining": {
+                "name": "剩余时间"
             }
         },
         "switch": {
@@ -361,6 +393,9 @@
             },
             "window_check": {
                 "name": "开窗检测"
+            },
+            "switch_spray": {
+                "name": "喷雾"
             }
         },
         "text": {

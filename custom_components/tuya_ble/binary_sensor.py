@@ -338,6 +338,29 @@ mapping: dict[str, TuyaBLECategoryBinarySensorMapping] = {
             ],
         },
     ),
+    "jsq": TuyaBLECategoryBinarySensorMapping(
+        products={
+            "if1nolcm": [
+                TuyaBLEBinarySensorMapping(
+                    dp_id=12,
+                    description=BinarySensorEntityDescription(
+                        key="fault",
+                        device_class=BinarySensorDeviceClass.PROBLEM,
+                        entity_category=EntityCategory.DIAGNOSTIC,
+                    ),
+                    getter=lambda sensor: setattr(
+                        sensor,
+                        "_attr_is_on",
+                        bool(
+                            _bitmap_value_to_int(sensor._device.datapoints[12].value)
+                            if sensor._device.datapoints[12]
+                            else False
+                        ),
+                    ),
+                ),
+            ],
+        },
+    ),
 }
 
 
