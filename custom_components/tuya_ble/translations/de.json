@@ -154,6 +154,35 @@
             },
             "temperature_unit": {
                 "name": "Temperatureinheit"
+            },
+            "timer": {
+                "name": "Timer",
+                "state": {
+                    "cancel": "Abbrechen",
+                    "1h": "1 Stunde",
+                    "3h": "3 Stunden",
+                    "6h": "6 Stunden"
+                }
+            },
+            "scene": {
+                "name": "Szene",
+                "state": {
+                    "night": "Nacht",
+                    "read": "Lesen",
+                    "work": "Arbeiten",
+                    "rest": "Entspannen",
+                    "grassland": "Wiese",
+                    "colorful": "Party",
+                    "Dazzle": "Flackern",
+                    "gorgeous": "Prachtvoll"
+                }
+            },
+            "spray_mode": {
+                "name": "Sprühmodus",
+                "state": {
+                    "small": "Niedrig",
+                    "large": "Hoch"
+                }
             }
         },
         "sensor": {
@@ -302,6 +331,9 @@
             },
             "unlock_temp_pwd": {
                 "name": "Zuletzt verwendetes temporäres Passwort"
+            },
+            "time_remaining": {
+                "name": "Restzeit"
             }
         },
         "switch": {
@@ -361,6 +393,9 @@
             },
             "window_check": {
                 "name": "Fensterprüfung"
+            },
+            "switch_spray": {
+                "name": "Sprühen"
             }
         },
         "text": {

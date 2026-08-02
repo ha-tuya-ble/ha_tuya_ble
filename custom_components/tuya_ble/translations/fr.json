@@ -154,6 +154,35 @@
             },
             "temperature_unit": {
                 "name": "Unité de température"
+            },
+            "timer": {
+                "name": "Minuterie",
+                "state": {
+                    "cancel": "Annuler",
+                    "1h": "1 heure",
+                    "3h": "3 heures",
+                    "6h": "6 heures"
+                }
+            },
+            "scene": {
+                "name": "Scène",
+                "state": {
+                    "night": "Nuit",
+                    "read": "Lecture",
+                    "work": "Travail",
+                    "rest": "Relaxation",
+                    "grassland": "Prairie",
+                    "colorful": "Fête",
+                    "Dazzle": "Éblouissant",
+                    "gorgeous": "Magnifique"
+                }
+            },
+            "spray_mode": {
+                "name": "Mode de pulvérisation",
+                "state": {
+                    "small": "Bas",
+                    "large": "Élevé"
+                }
             }
         },
         "sensor": {
@@ -302,6 +331,9 @@
             },
             "unlock_temp_pwd": {
                 "name": "Dernier mot de passe temporaire utilisé"
+            },
+            "time_remaining": {
+                "name": "Temps restant"
             }
         },
         "switch": {
@@ -361,6 +393,9 @@
             },
             "window_check": {
                 "name": "Détection de fenêtre"
+            },
+            "switch_spray": {
+                "name": "Pulvérisation"
             }
         },
         "text": {

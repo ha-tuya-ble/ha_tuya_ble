@@ -379,6 +379,13 @@ the optional **Tuya BLE SecKey** field when configuring such a device.
       <td><code>ajrhf1aj</code></td>
       <td>—</td>
     </tr>
+    <tr>
+      <td><strong>Humidifier</strong></td>
+      <td><code>jsq</code></td>
+      <td>Dituo DT-T2190A Aroma Diffuser</td>
+      <td><code>if1nolcm</code></td>
+      <td>—</td>
+    </tr>
   </tbody>
 </table>
 

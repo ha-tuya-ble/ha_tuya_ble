@@ -695,6 +695,53 @@ mapping: dict[str, TuyaBLECategorySelectMapping] = {
             ],
         },
     ),
+    "jsq": TuyaBLECategorySelectMapping(
+        products={
+            "if1nolcm": [
+                TuyaBLESelectMapping(
+                    dp_id=3,
+                    description=SelectEntityDescription(
+                        key="spray_mode",
+                        options=[
+                            "small",
+                            "large",
+                        ],
+                        entity_category=EntityCategory.CONFIG,
+                    ),
+                ),
+                TuyaBLESelectMapping(
+                    dp_id=5,
+                    description=SelectEntityDescription(
+                        key="timer",
+                        options=[
+                            "cancel",
+                            "1h",
+                            "3h",
+                            "6h",
+                        ],
+                        entity_category=EntityCategory.CONFIG,
+                    ),
+                ),
+                TuyaBLESelectMapping(
+                    dp_id=101,
+                    description=SelectEntityDescription(
+                        key="scene",
+                        options=[
+                            "night",
+                            "read",
+                            "work",
+                            "rest",
+                            "grassland",
+                            "colorful",
+                            "Dazzle",
+                            "gorgeous",
+                        ],
+                        entity_category=EntityCategory.CONFIG,
+                    ),
+                ),
+            ],
+        },
+    ),
 }
 
 
