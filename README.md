@@ -32,6 +32,8 @@ the optional **Tuya BLE SecKey** field when configuring such a device.
 
 ## Supported devices list
 
+See a device marked Experimental you have? We could use real world testing feedback (send in a pull request with testing notes, or open an issue for gaps)
+
 <table>
   <thead>
     <tr>
@@ -110,7 +112,7 @@ the optional **Tuya BLE SecKey** field when configuring such a device.
     <tr>
       <td>TH05 Temperature Sensor</td>
       <td><code>vyfoip9h</code>, <code>1jvidcsf</code></td>
-      <td>—</td>
+      <td>Experimental</td>
     </tr>
     <tr>
       <td>Soil Thermo-Hygrometer</td>
@@ -144,12 +146,12 @@ the optional **Tuya BLE SecKey** field when configuring such a device.
     <tr>
       <td>Guard Dog Security Smart Lock (BS_PLD01)</td>
       <td><code>wgv4haro</code></td>
-      <td>—</td>
+      <td>Experimental</td>
     </tr>
     <tr>
       <td>HU06 Smart Lock</td>
       <td><code>stugc8dl</code></td>
-      <td>—</td>
+      <td>Experimental</td>
     </tr>
     <tr>
       <td>Raybuke K7 Pro+</td>
