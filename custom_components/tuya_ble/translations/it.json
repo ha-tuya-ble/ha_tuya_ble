@@ -136,6 +136,12 @@
             "weather_delay": {
                 "name": "Ritardo meteorologico"
             },
+            "weather_delay_z1": {
+                "name": "Ritardo meteorologico - Zona 1"
+            },
+            "weather_delay_z2": {
+                "name": "Ritardo meteorologico - Zona 2"
+            },
             "smart_weather": {
                 "name": "Meteo intelligente"
             },

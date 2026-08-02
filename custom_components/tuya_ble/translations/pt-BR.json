@@ -136,6 +136,12 @@
             "weather_delay": {
                 "name": "Atraso devido ao clima"
             },
+            "weather_delay_z1": {
+                "name": "Atraso devido ao clima - Zona 1"
+            },
+            "weather_delay_z2": {
+                "name": "Atraso devido ao clima - Zona 2"
+            },
             "smart_weather": {
                 "name": "Clima inteligente"
             },
