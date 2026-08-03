@@ -179,17 +179,18 @@ async def test_guard_dog_lock(hass: HomeAssistant) -> None:
     entity._handle_coordinator_update()
     assert entity.is_locked is False
 
-    # Call async_lock
+    # Call async_lock (should be no-op for wgv4haro)
+    device._send_datapoints.reset_mock()
     await entity.async_lock()
     await hass.async_block_till_done()
-    device._send_datapoints.assert_called_with([DPCode.MANUAL_LOCK])
-    assert device.datapoints[DPCode.MANUAL_LOCK].value is True
+    device._send_datapoints.assert_not_called()
 
-    # Call async_unlock
+    # Call async_unlock (should trigger DP 6 for wgv4haro)
+    device._send_datapoints.reset_mock()
     await entity.async_unlock()
     await hass.async_block_till_done()
-    device._send_datapoints.assert_called_with([DPCode.MANUAL_LOCK])
-    assert device.datapoints[DPCode.MANUAL_LOCK].value is False
+    device._send_datapoints.assert_called_with([6])
+    assert device.datapoints[6].value is True
 
     # Verify refined sensor mappings for wgv4haro
     from custom_components.tuya_ble.sensor import (
