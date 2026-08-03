@@ -81,6 +81,12 @@ class TuyaBLELock(TuyaBLEEntity, LockEntity):
                 False,
             ):
                 await motor_state.set_value(False)
+        elif self._device.product_id == "wgv4haro":
+            # Guard Dog Security Smart Lock locks automatically, locking command is no-op
+            # NOTE: Other momentary locks in category ms/jtmspro (like okkyfgfs, k53ok3u9,
+            # sidhzylo, a6nttc41, stugc8dl, xicdxood, rlyxv7pe, oyqux5vv, hs21i377, kholoaew)
+            # may also need updating in the future.
+            return
         else:
             if manual_lock := self._device.datapoints.get_or_create(
                 DPCode.MANUAL_LOCK, TuyaBLEDataPointType.DT_BOOL, True
@@ -102,6 +108,15 @@ class TuyaBLELock(TuyaBLEEntity, LockEntity):
                 True,
             ):
                 await motor_state.set_value(True)
+        elif self._device.product_id == "wgv4haro":
+            # Guard Dog Security Smart Lock uses DP 6 for bluetooth unlock
+            # NOTE: Other momentary locks (e.g. okkyfgfs, k53ok3u9, sidhzylo, a6nttc41 on DP 6;
+            # or stugc8dl, xicdxood, rlyxv7pe, oyqux5vv, hs21i377, kholoaew on DP 71)
+            # may also need updating in the future.
+            if bluetooth_unlock := self._device.datapoints.get_or_create(
+                6, TuyaBLEDataPointType.DT_BOOL, False
+            ):
+                await bluetooth_unlock.set_value(True)
         else:
             if manual_lock := self._device.datapoints.get_or_create(
                 DPCode.MANUAL_LOCK, TuyaBLEDataPointType.DT_BOOL, False
