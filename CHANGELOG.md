@@ -5,6 +5,23 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog],
 and this project adheres to [Semantic Versioning].
 
+## [0.8.1](https://github.com/ha-tuya-ble/ha_tuya_ble/compare/0.8.0...0.8.1) (2026-08-03)
+
+
+### Bug Fixes
+
+* add support for wkf climate category and llflaywg TRV ([da77c6b](https://github.com/ha-tuya-ble/ha_tuya_ble/commit/da77c6b1bfb3c4845b486415834ed1e0aace7b51))
+* add support for wkf climate category and llflaywg TRV ([#261](https://github.com/ha-tuya-ble/ha_tuya_ble/issues/261)) ([c456c54](https://github.com/ha-tuya-ble/ha_tuya_ble/commit/c456c54d384a7e8ecfb0c47fcf1521acf284519b))
+* **device:** Add support for BSTUOKEY Invisible Lock ([#234](https://github.com/ha-tuya-ble/ha_tuya_ble/issues/234)) ([c016d3e](https://github.com/ha-tuya-ble/ha_tuya_ble/commit/c016d3e100209e8c589c6079b9971337f46c969d))
+* **device:** Add support for Dituo DT-T2190A Aroma Diffuser ([#260](https://github.com/ha-tuya-ble/ha_tuya_ble/issues/260)) ([dc419b9](https://github.com/ha-tuya-ble/ha_tuya_ble/commit/dc419b95f75e9c00c4642dd4e996a9fb575e5478))
+* **device:** Add support for LED BULB B509Z2 ([#263](https://github.com/ha-tuya-ble/ha_tuya_ble/issues/263)) ([62a37dd](https://github.com/ha-tuya-ble/ha_tuya_ble/commit/62a37dded59009e3613417d65922ce48f8e6bc0c))
+* **device:** Add support for Unistyle WT-04W Water Timer (ojrvmfkk) ([#232](https://github.com/ha-tuya-ble/ha_tuya_ble/issues/232)) ([9f404f5](https://github.com/ha-tuya-ble/ha_tuya_ble/commit/9f404f5aff8e0f720529366a6c938256583651ee))
+* Remove doubled translations ([868a94a](https://github.com/ha-tuya-ble/ha_tuya_ble/commit/868a94a2d112b325d511747306b56fefee31ec02))
+* Remove doubled translations ([364f10a](https://github.com/ha-tuya-ble/ha_tuya_ble/commit/364f10a443a143b464f74b6f782d016962f85505))
+* **select:** Expose YZD02B weather delays ([b053d4e](https://github.com/ha-tuya-ble/ha_tuya_ble/commit/b053d4e81ed0d6879423087c51d1d24143f7b6ea))
+* **sensor:** Expose YZD02B zone work states ([566d5cd](https://github.com/ha-tuya-ble/ha_tuya_ble/commit/566d5cd30107209cd9afc0229bb0f9589f61094a))
+* update wgv4haro lock and unlock mapping ([#272](https://github.com/ha-tuya-ble/ha_tuya_ble/issues/272)) ([a7c00d3](https://github.com/ha-tuya-ble/ha_tuya_ble/commit/a7c00d38f7742e8e0ddb21a7e23f0779756506d8))
+
 ## [0.8.0](https://github.com/ha-tuya-ble/ha_tuya_ble/compare/0.7.2...0.8.0) (2026-08-02)
 
 
