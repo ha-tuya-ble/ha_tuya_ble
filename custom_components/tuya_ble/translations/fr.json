@@ -255,7 +255,12 @@
                 "name": "Humidité du sol"
             },
             "work_state": {
-                "name": "État de fonctionnement"
+                "name": "État de fonctionnement",
+                "state": {
+                    "auto": "Auto",
+                    "manual": "Manuel",
+                    "idle": "Inactif"
+                }
             },
             "work_state_z1": {
                 "name": "État de fonctionnement - Zone 1"

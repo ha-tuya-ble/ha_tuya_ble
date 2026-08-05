@@ -255,7 +255,12 @@
                 "name": "Umidade do solo"
             },
             "work_state": {
-                "name": "Estado de funcionamento"
+                "name": "Estado de funcionamento",
+                "state": {
+                    "auto": "Automático",
+                    "manual": "Manual",
+                    "idle": "Inativo"
+                }
             },
             "work_state_z1": {
                 "name": "Estado de funcionamento - Zona 1"

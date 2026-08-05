@@ -255,7 +255,12 @@
                 "name": "Humedad de suelo"
             },
             "work_state": {
-                "name": "Estado de funcionamiento"
+                "name": "Estado de funcionamiento",
+                "state": {
+                    "auto": "Automático",
+                    "manual": "Manual",
+                    "idle": "Inactivo"
+                }
             },
             "work_state_z1": {
                 "name": "Estado de funcionamiento - Zona 1"

@@ -283,6 +283,16 @@ mapping: dict[str, TuyaBLECategorySwitchMapping] = {
                 ),
                 TuyaBLEWaterValveWeatherSwitchMapping(dp_id=14),
             ],
+            "8t5hebn0": [  # MoistenLand Water Timer
+                TuyaBLESwitchMapping(
+                    dp_id=1,
+                    description=SwitchEntityDescription(
+                        key="water_valve",
+                        icon="mdi:valve",
+                        entity_registry_enabled_default=True,
+                    ),
+                ),
+            ],
             **dict.fromkeys(
                 ["nxquc5lb", "svhikeyq"],
                 [  # Smart water timer - SOP10
