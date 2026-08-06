@@ -376,6 +376,9 @@
             "unlock_phone_remote": {
                 "name": "Last used remote phone"
             },
+            "key_tone": {
+                "name": "Key tone"
+            },
             "time_remaining": {
                 "name": "Time remaining"
             }

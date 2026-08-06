@@ -127,8 +127,8 @@ See a device marked Experimental you have? We could use real world testing feedb
       <td>—</td>
     </tr>
     <tr>
-      <td rowspan="23"><strong>Smart Locks</strong></td>
-      <td rowspan="23"><code>ms</code>, <code>jtmspro</code></td>
+      <td rowspan="24"><strong>Smart Locks</strong></td>
+      <td rowspan="24"><code>ms</code>, <code>jtmspro</code></td>
       <td>Smart Lock</td>
       <td><code>ludzroix</code>, <code>isk2p555</code>, <code>gumrixyt</code>, <code>uamrw6h3</code>, <code>sidhzylo</code>, <code>mqc2hevy</code>, <code>7a4xvbtt</code></td>
       <td>—</td>
@@ -241,6 +241,11 @@ See a device marked Experimental you have? We could use real world testing feedb
     <tr>
       <td>XCase NX-4964 Lock Box</td>
       <td><code>qicggi0m</code></td>
+      <td>—</td>
+    </tr>
+    <tr>
+      <td>Example Product Securosmart lock</td>
+      <td><code>uyf1ewof</code></td>
       <td>—</td>
     </tr>
     <tr>

@@ -171,6 +171,14 @@ mapping: dict[str, TuyaBLECategoryButtonMapping] = {
     ),
     "jtmspro": TuyaBLECategoryButtonMapping(
         products={
+            "uyf1ewof": [
+                TuyaBLEButtonMapping(
+                    dp_id=6,
+                    description=ButtonEntityDescription(
+                        key="bluetooth_unlock",
+                    ),
+                ),
+            ],
             "hc7n0urm": [  # A1 Ultra-JM
                 TuyaBLEButtonMapping(
                     dp_id=71,  # BLE unlock check
