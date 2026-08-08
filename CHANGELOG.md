@@ -5,6 +5,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog],
 and this project adheres to [Semantic Versioning].
 
+## [0.8.2](https://github.com/ha-tuya-ble/ha_tuya_ble/compare/0.8.1...0.8.2) (2026-08-08)
+
+
+### Bug Fixes
+
+* add support for Example Product Securosmart lock (uyf1ewof) ([7011781](https://github.com/ha-tuya-ble/ha_tuya_ble/commit/701178136027e5845a1f8cfd6d04d6bc369daf95))
+* **device:** Add MoistenLand Water Timer (8t5hebn0) mapping ([#273](https://github.com/ha-tuya-ble/ha_tuya_ble/issues/273)) ([72ff9ba](https://github.com/ha-tuya-ble/ha_tuya_ble/commit/72ff9ba26d0128c38cd4aefb224af24c0b096b1a))
+* **device:** add support for Product Securosmart lock (uyf1ewof) ([2496f94](https://github.com/ha-tuya-ble/ha_tuya_ble/commit/2496f94bf31f7cbdb7067b3c55a82e95fc07abcd))
+
 ## [0.8.1](https://github.com/ha-tuya-ble/ha_tuya_ble/compare/0.8.0...0.8.1) (2026-08-03)
 
 
