@@ -244,6 +244,23 @@ mapping: dict[str, TuyaBLECategoryBinarySensorMapping] = {
     ),
     "jtmspro": TuyaBLECategoryBinarySensorMapping(
         products={
+            "uyf1ewof": [
+                TuyaBLEBinarySensorMapping(
+                    dp_id=47,
+                    description=BinarySensorEntityDescription(
+                        key="lock_motor_state",
+                        entity_category=EntityCategory.DIAGNOSTIC,
+                    ),
+                ),
+                TuyaBLEBinarySensorMapping(
+                    dp_id=22,
+                    description=BinarySensorEntityDescription(
+                        key="hijack",
+                        device_class=BinarySensorDeviceClass.TAMPER,
+                        entity_category=EntityCategory.DIAGNOSTIC,
+                    ),
+                ),
+            ],
             **dict.fromkeys(
                 [
                     "stugc8dl",

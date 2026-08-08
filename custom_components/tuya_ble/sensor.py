@@ -399,6 +399,47 @@ mapping: dict[str, TuyaBLECategorySensorMapping] = {
     ),
     "jtmspro": TuyaBLECategorySensorMapping(
         products={
+            "uyf1ewof": [
+                TuyaBLEAlarmLockStateMapping(dp_id=21),
+                TuyaBLESensorMapping(
+                    dp_id=12,  # Retrieve last fingerprint used
+                    description=SensorEntityDescription(
+                        key="unlock_fingerprint",
+                        icon="mdi:fingerprint",
+                    ),
+                ),
+                TuyaBLESensorMapping(
+                    dp_id=19,  # Retrieve last BLE used
+                    description=SensorEntityDescription(
+                        key="unlock_ble",
+                        icon="mdi:bluetooth",
+                    ),
+                ),
+                TuyaBLESensorMapping(
+                    dp_id=30,
+                    description=SensorEntityDescription(
+                        key="key_tone",
+                        icon="mdi:volume-high",
+                    ),
+                ),
+                TuyaBLESensorMapping(
+                    dp_id=62,  # Retrieve last remote phone used
+                    description=SensorEntityDescription(
+                        key="unlock_phone_remote",
+                        icon="mdi:cellphone-lock",
+                        suggested_display_precision=0,
+                        entity_category=EntityCategory.DIAGNOSTIC,
+                    ),
+                ),
+                TuyaBLESensorMapping(
+                    dp_id=63,  # Retrieve last voice unlock used
+                    description=SensorEntityDescription(
+                        key="unlock_voice",
+                        icon="mdi:microphone",
+                    ),
+                ),
+                TuyaBLEBatteryMapping(dp_id=8),
+            ],
             "y2yaegze": [
                 TuyaBLEAlarmLockStateMapping(dp_id=21),
                 TuyaBLESensorMapping(
