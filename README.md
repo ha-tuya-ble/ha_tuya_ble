@@ -318,8 +318,8 @@ See a device marked Experimental you have? We could use real world testing feedb
       <td>Experimental.</td>
     </tr>
     <tr>
-      <td rowspan="8"><strong>Water valve controller</strong></td>
-      <td rowspan="8"><code>sfkzq</code></td>
+      <td rowspan="9"><strong>Water valve controller</strong></td>
+      <td rowspan="9"><code>sfkzq</code></td>
       <td>Water valve controller</td>
       <td><code>nxquc5lb</code></td>
       <td>—</td>
@@ -358,6 +358,11 @@ See a device marked Experimental you have? We could use real world testing feedb
       <td>Unistyle WT-04W Water Timer</td>
       <td><code>ojrvmfkk</code></td>
       <td>—</td>
+    </tr>
+    <tr>
+      <td>MoistenLand Water Timer</td>
+      <td><code>8t5hebn0</code></td>
+      <td>Experimental</td>
     </tr>
     <tr>
       <td rowspan="5"><strong>Lights</strong></td>

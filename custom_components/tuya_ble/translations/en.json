@@ -293,7 +293,12 @@
                 "name": "Moisture"
             },
             "work_state": {
-                "name": "Work state"
+                "name": "Work state",
+                "state": {
+                    "auto": "Auto",
+                    "manual": "Manual",
+                    "idle": "Idle"
+                }
             },
             "work_state_z1": {
                 "name": "Work state - Zone 1",

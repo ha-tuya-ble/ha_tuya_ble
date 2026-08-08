@@ -167,6 +167,22 @@ mapping: dict[str, TuyaBLECategorySelectMapping] = {
                     ),
                 ),
             ],
+            "8t5hebn0": [  # MoistenLand Water Timer
+                TuyaBLESelectMapping(
+                    dp_id=10,
+                    dp_type=TuyaBLEDataPointType.DT_STRING,
+                    description=SelectEntityDescription(
+                        key="weather_delay",
+                        options=[
+                            "cancel",
+                            "24h",
+                            "48h",
+                            "72h",
+                        ],
+                        entity_category=EntityCategory.CONFIG,
+                    ),
+                ),
+            ],
             "tqzkwarw": [  # HCT-611 Water Timer
                 TuyaBLESelectMapping(
                     dp_id=10,

@@ -255,7 +255,12 @@
                 "name": "Bodenfeuchtigkeit"
             },
             "work_state": {
-                "name": "Betriebszustand"
+                "name": "Betriebszustand",
+                "state": {
+                    "auto": "Auto",
+                    "manual": "Manuell",
+                    "idle": "Inaktiv"
+                }
             },
             "work_state_z1": {
                 "name": "Betriebszustand - Zone 1"

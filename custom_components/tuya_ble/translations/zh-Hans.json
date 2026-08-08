@@ -255,7 +255,12 @@
                 "name": "水分"
             },
             "work_state": {
-                "name": "工作状态"
+                "name": "工作状态",
+                "state": {
+                    "auto": "自动",
+                    "manual": "手动",
+                    "idle": "空闲"
+                }
             },
             "work_state_z1": {
                 "name": "工作状态 - 区域 1"

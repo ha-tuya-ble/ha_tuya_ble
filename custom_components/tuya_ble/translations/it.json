@@ -255,7 +255,12 @@
                 "name": "Umidità del terreno"
             },
             "work_state": {
-                "name": "Stato di funzionamento"
+                "name": "Stato di funzionamento",
+                "state": {
+                    "auto": "Automatico",
+                    "manual": "Manuale",
+                    "idle": "Inattivo"
+                }
             },
             "work_state_z1": {
                 "name": "Stato di funzionamento - Zona 1"

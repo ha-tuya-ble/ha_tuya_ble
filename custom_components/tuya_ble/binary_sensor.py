@@ -162,6 +162,26 @@ mapping: dict[str, TuyaBLECategoryBinarySensorMapping] = {
     ),
     "sfkzq": TuyaBLECategoryBinarySensorMapping(
         products={
+            "8t5hebn0": [  # MoistenLand Water Timer
+                TuyaBLEBinarySensorMapping(
+                    dp_id=4,
+                    description=BinarySensorEntityDescription(
+                        key="fault",
+                        device_class=BinarySensorDeviceClass.PROBLEM,
+                        entity_category=EntityCategory.DIAGNOSTIC,
+                    ),
+                    getter=lambda sensor: setattr(
+                        sensor,
+                        "_attr_is_on",
+                        bool(
+                            _bitmap_value_to_int(sensor._device.datapoints[4].value)
+                            if sensor._device.datapoints[4]
+                            and sensor._device.datapoints[4].value is not None
+                            else False
+                        ),
+                    ),
+                ),
+            ],
             "ldcdnigc": [
                 TuyaBLEBinarySensorMapping(
                     dp_id=1,

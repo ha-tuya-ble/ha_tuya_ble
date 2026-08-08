@@ -249,6 +249,19 @@ mapping: dict[str, TuyaBLECategoryNumberMapping] = {
                     ),
                 ),
             ],
+            "8t5hebn0": [  # MoistenLand Water Timer
+                TuyaBLENumberMapping(
+                    dp_id=11,
+                    description=NumberEntityDescription(
+                        key="countdown",
+                        icon="mdi:timer",
+                        native_max_value=86400,
+                        native_min_value=0,
+                        native_unit_of_measurement=UnitOfTime.SECONDS,
+                        native_step=1,
+                    ),
+                ),
+            ],
         },
     ),
     "dcb": TuyaBLECategoryNumberMapping(
