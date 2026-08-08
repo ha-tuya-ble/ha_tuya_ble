@@ -677,6 +677,7 @@ class TuyaBLEDevice:
             )
             self._fire_disconnected_callbacks()
             return
+        dropped_client = self._client
         self._client = None
         _LOGGER.warning(
             "%s: Device unexpectedly disconnected; RSSI: %s",
@@ -689,7 +690,54 @@ class TuyaBLEDevice:
                 self.address,
                 self.rssi,
             )
-            asyncio.create_task(self._reconnect())
+            asyncio.create_task(self._release_and_reconnect(dropped_client))
+        elif dropped_client is not None:
+            asyncio.create_task(self._release_client(dropped_client))
+
+    async def _release_client(
+        self, client: BleakClientWithServiceCache | None
+    ) -> None:
+        """Let go of a connection that dropped on us.
+
+        bleak routes notifications through a per-device watcher registered on
+        the shared BlueZ manager at connect time, and only removes it when the
+        client is disconnected. A planned disconnect goes through
+        _execute_disconnect() and cleans up; an unexpected one used to just drop
+        our reference, leaving the watcher registered forever.
+
+        Every reconnect then added another watcher, and each of them delivers
+        every notification to the callback the newest connection registered. So
+        after n connections the parser sees each packet n times, which breaks
+        reassembly: it waits for packet n+1 while copies of packet n arrive,
+        _clean_input() discards the partial response and then takes a copy as
+        the start of a fresh one. Past a handful of reconnects nothing is ever
+        assembled -- the device still shows as connected, commands are accepted
+        and silently do nothing, and only a restart clears it. See #170.
+        """
+        if client is None:
+            return
+        try:
+            await client.disconnect()
+        except Exception:  # noqa: BLE001 - the link is already gone
+            _LOGGER.debug(
+                "%s: Releasing the dropped connection failed",
+                self.address,
+                exc_info=True,
+            )
+
+    async def _release_and_reconnect(
+        self, client: BleakClientWithServiceCache | None
+    ) -> None:
+        """Release the dropped connection, then reconnect.
+
+        Ordered deliberately: the watcher has to go before a new connection
+        registers its own, and doing both in one task is what guarantees it.
+        Releasing is safe at this point precisely because the old link is
+        already down and the new one does not exist yet -- BlueZ's Disconnect
+        acts on the device, so there is nothing here for it to disturb.
+        """
+        await self._release_client(client)
+        await self._reconnect()
 
     def _disconnect(self) -> None:
         """Disconnect from device."""
