@@ -357,7 +357,7 @@ See a device marked Experimental you have? We could use real world testing feedb
     <tr>
       <td>MoistenLand Water Timer</td>
       <td><code>8t5hebn0</code></td>
-      <td>—</td>
+      <td>Experimental</td>
     </tr>
     <tr>
       <td rowspan="5"><strong>Lights</strong></td>
