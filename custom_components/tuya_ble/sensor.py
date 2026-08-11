@@ -373,32 +373,6 @@ mapping: dict[str, TuyaBLECategorySensorMapping] = {
                     ),
                 ),
             ],
-            "kpn4zaf7": [
-                TuyaBLEAlarmLockStateMapping(dp_id=21),
-                TuyaBLEBatteryMapping(
-                    dp_id=9,
-                    getter=bstuokey_battery_getter,
-                    dp_type=TuyaBLEDataPointType.DT_STRING,
-                ),
-                TuyaBLESensorMapping(
-                    dp_id=15,  # Retrieve last card used
-                    description=SensorEntityDescription(
-                        key="unlock_card",
-                        icon="mdi:nfc-variant",
-                    ),
-                ),
-                TuyaBLESensorMapping(
-                    dp_id=19,  # Retrieve last bluetooth unlock used
-                    description=SensorEntityDescription(
-                        key="unlock_ble",
-                        icon="mdi:bluetooth",
-                    ),
-                ),
-            ],
-        }
-    ),
-    "jtmspro": TuyaBLECategorySensorMapping(
-        products={
             "uyf1ewof": [
                 TuyaBLEAlarmLockStateMapping(dp_id=21),
                 TuyaBLESensorMapping(
@@ -440,6 +414,32 @@ mapping: dict[str, TuyaBLECategorySensorMapping] = {
                 ),
                 TuyaBLEBatteryMapping(dp_id=8),
             ],
+            "kpn4zaf7": [
+                TuyaBLEAlarmLockStateMapping(dp_id=21),
+                TuyaBLEBatteryMapping(
+                    dp_id=9,
+                    getter=bstuokey_battery_getter,
+                    dp_type=TuyaBLEDataPointType.DT_STRING,
+                ),
+                TuyaBLESensorMapping(
+                    dp_id=15,  # Retrieve last card used
+                    description=SensorEntityDescription(
+                        key="unlock_card",
+                        icon="mdi:nfc-variant",
+                    ),
+                ),
+                TuyaBLESensorMapping(
+                    dp_id=19,  # Retrieve last bluetooth unlock used
+                    description=SensorEntityDescription(
+                        key="unlock_ble",
+                        icon="mdi:bluetooth",
+                    ),
+                ),
+            ],
+        }
+    ),
+    "jtmspro": TuyaBLECategorySensorMapping(
+        products={
             "y2yaegze": [
                 TuyaBLEAlarmLockStateMapping(dp_id=21),
                 TuyaBLESensorMapping(
