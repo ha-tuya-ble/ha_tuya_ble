@@ -417,6 +417,23 @@ mapping: dict[str, TuyaBLECategorySwitchMapping] = {
     ),
     "ms": TuyaBLECategorySwitchMapping(
         products={
+            "uyf1ewof": [
+                TuyaBLESwitchMapping(
+                    dp_id=33,
+                    description=SwitchEntityDescription(
+                        key="automatic_lock",
+                        icon="mdi:lock-clock",
+                        entity_category=EntityCategory.CONFIG,
+                    ),
+                ),
+                TuyaBLESwitchMapping(
+                    dp_id=46,
+                    description=SwitchEntityDescription(
+                        key="manual_lock",
+                        icon="mdi:lock-plus",
+                    ),
+                ),
+            ],
             **dict.fromkeys(
                 [
                     "ludzroix",
@@ -532,23 +549,6 @@ mapping: dict[str, TuyaBLECategorySwitchMapping] = {
     ),
     "jtmspro": TuyaBLECategorySwitchMapping(
         products={
-            "uyf1ewof": [
-                TuyaBLESwitchMapping(
-                    dp_id=33,
-                    description=SwitchEntityDescription(
-                        key="automatic_lock",
-                        icon="mdi:lock-clock",
-                        entity_category=EntityCategory.CONFIG,
-                    ),
-                ),
-                TuyaBLESwitchMapping(
-                    dp_id=46,
-                    description=SwitchEntityDescription(
-                        key="manual_lock",
-                        icon="mdi:lock-plus",
-                    ),
-                ),
-            ],
             "y2yaegze": [
                 TuyaBLESwitchMapping(
                     dp_id=33,
