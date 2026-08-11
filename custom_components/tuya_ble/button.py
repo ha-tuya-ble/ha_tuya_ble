@@ -193,7 +193,6 @@ mapping: dict[str, TuyaBLECategoryButtonMapping] = {
                     "stugc8dl",  # HU06 Smart Lock
                     "xicdxood",  # Raycube K7 Pro+
                     "rlyxv7pe",  # A1 PRO MAX
-                    "oyqux5vv",  # LA-01
                 ],
                 [
                     # Raycube K7 Pro+, unclear if applicable to A1 PRO MAX
@@ -207,6 +206,16 @@ mapping: dict[str, TuyaBLECategoryButtonMapping] = {
                     ),
                 ],
             ),
+            "oyqux5vv": [  # LA-01 Smart lock
+                TuyaBLEButtonMapping(
+                    dp_id=71,
+                    description=ButtonEntityDescription(
+                        key="bluetooth_unlock",
+                        icon="mdi:lock-open-variant-outline",
+                    ),
+                    dp_type=TuyaBLEDataPointType.DT_RAW,
+                ),
+            ],
             "hs21i377": [  # Raycube K7 Pro+
                 TuyaBLEButtonMapping(
                     dp_id=71,
@@ -301,8 +310,8 @@ class TuyaBLEButton(TuyaBLEEntity, ButtonEntity):
         self._mapping = mapping
 
     async def _run_hs21i377_unlock(self) -> None:
-        """Run the validated dp71 unlock flow for hs21i377."""
-        # hs21i377 uses a device-specific dp71 unlock payload.
+        """Run the validated dp71 unlock flow for hs21i377 and oyqux5vv."""
+        # hs21i377 and oyqux5vv (LA-01) use a device-specific dp71 unlock payload.
         # Practical testing confirmed multiple payload variants can unlock,
         # so this is not treated as a fixed "known lock code". We keep an
         # empirically validated value here until the payload semantics are
@@ -337,7 +346,7 @@ class TuyaBLEButton(TuyaBLEEntity, ButtonEntity):
             if self._mapping.description.key == "bluetooth_unlock":
                 self._hass.create_task(self._run_kholoaew_unlock())
                 return
-        if self._device.product_id == "hs21i377":
+        if self._device.product_id in ("hs21i377", "oyqux5vv"):
             if self._mapping.description.key == "bluetooth_unlock":
                 self._hass.create_task(self._run_hs21i377_unlock())
                 return
