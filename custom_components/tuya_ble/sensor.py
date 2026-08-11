@@ -777,7 +777,7 @@ mapping: dict[str, TuyaBLECategorySensorMapping] = {
     "kg": TuyaBLECategorySensorMapping(
         products={
             **dict.fromkeys(
-                ["mknd4lci", "riecov42", "gnpbj0bq"],  # Fingerbot Plus
+                ["mknd4lci", "riecov42", "gnpbj0bq", "6jcvqwh0"],  # Fingerbot Plus
                 [
                     TuyaBLEBatteryMapping(dp_id=105),
                 ],
