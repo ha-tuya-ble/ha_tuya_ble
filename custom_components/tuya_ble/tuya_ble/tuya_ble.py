@@ -694,9 +694,7 @@ class TuyaBLEDevice:
         elif dropped_client is not None:
             asyncio.create_task(self._release_client(dropped_client))
 
-    async def _release_client(
-        self, client: BleakClientWithServiceCache | None
-    ) -> None:
+    async def _release_client(self, client: BleakClientWithServiceCache | None) -> None:
         """Let go of a connection that dropped on us.
 
         bleak routes notifications through a per-device watcher registered on
