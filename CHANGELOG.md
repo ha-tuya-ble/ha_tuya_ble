@@ -5,6 +5,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog],
 and this project adheres to [Semantic Versioning].
 
+## [0.8.2](https://github.com/ha-tuya-ble/ha_tuya_ble/compare/0.8.1...0.8.2) (2026-08-11)
+
+
+### Bug Fixes
+
+* add raw bluetooth unlock support for LA-01 (oyqux5vv) ([047db1e](https://github.com/ha-tuya-ble/ha_tuya_ble/commit/047db1e1cbc750882332817167f8d6d1bb9facca))
+* add raw bluetooth unlock support for LA-01 (oyqux5vv) ([#279](https://github.com/ha-tuya-ble/ha_tuya_ble/issues/279)) ([fd0e9b9](https://github.com/ha-tuya-ble/ha_tuya_ble/commit/fd0e9b98f61a1d0a4e6d1544566879119075891d))
+* add support for Example Product Securosmart lock (uyf1ewof) ([7011781](https://github.com/ha-tuya-ble/ha_tuya_ble/commit/701178136027e5845a1f8cfd6d04d6bc369daf95))
+* **device:** Add MoistenLand Water Timer (8t5hebn0) mapping ([#273](https://github.com/ha-tuya-ble/ha_tuya_ble/issues/273)) ([72ff9ba](https://github.com/ha-tuya-ble/ha_tuya_ble/commit/72ff9ba26d0128c38cd4aefb224af24c0b096b1a))
+* **device:** add support for Product Securosmart lock (uyf1ewof) ([2496f94](https://github.com/ha-tuya-ble/ha_tuya_ble/commit/2496f94bf31f7cbdb7067b3c55a82e95fc07abcd))
+* **device:** map Fingerbot Plus 6jcvqwh0 in the kg category ([#276](https://github.com/ha-tuya-ble/ha_tuya_ble/issues/276)) ([aa7491b](https://github.com/ha-tuya-ble/ha_tuya_ble/commit/aa7491b4c7253b058da20fc44c5c915c329a7c73))
+* **protocol:** release a connection that dropped unexpectedly ([228485d](https://github.com/ha-tuya-ble/ha_tuya_ble/commit/228485d39ff98940b96d39920d3516fb9b853a3d))
+
 ## [0.8.1](https://github.com/ha-tuya-ble/ha_tuya_ble/compare/0.8.0...0.8.1) (2026-08-03)
 
 
