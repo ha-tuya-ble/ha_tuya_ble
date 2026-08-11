@@ -510,7 +510,7 @@ mapping: dict[str, TuyaBLECategoryNumberMapping] = {
                     "riecov42",
                     "bs3ubslo",
                     "gnpbj0bq",
-                    "6jcvqwh0"
+                    "6jcvqwh0",
                 ],  # Fingerbot Plus
                 [
                     TuyaBLENumberMapping(
