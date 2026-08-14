@@ -5,6 +5,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog],
 and this project adheres to [Semantic Versioning].
 
+## [0.8.3](https://github.com/ha-tuya-ble/ha_tuya_ble/compare/0.8.2...0.8.3) (2026-08-14)
+
+
+### Bug Fixes
+
+* add support for Example Product Securosmart lock (uyf1ewof) on m… ([cd56792](https://github.com/ha-tuya-ble/ha_tuya_ble/commit/cd567924aff50a22f2c847085dafae3062829755))
+* add support for Example Product Securosmart lock (uyf1ewof) on ms category ([6545eeb](https://github.com/ha-tuya-ble/ha_tuya_ble/commit/6545eebbd94cc05baa710d3866ee6b9a742856c8))
+* correct category for window cleaner robot (cxjmb → ccjqr) ([efc681f](https://github.com/ha-tuya-ble/ha_tuya_ble/commit/efc681f32c0f18f90126eec7f221542c7db6c82d))
+* correct category for window cleaner robot (cxjmb → ccjqr) ([bbcc961](https://github.com/ha-tuya-ble/ha_tuya_ble/commit/bbcc961069208d46b7bc1a621b1a88ec2abaa713))
+
 ## [0.8.2](https://github.com/ha-tuya-ble/ha_tuya_ble/compare/0.8.1...0.8.2) (2026-08-11)
 
 
