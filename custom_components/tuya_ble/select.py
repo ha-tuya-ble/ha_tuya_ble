@@ -723,7 +723,7 @@ mapping: dict[str, TuyaBLECategorySelectMapping] = {
             ],
         },
     ),
-    "cxjmb": TuyaBLECategorySelectMapping(
+    "ccjqr": TuyaBLECategorySelectMapping(
         products={
             "pnxl0r3l": [  # Window Cleaner Robot
                 TuyaBLESelectMapping(

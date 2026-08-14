@@ -859,7 +859,7 @@ mapping: dict[str, TuyaBLECategorySwitchMapping] = {
             ),
         },
     ),
-    "cxjmb": TuyaBLECategorySwitchMapping(
+    "ccjqr": TuyaBLECategorySwitchMapping(
         products={
             "pnxl0r3l": [  # Window Cleaner Robot
                 TuyaBLESwitchMapping(

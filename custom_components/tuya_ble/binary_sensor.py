@@ -370,7 +370,7 @@ mapping: dict[str, TuyaBLECategoryBinarySensorMapping] = {
     #         ],
     #     }
     # ),
-    "cxjmb": TuyaBLECategoryBinarySensorMapping(
+    "ccjqr": TuyaBLECategoryBinarySensorMapping(
         products={
             "pnxl0r3l": [  # Window Cleaner Robot - fault bitmap (DP11)
                 TuyaBLEBinarySensorMapping(

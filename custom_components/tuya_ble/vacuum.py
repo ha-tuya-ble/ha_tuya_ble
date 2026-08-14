@@ -163,7 +163,7 @@ class TuyaBLECategoryVacuumMapping:
 # ---------------------------------------------------------------------------
 
 mapping: dict[str, TuyaBLECategoryVacuumMapping] = {
-    "cxjmb": TuyaBLECategoryVacuumMapping(
+    "ccjqr": TuyaBLECategoryVacuumMapping(
         products={
             "pnxl0r3l": TuyaBLEVacuumMapping(  # CHYW200.ABIR
                 dp_start_bool=1,  # switch_go (bool)

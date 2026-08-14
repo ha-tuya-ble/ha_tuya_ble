@@ -1742,7 +1742,7 @@ mapping: dict[str, TuyaBLECategorySensorMapping] = {
             ),
         }
     ),
-    "cxjmb": TuyaBLECategorySensorMapping(
+    "ccjqr": TuyaBLECategorySensorMapping(
         products={
             "pnxl0r3l": [  # Window Cleaner Robot
                 TuyaBLESensorMapping(
