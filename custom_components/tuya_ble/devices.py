@@ -436,6 +436,12 @@ devices_database: dict[str, TuyaBLECategoryInfo] = {
     "dcb": TuyaBLECategoryInfo(
         products={
             **dict.fromkeys(
+                ["vllfabvs"],
+                TuyaBLEProductInfo(  # device product_id
+                    name="PARKSIDE Smart battery 4Ah",
+                ),
+            ),
+            **dict.fromkeys(
                 ["z5ztlw3k"],
                 TuyaBLEProductInfo(  # device product_id
                     name="PARKSIDE Smart battery 4Ah",
@@ -445,6 +451,12 @@ devices_database: dict[str, TuyaBLECategoryInfo] = {
                 ["ajrhf1aj"],
                 TuyaBLEProductInfo(  # device product_id
                     name="PARKSIDE Smart battery 8Ah",
+                ),
+            ),
+            **dict.fromkeys(
+                ["fay1puxy"],
+                TuyaBLEProductInfo(  # device product_id
+                    name="PARKSIDE Smart battery 12Ah",
                 ),
             ),
         },
