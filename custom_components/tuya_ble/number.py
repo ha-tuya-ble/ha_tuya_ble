@@ -271,7 +271,7 @@ mapping: dict[str, TuyaBLECategoryNumberMapping] = {
                     "ajrhf1aj",
                     "z5ztlw3k",
                     "vllfabvs",
-                    "fay1puxy"
+                    "fay1puxy",
                 ],  # PARKSIDE Smart battery
                 [
                     TuyaBLENumberMapping(
