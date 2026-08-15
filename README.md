@@ -396,15 +396,20 @@ See a device marked Experimental you have? We could use real world testing feedb
       <td>Single/Double click and Long press support via events.</td>
     </tr>
     <tr>
-      <td rowspan="2"><strong>Battery</strong></td>
-      <td rowspan="2"><code>dcb</code></td>
+      <td rowspan="3"><strong>Battery</strong></td>
+      <td rowspan="3"><code>dcb</code></td>
       <td>Parkside Performance Smart Battery 4Ah</td>
-      <td><code>z5ztlw3k</code></td>
+      <td><code>z5ztlw3k</code>, <code>vllfabvs</code></td>
       <td>—</td>
     </tr>
     <tr>
       <td>Parkside Performance Smart Battery 8Ah</td>
       <td><code>ajrhf1aj</code></td>
+      <td>—</td>
+    </tr>
+    <tr>
+      <td>Parkside Performance Smart Battery 12Ah</td>
+      <td><code>fay1puxy</code></td>
       <td>—</td>
     </tr>
     <tr>
