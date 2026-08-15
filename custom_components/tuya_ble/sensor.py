@@ -1608,7 +1608,6 @@ mapping: dict[str, TuyaBLECategorySensorMapping] = {
             ],
         },
     ),
-
     "zwjcy": TuyaBLECategorySensorMapping(
         products={
             **dict.fromkeys(

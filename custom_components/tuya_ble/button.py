@@ -85,7 +85,12 @@ mapping: dict[str, TuyaBLECategoryButtonMapping] = {
     "dcb": TuyaBLECategoryButtonMapping(
         products={
             **dict.fromkeys(
-                ["ajrhf1aj", "z5ztlw3k", "vllfabvs", "fay1puxy"],  # PARKSIDE Smart battery
+                [
+                    "ajrhf1aj",
+                    "z5ztlw3k",
+                    "vllfabvs",
+                    "fay1puxy"
+                ],  # PARKSIDE Smart battery
                 [
                     TuyaBLEButtonMapping(
                         dp_id=115,

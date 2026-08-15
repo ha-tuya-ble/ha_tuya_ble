@@ -148,7 +148,12 @@ mapping: dict[str, TuyaBLECategoryTextMapping] = {
     "dcb": TuyaBLECategoryTextMapping(
         products={
             **dict.fromkeys(
-                ["ajrhf1aj", "z5ztlw3k", "vllfabvs", "fay1puxy"],  # PARKSIDE Smart battery
+                [
+                    "ajrhf1aj",
+                    "z5ztlw3k",
+                    "vllfabvs", 
+                    "fay1puxy",
+                ],  # PARKSIDE Smart battery
                 [
                     TuyaBLETextMapping(
                         dp_id=106,
