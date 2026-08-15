@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog],
 and this project adheres to [Semantic Versioning].
 
+## [0.9.0](https://github.com/ha-tuya-ble/ha_tuya_ble/compare/0.8.3...0.9.0) (2026-08-15)
+
+
+### Features
+
+* add support for Parkside 4Ah and 12Ah batteries ([5028b1f](https://github.com/ha-tuya-ble/ha_tuya_ble/commit/5028b1f177ab9fad07480ac2b80f02cdfadd3b6c))
+
 ## [0.8.3](https://github.com/ha-tuya-ble/ha_tuya_ble/compare/0.8.2...0.8.3) (2026-08-14)
 
 
