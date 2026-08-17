@@ -579,18 +579,6 @@ class TuyaBLELight(TuyaBLEEntity, LightEntity):
         )
 
         if int_type := self.find_dpcode(
-            description.brightness, dptype=DPType.INTEGER, prefer_function=True
-        ):
-            self._brightness = int_type
-            self._attr_supported_color_modes.add(ColorMode.BRIGHTNESS)
-            self._brightness_max = self.find_dpcode(
-                description.brightness_max, dptype=DPType.INTEGER
-            )
-            self._brightness_min = self.find_dpcode(
-                description.brightness_min, dptype=DPType.INTEGER
-            )
-
-        if int_type := self.find_dpcode(
             description.color_temp, dptype=DPType.INTEGER, prefer_function=True
         ):
             self._color_temp = int_type
@@ -627,6 +615,17 @@ class TuyaBLELight(TuyaBLEEntity, LightEntity):
                     self._brightness and self._brightness.max > 255
                 ):
                     self._color_data_type = DEFAULT_COLOR_TYPE_DATA_V2
+        elif int_type := self.find_dpcode(
+            description.brightness, dptype=DPType.INTEGER, prefer_function=True
+        ):
+            self._brightness = int_type
+            self._attr_supported_color_modes.add(ColorMode.BRIGHTNESS)
+            self._brightness_max = self.find_dpcode(
+                description.brightness_max, dptype=DPType.INTEGER
+            )
+            self._brightness_min = self.find_dpcode(
+                description.brightness_min, dptype=DPType.INTEGER
+            )
 
         if not self._attr_supported_color_modes:
             self._attr_supported_color_modes = {ColorMode.ONOFF}
