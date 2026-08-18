@@ -11,7 +11,7 @@ from homeassistant.components.sensor import (
 )
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import (
-    CONCENTRATION_PARTS_PER_MILLION,
+    UnitOfRatio,
     PERCENTAGE,
     SIGNAL_STRENGTH_DECIBELS_MILLIWATT,
     UnitOfTime,
@@ -19,7 +19,7 @@ from homeassistant.const import (
     UnitOfTemperature,
 )
 from homeassistant.core import HomeAssistant, callback
-from homeassistant.helpers.entity import EntityCategory
+from homeassistant.const import EntityCategory
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator
 from .const import (
@@ -105,7 +105,7 @@ mapping: dict[str, TuyaBLECategorySensorMapping] = {
                     description=SensorEntityDescription(
                         key="carbon_dioxide",
                         device_class=SensorDeviceClass.CO2,
-                        native_unit_of_measurement=CONCENTRATION_PARTS_PER_MILLION,
+                        native_unit_of_measurement=UnitOfRatio.PARTS_PER_MILLION,
                         state_class=SensorStateClass.MEASUREMENT,
                     ),
                 ),

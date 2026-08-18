@@ -13,7 +13,7 @@ from homeassistant.components.text import (
 )
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant, callback
-from homeassistant.helpers.entity import EntityCategory
+from homeassistant.const import EntityCategory
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator
 
@@ -131,7 +131,7 @@ mapping: dict[str, TuyaBLECategoryTextMapping] = {
                         description=TextEntityDescription(
                             key="program",
                             icon="mdi:repeat",
-                            pattern="^((\d{1,2}|100)(\/\d{1,2})?)(;((\d{1,2}|100)(\/\d{1,2})?))+$",
+                            pattern=r"^((\d{1,2}|100)(\/\d{1,2})?)(;((\d{1,2}|100)(\/\d{1,2})?))+$",
                             entity_category=EntityCategory.CONFIG,
                         ),
                         is_available=is_fingerbot_in_program_mode,

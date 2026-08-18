@@ -15,18 +15,14 @@ from homeassistant.const import (
     CONF_USERNAME,
 )
 from homeassistant.core import HomeAssistant
-from homeassistant.components.tuya.const import (
-    CONF_APP_TYPE,
-    CONF_ENDPOINT,
-    DOMAIN as TUYA_DOMAIN,
-    TUYA_RESPONSE_RESULT,
-    TUYA_RESPONSE_SUCCESS,
-)
-from homeassistant.helpers.entity import DeviceInfo, EntityDescription
-from homeassistant.helpers.update_coordinator import (
-    CoordinatorEntity,
-    DataUpdateCoordinator,
-)
+
+# Lokal definiert – die Core-Tuya-Integration exportiert diese Konstanten
+# seit der Umstellung auf QR-Code-Login nicht mehr (HA >= 2025.12).
+CONF_APP_TYPE = "tuya_app_type"
+CONF_ENDPOINT = "endpoint"
+TUYA_DOMAIN = "tuya"
+TUYA_RESPONSE_RESULT = "result"
+TUYA_RESPONSE_SUCCESS = "success"
 
 from tuya_iot import (
     TuyaOpenAPI,
@@ -175,6 +171,9 @@ class HASSTuyaBLEDeviceManager(AbstaractTuyaBLEDeviceManager):
         return await self._login(self._data, add_to_cache)
 
     async def _fill_cache_item(self, item: TuyaCloudCacheItem) -> None:
+        # Alte Credentials verwerfen, sonst bleibt nach einem Neu-Koppeln
+        # in der App der alte local_key im Prozess-Cache haengen.
+        item.credentials.clear()
         devices_response = await self._hass.async_add_executor_job(
             item.api.get,
             TUYA_API_DEVICES_URL % (item.api.token_info.uid),

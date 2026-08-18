@@ -12,7 +12,7 @@ from tuya_iot import AuthType
 from homeassistant.config_entries import (
     ConfigEntry,
     ConfigFlow,
-    OptionsFlowWithConfigEntry,
+    OptionsFlow,
 )
 from homeassistant.components.bluetooth import (
     BluetoothServiceInfoBleak,
@@ -27,13 +27,13 @@ from homeassistant.const import (
 from homeassistant.core import callback
 from homeassistant.data_entry_flow import FlowHandler, FlowResult
 
-from homeassistant.components.tuya.const import (
-    CONF_APP_TYPE,
-    CONF_ENDPOINT,
-    TUYA_RESPONSE_CODE,
-    TUYA_RESPONSE_MSG,
-    TUYA_RESPONSE_SUCCESS,
-)
+# Lokal definiert – die Core-Tuya-Integration exportiert diese Konstanten
+# seit der Umstellung auf QR-Code-Login nicht mehr (HA >= 2025.12).
+CONF_APP_TYPE = "tuya_app_type"
+CONF_ENDPOINT = "endpoint"
+TUYA_RESPONSE_CODE = "code"
+TUYA_RESPONSE_MSG = "msg"
+TUYA_RESPONSE_SUCCESS = "success"
 from .tuya_ble import SERVICE_UUID, TuyaBLEDeviceCredentials
 
 from .const import (
@@ -49,6 +49,13 @@ from .devices import TuyaBLEData, get_device_readable_name
 from .cloud import HASSTuyaBLEDeviceManager
 
 _LOGGER = logging.getLogger(__name__)
+
+# pycountry laedt seine Datenbank lazy von Platte; einmal beim Modul-Import
+# (laeuft im Import-Executor) anstossen, damit es spaeter nicht im Event-Loop passiert.
+try:
+    pycountry.countries.get(alpha_2="DE")
+except Exception:  # pylint: disable=broad-except
+    pass
 
 
 async def _try_login(
@@ -152,12 +159,8 @@ def _show_login_form(
     )
 
 
-class TuyaBLEOptionsFlow(OptionsFlowWithConfigEntry):
+class TuyaBLEOptionsFlow(OptionsFlow):
     """Handle a Tuya BLE options flow."""
-
-    def __init__(self, config_entry: ConfigEntry) -> None:
-        """Initialize options flow."""
-        super().__init__(config_entry)
 
     async def async_step_init(
         self, user_input: dict[str, Any] | None = None
@@ -295,7 +298,7 @@ class TuyaBLEConfigFlow(ConfigFlow, domain=DOMAIN):
             )
             self._abort_if_unique_id_configured()
             credentials = await self._manager.get_device_credentials(
-                discovery_info.address, self._get_device_info_error, True
+                discovery_info.address, True, True
             )
             self._data[CONF_ADDRESS] = discovery_info.address
             if credentials is None:
@@ -358,4 +361,4 @@ class TuyaBLEConfigFlow(ConfigFlow, domain=DOMAIN):
         config_entry: ConfigEntry,
     ) -> TuyaBLEOptionsFlow:
         """Get the options flow for this handler."""
-        return TuyaBLEOptionsFlow(config_entry)
+        return TuyaBLEOptionsFlow()

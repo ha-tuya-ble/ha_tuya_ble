@@ -1,6 +1,7 @@
 """The Tuya BLE integration."""
 from __future__ import annotations
 
+import asyncio
 import logging
 
 from bleak_retry_connector import BLEAK_RETRY_EXCEPTIONS as BLEAK_EXCEPTIONS, get_device
@@ -57,7 +58,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
             f"Could not communicate with Tuya BLE device with address {address}"
         ) from ex
     '''
-    hass.add_job(device.update())
+    entry.async_create_background_task(hass, device.update(), "tuya_ble_initial_update")
 
     @callback
     def _async_update_ble(
@@ -108,8 +109,11 @@ async def _async_update_listener(hass: HomeAssistant, entry: ConfigEntry) -> Non
 
 async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     """Unload a config entry."""
-    if unload_ok := await hass.config_entries.async_unload_platforms(entry, PLATFORMS):
-        data: TuyaBLEData = hass.data[DOMAIN].pop(entry.entry_id)
-        await data.device.stop()
-
+    unload_ok = await hass.config_entries.async_unload_platforms(entry, PLATFORMS)
+    data: TuyaBLEData | None = hass.data.get(DOMAIN, {}).pop(entry.entry_id, None)
+    if data:
+        try:
+            await asyncio.wait_for(data.device.stop(), 15)
+        except Exception:  # pylint: disable=broad-except
+            _LOGGER.debug("Stopping device failed, unloading anyway", exc_info=True)
     return unload_ok

@@ -485,7 +485,21 @@ class TuyaBLEDevice:
     async def stop(self) -> None:
         """Stop the TuyaBLE."""
         _LOGGER.debug("%s: Stop", self.address)
-        await self._execute_disconnect()
+        # Sofort signalisieren, damit laufende Verbindungs-/Reconnect-
+        # Schleifen abbrechen und nicht auf RESPONSE_WAIT_TIMEOUT warten.
+        self._expected_disconnect = True
+        for future in list(self._input_expected_responses.values()):
+            if future and not future.done():
+                future.set_result(None)
+        self._input_expected_responses.clear()
+        try:
+            await asyncio.wait_for(self._execute_disconnect(), 10)
+        except (asyncio.TimeoutError, *BLEAK_EXCEPTIONS):
+            _LOGGER.debug("%s: Stop, disconnect timed out/failed", self.address, exc_info=True)
+        except Exception:  # pylint: disable=broad-except
+            _LOGGER.debug("%s: Stop, unexpected error", self.address, exc_info=True)
+        finally:
+            self._client = None
 
     def _disconnected(self, client: BleakClientWithServiceCache) -> None:
         """Disconnected callback."""
@@ -558,6 +572,9 @@ class TuyaBLEDevice:
                 return
             attempts_count = 100
             while attempts_count > 0:
+                if self._expected_disconnect:
+                    _LOGGER.debug("%s: Connecting aborted (stop requested)", self.address)
+                    return
                 attempts_count -= 1
                 if attempts_count == 0:
                     _LOGGER.error(
@@ -662,6 +679,8 @@ class TuyaBLEDevice:
 
                 break
 
+        if self._expected_disconnect:
+            return
         if self._client:
             if self._client.is_connected:
                 if self._is_paired:
@@ -867,6 +886,8 @@ class TuyaBLEDevice:
                 )
                 result = False
             self._input_expected_responses.pop(seq_num, None)
+            if self._expected_disconnect:
+                result = False
 
         return result
 
