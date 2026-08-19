@@ -20,6 +20,7 @@
                 "data": {
                     "access_id": "涂鸦 IoT Access ID",
                     "access_secret": "涂鸦 IoT Access Secret",
+                    "sec_key": "Tuya BLE SecKey（可选）",
                     "country_code": "国家/地区",
                     "password": "密码",
                     "username": "账号"
@@ -134,7 +135,24 @@
                 }
             },
             "weather_delay": {
-                "name": "天气延时"
+                "name": "天气延时",
+                "state": {
+                    "cancel": "取消",
+                    "1day": "1 天",
+                    "2day": "2 天",
+                    "3day": "3 天",
+                    "4day": "4 天",
+                    "5day": "5 天",
+                    "6day": "6 天",
+                    "7day": "7 天"
+                }
+            },
+            "weather": {
+                "name": "天气",
+                "state": {
+                    "sunny": "晴天",
+                    "rainy": "下雨"
+                }
             },
             "weather_delay_z1": {
                 "name": "天气延时 - 区域 1"
@@ -154,6 +172,26 @@
             },
             "temperature_unit": {
                 "name": "温度单位"
+            },
+            "mode": {
+                "name": "清洁模式",
+                "state": {
+                    "smart": "智能",
+                    "z_mode": "Z字形模式",
+                    "n_mode": "N字形模式",
+                    "edge": "沿边",
+                    "spot": "定点"
+                }
+            },
+            "direction_control": {
+                "name": "方向控制",
+                "state": {
+                    "forward": "前进",
+                    "backward": "后退",
+                    "turn_left": "左转",
+                    "turn_right": "右转",
+                    "stop": "停止"
+                }
             },
             "timer": {
                 "name": "定时",
@@ -263,10 +301,24 @@
                 }
             },
             "work_state_z1": {
-                "name": "工作状态 - 区域 1"
+                "name": "工作状态 - 区域 1",
+                "state": {
+                    "auto": "自动",
+                    "manual": "手动",
+                    "idle": "空闲",
+                    "working": "工作中",
+                    "rain_delay": "下雨延时"
+                }
             },
             "work_state_z2": {
-                "name": "工作状态 - 区域 2"
+                "name": "工作状态 - 区域 2",
+                "state": {
+                    "auto": "自动",
+                    "manual": "手动",
+                    "idle": "空闲",
+                    "working": "工作中",
+                    "rain_delay": "下雨延时"
+                }
             },
             "residual_electricity": {
                 "name": "电量"
@@ -279,6 +331,12 @@
             },
             "time_left": {
                 "name": "剩余灌溉时间"
+            },
+            "time_left_z1": {
+                "name": "剩余灌溉时间 - 区域 1"
+            },
+            "time_left_z2": {
+                "name": "剩余灌溉时间 - 区域 2"
             },
             "total_usage_after_reset": {
                 "name": "重置后的总用量"
@@ -337,11 +395,17 @@
             "unlock_temp_pwd": {
                 "name": "上次使用的临时密码"
             },
+            "key_tone": {
+                "name": "按键音"
+            },
             "time_remaining": {
                 "name": "剩余时间"
             }
         },
         "switch": {
+            "automatic_lock": {
+                "name": "自动上锁"
+            },
             "antifreeze": {
                 "name": "防冻"
             },
@@ -399,6 +463,12 @@
             "window_check": {
                 "name": "开窗检测"
             },
+            "window_cleaner_switch": {
+                "name": "清洁"
+            },
+            "water_auto": {
+                "name": "自动喷水"
+            },
             "switch_spray": {
                 "name": "喷雾"
             }
@@ -411,6 +481,9 @@
         "vacuum": {
             "vacuum": {
                 "name": "擦窗机器人"
+            },
+            "clean_time": {
+                "name": "清洁时间"
             }
         }
     },

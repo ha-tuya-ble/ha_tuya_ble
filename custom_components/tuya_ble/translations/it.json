@@ -20,6 +20,7 @@
                 "data": {
                     "access_id": "Tuya IoT Access ID",
                     "access_secret": "Tuya IoT Access Secret",
+                    "sec_key": "Tuya BLE SecKey (opzionale)",
                     "country_code": "Paese",
                     "password": "Password",
                     "username": "Account"
@@ -134,7 +135,24 @@
                 }
             },
             "weather_delay": {
-                "name": "Ritardo meteorologico"
+                "name": "Ritardo meteorologico",
+                "state": {
+                    "cancel": "Annulla",
+                    "1day": "1 giorno",
+                    "2day": "2 giorni",
+                    "3day": "3 giorni",
+                    "4day": "4 giorni",
+                    "5day": "5 giorni",
+                    "6day": "6 giorni",
+                    "7day": "7 giorni"
+                }
+            },
+            "weather": {
+                "name": "Meteo",
+                "state": {
+                    "sunny": "Soleggiato",
+                    "rainy": "Piovoso"
+                }
             },
             "weather_delay_z1": {
                 "name": "Ritardo meteorologico - Zona 1"
@@ -154,6 +172,26 @@
             },
             "temperature_unit": {
                 "name": "Unità di misura della temperatura"
+            },
+            "mode": {
+                "name": "Modalità di pulizia",
+                "state": {
+                    "smart": "Smart",
+                    "z_mode": "Modalità Z",
+                    "n_mode": "Modalità N",
+                    "edge": "Bordi",
+                    "spot": "Spot"
+                }
+            },
+            "direction_control": {
+                "name": "Direzione",
+                "state": {
+                    "forward": "Avanti",
+                    "backward": "Indietro",
+                    "turn_left": "Gira a sinistra",
+                    "turn_right": "Gira a destra",
+                    "stop": "Arresta"
+                }
             },
             "timer": {
                 "name": "Timer",
@@ -263,10 +301,24 @@
                 }
             },
             "work_state_z1": {
-                "name": "Stato di funzionamento - Zona 1"
+                "name": "Stato di funzionamento - Zona 1",
+                "state": {
+                    "auto": "Automatico",
+                    "manual": "Manuale",
+                    "idle": "Inattivo",
+                    "working": "In funzione",
+                    "rain_delay": "Ritardo per pioggia"
+                }
             },
             "work_state_z2": {
-                "name": "Stato di funzionamento - Zona 2"
+                "name": "Stato di funzionamento - Zona 2",
+                "state": {
+                    "auto": "Automatico",
+                    "manual": "Manuale",
+                    "idle": "Inattivo",
+                    "working": "In funzione",
+                    "rain_delay": "Ritardo per pioggia"
+                }
             },
             "residual_electricity": {
                 "name": "Batteria"
@@ -279,6 +331,12 @@
             },
             "time_left": {
                 "name": "Tempo di irrigazione rimanente"
+            },
+            "time_left_z1": {
+                "name": "Tempo di irrigazione rimanente - Zona 1"
+            },
+            "time_left_z2": {
+                "name": "Tempo di irrigazione rimanente - Zona 2"
             },
             "total_usage_after_reset": {
                 "name": "Consumo totale dopo il ripristino"
@@ -337,11 +395,17 @@
             "unlock_temp_pwd": {
                 "name": "Ultima password temporanea utilizzata"
             },
+            "key_tone": {
+                "name": "Tono tasti"
+            },
             "time_remaining": {
                 "name": "Tempo rimanente"
             }
         },
         "switch": {
+            "automatic_lock": {
+                "name": "Blocco automatico"
+            },
             "antifreeze": {
                 "name": "Antigelo"
             },
@@ -399,6 +463,12 @@
             "window_check": {
                 "name": "Rilevamento finestra aperta"
             },
+            "window_cleaner_switch": {
+                "name": "Pulizia"
+            },
+            "water_auto": {
+                "name": "Spruzzo d'acqua automatico"
+            },
             "switch_spray": {
                 "name": "Spruzzatura"
             }
@@ -411,6 +481,9 @@
         "vacuum": {
             "vacuum": {
                 "name": "Lavavetri"
+            },
+            "clean_time": {
+                "name": "Tempo di pulizia"
             }
         }
     },
