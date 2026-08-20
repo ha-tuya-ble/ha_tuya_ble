@@ -20,6 +20,7 @@
                 "data": {
                     "access_id": "Tuya IoT Access ID",
                     "access_secret": "Tuya IoT Access Secret",
+                    "sec_key": "Tuya BLE SecKey (optional)",
                     "country_code": "Land",
                     "password": "Passwort",
                     "username": "Konto"
@@ -134,7 +135,24 @@
                 }
             },
             "weather_delay": {
-                "name": "Wetterverzögerung"
+                "name": "Wetterverzögerung",
+                "state": {
+                    "cancel": "Abbrechen",
+                    "1day": "1 Tag",
+                    "2day": "2 Tage",
+                    "3day": "3 Tage",
+                    "4day": "4 Tage",
+                    "5day": "5 Tage",
+                    "6day": "6 Tage",
+                    "7day": "7 Tage"
+                }
+            },
+            "weather": {
+                "name": "Wetter",
+                "state": {
+                    "sunny": "Sonnig",
+                    "rainy": "Regnerisch"
+                }
             },
             "weather_delay_z1": {
                 "name": "Wetterverzögerung - Zone 1"
@@ -154,6 +172,26 @@
             },
             "temperature_unit": {
                 "name": "Temperatureinheit"
+            },
+            "mode": {
+                "name": "Reinigungsmodus",
+                "state": {
+                    "smart": "Smart",
+                    "z_mode": "Z-Modus",
+                    "n_mode": "N-Modus",
+                    "edge": "Kante",
+                    "spot": "Punkt"
+                }
+            },
+            "direction_control": {
+                "name": "Richtung",
+                "state": {
+                    "forward": "Vorwärts",
+                    "backward": "Rückwärts",
+                    "turn_left": "Nach links drehen",
+                    "turn_right": "Nach rechts drehen",
+                    "stop": "Stopp"
+                }
             },
             "timer": {
                 "name": "Timer",
@@ -263,10 +301,24 @@
                 }
             },
             "work_state_z1": {
-                "name": "Betriebszustand - Zone 1"
+                "name": "Betriebszustand - Zone 1",
+                "state": {
+                    "auto": "Auto",
+                    "manual": "Manuell",
+                    "idle": "Inaktiv",
+                    "working": "In Betrieb",
+                    "rain_delay": "Regenverzögerung"
+                }
             },
             "work_state_z2": {
-                "name": "Betriebszustand - Zone 2"
+                "name": "Betriebszustand - Zone 2",
+                "state": {
+                    "auto": "Auto",
+                    "manual": "Manuell",
+                    "idle": "Inaktiv",
+                    "working": "In Betrieb",
+                    "rain_delay": "Regenverzögerung"
+                }
             },
             "residual_electricity": {
                 "name": "Batterie"
@@ -279,6 +331,12 @@
             },
             "time_left": {
                 "name": "Verbleibende Bewässerungszeit"
+            },
+            "time_left_z1": {
+                "name": "Verbleibende Bewässerungszeit - Zone 1"
+            },
+            "time_left_z2": {
+                "name": "Verbleibende Bewässerungszeit - Zone 2"
             },
             "total_usage_after_reset": {
                 "name": "Gesamtverbrauch nach Zurücksetzen"
@@ -337,11 +395,17 @@
             "unlock_temp_pwd": {
                 "name": "Zuletzt verwendetes temporäres Passwort"
             },
+            "key_tone": {
+                "name": "Tastenton"
+            },
             "time_remaining": {
                 "name": "Restzeit"
             }
         },
         "switch": {
+            "automatic_lock": {
+                "name": "Automatische Sperre"
+            },
             "antifreeze": {
                 "name": "Frostschutz"
             },
@@ -399,6 +463,12 @@
             "window_check": {
                 "name": "Fensterprüfung"
             },
+            "window_cleaner_switch": {
+                "name": "Reinigung"
+            },
+            "water_auto": {
+                "name": "Automatisches Sprühen"
+            },
             "switch_spray": {
                 "name": "Sprühen"
             }
@@ -411,6 +481,9 @@
         "vacuum": {
             "vacuum": {
                 "name": "Fensterreiniger"
+            },
+            "clean_time": {
+                "name": "Reinigungszeit"
             }
         }
     },
