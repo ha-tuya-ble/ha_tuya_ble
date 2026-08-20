@@ -5,6 +5,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog],
 and this project adheres to [Semantic Versioning].
 
+## [0.9.1](https://github.com/ha-tuya-ble/ha_tuya_ble/compare/0.9.0...0.9.1) (2026-08-20)
+
+
+### Bug Fixes
+
+* Conflicting colormodes for pmmalpkw ([c508884](https://github.com/ha-tuya-ble/ha_tuya_ble/commit/c508884ab626ab0ad6771a98dc4f07fb0307adf4))
+* update translations for target languages to match en.json ([330de88](https://github.com/ha-tuya-ble/ha_tuya_ble/commit/330de88fa24585622fd3ba74302af9080ede34c0))
+* update translations for target languages to match en.json ([273934c](https://github.com/ha-tuya-ble/ha_tuya_ble/commit/273934c1e72f75cbd0c0d34b5f921dcdb18d7ee3))
+
 ## [0.9.0](https://github.com/ha-tuya-ble/ha_tuya_ble/compare/0.8.3...0.9.0) (2026-08-15)
 
 
