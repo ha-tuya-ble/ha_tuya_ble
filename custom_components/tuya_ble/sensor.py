@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 from dataclasses import dataclass, field
+from datetime import datetime
 import logging
 from typing import Callable
 from homeassistant.components.sensor import (
@@ -24,6 +25,7 @@ from homeassistant.const import (
 )
 from homeassistant.core import HomeAssistant, callback
 from homeassistant.helpers.entity import EntityCategory
+from homeassistant.util import dt as dt_util
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator
 from .const import (
@@ -36,6 +38,7 @@ from .const import (
     CO2_LEVEL_ALARM,
     CO2_LEVEL_NORMAL,
     DOMAIN,
+    PARKSIDE_MOWER_ERRORS,
     PARKSIDE_MOWER_STATUSES,
     PARKSIDE_MOWER_WARNINGS,
 )
@@ -112,6 +115,160 @@ def bstuokey_battery_getter(self: TuyaBLESensor) -> None:
             "low": 30,
             "poweroff": 0,
         }.get(datapoint.value)
+
+
+# The Parkside mower reports its logs, schedules and zones as raw datapoints.
+# The layouts below follow the structures declared by the device model, with
+# multi byte integers in network byte order.
+
+
+def _parkside_entries(self: TuyaBLESensor, size: int) -> list[bytes]:
+    """Split the mapped raw DP into its fixed size entries."""
+    datapoint = self._device.datapoints[self._mapping.dp_id]
+    value = datapoint.value if datapoint else None
+    if not isinstance(value, (bytes, bytearray)):
+        return []
+
+    return [
+        bytes(value[pos : pos + size]) for pos in range(0, len(value) - size + 1, size)
+    ]
+
+
+def _parkside_error_name(index: int) -> str:
+    """Name an error by its index in the machine error bitmap."""
+    if 0 <= index < len(PARKSIDE_MOWER_ERRORS):
+        return PARKSIDE_MOWER_ERRORS[index]
+
+    return str(index)
+
+
+def _parkside_report(self: TuyaBLESensor, entries: list[dict], key: str) -> None:
+    """Report the entry count and expose the entries as an attribute."""
+    self._attr_native_value = len(entries)
+    self._attr_extra_state_attributes = {key: entries}
+
+
+def machine_error_log_getter(self: TuyaBLESensor) -> None:
+    """Decode DP 111: 10 entries of a uint32 epoch and an error index."""
+    entries = []
+    for entry in _parkside_entries(self, 5):
+        timestamp = int.from_bytes(entry[:4], "big")
+        if timestamp == 0:
+            continue
+        entries.append(
+            {
+                "time": dt_util.utc_from_timestamp(timestamp).isoformat(),
+                "error": _parkside_error_name(entry[4]),
+            }
+        )
+    _parkside_report(self, entries, "errors")
+
+
+def machine_error_log_2_getter(self: TuyaBLESensor) -> None:
+    """Decode DP 150: 10 entries of a date, a time and two error indexes."""
+    entries = []
+    for entry in _parkside_entries(self, 8):
+        year, month, day, hour, minute, second = entry[:6]
+        if not 1 <= month <= 12 or not 1 <= day <= 31:
+            continue
+        # The log carries no time zone, so it is read as local time.
+        stamp = datetime(
+            2000 + year,
+            month,
+            day,
+            min(hour, 23),
+            min(minute, 59),
+            min(second, 59),
+            tzinfo=dt_util.DEFAULT_TIME_ZONE,
+        )
+        entries.append(
+            {
+                "time": stamp.isoformat(),
+                "errors": [_parkside_error_name(index) for index in entry[6:8]],
+            }
+        )
+    _parkside_report(self, entries, "errors")
+
+
+def machine_work_log_getter(self: TuyaBLESensor) -> None:
+    """Decode DP 112: 10 entries of a uint32 start, a duration and a mode."""
+    modes = {1: "auto_mowing", 2: "spot_mowing"}
+    entries = []
+    for entry in _parkside_entries(self, 9):
+        start = int.from_bytes(entry[:4], "big")
+        if start == 0:
+            continue
+        entries.append(
+            {
+                "start": dt_util.utc_from_timestamp(start).isoformat(),
+                "duration_seconds": int.from_bytes(entry[4:8], "big"),
+                "mode": modes.get(entry[8], str(entry[8])),
+            }
+        )
+    _parkside_report(self, entries, "sessions")
+
+
+def machine_schedule_getter(self: TuyaBLESensor) -> None:
+    """Decode DP 110: two slots of eight days, each a weekday and a period.
+
+    Every field other than the weekday holds 0x88 when the slot is unused.
+    """
+    entries = []
+    for entry in _parkside_entries(self, 5):
+        weekday, start_hour, start_minute, end_hour, end_minute = entry
+        if 0x88 in entry[1:]:
+            continue
+        entries.append(
+            {
+                "weekday": weekday,
+                "start": f"{start_hour:02d}:{start_minute:02d}",
+                "end": f"{end_hour:02d}:{end_minute:02d}",
+            }
+        )
+    _parkside_report(self, entries, "slots")
+
+
+def machine_work_schedule_getter(self: TuyaBLESensor) -> None:
+    """Decode DP 140: seven days of two tasks, each packed into three bytes.
+
+    Byte one flags the task, the other two hold an hour in bits 7-3 and a
+    quarter of an hour in bits 2-1.
+    """
+
+    def period(value: int) -> str:
+        return f"{(value >> 3) & 0x1F:02d}:{((value >> 1) & 0x03) * 15:02d}"
+
+    entries = []
+    for index, entry in enumerate(_parkside_entries(self, 3)):
+        flags, start, end = entry
+        if not flags & 0x80:
+            continue
+        entries.append(
+            {
+                # Tasks run from Sunday, two per day.
+                "weekday": index // 2,
+                "start": period(start),
+                "end": period(end),
+                "potential_energy": bool(flags & 0x40),
+            }
+        )
+    _parkside_report(self, entries, "tasks")
+
+
+def machine_zones_getter(self: TuyaBLESensor) -> None:
+    """Decode DP 113: five zones of a uint32 passage length and a share."""
+    entries = []
+    for entry in _parkside_entries(self, 5):
+        length = int.from_bytes(entry[:4], "big")
+        if length == 0:
+            continue
+        entries.append(
+            {
+                "passage_length_m": length,
+                "area_share_percent": entry[4],
+            }
+        )
+    _parkside_report(self, entries, "zones")
 
 
 @dataclass
@@ -2177,6 +2334,60 @@ mapping: dict[str, TuyaBLECategorySensorMapping] = {
                         device_class=SensorDeviceClass.ENUM,
                         options=[status.lower() for status in PARKSIDE_MOWER_STATUSES],
                     ),
+                ),
+                TuyaBLESensorMapping(
+                    dp_id=111,  # MachineErrorLog
+                    description=SensorEntityDescription(
+                        key="error_log",
+                        icon="mdi:alert-box-outline",
+                        entity_category=EntityCategory.DIAGNOSTIC,
+                    ),
+                    getter=machine_error_log_getter,
+                ),
+                TuyaBLESensorMapping(
+                    dp_id=150,  # machine_error_log2
+                    description=SensorEntityDescription(
+                        key="error_log_2",
+                        icon="mdi:alert-box-outline",
+                        entity_category=EntityCategory.DIAGNOSTIC,
+                    ),
+                    getter=machine_error_log_2_getter,
+                ),
+                TuyaBLESensorMapping(
+                    dp_id=112,  # MachineWorkLog
+                    description=SensorEntityDescription(
+                        key="work_log",
+                        icon="mdi:history",
+                        entity_category=EntityCategory.DIAGNOSTIC,
+                    ),
+                    getter=machine_work_log_getter,
+                ),
+                TuyaBLESensorMapping(
+                    dp_id=110,  # MachineAppointment
+                    description=SensorEntityDescription(
+                        key="schedule",
+                        icon="mdi:calendar-clock",
+                        entity_category=EntityCategory.DIAGNOSTIC,
+                    ),
+                    getter=machine_schedule_getter,
+                ),
+                TuyaBLESensorMapping(
+                    dp_id=140,  # machine_appointment
+                    description=SensorEntityDescription(
+                        key="work_schedule",
+                        icon="mdi:calendar-clock",
+                        entity_category=EntityCategory.DIAGNOSTIC,
+                    ),
+                    getter=machine_work_schedule_getter,
+                ),
+                TuyaBLESensorMapping(
+                    dp_id=113,  # MachinePartition
+                    description=SensorEntityDescription(
+                        key="zones",
+                        icon="mdi:map-marker-multiple",
+                        entity_category=EntityCategory.DIAGNOSTIC,
+                    ),
+                    getter=machine_zones_getter,
                 ),
                 TuyaBLESensorMapping(
                     dp_id=134,  # VersionEeportMCU

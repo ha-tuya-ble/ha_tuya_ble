@@ -100,6 +100,41 @@ PARKSIDE_MOWER_COMMANDS: Final = [
     "EDGE",
 ]
 
+# Bit labels of the machine error bitmap, used to name the entries of the
+# error logs.
+PARKSIDE_MOWER_ERRORS: Final = [
+    "FAULT_LEAN",
+    "FAULT_TOO_STEEP",
+    "NO_SIGNAL",
+    "L_MOTOR_ERROR",
+    "R_MOTOR_ERROR",
+    "BATTERY_VOL_HIG",
+    "B_TEMP_ERROR",
+    "DISCHAR_ERROR",
+    "CHARGE_OVERTEMP",
+    "BATTERY_DAMAGE",
+    "BATTERY_LOWDIS",
+    "CHARGE_CURDIS",
+    "CHARGE_TEMP",
+    "UNEXCEPECT_LOW",
+    "B_ERROR_RESET",
+    "IMU_INVALID",
+    "EMS_INVALID",
+    "L_MOTOR_HALL",
+    "R_MOTOR_HALL",
+    "STEEP_OVER_3S",
+    "OUTSIDE_AREA",
+    "LIFTE",
+    "DTRAPPED",
+    "B_MOTOR_ERROR",
+    "OVERTURN",
+    "MOTOR_OVERCUR",
+    "MOTOR_HALL",
+    "MOTOR_DISCON",
+    "EMS_DISCONNECT",
+    "MOTOR_ERROR",
+]
+
 PARKSIDE_MOWER_WARNINGS: Final = [
     "MOWER_LEAN",
     "MOWER_STEEP",

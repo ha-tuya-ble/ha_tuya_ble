@@ -158,6 +158,9 @@
             },
             "work_time": {
                 "name": "Tiempo de trabajo"
+            },
+            "rain_delay": {
+                "name": "Retardo por lluvia"
             }
         },
         "select": {
@@ -505,6 +508,24 @@
             },
             "firmware_version": {
                 "name": "Versión del firmware"
+            },
+            "error_log": {
+                "name": "Registro de errores"
+            },
+            "error_log_2": {
+                "name": "Registro de errores (detallado)"
+            },
+            "work_log": {
+                "name": "Registro de trabajo"
+            },
+            "schedule": {
+                "name": "Programación"
+            },
+            "work_schedule": {
+                "name": "Programación de trabajo"
+            },
+            "zones": {
+                "name": "Zonas"
             }
         },
         "switch": {

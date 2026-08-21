@@ -158,6 +158,9 @@
             },
             "work_time": {
                 "name": "Laufzeit"
+            },
+            "rain_delay": {
+                "name": "Regenverzögerung"
             }
         },
         "select": {
@@ -505,6 +508,24 @@
             },
             "firmware_version": {
                 "name": "Firmware-Version"
+            },
+            "error_log": {
+                "name": "Fehlerprotokoll"
+            },
+            "error_log_2": {
+                "name": "Fehlerprotokoll (detailliert)"
+            },
+            "work_log": {
+                "name": "Arbeitsprotokoll"
+            },
+            "schedule": {
+                "name": "Zeitplan"
+            },
+            "work_schedule": {
+                "name": "Arbeitszeitplan"
+            },
+            "zones": {
+                "name": "Zonen"
             }
         },
         "switch": {

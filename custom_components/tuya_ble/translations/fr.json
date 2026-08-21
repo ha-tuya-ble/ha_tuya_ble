@@ -158,6 +158,9 @@
             },
             "work_time": {
                 "name": "Durée de tonte"
+            },
+            "rain_delay": {
+                "name": "Délai de pluie"
             }
         },
         "select": {
@@ -505,6 +508,24 @@
             },
             "firmware_version": {
                 "name": "Version du micrologiciel"
+            },
+            "error_log": {
+                "name": "Journal des erreurs"
+            },
+            "error_log_2": {
+                "name": "Journal des erreurs (détaillé)"
+            },
+            "work_log": {
+                "name": "Journal de travail"
+            },
+            "schedule": {
+                "name": "Programmation"
+            },
+            "work_schedule": {
+                "name": "Programmation de travail"
+            },
+            "zones": {
+                "name": "Zones"
             }
         },
         "switch": {

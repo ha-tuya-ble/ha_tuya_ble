@@ -158,6 +158,9 @@
             },
             "work_time": {
                 "name": "工作时长"
+            },
+            "rain_delay": {
+                "name": "雨天延迟"
             }
         },
         "select": {
@@ -505,6 +508,24 @@
             },
             "firmware_version": {
                 "name": "固件版本"
+            },
+            "error_log": {
+                "name": "错误日志"
+            },
+            "error_log_2": {
+                "name": "错误日志（详细）"
+            },
+            "work_log": {
+                "name": "工作日志"
+            },
+            "schedule": {
+                "name": "预约计划"
+            },
+            "work_schedule": {
+                "name": "工作计划"
+            },
+            "zones": {
+                "name": "分区"
             }
         },
         "switch": {

@@ -29,6 +29,9 @@ from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator
 
 from .const import DOMAIN
+
+# The rain delay DP mirrors this switch in its first byte.
+PARKSIDE_RAIN_MODE_DP_ID = 104
 from .devices import TuyaBLEData, TuyaBLEEntity, TuyaBLEProductInfo
 from .tuya_ble import TuyaBLEDataPointType, TuyaBLEDevice
 
@@ -209,6 +212,51 @@ class TuyaBLEHoldTimeMapping(TuyaBLENumberMapping):
         default_factory=lambda: TuyaBLEHoldTimeDescription()
     )
     is_available: TuyaBLENumberIsAvailable = is_fingerbot_in_push_mode
+
+
+def get_parkside_rain_delay(
+    self: TuyaBLENumber,
+    product: TuyaBLEProductInfo,
+) -> float | None:
+    """Read the delay from the second byte of the rain delay DP."""
+    datapoint = self._device.datapoints[self._mapping.dp_id]
+    value = datapoint.value if datapoint else None
+    if isinstance(value, (bytes, bytearray)) and len(value) >= 2:
+        return float(value[1])
+
+    return None
+
+
+def set_parkside_rain_delay(
+    self: TuyaBLENumber,
+    product: TuyaBLEProductInfo,
+    value: float,
+) -> None:
+    """Write the delay, keeping the first byte in step with the rain mode.
+
+    The DP holds the rain delay switch in its first byte. That switch mirrors
+    the rain mode DP, so its current value is reused, falling back to whatever
+    the mower last reported for this DP.
+    """
+    rain_mode = self._device.datapoints[PARKSIDE_RAIN_MODE_DP_ID]
+    if rain_mode is not None and rain_mode.value is not None:
+        enabled = bool(rain_mode.value)
+    else:
+        current = self._device.datapoints[self._mapping.dp_id]
+        enabled = bool(current.value[0]) if _is_rain_delay(current) else False
+
+    datapoint = self._device.datapoints.get_or_create(
+        self._mapping.dp_id,
+        TuyaBLEDataPointType.DT_RAW,
+        b"",
+    )
+    self._hass.create_task(datapoint.set_value(bytes([int(enabled), int(value)])))
+
+
+def _is_rain_delay(datapoint: object) -> bool:
+    """Return whether a datapoint holds a usable rain delay payload."""
+    value = getattr(datapoint, "value", None)
+    return isinstance(value, (bytes, bytearray)) and len(value) >= 2
 
 
 @dataclass
@@ -987,6 +1035,22 @@ mapping: dict[str, TuyaBLECategoryNumberMapping] = {
     "gcj": TuyaBLECategoryNumberMapping(
         products={
             "9hdajpiw": [
+                TuyaBLENumberMapping(
+                    dp_id=139,  # RainTimedelay
+                    dp_type=TuyaBLEDataPointType.DT_RAW,
+                    description=NumberEntityDescription(
+                        key="rain_delay",
+                        icon="mdi:weather-rainy",
+                        device_class=NumberDeviceClass.DURATION,
+                        native_max_value=120,
+                        native_min_value=10,
+                        native_step=5,
+                        native_unit_of_measurement=UnitOfTime.MINUTES,
+                        entity_category=EntityCategory.CONFIG,
+                    ),
+                    getter=get_parkside_rain_delay,
+                    setter=set_parkside_rain_delay,
+                ),
                 TuyaBLENumberMapping(
                     dp_id=105,  # MachineWorktime
                     description=NumberEntityDescription(
