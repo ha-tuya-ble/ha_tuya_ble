@@ -506,8 +506,7 @@
                     "discharge_error": "Entladung fehlerhaft",
                     "charge_temp_error": "Akkutemperatur fehlerhaft",
                     "hedgehog": "Igelschutz aktiv",
-                    "ntc": "Temperatursensor fehlerhaft",
-                    "none": "Keine"
+                    "ntc": "Temperatursensor fehlerhaft"
                 }
             },
             "firmware_version": {

@@ -354,6 +354,7 @@ mapping: dict[str, TuyaBLECategoryButtonMapping] = {
                         key="clear_schedule",
                         icon="mdi:calendar-remove",
                         entity_category=EntityCategory.CONFIG,
+                        entity_registry_enabled_default=False,
                     ),
                 ),
                 TuyaBLEButtonMapping(
@@ -364,6 +365,7 @@ mapping: dict[str, TuyaBLECategoryButtonMapping] = {
                         key="refresh_schedule",
                         icon="mdi:calendar-refresh",
                         entity_category=EntityCategory.CONFIG,
+                        entity_registry_enabled_default=False,
                     ),
                 ),
                 TuyaBLEButtonMapping(
@@ -374,6 +376,7 @@ mapping: dict[str, TuyaBLECategoryButtonMapping] = {
                         key="refresh_zones",
                         icon="mdi:map-search",
                         entity_category=EntityCategory.CONFIG,
+                        entity_registry_enabled_default=False,
                     ),
                 ),
                 TuyaBLEButtonMapping(
@@ -384,6 +387,7 @@ mapping: dict[str, TuyaBLECategoryButtonMapping] = {
                         key="clear_zones",
                         icon="mdi:map-marker-remove",
                         entity_category=EntityCategory.CONFIG,
+                        entity_registry_enabled_default=False,
                     ),
                 ),
             ],

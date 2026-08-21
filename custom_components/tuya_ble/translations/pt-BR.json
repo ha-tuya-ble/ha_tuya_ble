@@ -506,8 +506,7 @@
                     "discharge_error": "Descarga anormal",
                     "charge_temp_error": "Temperatura da bateria anormal",
                     "hedgehog": "Proteção de ouriços ativa",
-                    "ntc": "Sensor de temperatura anormal",
-                    "none": "Nenhum"
+                    "ntc": "Sensor de temperatura anormal"
                 }
             },
             "firmware_version": {

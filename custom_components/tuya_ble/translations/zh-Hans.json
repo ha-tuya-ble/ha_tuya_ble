@@ -506,8 +506,7 @@
                     "discharge_error": "放电异常",
                     "charge_temp_error": "电池温度异常",
                     "hedgehog": "刺猬保护已启用",
-                    "ntc": "温度传感器异常",
-                    "none": "无"
+                    "ntc": "温度传感器异常"
                 }
             },
             "firmware_version": {

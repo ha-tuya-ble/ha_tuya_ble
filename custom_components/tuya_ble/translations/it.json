@@ -506,8 +506,7 @@
                     "discharge_error": "Scarica anomala",
                     "charge_temp_error": "Temperatura della batteria anomala",
                     "hedgehog": "Protezione ricci attiva",
-                    "ntc": "Sensore di temperatura anomalo",
-                    "none": "Nessuno"
+                    "ntc": "Sensore di temperatura anomalo"
                 }
             },
             "firmware_version": {

@@ -492,8 +492,7 @@
                     "discharge_error": "Discharge abnormal",
                     "charge_temp_error": "Battery pack temperature abnormal",
                     "hedgehog": "Hedgehog protection active",
-                    "ntc": "Temperature sensor abnormal",
-                    "none": "None"
+                    "ntc": "Temperature sensor abnormal"
                 }
             },
             "firmware_version": {

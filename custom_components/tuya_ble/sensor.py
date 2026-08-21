@@ -38,9 +38,7 @@ from .const import (
     CO2_LEVEL_NORMAL,
     DOMAIN,
     PARKSIDE_MOWER_ERRORS,
-    PARKSIDE_MOWER_STATUS_DP_ID,
     PARKSIDE_MOWER_STATUSES,
-    PARKSIDE_MOWER_WARNING_NONE,
     PARKSIDE_MOWER_WARNINGS,
 )
 from .devices import TuyaBLEData, TuyaBLEEntity, TuyaBLEProductInfo
@@ -147,44 +145,6 @@ def _parkside_report(self: TuyaBLESensor, entries: list[dict], key: str) -> None
     """Report the entry count and expose the entries as an attribute."""
     self._attr_native_value = len(entries)
     self._attr_extra_state_attributes = {key: entries}
-
-
-def _parkside_warning_name(index: object) -> str:
-    """Name a warning by its index in the machine warning range.
-
-    An index outside the range is reported as no warning, because an enum
-    sensor may only report one of its declared options.
-    """
-    if isinstance(index, int) and 0 <= index < len(PARKSIDE_MOWER_WARNINGS):
-        return PARKSIDE_MOWER_WARNINGS[index].lower()
-
-    return PARKSIDE_MOWER_WARNING_NONE
-
-
-def machine_warning_getter(self: TuyaBLESensor) -> None:
-    """Report the machine warning, clearing it once the status changes.
-
-    The warning DP has no value meaning "no warning", so a reported warning
-    would stay visible forever. Each reported warning is tied to the machine
-    status it arrived with, and cleared once a different status is reported.
-    """
-    warning = self._device.datapoints[self._mapping.dp_id]
-    status = self._device.datapoints[PARKSIDE_MOWER_STATUS_DP_ID]
-    status_value = status.value if status else None
-
-    if warning is None or warning.value is None:
-        self._attr_native_value = PARKSIDE_MOWER_WARNING_NONE
-        return
-
-    if warning.timestamp != getattr(self, "_warning_timestamp", None):
-        # The machine reported the warning, so pin it to the current status.
-        self._warning_timestamp = warning.timestamp
-        self._warning_status = status_value
-    elif status_value != getattr(self, "_warning_status", status_value):
-        self._attr_native_value = PARKSIDE_MOWER_WARNING_NONE
-        return
-
-    self._attr_native_value = _parkside_warning_name(warning.value)
 
 
 def machine_error_log_getter(self: TuyaBLESensor) -> None:
@@ -2372,6 +2332,7 @@ mapping: dict[str, TuyaBLECategorySensorMapping] = {
                         key="schedule",
                         icon="mdi:calendar-clock",
                         entity_category=EntityCategory.DIAGNOSTIC,
+                        entity_registry_enabled_default=False,
                     ),
                     getter=machine_schedule_getter,
                 ),
@@ -2381,6 +2342,7 @@ mapping: dict[str, TuyaBLECategorySensorMapping] = {
                         key="work_schedule",
                         icon="mdi:calendar-clock",
                         entity_category=EntityCategory.DIAGNOSTIC,
+                        entity_registry_enabled_default=False,
                     ),
                     getter=machine_work_schedule_getter,
                 ),
@@ -2390,6 +2352,7 @@ mapping: dict[str, TuyaBLECategorySensorMapping] = {
                         key="zones",
                         icon="mdi:map-marker-multiple",
                         entity_category=EntityCategory.DIAGNOSTIC,
+                        entity_registry_enabled_default=False,
                     ),
                     getter=machine_zones_getter,
                 ),
@@ -2407,12 +2370,10 @@ mapping: dict[str, TuyaBLECategorySensorMapping] = {
                         key="machine_warning",
                         device_class=SensorDeviceClass.ENUM,
                         entity_category=EntityCategory.DIAGNOSTIC,
-                        # Appended, never prepended: the DP carries the index
-                        # of the value in the declared range.
-                        options=[warning.lower() for warning in PARKSIDE_MOWER_WARNINGS]
-                        + [PARKSIDE_MOWER_WARNING_NONE],
+                        options=[
+                            warning.lower() for warning in PARKSIDE_MOWER_WARNINGS
+                        ],
                     ),
-                    getter=machine_warning_getter,
                 ),
             ],
         },
