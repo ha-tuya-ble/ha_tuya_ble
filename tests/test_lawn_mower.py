@@ -41,6 +41,7 @@ STATUS_MOWING = 2
 STATUS_PAUSED = 3
 STATUS_PARK = 4
 COMMAND_PAUSE_WORK = 0
+COMMAND_CANCEL_WORK = 1
 COMMAND_CONTINUE_WORK = 2
 COMMAND_START_MOWING = 3
 COMMAND_START_RETURN_STATION = 5
@@ -181,9 +182,21 @@ async def test_lawn_mower_commands(hass: HomeAssistant) -> None:
     await hass.async_block_till_done()
     assert device.datapoints[115].value == COMMAND_PAUSE_WORK
 
+
+async def test_lawn_mower_dock_cancels_first(hass: HomeAssistant) -> None:
+    """Test that docking cancels the running job before returning to station."""
+    device, coordinator, entity = await _init_mower(hass)
+
+    # Both commands share DP 115, so record the value sent with each write
+    sent: list[int] = []
+    device._send_datapoints = AsyncMock(
+        side_effect=lambda dp_ids: sent.append(device.datapoints[dp_ids[0]].value)
+    )
+
     await entity.async_dock()
     await hass.async_block_till_done()
-    assert device.datapoints[115].value == COMMAND_START_RETURN_STATION
+
+    assert sent == [COMMAND_CANCEL_WORK, COMMAND_START_RETURN_STATION]
 
 
 async def test_lawn_mower_start_resumes_when_paused(hass: HomeAssistant) -> None:

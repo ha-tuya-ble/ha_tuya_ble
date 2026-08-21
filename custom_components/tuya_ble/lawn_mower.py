@@ -59,8 +59,8 @@ class TuyaBLELawnMowerMapping:
     """Command that resumes a paused mowing job."""
     pause_command: str
     """Command that pauses a running mowing job."""
-    dock_command: str
-    """Command that sends the mower back to its charging station."""
+    dock_commands: list[str]
+    """Commands sent in order to send the mower back to its charging station."""
     command_dp_type: TuyaBLEDataPointType = TuyaBLEDataPointType.DT_ENUM
     """Type used to write the command DP. An enum carries the index of the
     value, DT_STRING writes the value itself for devices that expect that."""
@@ -87,7 +87,9 @@ mapping: dict[str, TuyaBLECategoryLawnMowerMapping] = {
                 start_command="StartMowing",
                 resume_command="ContinueWork",
                 pause_command="PauseWork",
-                dock_command="StartReturnStation",
+                # The mower only accepts the return command once the running
+                # job has been cancelled.
+                dock_commands=["CancelWork", "StartReturnStation"],
             ),
         },
     ),
@@ -149,8 +151,12 @@ class TuyaBLELawnMower(TuyaBLEEntity, LawnMowerEntity):
 
         return self._mapping.activities.get(status)
 
-    def _send_control_command(self, command: str) -> None:
-        """Write a control command to the command DP."""
+    async def _send_control_command(self, command: str) -> None:
+        """Write a control command to the command DP.
+
+        Commands share a single DP, so the write is awaited to keep consecutive
+        commands in order.
+        """
         if self._mapping.command_dp_type == TuyaBLEDataPointType.DT_STRING:
             value: int | str = command
         else:
@@ -161,24 +167,25 @@ class TuyaBLELawnMower(TuyaBLEEntity, LawnMowerEntity):
             self._mapping.command_dp_type,
             value,
         )
-        self._hass.create_task(datapoint.set_value(value))
+        await datapoint.set_value(value)
 
     async def async_start_mowing(self) -> None:
         """Start mowing, or resume when paused."""
         # The mower rejects the start command while paused, it only accepts the
         # resume command in that state.
         if self.activity == LawnMowerActivity.PAUSED:
-            self._send_control_command(self._mapping.resume_command)
+            await self._send_control_command(self._mapping.resume_command)
         else:
-            self._send_control_command(self._mapping.start_command)
+            await self._send_control_command(self._mapping.start_command)
 
     async def async_pause(self) -> None:
         """Pause mowing."""
-        self._send_control_command(self._mapping.pause_command)
+        await self._send_control_command(self._mapping.pause_command)
 
     async def async_dock(self) -> None:
         """Send the mower back to its charging station."""
-        self._send_control_command(self._mapping.dock_command)
+        for command in self._mapping.dock_commands:
+            await self._send_control_command(command)
 
 
 async def async_setup_entry(
