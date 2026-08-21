@@ -83,6 +83,18 @@
             },
             "edge_mowing": {
                 "name": "Corte de bordas"
+            },
+            "clear_schedule": {
+                "name": "Limpar programação"
+            },
+            "refresh_schedule": {
+                "name": "Atualizar programação"
+            },
+            "refresh_zones": {
+                "name": "Atualizar zonas"
+            },
+            "clear_zones": {
+                "name": "Limpar zonas"
             }
         },
         "event": {
@@ -249,6 +261,16 @@
                 "state": {
                     "small": "Baixo",
                     "large": "Alto"
+                }
+            },
+            "work_mode": {
+                "name": "Modo de trabalho",
+                "state": {
+                    "standby": "Em espera",
+                    "random": "Aleatório",
+                    "smart": "Inteligente",
+                    "spot": "Localizado",
+                    "goto_charge": "Voltar à base"
                 }
             }
         },
@@ -480,6 +502,9 @@
                     "hedgehog": "Proteção de ouriços ativa",
                     "ntc": "Sensor de temperatura anormal"
                 }
+            },
+            "firmware_version": {
+                "name": "Versão do firmware"
             }
         },
         "switch": {
@@ -560,6 +585,9 @@
             },
             "backward_blade_stop": {
                 "name": "Parada da lâmina em marcha a ré"
+            },
+            "switch_go": {
+                "name": "Interruptor de corte"
             }
         },
         "text": {

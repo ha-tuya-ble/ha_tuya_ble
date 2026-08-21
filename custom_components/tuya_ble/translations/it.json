@@ -83,6 +83,18 @@
             },
             "edge_mowing": {
                 "name": "Taglio dei bordi"
+            },
+            "clear_schedule": {
+                "name": "Cancella programmazione"
+            },
+            "refresh_schedule": {
+                "name": "Aggiorna programmazione"
+            },
+            "refresh_zones": {
+                "name": "Aggiorna zone"
+            },
+            "clear_zones": {
+                "name": "Cancella zone"
             }
         },
         "event": {
@@ -249,6 +261,16 @@
                 "state": {
                     "small": "Basso",
                     "large": "Alto"
+                }
+            },
+            "work_mode": {
+                "name": "Modalità di lavoro",
+                "state": {
+                    "standby": "In attesa",
+                    "random": "Casuale",
+                    "smart": "Intelligente",
+                    "spot": "Localizzato",
+                    "goto_charge": "Ritorna alla base"
                 }
             }
         },
@@ -480,6 +502,9 @@
                     "hedgehog": "Protezione ricci attiva",
                     "ntc": "Sensore di temperatura anomalo"
                 }
+            },
+            "firmware_version": {
+                "name": "Versione del firmware"
             }
         },
         "switch": {
@@ -560,6 +585,9 @@
             },
             "backward_blade_stop": {
                 "name": "Arresto lama in retromarcia"
+            },
+            "switch_go": {
+                "name": "Interruttore di taglio"
             }
         },
         "text": {

@@ -804,6 +804,30 @@ mapping: dict[str, TuyaBLECategorySelectMapping] = {
             ],
         },
     ),
+    "gcj": TuyaBLECategorySelectMapping(
+        products={
+            "9hdajpiw": [
+                # Generic Tuya vacuum work mode, superseded by DP 115 on this
+                # mower. Only added when the device actually reports it.
+                TuyaBLESelectMapping(
+                    dp_id=3,  # mode
+                    dp_type=TuyaBLEDataPointType.DT_ENUM,
+                    force_add=False,
+                    description=SelectEntityDescription(
+                        key="work_mode",
+                        icon="mdi:mower",
+                        options=[
+                            "standby",
+                            "random",
+                            "smart",
+                            "spot",
+                            "goto_charge",
+                        ],
+                    ),
+                ),
+            ],
+        },
+    ),
 }
 
 

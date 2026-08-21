@@ -2179,6 +2179,14 @@ mapping: dict[str, TuyaBLECategorySensorMapping] = {
                     ),
                 ),
                 TuyaBLESensorMapping(
+                    dp_id=134,  # VersionEeportMCU
+                    description=SensorEntityDescription(
+                        key="firmware_version",
+                        icon="mdi:chip",
+                        entity_category=EntityCategory.DIAGNOSTIC,
+                    ),
+                ),
+                TuyaBLESensorMapping(
                     dp_id=103,  # MachineWarning
                     description=SensorEntityDescription(
                         key="machine_warning",

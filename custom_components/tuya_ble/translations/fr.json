@@ -83,6 +83,18 @@
             },
             "edge_mowing": {
                 "name": "Tonte des bordures"
+            },
+            "clear_schedule": {
+                "name": "Effacer la programmation"
+            },
+            "refresh_schedule": {
+                "name": "Actualiser la programmation"
+            },
+            "refresh_zones": {
+                "name": "Actualiser les zones"
+            },
+            "clear_zones": {
+                "name": "Effacer les zones"
             }
         },
         "event": {
@@ -249,6 +261,16 @@
                 "state": {
                     "small": "Bas",
                     "large": "Élevé"
+                }
+            },
+            "work_mode": {
+                "name": "Mode de travail",
+                "state": {
+                    "standby": "En veille",
+                    "random": "Aléatoire",
+                    "smart": "Intelligent",
+                    "spot": "Localisé",
+                    "goto_charge": "Retour à la base"
                 }
             }
         },
@@ -480,6 +502,9 @@
                     "hedgehog": "Protection des hérissons active",
                     "ntc": "Capteur de température anormal"
                 }
+            },
+            "firmware_version": {
+                "name": "Version du micrologiciel"
             }
         },
         "switch": {
@@ -560,6 +585,9 @@
             },
             "backward_blade_stop": {
                 "name": "Arrêt de lame en marche arrière"
+            },
+            "switch_go": {
+                "name": "Interrupteur de tonte"
             }
         },
         "text": {

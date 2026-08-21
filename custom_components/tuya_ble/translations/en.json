@@ -83,6 +83,18 @@
             },
             "edge_mowing": {
                 "name": "Edge mowing"
+            },
+            "clear_schedule": {
+                "name": "Clear schedule"
+            },
+            "refresh_schedule": {
+                "name": "Refresh schedule"
+            },
+            "refresh_zones": {
+                "name": "Refresh zones"
+            },
+            "clear_zones": {
+                "name": "Clear zones"
             }
         },
         "event": {
@@ -249,6 +261,16 @@
                 "state": {
                     "small": "Low",
                     "large": "High"
+                }
+            },
+            "work_mode": {
+                "name": "Work mode",
+                "state": {
+                    "standby": "Standby",
+                    "random": "Random",
+                    "smart": "Smart",
+                    "spot": "Spot",
+                    "goto_charge": "Return to dock"
                 }
             }
         },
@@ -480,6 +502,9 @@
                     "hedgehog": "Hedgehog protection active",
                     "ntc": "Temperature sensor abnormal"
                 }
+            },
+            "firmware_version": {
+                "name": "Firmware version"
             }
         },
         "switch": {
@@ -560,6 +585,9 @@
             },
             "backward_blade_stop": {
                 "name": "Backward blade stop"
+            },
+            "switch_go": {
+                "name": "Mowing switch"
             }
         },
         "text": {

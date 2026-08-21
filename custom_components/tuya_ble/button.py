@@ -344,6 +344,48 @@ mapping: dict[str, TuyaBLECategoryButtonMapping] = {
                         icon="mdi:border-outside",
                     ),
                 ),
+                # Write-only trigger DPs. They expect True on every press, so
+                # the value is fixed rather than toggled.
+                TuyaBLEButtonMapping(
+                    dp_id=107,  # ClearAppointment
+                    dp_type=TuyaBLEDataPointType.DT_BOOL,
+                    value=True,
+                    description=ButtonEntityDescription(
+                        key="clear_schedule",
+                        icon="mdi:calendar-remove",
+                        entity_category=EntityCategory.CONFIG,
+                    ),
+                ),
+                TuyaBLEButtonMapping(
+                    dp_id=108,  # QueryAppointment
+                    dp_type=TuyaBLEDataPointType.DT_BOOL,
+                    value=True,
+                    description=ButtonEntityDescription(
+                        key="refresh_schedule",
+                        icon="mdi:calendar-refresh",
+                        entity_category=EntityCategory.CONFIG,
+                    ),
+                ),
+                TuyaBLEButtonMapping(
+                    dp_id=109,  # QueryPartition
+                    dp_type=TuyaBLEDataPointType.DT_BOOL,
+                    value=True,
+                    description=ButtonEntityDescription(
+                        key="refresh_zones",
+                        icon="mdi:map-search",
+                        entity_category=EntityCategory.CONFIG,
+                    ),
+                ),
+                TuyaBLEButtonMapping(
+                    dp_id=114,  # clearmachinepartition
+                    dp_type=TuyaBLEDataPointType.DT_BOOL,
+                    value=True,
+                    description=ButtonEntityDescription(
+                        key="clear_zones",
+                        icon="mdi:map-marker-remove",
+                        entity_category=EntityCategory.CONFIG,
+                    ),
+                ),
             ],
         },
     ),

@@ -83,6 +83,18 @@
             },
             "edge_mowing": {
                 "name": "Kantenmähen"
+            },
+            "clear_schedule": {
+                "name": "Zeitplan löschen"
+            },
+            "refresh_schedule": {
+                "name": "Zeitplan aktualisieren"
+            },
+            "refresh_zones": {
+                "name": "Zonen aktualisieren"
+            },
+            "clear_zones": {
+                "name": "Zonen löschen"
             }
         },
         "event": {
@@ -249,6 +261,16 @@
                 "state": {
                     "small": "Niedrig",
                     "large": "Hoch"
+                }
+            },
+            "work_mode": {
+                "name": "Betriebsmodus",
+                "state": {
+                    "standby": "Bereitschaft",
+                    "random": "Zufällig",
+                    "smart": "Smart",
+                    "spot": "Punktuell",
+                    "goto_charge": "Zur Ladestation"
                 }
             }
         },
@@ -480,6 +502,9 @@
                     "hedgehog": "Igelschutz aktiv",
                     "ntc": "Temperatursensor fehlerhaft"
                 }
+            },
+            "firmware_version": {
+                "name": "Firmware-Version"
             }
         },
         "switch": {
@@ -560,6 +585,9 @@
             },
             "backward_blade_stop": {
                 "name": "Messerstopp bei Rückwärtsfahrt"
+            },
+            "switch_go": {
+                "name": "Mähschalter"
             }
         },
         "text": {

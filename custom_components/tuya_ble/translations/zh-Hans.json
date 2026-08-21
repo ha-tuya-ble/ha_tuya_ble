@@ -83,6 +83,18 @@
             },
             "edge_mowing": {
                 "name": "沿边割草"
+            },
+            "clear_schedule": {
+                "name": "清除预约"
+            },
+            "refresh_schedule": {
+                "name": "刷新预约"
+            },
+            "refresh_zones": {
+                "name": "刷新分区"
+            },
+            "clear_zones": {
+                "name": "清除分区"
             }
         },
         "event": {
@@ -249,6 +261,16 @@
                 "state": {
                     "small": "小",
                     "large": "大"
+                }
+            },
+            "work_mode": {
+                "name": "工作模式",
+                "state": {
+                    "standby": "待机",
+                    "random": "随机",
+                    "smart": "智能",
+                    "spot": "定点",
+                    "goto_charge": "返回充电站"
                 }
             }
         },
@@ -480,6 +502,9 @@
                     "hedgehog": "刺猬保护已启用",
                     "ntc": "温度传感器异常"
                 }
+            },
+            "firmware_version": {
+                "name": "固件版本"
             }
         },
         "switch": {
@@ -560,6 +585,9 @@
             },
             "backward_blade_stop": {
                 "name": "倒退停刀"
+            },
+            "switch_go": {
+                "name": "割草开关"
             }
         },
         "text": {

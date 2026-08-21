@@ -261,3 +261,14 @@ async def test_button_fixed_enum_value(hass: HomeAssistant) -> None:
     await hass.async_block_till_done()
 
     assert device.datapoints[115].value == PARKSIDE_MOWER_COMMANDS.index("CancelWork")
+
+    # A trigger button writes True on every press instead of toggling
+    entity = TuyaBLEButton(
+        hass, coordinator, device, product_info, mappings["clear_schedule"]
+    )
+    entity.async_write_ha_state = Mock()
+
+    for _ in range(2):
+        entity.press()
+        await hass.async_block_till_done()
+        assert device.datapoints[107].value is True

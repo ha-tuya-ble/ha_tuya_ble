@@ -886,6 +886,17 @@ mapping: dict[str, TuyaBLECategorySwitchMapping] = {
     "gcj": TuyaBLECategorySwitchMapping(
         products={
             "9hdajpiw": [
+                # Generic Tuya vacuum switch, superseded by DP 115 on this
+                # mower. Only added when the device actually reports it.
+                TuyaBLESwitchMapping(
+                    dp_id=2,  # switch_go
+                    dp_type=TuyaBLEDataPointType.DT_BOOL,
+                    force_add=False,
+                    description=SwitchEntityDescription(
+                        key="switch_go",
+                        icon="mdi:mower",
+                    ),
+                ),
                 TuyaBLESwitchMapping(
                     dp_id=104,  # MachineRainMode
                     description=SwitchEntityDescription(
