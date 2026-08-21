@@ -2153,6 +2153,24 @@ mapping: dict[str, TuyaBLECategorySensorMapping] = {
             ],
         },
     ),
+    "gcj": TuyaBLECategorySensorMapping(
+        products={
+            "9hdajpiw": [
+                TuyaBLEBatteryMapping(
+                    dp_id=13,
+                    dp_type=TuyaBLEDataPointType.DT_VALUE,
+                    # This device returns both DP_VALUE and DP_RAW for this DP,
+                    # but the DP_VALUE is what we need for battery percentage.
+                    getter=lambda self: (
+                        setattr(self, "_attr_native_value", dp.value)
+                        if (dp := self._device.datapoints[self._mapping.dp_id])
+                        and dp.type == self._mapping.dp_type
+                        else None
+                    ),
+                ),
+            ],
+        },
+    ),
 }
 
 

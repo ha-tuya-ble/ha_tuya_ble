@@ -69,6 +69,11 @@
                 "name": "Evento"
             }
         },
+        "lawn_mower": {
+            "lawn_mower": {
+                "name": "Cortador de grama"
+            }
+        },
         "number": {
             "ble_unlock_check": {
                 "name": "Desbloquear"

@@ -62,7 +62,7 @@ _LOGGER = logging.getLogger(__name__)
 BLEAK_EXCEPTIONS = (*BLEAK_RETRY_EXCEPTIONS, OSError)
 
 
-FD50_DEVICE_INFO_PRODUCT_IDS = frozenset({"jntxv3q4"})
+FD50_DEVICE_INFO_PRODUCT_IDS = frozenset({"jntxv3q4", "9hdajpiw"})
 
 
 # @dataclass

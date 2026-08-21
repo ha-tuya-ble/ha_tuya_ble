@@ -786,6 +786,13 @@ devices_database: dict[str, TuyaBLECategoryInfo] = {
             ),
         },
     ),
+    "gcj": TuyaBLECategoryInfo(
+        products={
+            "9hdajpiw": TuyaBLEProductInfo(  # device product_id
+                name="Robot Mower PAMRC 250 A1 (BT) City",
+            ),
+        },
+    ),
 }
 
 
