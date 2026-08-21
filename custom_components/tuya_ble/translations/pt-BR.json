@@ -51,6 +51,9 @@
             },
             "sensor_fault": {
                 "name": "Falha no sensor"
+            },
+            "machine_problem": {
+                "name": "Problema"
             }
         },
         "button": {
@@ -62,6 +65,24 @@
             },
             "bluetooth_unlock": {
                 "name": "Desbloquear"
+            },
+            "start_mowing": {
+                "name": "Iniciar o corte"
+            },
+            "pause_work": {
+                "name": "Pausar"
+            },
+            "cancel_work": {
+                "name": "Cancelar trabalho"
+            },
+            "start_return_station": {
+                "name": "Voltar à base"
+            },
+            "continue_work": {
+                "name": "Continuar trabalho"
+            },
+            "edge_mowing": {
+                "name": "Corte de bordas"
             }
         },
         "event": {
@@ -405,6 +426,60 @@
             },
             "time_remaining": {
                 "name": "Tempo restante"
+            },
+            "activity": {
+                "name": "Atividade",
+                "state": {
+                    "standby": "Em espera",
+                    "charging": "Carregando",
+                    "mowing": "Cortando",
+                    "paused": "Pausado",
+                    "park": "Voltando à base",
+                    "updata": "Atualizando",
+                    "fixed_mowing": "Corte localizado",
+                    "error": "Erro",
+                    "self_test": "Autoteste",
+                    "charging_with_task_suspend": "Carregando, trabalho suspenso",
+                    "emergency": "Parada de emergência",
+                    "locked": "Bloqueado",
+                    "edge": "Corte de bordas"
+                }
+            },
+            "machine_warning": {
+                "name": "Aviso",
+                "state": {
+                    "mower_lean": "Inclinado",
+                    "mower_steep": "Em um declive acentuado",
+                    "rain_park": "Voltando à base para evitar a chuva",
+                    "battery_not_enough": "Bateria fraca, carregando em breve",
+                    "no_loop_signal": "Sem sinal de perímetro",
+                    "close_topcover": "Feche a tampa",
+                    "mower_in_station": "Retire o robô da base",
+                    "mower_out_station": "Coloque o robô na base",
+                    "place_inside": "Coloque o robô dentro do perímetro",
+                    "fixed_end": "Corte localizado concluído",
+                    "charging_disconnect": "Carga instável, verifique os contatos",
+                    "charging_pause": "Carga interrompida, verifique a base",
+                    "work_interrupt": "Trabalho interrompido, reinicie a tarefa",
+                    "fixed_mowing_interupt": "Tarefa encerrada, verifique o ambiente",
+                    "turn_on_button": "Ligue o interruptor físico",
+                    "press_start_key": "Pressione o botão de início",
+                    "timeset_30min": "A programação excede 30 minutos",
+                    "timeset_unlegal": "Horário de programação inválido",
+                    "chargr_current_low": "Corrente de carga baixa",
+                    "rain_out_station": "Evitando a chuva",
+                    "updata_fail": "Falha na atualização",
+                    "continue_tooltip": "Continuar trabalho",
+                    "mower_emergency": "Parada de emergência",
+                    "mower_ui_locked": "Tela bloqueada",
+                    "discharge_error": "Descarga anormal",
+                    "charge_temp_error": "Temperatura da bateria anormal",
+                    "hedgehog": "Proteção de ouriços ativa",
+                    "ntc": "Sensor de temperatura anormal"
+                }
+            },
+            "work_time": {
+                "name": "Tempo de trabalho"
             }
         },
         "switch": {
@@ -476,6 +551,15 @@
             },
             "switch_spray": {
                 "name": "Pulverização"
+            },
+            "rain_mode": {
+                "name": "Modo chuva"
+            },
+            "hedgehog_protection": {
+                "name": "Proteção de ouriços"
+            },
+            "backward_blade_stop": {
+                "name": "Parada da lâmina em marcha a ré"
             }
         },
         "text": {

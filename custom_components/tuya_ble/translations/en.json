@@ -51,6 +51,9 @@
             },
             "sensor_fault": {
                 "name": "Sensor fault"
+            },
+            "machine_problem": {
+                "name": "Problem"
             }
         },
         "button": {
@@ -62,6 +65,24 @@
             },
             "bluetooth_unlock": {
                 "name": "Unlock"
+            },
+            "start_mowing": {
+                "name": "Start mowing"
+            },
+            "pause_work": {
+                "name": "Pause"
+            },
+            "cancel_work": {
+                "name": "Cancel work"
+            },
+            "start_return_station": {
+                "name": "Return to dock"
+            },
+            "continue_work": {
+                "name": "Continue work"
+            },
+            "edge_mowing": {
+                "name": "Edge mowing"
             }
         },
         "event": {
@@ -405,6 +426,60 @@
             },
             "time_remaining": {
                 "name": "Time remaining"
+            },
+            "activity": {
+                "name": "Activity",
+                "state": {
+                    "standby": "Standby",
+                    "charging": "Charging",
+                    "mowing": "Mowing",
+                    "paused": "Paused",
+                    "park": "Returning to dock",
+                    "updata": "Updating",
+                    "fixed_mowing": "Spot mowing",
+                    "error": "Error",
+                    "self_test": "Self test",
+                    "charging_with_task_suspend": "Charging, task suspended",
+                    "emergency": "Emergency stop",
+                    "locked": "Locked",
+                    "edge": "Edge mowing"
+                }
+            },
+            "machine_warning": {
+                "name": "Warning",
+                "state": {
+                    "mower_lean": "Tilted",
+                    "mower_steep": "On a steep slope",
+                    "rain_park": "Returning to dock to avoid rain",
+                    "battery_not_enough": "Battery low, charging soon",
+                    "no_loop_signal": "No boundary signal",
+                    "close_topcover": "Close the cover",
+                    "mower_in_station": "Move the mower off the dock",
+                    "mower_out_station": "Place the mower on the dock",
+                    "place_inside": "Place the mower inside the boundary",
+                    "fixed_end": "Spot mowing finished",
+                    "charging_disconnect": "Charging unstable, check the contacts",
+                    "charging_pause": "Charging interrupted, check the dock",
+                    "work_interrupt": "Work interrupted, restart the task",
+                    "fixed_mowing_interupt": "Task terminated, check the surroundings",
+                    "turn_on_button": "Turn on the physical switch",
+                    "press_start_key": "Press the start button",
+                    "timeset_30min": "Schedule exceeds 30 minutes",
+                    "timeset_unlegal": "Schedule time is invalid",
+                    "chargr_current_low": "Charging current low",
+                    "rain_out_station": "Avoiding rain",
+                    "updata_fail": "Update failed",
+                    "continue_tooltip": "Continue work",
+                    "mower_emergency": "Emergency stop",
+                    "mower_ui_locked": "Screen locked",
+                    "discharge_error": "Discharge abnormal",
+                    "charge_temp_error": "Battery pack temperature abnormal",
+                    "hedgehog": "Hedgehog protection active",
+                    "ntc": "Temperature sensor abnormal"
+                }
+            },
+            "work_time": {
+                "name": "Running time"
             }
         },
         "switch": {
@@ -476,6 +551,15 @@
             },
             "switch_spray": {
                 "name": "Spraying"
+            },
+            "rain_mode": {
+                "name": "Rain mode"
+            },
+            "hedgehog_protection": {
+                "name": "Hedgehog protection"
+            },
+            "backward_blade_stop": {
+                "name": "Backward blade stop"
             }
         },
         "text": {

@@ -51,6 +51,9 @@
             },
             "sensor_fault": {
                 "name": "传感器故障"
+            },
+            "machine_problem": {
+                "name": "故障"
             }
         },
         "button": {
@@ -62,6 +65,24 @@
             },
             "bluetooth_unlock": {
                 "name": "解锁"
+            },
+            "start_mowing": {
+                "name": "开始割草"
+            },
+            "pause_work": {
+                "name": "暂停"
+            },
+            "cancel_work": {
+                "name": "取消作业"
+            },
+            "start_return_station": {
+                "name": "返回充电站"
+            },
+            "continue_work": {
+                "name": "继续作业"
+            },
+            "edge_mowing": {
+                "name": "沿边割草"
             }
         },
         "event": {
@@ -405,6 +426,60 @@
             },
             "time_remaining": {
                 "name": "剩余时间"
+            },
+            "activity": {
+                "name": "活动状态",
+                "state": {
+                    "standby": "待机",
+                    "charging": "充电中",
+                    "mowing": "割草中",
+                    "paused": "已暂停",
+                    "park": "返回充电站",
+                    "updata": "升级中",
+                    "fixed_mowing": "定点割草",
+                    "error": "错误",
+                    "self_test": "自检",
+                    "charging_with_task_suspend": "充电中，任务已挂起",
+                    "emergency": "紧急停止",
+                    "locked": "已锁定",
+                    "edge": "沿边割草"
+                }
+            },
+            "machine_warning": {
+                "name": "警告",
+                "state": {
+                    "mower_lean": "机器倾斜",
+                    "mower_steep": "坡度过大",
+                    "rain_park": "返回充电站避雨",
+                    "battery_not_enough": "电量低，即将充电",
+                    "no_loop_signal": "无边界信号",
+                    "close_topcover": "请关闭上盖",
+                    "mower_in_station": "请将机器移离充电站",
+                    "mower_out_station": "请将机器放到充电站",
+                    "place_inside": "请将机器放入边界内",
+                    "fixed_end": "定点割草已完成",
+                    "charging_disconnect": "充电不稳定，请检查充电触点",
+                    "charging_pause": "充电中断，请检查充电站",
+                    "work_interrupt": "作业中断，请重新启动任务",
+                    "fixed_mowing_interupt": "任务已终止，请检查周围环境",
+                    "turn_on_button": "请打开物理开关",
+                    "press_start_key": "请按下启动按钮",
+                    "timeset_30min": "预约时长超过30分钟",
+                    "timeset_unlegal": "预约时间无效",
+                    "chargr_current_low": "充电电流偏低",
+                    "rain_out_station": "正在避雨",
+                    "updata_fail": "升级失败",
+                    "continue_tooltip": "继续作业",
+                    "mower_emergency": "紧急停止",
+                    "mower_ui_locked": "屏幕已锁定",
+                    "discharge_error": "放电异常",
+                    "charge_temp_error": "电池温度异常",
+                    "hedgehog": "刺猬保护已启用",
+                    "ntc": "温度传感器异常"
+                }
+            },
+            "work_time": {
+                "name": "工作时长"
             }
         },
         "switch": {
@@ -476,6 +551,15 @@
             },
             "switch_spray": {
                 "name": "喷雾"
+            },
+            "rain_mode": {
+                "name": "雨天模式"
+            },
+            "hedgehog_protection": {
+                "name": "刺猬保护"
+            },
+            "backward_blade_stop": {
+                "name": "倒退停刀"
             }
         },
         "text": {

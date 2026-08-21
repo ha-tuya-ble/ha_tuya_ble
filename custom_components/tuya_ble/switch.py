@@ -883,6 +883,36 @@ mapping: dict[str, TuyaBLECategorySwitchMapping] = {
             ],
         },
     ),
+    "gcj": TuyaBLECategorySwitchMapping(
+        products={
+            "9hdajpiw": [
+                TuyaBLESwitchMapping(
+                    dp_id=104,  # MachineRainMode
+                    description=SwitchEntityDescription(
+                        key="rain_mode",
+                        icon="mdi:weather-pouring",
+                        entity_category=EntityCategory.CONFIG,
+                    ),
+                ),
+                TuyaBLESwitchMapping(
+                    dp_id=118,  # HedgehogPROT
+                    description=SwitchEntityDescription(
+                        key="hedgehog_protection",
+                        icon="mdi:paw",
+                        entity_category=EntityCategory.CONFIG,
+                    ),
+                ),
+                TuyaBLESwitchMapping(
+                    dp_id=121,  # backwardbladestop
+                    description=SwitchEntityDescription(
+                        key="backward_blade_stop",
+                        icon="mdi:saw-blade",
+                        entity_category=EntityCategory.CONFIG,
+                    ),
+                ),
+            ],
+        },
+    ),
 }
 
 

@@ -51,6 +51,9 @@
             },
             "sensor_fault": {
                 "name": "Sensorfehler"
+            },
+            "machine_problem": {
+                "name": "Problem"
             }
         },
         "button": {
@@ -62,6 +65,24 @@
             },
             "bluetooth_unlock": {
                 "name": "Entriegeln"
+            },
+            "start_mowing": {
+                "name": "Mähen starten"
+            },
+            "pause_work": {
+                "name": "Pause"
+            },
+            "cancel_work": {
+                "name": "Auftrag abbrechen"
+            },
+            "start_return_station": {
+                "name": "Zur Ladestation"
+            },
+            "continue_work": {
+                "name": "Auftrag fortsetzen"
+            },
+            "edge_mowing": {
+                "name": "Kantenmähen"
             }
         },
         "event": {
@@ -405,6 +426,60 @@
             },
             "time_remaining": {
                 "name": "Restzeit"
+            },
+            "activity": {
+                "name": "Aktivität",
+                "state": {
+                    "standby": "Bereitschaft",
+                    "charging": "Lädt",
+                    "mowing": "Mäht",
+                    "paused": "Pausiert",
+                    "park": "Fährt zur Ladestation",
+                    "updata": "Aktualisiert",
+                    "fixed_mowing": "Punktmähen",
+                    "error": "Fehler",
+                    "self_test": "Selbsttest",
+                    "charging_with_task_suspend": "Lädt, Auftrag unterbrochen",
+                    "emergency": "Not-Aus",
+                    "locked": "Gesperrt",
+                    "edge": "Kantenmähen"
+                }
+            },
+            "machine_warning": {
+                "name": "Warnung",
+                "state": {
+                    "mower_lean": "Geneigt",
+                    "mower_steep": "An einem steilen Hang",
+                    "rain_park": "Fährt zur Ladestation wegen Regen",
+                    "battery_not_enough": "Akku schwach, lädt bald",
+                    "no_loop_signal": "Kein Begrenzungssignal",
+                    "close_topcover": "Abdeckung schließen",
+                    "mower_in_station": "Mäher von der Ladestation nehmen",
+                    "mower_out_station": "Mäher auf die Ladestation stellen",
+                    "place_inside": "Mäher innerhalb der Begrenzung platzieren",
+                    "fixed_end": "Punktmähen beendet",
+                    "charging_disconnect": "Laden instabil, Kontakte prüfen",
+                    "charging_pause": "Laden unterbrochen, Ladestation prüfen",
+                    "work_interrupt": "Arbeit unterbrochen, Auftrag neu starten",
+                    "fixed_mowing_interupt": "Auftrag beendet, Umgebung prüfen",
+                    "turn_on_button": "Physischen Schalter einschalten",
+                    "press_start_key": "Starttaste drücken",
+                    "timeset_30min": "Zeitplan überschreitet 30 Minuten",
+                    "timeset_unlegal": "Zeitplan ist ungültig",
+                    "chargr_current_low": "Ladestrom niedrig",
+                    "rain_out_station": "Weicht Regen aus",
+                    "updata_fail": "Aktualisierung fehlgeschlagen",
+                    "continue_tooltip": "Auftrag fortsetzen",
+                    "mower_emergency": "Not-Aus",
+                    "mower_ui_locked": "Bildschirm gesperrt",
+                    "discharge_error": "Entladung fehlerhaft",
+                    "charge_temp_error": "Akkutemperatur fehlerhaft",
+                    "hedgehog": "Igelschutz aktiv",
+                    "ntc": "Temperatursensor fehlerhaft"
+                }
+            },
+            "work_time": {
+                "name": "Laufzeit"
             }
         },
         "switch": {
@@ -476,6 +551,15 @@
             },
             "switch_spray": {
                 "name": "Sprühen"
+            },
+            "rain_mode": {
+                "name": "Regenmodus"
+            },
+            "hedgehog_protection": {
+                "name": "Igelschutz"
+            },
+            "backward_blade_stop": {
+                "name": "Messerstopp bei Rückwärtsfahrt"
             }
         },
         "text": {

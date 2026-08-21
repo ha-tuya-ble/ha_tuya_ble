@@ -16,38 +16,9 @@ from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator
 
-from .const import DOMAIN
+from .const import DOMAIN, PARKSIDE_MOWER_COMMANDS, PARKSIDE_MOWER_STATUSES
 from .devices import TuyaBLEData, TuyaBLEEntity, TuyaBLEProductInfo
 from .tuya_ble import TuyaBLEDataPointType, TuyaBLEDevice
-
-# Values of DP 101 (MachineStatus) in the order declared by the device model.
-# The datapoint carries the index of the active value.
-PARKSIDE_STATUS_VALUES: list[str] = [
-    "STANDBY",
-    "CHARGING",
-    "MOWING",
-    "PAUSED",
-    "PARK",
-    "UPDATA",
-    "FIXED_MOWING",
-    "ERROR",
-    "SELF_TEST",
-    "CHARGING_WITH_TASK_SUSPEND",
-    "EMERGENCY",
-    "LOCKED",
-    "EDGE",
-]
-
-# Values of DP 115 (MachineControlCmd) in the order declared by the device model.
-PARKSIDE_COMMAND_VALUES: list[str] = [
-    "PauseWork",
-    "CancelWork",
-    "ContinueWork",
-    "StartMowing",
-    "StartFixedMowing",
-    "StartReturnStation",
-    "EDGE",
-]
 
 # Home Assistant has no idle activity, so every status in which the mower is
 # neither cutting, returning nor faulted is reported as docked.
@@ -110,8 +81,8 @@ mapping: dict[str, TuyaBLECategoryLawnMowerMapping] = {
             "9hdajpiw": TuyaBLELawnMowerMapping(
                 dp_status=101,  # MachineStatus
                 dp_command=115,  # MachineControlCmd
-                status_values=PARKSIDE_STATUS_VALUES,
-                command_values=PARKSIDE_COMMAND_VALUES,
+                status_values=PARKSIDE_MOWER_STATUSES,
+                command_values=PARKSIDE_MOWER_COMMANDS,
                 activities=PARKSIDE_ACTIVITIES,
                 start_command="StartMowing",
                 resume_command="ContinueWork",

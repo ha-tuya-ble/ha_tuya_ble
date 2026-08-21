@@ -72,6 +72,65 @@ FINGERBOT_MODE_SWITCH: Final = "switch"
 FINGERBOT_MODE_PROGRAM: Final = "program"
 FINGERBOT_BUTTON_EVENT: Final = "fingerbot_button_pressed"
 
+# Enum ranges of the Parkside robot mower, in the order declared by the device
+# model. Enum DPs carry the index of the active value.
+PARKSIDE_MOWER_STATUSES: Final = [
+    "STANDBY",
+    "CHARGING",
+    "MOWING",
+    "PAUSED",
+    "PARK",
+    "UPDATA",
+    "FIXED_MOWING",
+    "ERROR",
+    "SELF_TEST",
+    "CHARGING_WITH_TASK_SUSPEND",
+    "EMERGENCY",
+    "LOCKED",
+    "EDGE",
+]
+
+PARKSIDE_MOWER_COMMANDS: Final = [
+    "PauseWork",
+    "CancelWork",
+    "ContinueWork",
+    "StartMowing",
+    "StartFixedMowing",
+    "StartReturnStation",
+    "EDGE",
+]
+
+PARKSIDE_MOWER_WARNINGS: Final = [
+    "MOWER_LEAN",
+    "MOWER_STEEP",
+    "RAIN_PARK",
+    "BATTERY_NOT_ENOUGH",
+    "NO_LOOP_SIGNAL",
+    "CLOSE_TOPCOVER",
+    "MOWER_IN_STATION",
+    "MOWER_OUT_STATION",
+    "PLACE_INSIDE",
+    "FIXED_END",
+    "CHARGING_DISCONNECT",
+    "CHARGING_PAUSE",
+    "WORK_INTERRUPT",
+    "FIXED_MOWING_INTERUPT",
+    "TURN_ON_BUTTON",
+    "PRESS_START_KEY",
+    "TIMESET_30MIN",
+    "TIMESET_UNLEGAL",
+    "CHARGR_CURRENT_LOW",
+    "RAIN_OUT_STATION",
+    "UPDATA_FAIL",
+    "CONTINUE_TOOLTIP",
+    "MOWER_EMERGENCY",
+    "MOWER_UI_LOCKED",
+    "DISCHARGE_ERROR",
+    "CHARGE_TEMP_ERROR",
+    "HEDGEHOG",
+    "NTC",
+]
+
 
 class WorkMode(StrEnum):
     """Work modes."""

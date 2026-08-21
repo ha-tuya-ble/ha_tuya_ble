@@ -36,6 +36,8 @@ from .const import (
     CO2_LEVEL_ALARM,
     CO2_LEVEL_NORMAL,
     DOMAIN,
+    PARKSIDE_MOWER_STATUSES,
+    PARKSIDE_MOWER_WARNINGS,
 )
 from .devices import TuyaBLEData, TuyaBLEEntity, TuyaBLEProductInfo
 from .tuya_ble import TuyaBLEDataPointType, TuyaBLEDevice
@@ -2166,6 +2168,34 @@ mapping: dict[str, TuyaBLECategorySensorMapping] = {
                         if (dp := self._device.datapoints[self._mapping.dp_id])
                         and dp.type == self._mapping.dp_type
                         else None
+                    ),
+                ),
+                TuyaBLESensorMapping(
+                    dp_id=101,  # MachineStatus
+                    description=SensorEntityDescription(
+                        key="activity",
+                        device_class=SensorDeviceClass.ENUM,
+                        options=[status.lower() for status in PARKSIDE_MOWER_STATUSES],
+                    ),
+                ),
+                TuyaBLESensorMapping(
+                    dp_id=103,  # MachineWarning
+                    description=SensorEntityDescription(
+                        key="machine_warning",
+                        device_class=SensorDeviceClass.ENUM,
+                        entity_category=EntityCategory.DIAGNOSTIC,
+                        options=[
+                            warning.lower() for warning in PARKSIDE_MOWER_WARNINGS
+                        ],
+                    ),
+                ),
+                TuyaBLESensorMapping(
+                    dp_id=105,  # MachineWorktime, the configured running time
+                    description=SensorEntityDescription(
+                        key="work_time",
+                        device_class=SensorDeviceClass.DURATION,
+                        native_unit_of_measurement=UnitOfTime.HOURS,
+                        entity_category=EntityCategory.DIAGNOSTIC,
                     ),
                 ),
             ],

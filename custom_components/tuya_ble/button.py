@@ -19,7 +19,7 @@ from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator
 from homeassistant.helpers.entity import EntityCategory
 
-from .const import DOMAIN
+from .const import DOMAIN, PARKSIDE_MOWER_COMMANDS
 from .devices import TuyaBLEData, TuyaBLEEntity, TuyaBLEProductInfo
 from .tuya_ble import TuyaBLEDataPointType, TuyaBLEDevice
 
@@ -38,6 +38,8 @@ class TuyaBLEButtonMapping:
     force_add: bool = True
     dp_type: TuyaBLEDataPointType | None = None
     is_available: TuyaBLEButtonIsAvailable = None
+    value: bytes | bool | int | str | None = None
+    """Fixed value to write, using dp_type, instead of toggling a bool."""
 
 
 def is_fingerbot_in_push_mode(self: TuyaBLEButton, product: TuyaBLEProductInfo) -> bool:
@@ -282,6 +284,69 @@ mapping: dict[str, TuyaBLECategoryButtonMapping] = {
             ],
         }
     ),
+    "gcj": TuyaBLECategoryButtonMapping(
+        products={
+            # Each button writes one command value of DP 115
+            # (MachineControlCmd). They complement the lawn mower entity,
+            # which only exposes the start, pause and dock commands.
+            "9hdajpiw": [
+                TuyaBLEButtonMapping(
+                    dp_id=115,
+                    dp_type=TuyaBLEDataPointType.DT_ENUM,
+                    value=PARKSIDE_MOWER_COMMANDS.index("StartMowing"),
+                    description=ButtonEntityDescription(
+                        key="start_mowing",
+                        icon="mdi:play",
+                    ),
+                ),
+                TuyaBLEButtonMapping(
+                    dp_id=115,
+                    dp_type=TuyaBLEDataPointType.DT_ENUM,
+                    value=PARKSIDE_MOWER_COMMANDS.index("PauseWork"),
+                    description=ButtonEntityDescription(
+                        key="pause_work",
+                        icon="mdi:pause",
+                    ),
+                ),
+                TuyaBLEButtonMapping(
+                    dp_id=115,
+                    dp_type=TuyaBLEDataPointType.DT_ENUM,
+                    value=PARKSIDE_MOWER_COMMANDS.index("CancelWork"),
+                    description=ButtonEntityDescription(
+                        key="cancel_work",
+                        icon="mdi:stop",
+                    ),
+                ),
+                TuyaBLEButtonMapping(
+                    dp_id=115,
+                    dp_type=TuyaBLEDataPointType.DT_ENUM,
+                    value=PARKSIDE_MOWER_COMMANDS.index("StartReturnStation"),
+                    description=ButtonEntityDescription(
+                        key="start_return_station",
+                        icon="mdi:home-import-outline",
+                    ),
+                ),
+                TuyaBLEButtonMapping(
+                    dp_id=115,
+                    dp_type=TuyaBLEDataPointType.DT_ENUM,
+                    value=PARKSIDE_MOWER_COMMANDS.index("ContinueWork"),
+                    description=ButtonEntityDescription(
+                        key="continue_work",
+                        icon="mdi:play-pause",
+                    ),
+                ),
+                TuyaBLEButtonMapping(
+                    dp_id=115,
+                    dp_type=TuyaBLEDataPointType.DT_ENUM,
+                    value=PARKSIDE_MOWER_COMMANDS.index("EDGE"),
+                    description=ButtonEntityDescription(
+                        key="edge_mowing",
+                        icon="mdi:border-outside",
+                    ),
+                ),
+            ],
+        },
+    ),
 }
 
 
@@ -354,6 +419,16 @@ class TuyaBLEButton(TuyaBLEEntity, ButtonEntity):
             if self._mapping.description.key == "bluetooth_unlock":
                 self._hass.create_task(self._run_hs21i377_unlock())
                 return
+
+        if self._mapping.value is not None:
+            datapoint = self._device.datapoints.get_or_create(
+                self._mapping.dp_id,
+                self._mapping.dp_type or TuyaBLEDataPointType.DT_BOOL,
+                self._mapping.value,
+            )
+            if datapoint:
+                self._hass.create_task(datapoint.set_value(self._mapping.value))
+            return
 
         datapoint = self._device.datapoints.get_or_create(
             self._mapping.dp_id,
