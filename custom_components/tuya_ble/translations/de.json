@@ -143,6 +143,9 @@
             },
             "up_position": {
                 "name": "Obere Position"
+            },
+            "work_time": {
+                "name": "Laufzeit"
             }
         },
         "select": {
@@ -477,9 +480,6 @@
                     "hedgehog": "Igelschutz aktiv",
                     "ntc": "Temperatursensor fehlerhaft"
                 }
-            },
-            "work_time": {
-                "name": "Laufzeit"
             }
         },
         "switch": {

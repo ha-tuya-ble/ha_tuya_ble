@@ -143,6 +143,9 @@
             },
             "up_position": {
                 "name": "Posição para cima"
+            },
+            "work_time": {
+                "name": "Tempo de trabalho"
             }
         },
         "select": {
@@ -477,9 +480,6 @@
                     "hedgehog": "Proteção de ouriços ativa",
                     "ntc": "Sensor de temperatura anormal"
                 }
-            },
-            "work_time": {
-                "name": "Tempo de trabalho"
             }
         },
         "switch": {

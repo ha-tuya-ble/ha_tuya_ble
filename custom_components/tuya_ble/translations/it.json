@@ -143,6 +143,9 @@
             },
             "up_position": {
                 "name": "Posizione su"
+            },
+            "work_time": {
+                "name": "Tempo di lavoro"
             }
         },
         "select": {
@@ -477,9 +480,6 @@
                     "hedgehog": "Protezione ricci attiva",
                     "ntc": "Sensore di temperatura anomalo"
                 }
-            },
-            "work_time": {
-                "name": "Tempo di lavoro"
             }
         },
         "switch": {

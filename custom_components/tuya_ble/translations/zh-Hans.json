@@ -143,6 +143,9 @@
             },
             "up_position": {
                 "name": "上限位置"
+            },
+            "work_time": {
+                "name": "工作时长"
             }
         },
         "select": {
@@ -477,9 +480,6 @@
                     "hedgehog": "刺猬保护已启用",
                     "ntc": "温度传感器异常"
                 }
-            },
-            "work_time": {
-                "name": "工作时长"
             }
         },
         "switch": {

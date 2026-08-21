@@ -143,6 +143,9 @@
             },
             "up_position": {
                 "name": "Up position"
+            },
+            "work_time": {
+                "name": "Running time"
             }
         },
         "select": {
@@ -463,9 +466,6 @@
                     "hedgehog": "Hedgehog protection active",
                     "ntc": "Temperature sensor abnormal"
                 }
-            },
-            "work_time": {
-                "name": "Running time"
             }
         },
         "switch": {

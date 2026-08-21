@@ -984,6 +984,27 @@ mapping: dict[str, TuyaBLECategoryNumberMapping] = {
             ],
         },
     ),
+    "gcj": TuyaBLECategoryNumberMapping(
+        products={
+            "9hdajpiw": [
+                TuyaBLENumberMapping(
+                    dp_id=105,  # MachineWorktime
+                    description=NumberEntityDescription(
+                        key="work_time",
+                        icon="mdi:timer",
+                        device_class=NumberDeviceClass.DURATION,
+                        # The device model declares a range of 1 to 99, but
+                        # documents 1 to 24 as the usable range.
+                        native_max_value=24,
+                        native_min_value=1,
+                        native_step=1,
+                        native_unit_of_measurement=UnitOfTime.HOURS,
+                        entity_category=EntityCategory.CONFIG,
+                    ),
+                ),
+            ],
+        },
+    ),
 }
 
 

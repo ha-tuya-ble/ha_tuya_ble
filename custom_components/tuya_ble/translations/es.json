@@ -143,6 +143,9 @@
             },
             "up_position": {
                 "name": "Posición arriba"
+            },
+            "work_time": {
+                "name": "Tiempo de trabajo"
             }
         },
         "select": {
@@ -477,9 +480,6 @@
                     "hedgehog": "Protección de erizos activa",
                     "ntc": "Sensor de temperatura anómalo"
                 }
-            },
-            "work_time": {
-                "name": "Tiempo de trabajo"
             }
         },
         "switch": {

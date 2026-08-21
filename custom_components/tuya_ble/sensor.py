@@ -2189,15 +2189,6 @@ mapping: dict[str, TuyaBLECategorySensorMapping] = {
                         ],
                     ),
                 ),
-                TuyaBLESensorMapping(
-                    dp_id=105,  # MachineWorktime, the configured running time
-                    description=SensorEntityDescription(
-                        key="work_time",
-                        device_class=SensorDeviceClass.DURATION,
-                        native_unit_of_measurement=UnitOfTime.HOURS,
-                        entity_category=EntityCategory.DIAGNOSTIC,
-                    ),
-                ),
             ],
         },
     ),

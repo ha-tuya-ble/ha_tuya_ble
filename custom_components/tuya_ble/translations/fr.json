@@ -143,6 +143,9 @@
             },
             "up_position": {
                 "name": "Position haute"
+            },
+            "work_time": {
+                "name": "Durée de tonte"
             }
         },
         "select": {
@@ -477,9 +480,6 @@
                     "hedgehog": "Protection des hérissons active",
                     "ntc": "Capteur de température anormal"
                 }
-            },
-            "work_time": {
-                "name": "Durée de tonte"
             }
         },
         "switch": {
