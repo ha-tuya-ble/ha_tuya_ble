@@ -47,21 +47,16 @@ async def test_binary_sensor(hass: HomeAssistant) -> None:
 async def test_machine_error_bitmap(hass: HomeAssistant) -> None:
     """Test that the machine error bitmap only reports a problem when a bit is set."""
     from unittest.mock import Mock
-    from homeassistant.components.binary_sensor import BinarySensorEntityDescription
-    from custom_components.tuya_ble.binary_sensor import (
-        TuyaBLEBinarySensorMapping,
-        machine_error_getter,
-    )
+    from custom_components.tuya_ble.binary_sensor import mapping as binary_sensor_mapping
     from custom_components.tuya_ble.tuya_ble import TuyaBLEDataPointType
 
     coordinator = await init(hass, CONFIG, PLATFORM_DOMAIN, TuyaBLEBinarySensor)
     device = coordinator._device
 
-    mapping = TuyaBLEBinarySensorMapping(
-        dp_id=102,
-        description=BinarySensorEntityDescription(key="machine_problem"),
-        getter=machine_error_getter,
-    )
+    mapping = {
+        m.description.key: m
+        for m in binary_sensor_mapping["gcj"].products["9hdajpiw"]
+    }["machine_problem"]
     entity = TuyaBLEBinarySensor(
         hass, coordinator, device, TuyaBLEProductInfo("Robot Mower"), mapping
     )
