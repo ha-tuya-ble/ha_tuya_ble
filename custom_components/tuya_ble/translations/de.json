@@ -54,6 +54,9 @@
             },
             "machine_problem": {
                 "name": "Problem"
+            },
+            "machine_cover": {
+                "name": "Abdeckung"
             }
         },
         "button": {
@@ -503,7 +506,8 @@
                     "discharge_error": "Entladung fehlerhaft",
                     "charge_temp_error": "Akkutemperatur fehlerhaft",
                     "hedgehog": "Igelschutz aktiv",
-                    "ntc": "Temperatursensor fehlerhaft"
+                    "ntc": "Temperatursensor fehlerhaft",
+                    "none": "Keine"
                 }
             },
             "firmware_version": {

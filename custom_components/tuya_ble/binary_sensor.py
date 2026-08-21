@@ -21,6 +21,7 @@ from homeassistant.helpers.update_coordinator import DataUpdateCoordinator
 
 from .const import (
     DOMAIN,
+    PARKSIDE_MOWER_STATUS_DP_ID,
 )
 from .devices import TuyaBLEData, TuyaBLEEntity, TuyaBLEProductInfo
 from .tuya_ble import TuyaBLEDataPointType, TuyaBLEDevice
@@ -43,10 +44,16 @@ def _bitmap_value_to_int(value: bytes | bytearray | int) -> int:
 
 
 def machine_error_getter(self: TuyaBLEBinarySensor) -> None:
-    """Report a problem while any bit of the machine error bitmap is set."""
+    """Report a problem while any bit of the machine error bitmap is set.
+
+    The bitmap is only reported once the machine has an error, so an absent
+    bitmap is read as no problem as soon as the machine reports its status.
+    """
     datapoint = self._device.datapoints[self._mapping.dp_id]
     if datapoint and datapoint.value is not None:
         self._attr_is_on = _bitmap_value_to_int(datapoint.value) != 0
+    elif self._device.datapoints[PARKSIDE_MOWER_STATUS_DP_ID] is not None:
+        self._attr_is_on = False
 
 
 def door_status_getter(self: TuyaBLEBinarySensor) -> None:
@@ -438,6 +445,16 @@ mapping: dict[str, TuyaBLECategoryBinarySensorMapping] = {
                         entity_category=EntityCategory.DIAGNOSTIC,
                     ),
                     getter=machine_error_getter,
+                ),
+                TuyaBLEBinarySensorMapping(
+                    dp_id=116,  # MachineCover
+                    dp_type=TuyaBLEDataPointType.DT_BOOL,
+                    description=BinarySensorEntityDescription(
+                        key="machine_cover",
+                        device_class=BinarySensorDeviceClass.OPENING,
+                        entity_category=EntityCategory.DIAGNOSTIC,
+                        entity_registry_enabled_default=False,
+                    ),
                 ),
             ],
         },

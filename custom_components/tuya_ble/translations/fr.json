@@ -54,6 +54,9 @@
             },
             "machine_problem": {
                 "name": "Problème"
+            },
+            "machine_cover": {
+                "name": "Capot"
             }
         },
         "button": {
@@ -503,7 +506,8 @@
                     "discharge_error": "Décharge anormale",
                     "charge_temp_error": "Température de la batterie anormale",
                     "hedgehog": "Protection des hérissons active",
-                    "ntc": "Capteur de température anormal"
+                    "ntc": "Capteur de température anormal",
+                    "none": "Aucun"
                 }
             },
             "firmware_version": {

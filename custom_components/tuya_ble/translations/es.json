@@ -54,6 +54,9 @@
             },
             "machine_problem": {
                 "name": "Problema"
+            },
+            "machine_cover": {
+                "name": "Cubierta"
             }
         },
         "button": {
@@ -503,7 +506,8 @@
                     "discharge_error": "Descarga anómala",
                     "charge_temp_error": "Temperatura de la batería anómala",
                     "hedgehog": "Protección de erizos activa",
-                    "ntc": "Sensor de temperatura anómalo"
+                    "ntc": "Sensor de temperatura anómalo",
+                    "none": "Ninguna"
                 }
             },
             "firmware_version": {

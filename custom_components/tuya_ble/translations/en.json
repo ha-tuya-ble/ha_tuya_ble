@@ -54,6 +54,9 @@
             },
             "machine_problem": {
                 "name": "Problem"
+            },
+            "machine_cover": {
+                "name": "Cover"
             }
         },
         "button": {
@@ -503,7 +506,8 @@
                     "discharge_error": "Discharge abnormal",
                     "charge_temp_error": "Battery pack temperature abnormal",
                     "hedgehog": "Hedgehog protection active",
-                    "ntc": "Temperature sensor abnormal"
+                    "ntc": "Temperature sensor abnormal",
+                    "none": "None"
                 }
             },
             "firmware_version": {

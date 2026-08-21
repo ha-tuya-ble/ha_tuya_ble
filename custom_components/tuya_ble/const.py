@@ -72,6 +72,14 @@ FINGERBOT_MODE_SWITCH: Final = "switch"
 FINGERBOT_MODE_PROGRAM: Final = "program"
 FINGERBOT_BUTTON_EVENT: Final = "fingerbot_button_pressed"
 
+# DPs of the Parkside robot mower that other datapoints are interpreted against.
+PARKSIDE_MOWER_STATUS_DP_ID: Final = 101
+PARKSIDE_MOWER_RAIN_MODE_DP_ID: Final = 104
+
+# Reported while the mower has no warning. The machine warning range has no
+# value of its own for this, so it is appended after the declared values.
+PARKSIDE_MOWER_WARNING_NONE: Final = "none"
+
 # Enum ranges of the Parkside robot mower, in the order declared by the device
 # model. Enum DPs carry the index of the active value.
 PARKSIDE_MOWER_STATUSES: Final = [

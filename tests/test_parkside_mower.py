@@ -212,3 +212,85 @@ async def test_rain_delay(hass: HomeAssistant) -> None:
     entity.set_native_value(30)
     await hass.async_block_till_done()
     assert device.datapoints[139].value == bytes([0, 30])
+
+
+async def test_machine_warning_clears_on_status_change(hass: HomeAssistant) -> None:
+    """Test DP 103, which has no value of its own for "no warning"."""
+    device, coordinator, product = await _init(hass)
+    entity = _sensor(hass, coordinator, device, product, "machine_warning")
+
+    # Nothing reported yet
+    entity._handle_coordinator_update()
+    assert entity.native_value == "none"
+
+    # A warning reported while mowing, index 2 of the declared range
+    device.datapoints._update_from_device(
+        101, 1.0, 0, TuyaBLEDataPointType.DT_ENUM, 2
+    )
+    device.datapoints._update_from_device(
+        103, 2.0, 0, TuyaBLEDataPointType.DT_ENUM, 2
+    )
+    entity._handle_coordinator_update()
+    assert entity.native_value == "rain_park"
+
+    # The same status reported again keeps the warning
+    device.datapoints._update_from_device(
+        101, 3.0, 0, TuyaBLEDataPointType.DT_ENUM, 2
+    )
+    entity._handle_coordinator_update()
+    assert entity.native_value == "rain_park"
+
+    # A different status clears it
+    device.datapoints._update_from_device(
+        101, 4.0, 0, TuyaBLEDataPointType.DT_ENUM, 4
+    )
+    entity._handle_coordinator_update()
+    assert entity.native_value == "none"
+
+    # The mower reporting the warning again brings it back
+    device.datapoints._update_from_device(
+        103, 5.0, 0, TuyaBLEDataPointType.DT_ENUM, 2
+    )
+    entity._handle_coordinator_update()
+    assert entity.native_value == "rain_park"
+
+    # An index outside the declared range is reported as no warning
+    device.datapoints._update_from_device(
+        103, 6.0, 0, TuyaBLEDataPointType.DT_ENUM, 99
+    )
+    entity._handle_coordinator_update()
+    assert entity.native_value == "none"
+
+
+async def test_machine_problem_follows_status(hass: HomeAssistant) -> None:
+    """Test that DP 102 only reads as healthy once the machine reports."""
+    from homeassistant.components.binary_sensor import BinarySensorEntityDescription
+    from custom_components.tuya_ble.binary_sensor import (
+        TuyaBLEBinarySensor,
+        machine_error_getter,
+        mapping as binary_sensor_mapping,
+    )
+
+    device, coordinator, product = await _init(hass)
+    mapping = {
+        m.description.key: m
+        for m in binary_sensor_mapping["gcj"].products["9hdajpiw"]
+    }["machine_problem"]
+    entity = TuyaBLEBinarySensor(hass, coordinator, device, product, mapping)
+    entity.async_write_ha_state = Mock()
+
+    # Nothing heard from the machine at all
+    entity._handle_coordinator_update()
+    assert entity.is_on is None
+
+    # The machine reports its status but no error bitmap
+    device.datapoints._update_from_device(
+        101, 0, 0, TuyaBLEDataPointType.DT_ENUM, 0
+    )
+    entity._handle_coordinator_update()
+    assert entity.is_on is False
+
+    # An error bitmap with a bit set still reports a problem
+    _raw(device, 102, b"\x00\x00\x00\x08")
+    entity._handle_coordinator_update()
+    assert entity.is_on is True

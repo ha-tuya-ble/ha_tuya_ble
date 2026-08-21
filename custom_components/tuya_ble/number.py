@@ -28,10 +28,8 @@ from homeassistant.helpers.entity import EntityCategory
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator
 
-from .const import DOMAIN
+from .const import DOMAIN, PARKSIDE_MOWER_RAIN_MODE_DP_ID
 
-# The rain delay DP mirrors this switch in its first byte.
-PARKSIDE_RAIN_MODE_DP_ID = 104
 from .devices import TuyaBLEData, TuyaBLEEntity, TuyaBLEProductInfo
 from .tuya_ble import TuyaBLEDataPointType, TuyaBLEDevice
 
@@ -238,7 +236,7 @@ def set_parkside_rain_delay(
     the rain mode DP, so its current value is reused, falling back to whatever
     the mower last reported for this DP.
     """
-    rain_mode = self._device.datapoints[PARKSIDE_RAIN_MODE_DP_ID]
+    rain_mode = self._device.datapoints[PARKSIDE_MOWER_RAIN_MODE_DP_ID]
     if rain_mode is not None and rain_mode.value is not None:
         enabled = bool(rain_mode.value)
     else:
