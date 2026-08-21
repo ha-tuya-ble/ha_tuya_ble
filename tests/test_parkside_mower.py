@@ -136,23 +136,6 @@ async def test_schedule(hass: HomeAssistant) -> None:
     assert (slot["weekday"], slot["start"], slot["end"]) == (2, "09:30", "11:45")
 
 
-async def test_work_schedule(hass: HomeAssistant) -> None:
-    """Test DP 140, using the bit packing example from the device model."""
-    device, coordinator, product = await _init(hass)
-    entity = _sensor(hass, coordinator, device, product, "work_schedule")
-
-    # Model example: set and potential energy, 01:15 to 10:45
-    task = bytes([0b11000000, 0b00001010, 0b01010110])
-    _raw(device, 140, task + bytes([0, 0, 0]))
-    entity._handle_coordinator_update()
-
-    assert entity.native_value == 1
-    entry = entity.extra_state_attributes["tasks"][0]
-    assert entry["start"] == "01:15"
-    assert entry["end"] == "10:45"
-    assert entry["potential_energy"] is True
-
-
 async def test_zones(hass: HomeAssistant) -> None:
     """Test DP 113, a uint32 passage length plus an area share."""
     device, coordinator, product = await _init(hass)

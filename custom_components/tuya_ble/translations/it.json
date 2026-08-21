@@ -521,9 +521,6 @@
             "schedule": {
                 "name": "Programmazione"
             },
-            "work_schedule": {
-                "name": "Programmazione di lavoro"
-            },
             "zones": {
                 "name": "Zone"
             }

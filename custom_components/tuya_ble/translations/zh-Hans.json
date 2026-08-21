@@ -521,9 +521,6 @@
             "schedule": {
                 "name": "预约计划"
             },
-            "work_schedule": {
-                "name": "工作计划"
-            },
             "zones": {
                 "name": "分区"
             }

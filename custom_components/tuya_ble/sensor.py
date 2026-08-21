@@ -201,33 +201,6 @@ def machine_schedule_getter(self: TuyaBLESensor) -> None:
     _parkside_report(self, entries, "slots")
 
 
-def machine_work_schedule_getter(self: TuyaBLESensor) -> None:
-    """Decode DP 140: seven days of two tasks, each packed into three bytes.
-
-    Byte one flags the task, the other two hold an hour in bits 7-3 and a
-    quarter of an hour in bits 2-1.
-    """
-
-    def period(value: int) -> str:
-        return f"{(value >> 3) & 0x1F:02d}:{((value >> 1) & 0x03) * 15:02d}"
-
-    entries = []
-    for index, entry in enumerate(_parkside_entries(self, 3)):
-        flags, start, end = entry
-        if not flags & 0x80:
-            continue
-        entries.append(
-            {
-                # Tasks run from Sunday, two per day.
-                "weekday": index // 2,
-                "start": period(start),
-                "end": period(end),
-                "potential_energy": bool(flags & 0x40),
-            }
-        )
-    _parkside_report(self, entries, "tasks")
-
-
 def machine_zones_getter(self: TuyaBLESensor) -> None:
     """Decode DP 113: five zones of a uint32 passage length and a share."""
     entries = []
@@ -2335,16 +2308,6 @@ mapping: dict[str, TuyaBLECategorySensorMapping] = {
                         entity_registry_enabled_default=False,
                     ),
                     getter=machine_schedule_getter,
-                ),
-                TuyaBLESensorMapping(
-                    dp_id=140,  # machine_appointment
-                    description=SensorEntityDescription(
-                        key="work_schedule",
-                        icon="mdi:calendar-clock",
-                        entity_category=EntityCategory.DIAGNOSTIC,
-                        entity_registry_enabled_default=False,
-                    ),
-                    getter=machine_work_schedule_getter,
                 ),
                 TuyaBLESensorMapping(
                     dp_id=113,  # MachinePartition

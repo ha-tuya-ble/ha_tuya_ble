@@ -521,9 +521,6 @@
             "schedule": {
                 "name": "Zeitplan"
             },
-            "work_schedule": {
-                "name": "Arbeitszeitplan"
-            },
             "zones": {
                 "name": "Zonen"
             }
