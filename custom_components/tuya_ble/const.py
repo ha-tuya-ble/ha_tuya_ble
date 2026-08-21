@@ -72,10 +72,6 @@ FINGERBOT_MODE_SWITCH: Final = "switch"
 FINGERBOT_MODE_PROGRAM: Final = "program"
 FINGERBOT_BUTTON_EVENT: Final = "fingerbot_button_pressed"
 
-# The rain delay DP of the Parkside robot mower mirrors this switch in its
-# first byte.
-PARKSIDE_MOWER_RAIN_MODE_DP_ID: Final = 104
-
 # Enum ranges of the Parkside robot mower, in the order declared by the device
 # model. Enum DPs carry the index of the active value.
 PARKSIDE_MOWER_STATUSES: Final = [
