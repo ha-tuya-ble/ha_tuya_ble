@@ -516,9 +516,6 @@
             "error_log": {
                 "name": "错误日志"
             },
-            "error_log_2": {
-                "name": "错误日志（详细）"
-            },
             "work_log": {
                 "name": "工作日志"
             },

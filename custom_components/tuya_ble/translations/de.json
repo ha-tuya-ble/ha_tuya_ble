@@ -516,9 +516,6 @@
             "error_log": {
                 "name": "Fehlerprotokoll"
             },
-            "error_log_2": {
-                "name": "Fehlerprotokoll (detailliert)"
-            },
             "work_log": {
                 "name": "Arbeitsprotokoll"
             },

@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 from dataclasses import dataclass, field
-from datetime import datetime
 import logging
 from typing import Callable
 from homeassistant.components.sensor import (
@@ -199,32 +198,6 @@ def machine_error_log_getter(self: TuyaBLESensor) -> None:
             {
                 "time": dt_util.utc_from_timestamp(timestamp).isoformat(),
                 "error": _parkside_error_name(entry[4]),
-            }
-        )
-    _parkside_report(self, entries, "errors")
-
-
-def machine_error_log_2_getter(self: TuyaBLESensor) -> None:
-    """Decode DP 150: 10 entries of a date, a time and two error indexes."""
-    entries = []
-    for entry in _parkside_entries(self, 8):
-        year, month, day, hour, minute, second = entry[:6]
-        if not 1 <= month <= 12 or not 1 <= day <= 31:
-            continue
-        # The log carries no time zone, so it is read as local time.
-        stamp = datetime(
-            2000 + year,
-            month,
-            day,
-            min(hour, 23),
-            min(minute, 59),
-            min(second, 59),
-            tzinfo=dt_util.DEFAULT_TIME_ZONE,
-        )
-        entries.append(
-            {
-                "time": stamp.isoformat(),
-                "errors": [_parkside_error_name(index) for index in entry[6:8]],
             }
         )
     _parkside_report(self, entries, "errors")
@@ -2383,15 +2356,6 @@ mapping: dict[str, TuyaBLECategorySensorMapping] = {
                         entity_category=EntityCategory.DIAGNOSTIC,
                     ),
                     getter=machine_error_log_getter,
-                ),
-                TuyaBLESensorMapping(
-                    dp_id=150,  # machine_error_log2
-                    description=SensorEntityDescription(
-                        key="error_log_2",
-                        icon="mdi:alert-box-outline",
-                        entity_category=EntityCategory.DIAGNOSTIC,
-                    ),
-                    getter=machine_error_log_2_getter,
                 ),
                 TuyaBLESensorMapping(
                     dp_id=112,  # MachineWorkLog

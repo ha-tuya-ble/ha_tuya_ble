@@ -516,9 +516,6 @@
             "error_log": {
                 "name": "Error log"
             },
-            "error_log_2": {
-                "name": "Error log (detailed)"
-            },
             "work_log": {
                 "name": "Work log"
             },

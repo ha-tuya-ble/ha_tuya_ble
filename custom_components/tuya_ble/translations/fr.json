@@ -516,9 +516,6 @@
             "error_log": {
                 "name": "Journal des erreurs"
             },
-            "error_log_2": {
-                "name": "Journal des erreurs (détaillé)"
-            },
             "work_log": {
                 "name": "Journal de travail"
             },

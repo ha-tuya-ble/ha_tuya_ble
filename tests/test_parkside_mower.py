@@ -121,21 +121,6 @@ async def test_work_log(hass: HomeAssistant) -> None:
     assert session["mode"] == "spot_mowing"
 
 
-async def test_error_log_2(hass: HomeAssistant) -> None:
-    """Test DP 150, a packed date and time plus two error indexes."""
-    device, coordinator, product = await _init(hass)
-    entity = _sensor(hass, coordinator, device, product, "error_log_2")
-
-    # 2024-03-09 14:31:07, errors 0 and 3, then an entry with an invalid month
-    _raw(device, 150, bytes([24, 3, 9, 14, 31, 7, 0, 3]) + bytes(8))
-    entity._handle_coordinator_update()
-
-    assert entity.native_value == 1
-    entry = entity.extra_state_attributes["errors"][0]
-    assert entry["time"].startswith("2024-03-09T14:31:07")
-    assert entry["errors"] == ["FAULT_LEAN", "L_MOTOR_ERROR"]
-
-
 async def test_schedule(hass: HomeAssistant) -> None:
     """Test DP 110, where 0x88 marks an unused slot."""
     device, coordinator, product = await _init(hass)

@@ -516,9 +516,6 @@
             "error_log": {
                 "name": "Registro de erros"
             },
-            "error_log_2": {
-                "name": "Registro de erros (detalhado)"
-            },
             "work_log": {
                 "name": "Registro de trabalho"
             },
