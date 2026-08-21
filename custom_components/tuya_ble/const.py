@@ -74,6 +74,12 @@ FINGERBOT_BUTTON_EVENT: Final = "fingerbot_button_pressed"
 
 # Enum ranges of the Parkside robot mower, in the order declared by the device
 # model. Enum DPs carry the index of the active value.
+#
+# The values are copied verbatim from the device model. Misspellings such as
+# UPDATA, LIFTE, UNEXCEPECT_LOW, FIXED_MOWING_INTERUPT, CHARGR_CURRENT_LOW and
+# TIMESET_UNLEGAL are the manufacturer's own and must not be corrected:
+# lowercased, they are the states these entities report and the keys their
+# translations are looked up by.
 PARKSIDE_MOWER_STATUSES: Final = [
     "STANDBY",
     "CHARGING",
