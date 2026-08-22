@@ -101,9 +101,9 @@ async def async_get_config_entry_diagnostics(
         "protocol_version": device.protocol_version,
         "keep_connection": getattr(device, "keep_connection", False),
         "connected": is_connected,
-        "coordinator_connected": data.coordinator.connected
-        if data.coordinator
-        else False,
+        "coordinator_connected": (
+            data.coordinator.connected if data.coordinator else False
+        ),
         "seconds_since_last_connect": seconds_since_last_connect,
         "last_connect_error": getattr(device, "last_connect_error", None),
         "rssi": device.rssi,
