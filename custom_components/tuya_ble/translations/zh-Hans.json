@@ -162,8 +162,8 @@
             "work_time": {
                 "name": "工作时长"
             },
-            "rain_delay": {
-                "name": "雨天延迟"
+            "rain_delay_time": {
+                "name": "雨天延迟时长"
             }
         },
         "select": {
@@ -606,6 +606,9 @@
             },
             "switch_go": {
                 "name": "割草开关"
+            },
+            "rain_delay": {
+                "name": "雨天延迟"
             }
         },
         "text": {

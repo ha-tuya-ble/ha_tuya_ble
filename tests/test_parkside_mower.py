@@ -151,32 +151,59 @@ async def test_zones(hass: HomeAssistant) -> None:
 
 
 async def test_rain_delay(hass: HomeAssistant) -> None:
-    """Test DP 139, where the first byte follows the rain mode switch."""
-    device, coordinator, product = await _init(hass)
-    mapping = {
-        m.description.key: m for m in number_mapping["gcj"].products["9hdajpiw"]
-    }["rain_delay"]
-    entity = TuyaBLENumber(hass, coordinator, device, product, mapping)
-    entity.async_write_ha_state = Mock()
+    """Test DP 139, whose two bytes are owned by a switch and a number."""
+    from custom_components.tuya_ble.switch import (
+        TuyaBLESwitch,
+        mapping as switch_mapping,
+    )
 
-    # Nothing reported yet
-    assert entity.native_value is None
+    device, coordinator, product = await _init(hass)
+    coordinator._async_handle_connect()
+
+    number_mappings = {
+        m.description.key: m for m in number_mapping["gcj"].products["9hdajpiw"]
+    }
+    switch_mappings = {
+        m.description.key: m for m in switch_mapping["gcj"].products["9hdajpiw"]
+    }
+    delay = TuyaBLENumber(
+        hass, coordinator, device, product, number_mappings["rain_delay_time"]
+    )
+    enabled = TuyaBLESwitch(
+        hass, coordinator, device, product, switch_mappings["rain_delay"]
+    )
+    for entity in (delay, enabled):
+        entity.async_write_ha_state = Mock()
+
+    # Neither control may write a byte of a payload it has never seen
+    assert delay.available is False
+    assert enabled.available is False
 
     _raw(device, 139, bytes([1, 45]))
-    assert entity.native_value == 45
+    assert delay.available is True
+    assert enabled.available is True
+    assert delay.native_value == 45
+    assert enabled.is_on is True
 
-    # Rain mode on, so the first byte is written as enabled
-    device.datapoints._update_from_device(
-        104, 0, 0, TuyaBLEDataPointType.DT_BOOL, True
-    )
-    entity.set_native_value(60)
+    # Writing the delay keeps the switch byte
+    delay.set_native_value(60)
     await hass.async_block_till_done()
     assert device.datapoints[139].value == bytes([1, 60])
 
-    # Rain mode off, so the first byte follows it down
+    # Turning the switch off keeps the delay byte
+    enabled.turn_off()
+    await hass.async_block_till_done()
+    assert device.datapoints[139].value == bytes([0, 60])
+    assert delay.native_value == 60
+
+    enabled.turn_on()
+    await hass.async_block_till_done()
+    assert device.datapoints[139].value == bytes([1, 60])
+
+    # The rain mode DP is a separate setting and is left alone
     device.datapoints._update_from_device(
         104, 0, 0, TuyaBLEDataPointType.DT_BOOL, False
     )
-    entity.set_native_value(30)
+    delay.set_native_value(30)
     await hass.async_block_till_done()
-    assert device.datapoints[139].value == bytes([0, 30])
+    assert device.datapoints[139].value == bytes([1, 30])

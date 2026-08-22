@@ -162,8 +162,8 @@
             "work_time": {
                 "name": "Laufzeit"
             },
-            "rain_delay": {
-                "name": "Regenverzögerung"
+            "rain_delay_time": {
+                "name": "Regenverzögerungsdauer"
             }
         },
         "select": {
@@ -606,6 +606,9 @@
             },
             "switch_go": {
                 "name": "Mähschalter"
+            },
+            "rain_delay": {
+                "name": "Regenverzögerung"
             }
         },
         "text": {

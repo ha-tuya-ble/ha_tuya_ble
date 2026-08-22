@@ -162,8 +162,8 @@
             "work_time": {
                 "name": "Running time"
             },
-            "rain_delay": {
-                "name": "Rain delay"
+            "rain_delay_time": {
+                "name": "Rain delay time"
             }
         },
         "select": {
@@ -592,6 +592,9 @@
             },
             "switch_go": {
                 "name": "Mowing switch"
+            },
+            "rain_delay": {
+                "name": "Rain delay"
             }
         },
         "text": {

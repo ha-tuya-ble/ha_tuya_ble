@@ -162,8 +162,8 @@
             "work_time": {
                 "name": "Durée de tonte"
             },
-            "rain_delay": {
-                "name": "Délai de pluie"
+            "rain_delay_time": {
+                "name": "Durée du délai de pluie"
             }
         },
         "select": {
@@ -606,6 +606,9 @@
             },
             "switch_go": {
                 "name": "Interrupteur de tonte"
+            },
+            "rain_delay": {
+                "name": "Délai de pluie"
             }
         },
         "text": {

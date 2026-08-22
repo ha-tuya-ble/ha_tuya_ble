@@ -162,8 +162,8 @@
             "work_time": {
                 "name": "Tiempo de trabajo"
             },
-            "rain_delay": {
-                "name": "Retardo por lluvia"
+            "rain_delay_time": {
+                "name": "Tiempo de retardo por lluvia"
             }
         },
         "select": {
@@ -606,6 +606,9 @@
             },
             "switch_go": {
                 "name": "Interruptor de corte"
+            },
+            "rain_delay": {
+                "name": "Retardo por lluvia"
             }
         },
         "text": {

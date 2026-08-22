@@ -212,49 +212,54 @@ class TuyaBLEHoldTimeMapping(TuyaBLENumberMapping):
     is_available: TuyaBLENumberIsAvailable = is_fingerbot_in_push_mode
 
 
-def get_parkside_rain_delay(
-    self: TuyaBLENumber,
-    product: TuyaBLEProductInfo,
-) -> float | None:
-    """Read the delay from the second byte of the rain delay DP."""
+def _parkside_rain_delay(self: TuyaBLENumber) -> bytes | None:
+    """Return the rain delay payload once the mower has reported it."""
     datapoint = self._device.datapoints[self._mapping.dp_id]
     value = datapoint.value if datapoint else None
     if isinstance(value, (bytes, bytearray)) and len(value) >= 2:
-        return float(value[1])
+        return bytes(value)
 
     return None
 
 
-def set_parkside_rain_delay(
+def is_parkside_rain_delay_read(
+    self: TuyaBLENumber,
+    product: TuyaBLEProductInfo,
+) -> bool:
+    """Report available once the payload is known.
+
+    The switch and the delay share one payload, so neither may be written
+    before the mower has reported the byte the other one owns.
+    """
+    return _parkside_rain_delay(self) is not None
+
+
+def get_parkside_rain_delay_time(
+    self: TuyaBLENumber,
+    product: TuyaBLEProductInfo,
+) -> float | None:
+    """Read the delay from the second byte of the rain delay DP."""
+    payload = _parkside_rain_delay(self)
+
+    return float(payload[1]) if payload else None
+
+
+def set_parkside_rain_delay_time(
     self: TuyaBLENumber,
     product: TuyaBLEProductInfo,
     value: float,
 ) -> None:
-    """Write the delay, keeping the first byte in step with the rain mode.
-
-    The DP holds the rain delay switch in its first byte. That switch mirrors
-    the rain mode DP, so its current value is reused, falling back to whatever
-    the mower last reported for this DP.
-    """
-    rain_mode = self._device.datapoints[104]  # MachineRainMode
-    if rain_mode is not None and rain_mode.value is not None:
-        enabled = bool(rain_mode.value)
-    else:
-        current = self._device.datapoints[self._mapping.dp_id]
-        enabled = bool(current.value[0]) if _is_rain_delay(current) else False
+    """Write the delay, keeping the switch held in the first byte."""
+    payload = _parkside_rain_delay(self)
+    if payload is None:
+        return
 
     datapoint = self._device.datapoints.get_or_create(
         self._mapping.dp_id,
         TuyaBLEDataPointType.DT_RAW,
         b"",
     )
-    self._hass.create_task(datapoint.set_value(bytes([int(enabled), int(value)])))
-
-
-def _is_rain_delay(datapoint: object) -> bool:
-    """Return whether a datapoint holds a usable rain delay payload."""
-    value = getattr(datapoint, "value", None)
-    return isinstance(value, (bytes, bytearray)) and len(value) >= 2
+    self._hass.create_task(datapoint.set_value(bytes([payload[0], int(value)])))
 
 
 @dataclass
@@ -1037,7 +1042,7 @@ mapping: dict[str, TuyaBLECategoryNumberMapping] = {
                     dp_id=139,  # RainTimedelay
                     dp_type=TuyaBLEDataPointType.DT_RAW,
                     description=NumberEntityDescription(
-                        key="rain_delay",
+                        key="rain_delay_time",
                         icon="mdi:weather-rainy",
                         device_class=NumberDeviceClass.DURATION,
                         native_max_value=120,
@@ -1046,8 +1051,9 @@ mapping: dict[str, TuyaBLECategoryNumberMapping] = {
                         native_unit_of_measurement=UnitOfTime.MINUTES,
                         entity_category=EntityCategory.CONFIG,
                     ),
-                    getter=get_parkside_rain_delay,
-                    setter=set_parkside_rain_delay,
+                    getter=get_parkside_rain_delay_time,
+                    setter=set_parkside_rain_delay_time,
+                    is_available=is_parkside_rain_delay_read,
                 ),
                 TuyaBLENumberMapping(
                     dp_id=105,  # MachineWorktime
