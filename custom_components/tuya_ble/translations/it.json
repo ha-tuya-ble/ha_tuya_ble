@@ -51,6 +51,12 @@
             },
             "sensor_fault": {
                 "name": "Guasto sensore"
+            },
+            "machine_problem": {
+                "name": "Problema"
+            },
+            "machine_cover": {
+                "name": "Coperchio"
             }
         },
         "button": {
@@ -62,11 +68,46 @@
             },
             "bluetooth_unlock": {
                 "name": "Sblocca"
+            },
+            "start_mowing": {
+                "name": "Avvia il taglio"
+            },
+            "pause_work": {
+                "name": "Pausa"
+            },
+            "cancel_work": {
+                "name": "Annulla lavoro"
+            },
+            "start_return_station": {
+                "name": "Ritorna alla base"
+            },
+            "continue_work": {
+                "name": "Continua lavoro"
+            },
+            "edge_mowing": {
+                "name": "Taglio dei bordi"
+            },
+            "clear_schedule": {
+                "name": "Cancella programmazione"
+            },
+            "refresh_schedule": {
+                "name": "Aggiorna programmazione"
+            },
+            "refresh_zones": {
+                "name": "Aggiorna zone"
+            },
+            "clear_zones": {
+                "name": "Cancella zone"
             }
         },
         "event": {
             "event": {
                 "name": "Evento"
+            }
+        },
+        "lawn_mower": {
+            "lawn_mower": {
+                "name": "Tosaerba"
             }
         },
         "number": {
@@ -117,6 +158,12 @@
             },
             "up_position": {
                 "name": "Posizione su"
+            },
+            "work_time": {
+                "name": "Tempo di lavoro"
+            },
+            "rain_delay_time": {
+                "name": "Durata del ritardo per pioggia"
             }
         },
         "select": {
@@ -220,6 +267,16 @@
                 "state": {
                     "small": "Basso",
                     "large": "Alto"
+                }
+            },
+            "work_mode": {
+                "name": "Modalità di lavoro",
+                "state": {
+                    "standby": "In attesa",
+                    "random": "Casuale",
+                    "smart": "Intelligente",
+                    "spot": "Localizzato",
+                    "goto_charge": "Ritorna alla base"
                 }
             }
         },
@@ -400,6 +457,72 @@
             },
             "time_remaining": {
                 "name": "Tempo rimanente"
+            },
+            "activity": {
+                "name": "Attività",
+                "state": {
+                    "standby": "In attesa",
+                    "charging": "In carica",
+                    "mowing": "In taglio",
+                    "paused": "In pausa",
+                    "park": "Ritorno alla base",
+                    "updata": "Aggiornamento",
+                    "fixed_mowing": "Taglio localizzato",
+                    "error": "Errore",
+                    "self_test": "Autotest",
+                    "charging_with_task_suspend": "In carica, lavoro sospeso",
+                    "emergency": "Arresto di emergenza",
+                    "locked": "Bloccato",
+                    "edge": "Taglio dei bordi"
+                }
+            },
+            "machine_warning": {
+                "name": "Avviso",
+                "state": {
+                    "mower_lean": "Inclinato",
+                    "mower_steep": "Su un pendio ripido",
+                    "rain_park": "Ritorno alla base per evitare la pioggia",
+                    "battery_not_enough": "Batteria scarica, ricarica imminente",
+                    "no_loop_signal": "Nessun segnale perimetrale",
+                    "close_topcover": "Chiudere il coperchio",
+                    "mower_in_station": "Togliere il robot dalla base",
+                    "mower_out_station": "Posizionare il robot sulla base",
+                    "place_inside": "Posizionare il robot entro il perimetro",
+                    "fixed_end": "Taglio localizzato terminato",
+                    "charging_disconnect": "Carica instabile, controllare i contatti",
+                    "charging_pause": "Carica interrotta, controllare la base",
+                    "work_interrupt": "Lavoro interrotto, riavviare l'attività",
+                    "fixed_mowing_interupt": "Attività terminata, controllare l'ambiente",
+                    "turn_on_button": "Accendere l'interruttore fisico",
+                    "press_start_key": "Premere il pulsante di avvio",
+                    "timeset_30min": "La programmazione supera i 30 minuti",
+                    "timeset_unlegal": "Orario di programmazione non valido",
+                    "chargr_current_low": "Corrente di carica bassa",
+                    "rain_out_station": "Evita la pioggia",
+                    "updata_fail": "Aggiornamento non riuscito",
+                    "continue_tooltip": "Continua lavoro",
+                    "mower_emergency": "Arresto di emergenza",
+                    "mower_ui_locked": "Schermo bloccato",
+                    "discharge_error": "Scarica anomala",
+                    "charge_temp_error": "Temperatura della batteria anomala",
+                    "hedgehog": "Protezione ricci attiva",
+                    "ntc": "Sensore di temperatura anomalo"
+                }
+            },
+            "firmware_version": {
+                "name": "Versione del firmware"
+            },
+            "error_log": {
+                "name": "Registro errori"
+            },
+            "work_log": {
+                "name": "Registro di lavoro"
+            },
+            "schedule": {
+                "name": "Programmazione"
+            },
+            "zones": {
+                "name": "Zone"
             }
         },
         "switch": {
@@ -471,6 +594,21 @@
             },
             "switch_spray": {
                 "name": "Spruzzatura"
+            },
+            "rain_mode": {
+                "name": "Modalità pioggia"
+            },
+            "hedgehog_protection": {
+                "name": "Protezione ricci"
+            },
+            "backward_blade_stop": {
+                "name": "Arresto lama in retromarcia"
+            },
+            "switch_go": {
+                "name": "Interruttore di taglio"
+            },
+            "rain_delay": {
+                "name": "Ritardo per pioggia"
             }
         },
         "text": {

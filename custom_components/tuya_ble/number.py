@@ -29,6 +29,7 @@ from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator
 
 from .const import DOMAIN
+
 from .devices import TuyaBLEData, TuyaBLEEntity, TuyaBLEProductInfo
 from .tuya_ble import TuyaBLEDataPointType, TuyaBLEDevice
 
@@ -209,6 +210,56 @@ class TuyaBLEHoldTimeMapping(TuyaBLENumberMapping):
         default_factory=lambda: TuyaBLEHoldTimeDescription()
     )
     is_available: TuyaBLENumberIsAvailable = is_fingerbot_in_push_mode
+
+
+def _parkside_rain_delay(self: TuyaBLENumber) -> bytes | None:
+    """Return the rain delay payload once the mower has reported it."""
+    datapoint = self._device.datapoints[self._mapping.dp_id]
+    value = datapoint.value if datapoint else None
+    if isinstance(value, (bytes, bytearray)) and len(value) >= 2:
+        return bytes(value)
+
+    return None
+
+
+def is_parkside_rain_delay_read(
+    self: TuyaBLENumber,
+    product: TuyaBLEProductInfo,
+) -> bool:
+    """Report available once the payload is known.
+
+    The switch and the delay share one payload, so neither may be written
+    before the mower has reported the byte the other one owns.
+    """
+    return _parkside_rain_delay(self) is not None
+
+
+def get_parkside_rain_delay_time(
+    self: TuyaBLENumber,
+    product: TuyaBLEProductInfo,
+) -> float | None:
+    """Read the delay from the second byte of the rain delay DP."""
+    payload = _parkside_rain_delay(self)
+
+    return float(payload[1]) if payload else None
+
+
+def set_parkside_rain_delay_time(
+    self: TuyaBLENumber,
+    product: TuyaBLEProductInfo,
+    value: float,
+) -> None:
+    """Write the delay, keeping the switch held in the first byte."""
+    payload = _parkside_rain_delay(self)
+    if payload is None:
+        return
+
+    datapoint = self._device.datapoints.get_or_create(
+        self._mapping.dp_id,
+        TuyaBLEDataPointType.DT_RAW,
+        b"",
+    )
+    self._hass.create_task(datapoint.set_value(bytes([payload[0], int(value)])))
 
 
 @dataclass
@@ -979,6 +1030,44 @@ mapping: dict[str, TuyaBLECategoryNumberMapping] = {
                         native_min_value=0,
                         native_unit_of_measurement=UnitOfTime.SECONDS,
                         native_step=1,
+                    ),
+                ),
+            ],
+        },
+    ),
+    "gcj": TuyaBLECategoryNumberMapping(
+        products={
+            "9hdajpiw": [
+                TuyaBLENumberMapping(
+                    dp_id=139,  # RainTimedelay
+                    dp_type=TuyaBLEDataPointType.DT_RAW,
+                    description=NumberEntityDescription(
+                        key="rain_delay_time",
+                        icon="mdi:weather-rainy",
+                        device_class=NumberDeviceClass.DURATION,
+                        native_max_value=120,
+                        native_min_value=10,
+                        native_step=5,
+                        native_unit_of_measurement=UnitOfTime.MINUTES,
+                        entity_category=EntityCategory.CONFIG,
+                    ),
+                    getter=get_parkside_rain_delay_time,
+                    setter=set_parkside_rain_delay_time,
+                    is_available=is_parkside_rain_delay_read,
+                ),
+                TuyaBLENumberMapping(
+                    dp_id=105,  # MachineWorktime
+                    description=NumberEntityDescription(
+                        key="work_time",
+                        icon="mdi:timer",
+                        device_class=NumberDeviceClass.DURATION,
+                        # The device model declares a range of 1 to 99, but
+                        # documents 1 to 24 as the usable range.
+                        native_max_value=24,
+                        native_min_value=1,
+                        native_step=1,
+                        native_unit_of_measurement=UnitOfTime.HOURS,
+                        entity_category=EntityCategory.CONFIG,
                     ),
                 ),
             ],

@@ -42,3 +42,36 @@ async def test_binary_sensor(hass: HomeAssistant) -> None:
 
     assert entity_1.state == "on"
     assert coordinator._device.datapoints[1].value == STATE_ON
+
+
+async def test_machine_error_bitmap(hass: HomeAssistant) -> None:
+    """Test that the machine error bitmap only reports a problem when a bit is set."""
+    from unittest.mock import Mock
+    from custom_components.tuya_ble.binary_sensor import mapping as binary_sensor_mapping
+    from custom_components.tuya_ble.tuya_ble import TuyaBLEDataPointType
+
+    coordinator = await init(hass, CONFIG, PLATFORM_DOMAIN, TuyaBLEBinarySensor)
+    device = coordinator._device
+
+    mapping = {
+        m.description.key: m
+        for m in binary_sensor_mapping["gcj"].products["9hdajpiw"]
+    }["machine_problem"]
+    entity = TuyaBLEBinarySensor(
+        hass, coordinator, device, TuyaBLEProductInfo("Robot Mower"), mapping
+    )
+    entity.async_write_ha_state = Mock()
+
+    # An all zero bitmap is truthy as raw bytes, but reports no problem
+    device.datapoints._update_from_device(
+        102, 0, 0, TuyaBLEDataPointType.DT_BITMAP, b"\x00\x00\x00\x00"
+    )
+    entity._handle_coordinator_update()
+    assert entity.is_on is False
+
+    # Any set bit reports a problem
+    device.datapoints._update_from_device(
+        102, 0, 0, TuyaBLEDataPointType.DT_BITMAP, b"\x00\x00\x00\x08"
+    )
+    entity._handle_coordinator_update()
+    assert entity.is_on is True

@@ -419,6 +419,13 @@ See a device marked Experimental you have? We could use real world testing feedb
       <td><code>if1nolcm</code></td>
       <td>Experimental</td>
     </tr>
+    <tr>
+      <td><strong>Robot mowers</strong></td>
+      <td><code>gcj</code></td>
+      <td>Parkside Robot Mower PAMRC 250 A1 (BT) City</td>
+      <td><code>9hdajpiw</code></td>
+      <td>Lawn mower entity (start / pause / dock), command and schedule buttons, battery, activity, warning, error and work logs, schedule and zones, running time, rain delay, rain mode, hedgehog protection and blade stop. Experimental</td>
+    </tr>
   </tbody>
 </table>
 
