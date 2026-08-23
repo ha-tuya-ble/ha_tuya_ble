@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import asyncio
 import logging
 
 from bleak_retry_connector import BLEAK_RETRY_EXCEPTIONS as BLEAK_EXCEPTIONS, get_device
@@ -119,6 +120,20 @@ async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     """Unload a config entry."""
     if unload_ok := await hass.config_entries.async_unload_platforms(entry, PLATFORMS):
         data: TuyaBLEData = hass.data[DOMAIN].pop(entry.entry_id)
-        await data.device.stop()
+        # stop() -> _execute_disconnect() waits for self._connect_lock, which
+        # _ensure_connected() holds for the whole duration of its retry loop.
+        # While that loop runs, unloading blocks and the entry is stuck in
+        # ConfigEntryState.UNLOAD_IN_PROGRESS, so reloading the entry (and every
+        # operation that reloads it, e.g. renaming it or changing its options)
+        # never completes and only a Home Assistant restart clears it.
+        # Give the disconnect a bounded amount of time; the abandoned connection
+        # is dropped by the adapter/proxy anyway once the client is discarded.
+        try:
+            await asyncio.wait_for(data.device.stop(), 15)
+        except TimeoutError:
+            _LOGGER.warning(
+                "%s: Timed out waiting for the device to disconnect, unloading anyway",
+                entry.data[CONF_ADDRESS],
+            )
 
     return unload_ok
