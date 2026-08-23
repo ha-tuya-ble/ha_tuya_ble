@@ -796,17 +796,19 @@ class TuyaBLEDevice:
             if self._client and self._client.is_connected and self._is_paired:
                 return
             attempts_count = CONNECT_ATTEMPTS
-            while attempts_count > 0:
+            attempt = 0
+            while True:
                 if self._stopped:
                     return
-                attempts_count -= 1
-                if attempts_count == 0:
+                if attempt >= attempts_count:
                     _LOGGER.error(
-                        "%s: Connecting, all attempts failed; RSSI: %s",
+                        "%s: Connecting, all %s attempts failed; RSSI: %s",
                         self.address,
+                        attempts_count,
                         self.rssi,
                     )
                     break
+                attempt += 1
                 try:
                     async with global_connect_lock:
                         _LOGGER.debug(
