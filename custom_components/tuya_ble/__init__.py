@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import asyncio
 import logging
 
 from bleak_retry_connector import BLEAK_RETRY_EXCEPTIONS as BLEAK_EXCEPTIONS, get_device
@@ -57,16 +58,39 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     product_info = get_device_product_info(device)
 
     coordinator = TuyaBLECoordinator(hass, device)
-    """
-    try:
-        await device.update()
-    except BLEAK_EXCEPTIONS as ex:
-        raise ConfigEntryNotReady(
-            f"Could not communicate with Tuya BLE device with address {address}"
-        ) from ex
-    """
 
-    hass.add_job(device.update())
+    async def _initial_update() -> None:
+        """Perform the first update, retrying until the device answers.
+
+        The first update used to be fired with `hass.add_job()` and never awaited.
+        When the device is out of range while the entry is being set up,
+        `_ensure_connected()` exhausts its attempts and raises `BleakNotFoundError`
+        out of a task nobody watches ("Task exception was never retrieved"), so the
+        device is never polled again and stays unavailable until Home Assistant is
+        restarted. Retrying in an entry-scoped background task keeps the device
+        recoverable without a restart; the task is cancelled when the entry unloads.
+        """
+        delay = 60
+        while True:
+            try:
+                # Cap a single attempt: `_ensure_connected()` retries internally and
+                # can occupy the task for a long time, which would delay the next
+                # real attempt long after the device became reachable again.
+                await asyncio.wait_for(device.update(), 240)
+                return
+            except BLEAK_EXCEPTIONS + (TimeoutError,) as ex:
+                _LOGGER.debug(
+                    "%s: Initial update failed (%s); retrying in %s s",
+                    address,
+                    type(ex).__name__,
+                    delay,
+                )
+                await asyncio.sleep(delay)
+                delay = min(delay * 2, 300)
+
+    entry.async_create_background_task(
+        hass, _initial_update(), f"tuya_ble initial update {address}"
+    )
 
     @callback
     def _async_update_ble(
