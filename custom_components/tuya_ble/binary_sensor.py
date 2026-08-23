@@ -42,6 +42,13 @@ def _bitmap_value_to_int(value: bytes | bytearray | int) -> int:
     return int(value)
 
 
+def machine_error_getter(self: TuyaBLEBinarySensor) -> None:
+    """Report a problem while any bit of the machine error bitmap is set."""
+    datapoint = self._device.datapoints[self._mapping.dp_id]
+    if datapoint and datapoint.value is not None:
+        self._attr_is_on = _bitmap_value_to_int(datapoint.value) != 0
+
+
 def door_status_getter(self: TuyaBLEBinarySensor) -> None:
     datapoint = self._device.datapoints[self._mapping.dp_id]
     if datapoint and datapoint.value is not None:
@@ -415,6 +422,31 @@ mapping: dict[str, TuyaBLECategoryBinarySensorMapping] = {
                             if sensor._device.datapoints[12]
                             else False
                         ),
+                    ),
+                ),
+            ],
+        },
+    ),
+    "gcj": TuyaBLECategoryBinarySensorMapping(
+        products={
+            "9hdajpiw": [
+                TuyaBLEBinarySensorMapping(
+                    dp_id=102,  # MachineError
+                    description=BinarySensorEntityDescription(
+                        key="machine_problem",
+                        device_class=BinarySensorDeviceClass.PROBLEM,
+                        entity_category=EntityCategory.DIAGNOSTIC,
+                    ),
+                    getter=machine_error_getter,
+                ),
+                TuyaBLEBinarySensorMapping(
+                    dp_id=116,  # MachineCover
+                    dp_type=TuyaBLEDataPointType.DT_BOOL,
+                    description=BinarySensorEntityDescription(
+                        key="machine_cover",
+                        device_class=BinarySensorDeviceClass.OPENING,
+                        entity_category=EntityCategory.DIAGNOSTIC,
+                        entity_registry_enabled_default=False,
                     ),
                 ),
             ],

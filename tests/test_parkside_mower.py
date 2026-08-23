@@ -1,0 +1,209 @@
+"""Test for the raw Parkside mower datapoints."""
+
+from struct import pack
+from unittest.mock import AsyncMock, Mock
+
+from homeassistant.core import HomeAssistant
+
+from custom_components.tuya_ble.const import PARKSIDE_MOWER_ERRORS
+from custom_components.tuya_ble.sensor import (
+    TuyaBLESensor,
+    mapping as sensor_mapping,
+)
+from custom_components.tuya_ble.number import (
+    TuyaBLENumber,
+    mapping as number_mapping,
+)
+from custom_components.tuya_ble.tuya_ble import TuyaBLEDataPointType
+
+from . import *
+
+CONFIG = {
+    DEVICE_NAME: {
+        **DEVICE_CONFIG,
+        "entities": [
+            {
+                "entity_category": "None",
+                "friendly_name": "Mower 1",
+                "icon": "",
+                "id": "sensor",
+                "platform": "sensor",
+                "restore_on_reconnect": False,
+                "address": "12:23:44",
+            }
+        ],
+    }
+}
+
+
+async def _init(hass: HomeAssistant):
+    """Set up a coordinator and device for the Parkside mower."""
+    from pytest_homeassistant_custom_component.common import MockConfigEntry
+    from custom_components.tuya_ble.const import DOMAIN
+    from custom_components.tuya_ble.cloud import HASSTuyaBLEDeviceManager
+    from custom_components.tuya_ble.devices import (
+        TuyaBLECoordinator,
+        TuyaBLEData,
+        TuyaBLEDevice,
+        TuyaBLEProductInfo,
+    )
+    from bleak.backends.device import BLEDevice
+
+    entry = MockConfigEntry(
+        domain=DOMAIN,
+        data={"devices": CONFIG, "address": DEVICE_ADDRESS},
+        title="Mock TuyaBLE",
+    )
+    entry.add_to_hass(hass)
+
+    ble_device = BLEDevice(name="bob", address="11:22:33", details="", rssi=-50)
+    manager = HASSTuyaBLEDeviceManager(hass, entry.options.copy())
+    device = TuyaBLEDevice(manager, ble_device)
+    await device.initialize()
+    device._send_datapoints = AsyncMock()
+    product_info = TuyaBLEProductInfo("Robot Mower")
+
+    hass.data.setdefault(DOMAIN, {})
+    coordinator = TuyaBLECoordinator(hass, device)
+    hass.data[DOMAIN][entry.entry_id] = TuyaBLEData(
+        title="Hello",
+        device=device,
+        manager=manager,
+        product=product_info,
+        coordinator=coordinator,
+    )
+    return device, coordinator, product_info
+
+
+def _sensor(hass, coordinator, device, product, key):
+    """Build the mower sensor with the given key from the real mapping."""
+    mapping = {
+        m.description.key: m for m in sensor_mapping["gcj"].products["9hdajpiw"]
+    }[key]
+    entity = TuyaBLESensor(hass, coordinator, device, product, mapping)
+    entity.async_write_ha_state = Mock()
+    return entity
+
+
+def _raw(device, dp_id, payload):
+    device.datapoints._update_from_device(
+        dp_id, 0, 0, TuyaBLEDataPointType.DT_RAW, payload
+    )
+
+
+async def test_error_log(hass: HomeAssistant) -> None:
+    """Test DP 111, a uint32 epoch plus an index into the error bitmap."""
+    device, coordinator, product = await _init(hass)
+    entity = _sensor(hass, coordinator, device, product, "error_log")
+
+    # One populated entry followed by an empty one, which is skipped
+    payload = pack(">IB", 1700000000, 2) + pack(">IB", 0, 0)
+    _raw(device, 111, payload)
+    entity._handle_coordinator_update()
+
+    assert entity.native_value == 1
+    errors = entity.extra_state_attributes["errors"]
+    assert errors[0]["error"] == PARKSIDE_MOWER_ERRORS[2] == "NO_SIGNAL"
+    assert errors[0]["time"].startswith("2023-11-14T")
+
+
+async def test_work_log(hass: HomeAssistant) -> None:
+    """Test DP 112, a uint32 start plus a uint32 duration plus a mode."""
+    device, coordinator, product = await _init(hass)
+    entity = _sensor(hass, coordinator, device, product, "work_log")
+
+    _raw(device, 112, pack(">IIB", 1700000000, 3600, 2))
+    entity._handle_coordinator_update()
+
+    assert entity.native_value == 1
+    session = entity.extra_state_attributes["sessions"][0]
+    assert session["duration_seconds"] == 3600
+    assert session["mode"] == "spot_mowing"
+
+
+async def test_schedule(hass: HomeAssistant) -> None:
+    """Test DP 110, where 0x88 marks an unused slot."""
+    device, coordinator, product = await _init(hass)
+    entity = _sensor(hass, coordinator, device, product, "schedule")
+
+    used = bytes([2, 9, 30, 11, 45])
+    unused = bytes([3, 0x88, 0x88, 0x88, 0x88])
+    _raw(device, 110, used + unused)
+    entity._handle_coordinator_update()
+
+    assert entity.native_value == 1
+    slot = entity.extra_state_attributes["slots"][0]
+    assert (slot["weekday"], slot["start"], slot["end"]) == (2, "09:30", "11:45")
+
+
+async def test_zones(hass: HomeAssistant) -> None:
+    """Test DP 113, a uint32 passage length plus an area share."""
+    device, coordinator, product = await _init(hass)
+    entity = _sensor(hass, coordinator, device, product, "zones")
+
+    _raw(device, 113, pack(">IB", 25, 60) + pack(">IB", 0, 0))
+    entity._handle_coordinator_update()
+
+    assert entity.native_value == 1
+    zone = entity.extra_state_attributes["zones"][0]
+    assert zone["passage_length_m"] == 25
+    assert zone["area_share_percent"] == 60
+
+
+async def test_rain_delay(hass: HomeAssistant) -> None:
+    """Test DP 139, whose two bytes are owned by a switch and a number."""
+    from custom_components.tuya_ble.switch import (
+        TuyaBLESwitch,
+        mapping as switch_mapping,
+    )
+
+    device, coordinator, product = await _init(hass)
+    coordinator._async_handle_connect()
+
+    number_mappings = {
+        m.description.key: m for m in number_mapping["gcj"].products["9hdajpiw"]
+    }
+    switch_mappings = {
+        m.description.key: m for m in switch_mapping["gcj"].products["9hdajpiw"]
+    }
+    delay = TuyaBLENumber(
+        hass, coordinator, device, product, number_mappings["rain_delay_time"]
+    )
+    enabled = TuyaBLESwitch(
+        hass, coordinator, device, product, switch_mappings["rain_delay"]
+    )
+    for entity in (delay, enabled):
+        entity.async_write_ha_state = Mock()
+
+    # Neither control may write a byte of a payload it has never seen
+    assert delay.available is False
+    assert enabled.available is False
+
+    _raw(device, 139, bytes([1, 45]))
+    assert delay.available is True
+    assert enabled.available is True
+    assert delay.native_value == 45
+    assert enabled.is_on is True
+
+    # Writing the delay keeps the switch byte
+    delay.set_native_value(60)
+    await hass.async_block_till_done()
+    assert device.datapoints[139].value == bytes([1, 60])
+
+    # Turning the switch off keeps the delay byte
+    enabled.turn_off()
+    await hass.async_block_till_done()
+    assert device.datapoints[139].value == bytes([0, 60])
+    assert delay.native_value == 60
+
+    enabled.turn_on()
+    await hass.async_block_till_done()
+    assert device.datapoints[139].value == bytes([1, 60])
+
+    # The rain mode DP is a separate setting and is left alone
+    device.datapoints._update_from_device(
+        104, 0, 0, TuyaBLEDataPointType.DT_BOOL, False
+    )
+    delay.set_native_value(30)
+    await hass.async_block_till_done()
+    assert device.datapoints[139].value == bytes([1, 30])

@@ -186,3 +186,89 @@ async def test_oyqux5vv_raw_unlock(hass: HomeAssistant) -> None:
     assert dp is not None
     assert dp.type == TuyaBLEDataPointType.DT_RAW
     assert dp.value == bytes.fromhex("0001ffff36383538313536320169ab34cd0000")
+
+
+async def test_button_fixed_enum_value(hass: HomeAssistant) -> None:
+    """Test a button writing a fixed enum value instead of toggling a bool."""
+    from pytest_homeassistant_custom_component.common import MockConfigEntry
+    from custom_components.tuya_ble.const import DOMAIN, PARKSIDE_MOWER_COMMANDS
+    from custom_components.tuya_ble.cloud import HASSTuyaBLEDeviceManager
+    from custom_components.tuya_ble.devices import (
+        TuyaBLEDevice,
+        TuyaBLEProductInfo,
+        TuyaBLECoordinator,
+        TuyaBLEData,
+    )
+    from custom_components.tuya_ble.button import mapping as button_mapping
+    from bleak.backends.device import BLEDevice
+
+    entry = MockConfigEntry(
+        domain=DOMAIN,
+        data={
+            "devices": CONFIG,
+            "address": DEVICE_ADDRESS,
+        },
+        title="Mock TuyaBLE",
+    )
+    entry.add_to_hass(hass)
+
+    ble_device = BLEDevice(name="bob", address="11:22:33", details="", rssi=-50)
+    manager = HASSTuyaBLEDeviceManager(hass, entry.options.copy())
+    device = TuyaBLEDevice(manager, ble_device)
+    await device.initialize()
+    product_info = TuyaBLEProductInfo("Robot Mower")
+
+    device._send_datapoints = AsyncMock()
+
+    hass.data.setdefault(DOMAIN, {})
+    coordinator = TuyaBLECoordinator(hass, device)
+
+    tuya_ble_hass_data = TuyaBLEData(
+        title="Hello",
+        device=device,
+        manager=manager,
+        product=product_info,
+        coordinator=coordinator,
+    )
+    hass.data[DOMAIN][entry.entry_id] = tuya_ble_hass_data
+
+    mappings = {
+        mapping.description.key: mapping
+        for mapping in button_mapping["gcj"].products["9hdajpiw"]
+    }
+
+    # Each mower button writes the index of its command value, not a bool
+    entity = TuyaBLEButton(
+        hass, coordinator, device, product_info, mappings["start_return_station"]
+    )
+    entity.async_write_ha_state = Mock()
+
+    entity.press()
+    await hass.async_block_till_done()
+
+    device._send_datapoints.assert_called_once_with([115])
+    datapoint = device.datapoints[115]
+    assert datapoint.type is TuyaBLEDataPointType.DT_ENUM
+    assert datapoint.value == PARKSIDE_MOWER_COMMANDS.index("StartReturnStation")
+
+    # Pressing a second button overwrites the same DP with its own command
+    entity = TuyaBLEButton(
+        hass, coordinator, device, product_info, mappings["cancel_work"]
+    )
+    entity.async_write_ha_state = Mock()
+
+    entity.press()
+    await hass.async_block_till_done()
+
+    assert device.datapoints[115].value == PARKSIDE_MOWER_COMMANDS.index("CancelWork")
+
+    # A trigger button writes True on every press instead of toggling
+    entity = TuyaBLEButton(
+        hass, coordinator, device, product_info, mappings["clear_schedule"]
+    )
+    entity.async_write_ha_state = Mock()
+
+    for _ in range(2):
+        entity.press()
+        await hass.async_block_till_done()
+        assert device.datapoints[107].value is True

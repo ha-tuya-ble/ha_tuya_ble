@@ -202,6 +202,56 @@ class TuyaBLEReversePositionsMapping(TuyaBLESwitchMapping):
     is_available: TuyaBLESwitchIsAvailable = is_fingerbot_in_switch_mode
 
 
+def _parkside_rain_delay(self: TuyaBLESwitch) -> bytes | None:
+    """Return the rain delay payload once the mower has reported it."""
+    datapoint = self._device.datapoints[self._mapping.dp_id]
+    value = datapoint.value if datapoint else None
+    if isinstance(value, (bytes, bytearray)) and len(value) >= 2:
+        return bytes(value)
+
+    return None
+
+
+def is_parkside_rain_delay_read(
+    self: TuyaBLESwitch,
+    product: TuyaBLEProductInfo,
+) -> bool:
+    """Report available once the payload is known.
+
+    The switch and the delay share one payload, so neither may be written
+    before the mower has reported the byte the other one owns.
+    """
+    return _parkside_rain_delay(self) is not None
+
+
+def get_parkside_rain_delay(
+    self: TuyaBLESwitch,
+    product: TuyaBLEProductInfo,
+) -> bool | None:
+    """Read the switch from the first byte of the rain delay DP."""
+    payload = _parkside_rain_delay(self)
+
+    return bool(payload[0]) if payload else None
+
+
+def set_parkside_rain_delay(
+    self: TuyaBLESwitch,
+    product: TuyaBLEProductInfo,
+    value: bool,
+) -> None:
+    """Write the switch, keeping the delay held in the second byte."""
+    payload = _parkside_rain_delay(self)
+    if payload is None:
+        return
+
+    datapoint = self._device.datapoints.get_or_create(
+        self._mapping.dp_id,
+        TuyaBLEDataPointType.DT_RAW,
+        b"",
+    )
+    self._hass.create_task(datapoint.set_value(bytes([int(value), payload[1]])))
+
+
 @dataclass
 class TuyaBLECategorySwitchMapping:
     """Models a dict of products and their mappings"""
@@ -877,6 +927,59 @@ mapping: dict[str, TuyaBLECategorySwitchMapping] = {
                     description=SwitchEntityDescription(
                         key="water_auto",
                         icon="mdi:water-auto",
+                        entity_category=EntityCategory.CONFIG,
+                    ),
+                ),
+            ],
+        },
+    ),
+    "gcj": TuyaBLECategorySwitchMapping(
+        products={
+            "9hdajpiw": [
+                # Generic Tuya vacuum switch, superseded by DP 115 on this
+                # mower, so it is disabled by default.
+                TuyaBLESwitchMapping(
+                    dp_id=2,  # switch_go
+                    dp_type=TuyaBLEDataPointType.DT_BOOL,
+                    description=SwitchEntityDescription(
+                        key="switch_go",
+                        icon="mdi:mower",
+                        entity_registry_enabled_default=False,
+                    ),
+                ),
+                TuyaBLESwitchMapping(
+                    dp_id=139,  # RainTimedelay, the switch in its first byte
+                    dp_type=TuyaBLEDataPointType.DT_RAW,
+                    description=SwitchEntityDescription(
+                        key="rain_delay",
+                        icon="mdi:weather-rainy",
+                        entity_category=EntityCategory.CONFIG,
+                    ),
+                    getter=get_parkside_rain_delay,
+                    setter=set_parkside_rain_delay,
+                    is_available=is_parkside_rain_delay_read,
+                ),
+                TuyaBLESwitchMapping(
+                    dp_id=104,  # MachineRainMode
+                    description=SwitchEntityDescription(
+                        key="rain_mode",
+                        icon="mdi:weather-pouring",
+                        entity_category=EntityCategory.CONFIG,
+                    ),
+                ),
+                TuyaBLESwitchMapping(
+                    dp_id=118,  # HedgehogPROT
+                    description=SwitchEntityDescription(
+                        key="hedgehog_protection",
+                        icon="mdi:paw",
+                        entity_category=EntityCategory.CONFIG,
+                    ),
+                ),
+                TuyaBLESwitchMapping(
+                    dp_id=121,  # backwardbladestop
+                    description=SwitchEntityDescription(
+                        key="backward_blade_stop",
+                        icon="mdi:saw-blade",
                         entity_category=EntityCategory.CONFIG,
                     ),
                 ),

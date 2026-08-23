@@ -72,6 +72,106 @@ FINGERBOT_MODE_SWITCH: Final = "switch"
 FINGERBOT_MODE_PROGRAM: Final = "program"
 FINGERBOT_BUTTON_EVENT: Final = "fingerbot_button_pressed"
 
+# Enum ranges of the Parkside robot mower, in the order declared by the device
+# model. Enum DPs carry the index of the active value.
+#
+# The values are copied verbatim from the device model. Misspellings such as
+# UPDATA, LIFTE, UNEXCEPECT_LOW, FIXED_MOWING_INTERUPT, CHARGR_CURRENT_LOW and
+# TIMESET_UNLEGAL are the manufacturer's own and must not be corrected:
+# lowercased, they are the states these entities report and the keys their
+# translations are looked up by.
+PARKSIDE_MOWER_STATUSES: Final = [
+    "STANDBY",
+    "CHARGING",
+    "MOWING",
+    "PAUSED",
+    "PARK",
+    "UPDATA",
+    "FIXED_MOWING",
+    "ERROR",
+    "SELF_TEST",
+    "CHARGING_WITH_TASK_SUSPEND",
+    "EMERGENCY",
+    "LOCKED",
+    "EDGE",
+]
+
+PARKSIDE_MOWER_COMMANDS: Final = [
+    "PauseWork",
+    "CancelWork",
+    "ContinueWork",
+    "StartMowing",
+    "StartFixedMowing",
+    "StartReturnStation",
+    "EDGE",
+]
+
+# Bit labels of the machine error bitmap, used to name the entries of the
+# error logs.
+PARKSIDE_MOWER_ERRORS: Final = [
+    "FAULT_LEAN",
+    "FAULT_TOO_STEEP",
+    "NO_SIGNAL",
+    "L_MOTOR_ERROR",
+    "R_MOTOR_ERROR",
+    "BATTERY_VOL_HIG",
+    "B_TEMP_ERROR",
+    "DISCHAR_ERROR",
+    "CHARGE_OVERTEMP",
+    "BATTERY_DAMAGE",
+    "BATTERY_LOWDIS",
+    "CHARGE_CURDIS",
+    "CHARGE_TEMP",
+    "UNEXCEPECT_LOW",
+    "B_ERROR_RESET",
+    "IMU_INVALID",
+    "EMS_INVALID",
+    "L_MOTOR_HALL",
+    "R_MOTOR_HALL",
+    "STEEP_OVER_3S",
+    "OUTSIDE_AREA",
+    "LIFTE",
+    "DTRAPPED",
+    "B_MOTOR_ERROR",
+    "OVERTURN",
+    "MOTOR_OVERCUR",
+    "MOTOR_HALL",
+    "MOTOR_DISCON",
+    "EMS_DISCONNECT",
+    "MOTOR_ERROR",
+]
+
+PARKSIDE_MOWER_WARNINGS: Final = [
+    "MOWER_LEAN",
+    "MOWER_STEEP",
+    "RAIN_PARK",
+    "BATTERY_NOT_ENOUGH",
+    "NO_LOOP_SIGNAL",
+    "CLOSE_TOPCOVER",
+    "MOWER_IN_STATION",
+    "MOWER_OUT_STATION",
+    "PLACE_INSIDE",
+    "FIXED_END",
+    "CHARGING_DISCONNECT",
+    "CHARGING_PAUSE",
+    "WORK_INTERRUPT",
+    "FIXED_MOWING_INTERUPT",
+    "TURN_ON_BUTTON",
+    "PRESS_START_KEY",
+    "TIMESET_30MIN",
+    "TIMESET_UNLEGAL",
+    "CHARGR_CURRENT_LOW",
+    "RAIN_OUT_STATION",
+    "UPDATA_FAIL",
+    "CONTINUE_TOOLTIP",
+    "MOWER_EMERGENCY",
+    "MOWER_UI_LOCKED",
+    "DISCHARGE_ERROR",
+    "CHARGE_TEMP_ERROR",
+    "HEDGEHOG",
+    "NTC",
+]
+
 
 class WorkMode(StrEnum):
     """Work modes."""
