@@ -1,4 +1,5 @@
 """The Tuya BLE integration."""
+
 from __future__ import annotations
 
 from dataclasses import dataclass, field
@@ -9,10 +10,12 @@ from typing import Any, Callable
 from homeassistant.components.switch import (
     SwitchEntityDescription,
     SwitchEntity,
+    SwitchDeviceClass,
 )
 from homeassistant.config_entries import ConfigEntry
+from homeassistant.const import Platform
 from homeassistant.core import HomeAssistant
-from homeassistant.const import EntityCategory
+from homeassistant.helpers.entity import EntityCategory
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator
 
@@ -28,18 +31,16 @@ TuyaBLESwitchGetter = (
 )
 
 
-TuyaBLESwitchIsAvailable = (
-    Callable[["TuyaBLESwitch", TuyaBLEProductInfo], bool] | None
-)
+TuyaBLESwitchIsAvailable = Callable[["TuyaBLESwitch", TuyaBLEProductInfo], bool] | None
 
 
-TuyaBLESwitchSetter = (
-    Callable[["TuyaBLESwitch", TuyaBLEProductInfo, bool], None] | None
-)
+TuyaBLESwitchSetter = Callable[["TuyaBLESwitch", TuyaBLEProductInfo, bool], None] | None
 
 
 @dataclass
 class TuyaBLESwitchMapping:
+    """Model a DP, description and default values"""
+
     dp_id: int
     description: SwitchEntityDescription
     force_add: bool = True
@@ -72,13 +73,22 @@ def is_fingerbot_in_switch_mode(
     return result
 
 
+def is_water_valve_in_switch_mode(
+    self: TuyaBLESwitch, product: TuyaBLEProductInfo
+) -> bool:
+    result: bool = False
+    if product.watervalve:
+        result = True
+    return result
+
+
 def get_fingerbot_program_repeat_forever(
     self: TuyaBLESwitch, product: TuyaBLEProductInfo
 ) -> bool | None:
     result: bool | None = None
     if product.fingerbot and product.fingerbot.program:
         datapoint = self._device.datapoints[product.fingerbot.program]
-        if datapoint and type(datapoint.value) is bytes:
+        if datapoint and isinstance(datapoint.value, bytes):
             repeat_count = int.from_bytes(datapoint.value[0:2], "big")
             result = repeat_count == 0xFFFF
     return result
@@ -89,12 +99,56 @@ def set_fingerbot_program_repeat_forever(
 ) -> None:
     if product.fingerbot and product.fingerbot.program:
         datapoint = self._device.datapoints[product.fingerbot.program]
-        if datapoint and type(datapoint.value) is bytes:
+        if datapoint and isinstance(datapoint.value, bytes):
             new_value = (
-                int.to_bytes(0xFFFF if value else 1, 2, "big") + 
-                datapoint.value[2:]
+                int.to_bytes(0xFFFF if value else 1, 2, "big") + datapoint.value[2:]
             )
             self._hass.create_task(datapoint.set_value(new_value))
+
+
+def set_16wgjvck_water_valve(
+    self: TuyaBLESwitch, product: TuyaBLEProductInfo, value: bool
+) -> None:
+    if value:
+        # Read the set timer beforehand (DP 15 = use_time or DP 11 = countdown).
+        dp_11_val = 60
+        dp15 = self._device.datapoints[15]
+        dp11 = self._device.datapoints[11]
+        if dp15 and dp15.value:
+            dp_11_val = int(dp15.value)
+        elif dp11 and dp11.value:
+            dp_11_val = int(dp11.value)
+        if dp_11_val <= 0:
+            dp_11_val = 60
+        # Read the set valve opening (DP 2)
+        dp_2_val = 100
+        dp2 = self._device.datapoints[2]
+        if dp2 and dp2.value is not None:
+            dp_2_val = int(dp2.value)
+        if dp_2_val <= 0:
+            dp_2_val = 100
+
+        # Create the data points in the cache IF they haven't already been sent by the device,
+        # so that "set_multiple_values" doesn't simply ignore them.
+        self._device.datapoints.get_or_create(1, TuyaBLEDataPointType.DT_BOOL, True)
+        self._device.datapoints.get_or_create(
+            2, TuyaBLEDataPointType.DT_VALUE, dp_2_val
+        )
+        self._device.datapoints.get_or_create(
+            11, TuyaBLEDataPointType.DT_VALUE, dp_11_val
+        )
+
+        # Atomic Multi-Datapoint Payload for turning on
+        dp_updates = {
+            1: True,
+            2: dp_2_val,
+            11: dp_11_val,
+        }
+        self._hass.create_task(self._device.set_multiple_values(dp_updates))
+    else:
+        # Just turn off the switch
+        self._device.datapoints.get_or_create(1, TuyaBLEDataPointType.DT_BOOL, False)
+        self._hass.create_task(self._device.set_multiple_values({1: False}))
 
 
 @dataclass
@@ -105,6 +159,35 @@ class TuyaBLEFingerbotSwitchMapping(TuyaBLESwitchMapping):
         )
     )
     is_available: TuyaBLESwitchIsAvailable = is_fingerbot_in_switch_mode
+
+
+@dataclass
+class TuyaBLEWaterValveSwitchMapping(TuyaBLESwitchMapping):
+    description: SwitchEntityDescription = field(
+        default_factory=lambda: SwitchEntityDescription(
+            key="water_valve",
+        )
+    )
+    is_available: TuyaBLESwitchIsAvailable = is_water_valve_in_switch_mode
+
+
+@dataclass
+class TuyaLockMotorStateMapping(TuyaBLESwitchMapping):
+    description: SwitchEntityDescription = field(
+        default_factory=lambda: SwitchEntityDescription(
+            key="lock_motor_state",
+        )
+    )
+
+
+@dataclass
+class TuyaBLEWaterValveWeatherSwitchMapping(TuyaBLESwitchMapping):
+    description: SwitchEntityDescription = field(
+        default_factory=lambda: SwitchEntityDescription(
+            key="weather_switch",
+            icon="mdi:cloud-question",
+        )
+    )
 
 
 @dataclass
@@ -119,13 +202,215 @@ class TuyaBLEReversePositionsMapping(TuyaBLESwitchMapping):
     is_available: TuyaBLESwitchIsAvailable = is_fingerbot_in_switch_mode
 
 
+def _parkside_rain_delay(self: TuyaBLESwitch) -> bytes | None:
+    """Return the rain delay payload once the mower has reported it."""
+    datapoint = self._device.datapoints[self._mapping.dp_id]
+    value = datapoint.value if datapoint else None
+    if isinstance(value, (bytes, bytearray)) and len(value) >= 2:
+        return bytes(value)
+
+    return None
+
+
+def is_parkside_rain_delay_read(
+    self: TuyaBLESwitch,
+    product: TuyaBLEProductInfo,
+) -> bool:
+    """Report available once the payload is known.
+
+    The switch and the delay share one payload, so neither may be written
+    before the mower has reported the byte the other one owns.
+    """
+    return _parkside_rain_delay(self) is not None
+
+
+def get_parkside_rain_delay(
+    self: TuyaBLESwitch,
+    product: TuyaBLEProductInfo,
+) -> bool | None:
+    """Read the switch from the first byte of the rain delay DP."""
+    payload = _parkside_rain_delay(self)
+
+    return bool(payload[0]) if payload else None
+
+
+def set_parkside_rain_delay(
+    self: TuyaBLESwitch,
+    product: TuyaBLEProductInfo,
+    value: bool,
+) -> None:
+    """Write the switch, keeping the delay held in the second byte."""
+    payload = _parkside_rain_delay(self)
+    if payload is None:
+        return
+
+    datapoint = self._device.datapoints.get_or_create(
+        self._mapping.dp_id,
+        TuyaBLEDataPointType.DT_RAW,
+        b"",
+    )
+    self._hass.create_task(datapoint.set_value(bytes([int(value), payload[1]])))
+
+
 @dataclass
 class TuyaBLECategorySwitchMapping:
+    """Models a dict of products and their mappings"""
+
     products: dict[str, list[TuyaBLESwitchMapping]] | None = None
     mapping: list[TuyaBLESwitchMapping] | None = None
 
 
 mapping: dict[str, TuyaBLECategorySwitchMapping] = {
+    "sfkzq": TuyaBLECategorySwitchMapping(
+        products={
+            **dict.fromkeys(
+                ["0axr5s0b", "46zia2nz", "1fcnd8xk", "e1poaiwa", "d4vpmigg"],
+                [
+                    TuyaBLESwitchMapping(
+                        dp_id=1,
+                        description=SwitchEntityDescription(
+                            key="water_valve",
+                            entity_registry_enabled_default=True,
+                        ),
+                    ),
+                ],
+            ),
+            "ldcdnigc": [
+                TuyaBLESwitchMapping(
+                    dp_id=1,
+                    description=SwitchEntityDescription(
+                        key="water_valve",
+                        icon="mdi:valve",
+                    ),
+                ),
+            ],
+            "ojrvmfkk": [
+                # Valve 1 (z1) switch - DP 1
+                TuyaBLESwitchMapping(
+                    dp_id=1,
+                    description=SwitchEntityDescription(
+                        key="water_valve_z1",
+                        icon="mdi:valve",
+                        entity_registry_enabled_default=True,
+                    ),
+                ),
+                # Use weather switch - DP 14
+                TuyaBLESwitchMapping(
+                    dp_id=14,
+                    description=SwitchEntityDescription(
+                        key="weather_switch",
+                        icon="mdi:weather-cloudy",
+                        entity_category=EntityCategory.CONFIG,
+                    ),
+                ),
+                # Valve 2 (z2) switch - DP 121
+                TuyaBLESwitchMapping(
+                    dp_id=121,
+                    description=SwitchEntityDescription(
+                        key="water_valve_z2",
+                        icon="mdi:valve",
+                        entity_registry_enabled_default=True,
+                    ),
+                ),
+            ],
+            "16wgjvck": [  # Aldi/Ferrex Smart Water Valve
+                TuyaBLESwitchMapping(
+                    dp_id=1,
+                    description=SwitchEntityDescription(
+                        key="water_valve",
+                        icon="mdi:valve",
+                    ),
+                    setter=set_16wgjvck_water_valve,
+                ),
+            ],
+            "tqzkwarw": [  # HCT-611 Water Timer
+                TuyaBLESwitchMapping(
+                    dp_id=1,
+                    description=SwitchEntityDescription(
+                        key="water_valve",
+                        icon="mdi:valve",
+                    ),
+                ),
+                TuyaBLEWaterValveWeatherSwitchMapping(dp_id=14),
+            ],
+            "8t5hebn0": [  # MoistenLand Water Timer
+                TuyaBLESwitchMapping(
+                    dp_id=1,
+                    description=SwitchEntityDescription(
+                        key="water_valve",
+                        icon="mdi:valve",
+                        entity_registry_enabled_default=True,
+                    ),
+                ),
+            ],
+            **dict.fromkeys(
+                ["nxquc5lb", "svhikeyq"],
+                [  # Smart water timer - SOP10
+                    TuyaBLEWaterValveSwitchMapping(dp_id=1),
+                    TuyaBLEWaterValveWeatherSwitchMapping(dp_id=14),
+                ],
+            ),
+        },
+    ),
+    "wkf": TuyaBLECategorySwitchMapping(
+        products={
+            **dict.fromkeys(
+                [
+                    "llflaywg",
+                ],  # Thermostatic Radiator Valve
+                [
+                    TuyaBLESwitchMapping(
+                        dp_id=8,
+                        description=SwitchEntityDescription(
+                            key="window_check",
+                            icon="mdi:window-closed",
+                            entity_category=EntityCategory.CONFIG,
+                        ),
+                    ),
+                    TuyaBLESwitchMapping(
+                        dp_id=10,
+                        description=SwitchEntityDescription(
+                            key="antifreeze",
+                            icon="mdi:snowflake-off",
+                            entity_category=EntityCategory.CONFIG,
+                        ),
+                    ),
+                    TuyaBLESwitchMapping(
+                        dp_id=40,
+                        description=SwitchEntityDescription(
+                            key="child_lock",
+                            icon="mdi:account-lock",
+                            entity_category=EntityCategory.CONFIG,
+                        ),
+                    ),
+                    TuyaBLESwitchMapping(
+                        dp_id=130,
+                        description=SwitchEntityDescription(
+                            key="water_scale_proof",
+                            icon="mdi:water-check",
+                            entity_category=EntityCategory.CONFIG,
+                        ),
+                    ),
+                    TuyaBLESwitchMapping(
+                        dp_id=107,
+                        description=SwitchEntityDescription(
+                            key="programming_mode",
+                            icon="mdi:calendar-edit",
+                            entity_category=EntityCategory.CONFIG,
+                        ),
+                    ),
+                    TuyaBLESwitchMapping(
+                        dp_id=108,
+                        description=SwitchEntityDescription(
+                            key="programming_switch",
+                            icon="mdi:calendar-clock",
+                            entity_category=EntityCategory.CONFIG,
+                        ),
+                    ),
+                ],
+            ),
+        },
+    ),
     "co2bj": TuyaBLECategorySwitchMapping(
         products={
             "59s19z5m": [  # CO2 Detector
@@ -160,19 +445,84 @@ mapping: dict[str, TuyaBLECategorySwitchMapping] = {
             ],
         },
     ),
+    "jsq": TuyaBLECategorySwitchMapping(
+        products={
+            "if1nolcm": [
+                TuyaBLESwitchMapping(
+                    dp_id=1,
+                    description=SwitchEntityDescription(
+                        key="switch",
+                        icon="mdi:power",
+                    ),
+                ),
+                TuyaBLESwitchMapping(
+                    dp_id=2,
+                    description=SwitchEntityDescription(
+                        key="switch_spray",
+                        icon="mdi:spray",
+                    ),
+                ),
+            ],
+        },
+    ),
     "ms": TuyaBLECategorySwitchMapping(
         products={
+            "uyf1ewof": [
+                TuyaBLESwitchMapping(
+                    dp_id=33,
+                    description=SwitchEntityDescription(
+                        key="automatic_lock",
+                        icon="mdi:lock-clock",
+                        entity_category=EntityCategory.CONFIG,
+                    ),
+                ),
+                TuyaBLESwitchMapping(
+                    dp_id=46,
+                    description=SwitchEntityDescription(
+                        key="manual_lock",
+                        icon="mdi:lock-plus",
+                    ),
+                ),
+            ],
             **dict.fromkeys(
-                ["ludzroix", "isk2p555"], # Smart Lock
                 [
+                    "ludzroix",
+                    "isk2p555",
+                    "gumrixyt",
+                    "sidhzylo",
+                    "7a4xvbtt",
+                ],  # Smart Lock
+                [TuyaLockMotorStateMapping(dp_id=47)],
+            ),
+            **dict.fromkeys(
+                ["uamrw6h3", "mqc2hevy"],
+                [
+                    TuyaLockMotorStateMapping(dp_id=47),
                     TuyaBLESwitchMapping(
-                        dp_id=47,
+                        dp_id=46,
+                        description=SwitchEntityDescription(key="manual_lock"),
+                    ),
+                ],
+            ),
+            **dict.fromkeys(
+                ["6fibxtph", "99gv5nmz"],
+                [
+                    TuyaLockMotorStateMapping(dp_id=47),
+                    TuyaBLESwitchMapping(
+                        dp_id=46,
+                        description=SwitchEntityDescription(key="manual_lock"),
+                    ),
+                    TuyaBLESwitchMapping(
+                        dp_id=33,
                         description=SwitchEntityDescription(
-                            key="lock_motor_state",
+                            key="automatic_lock",
+                            icon="mdi:lock-clock",
+                            entity_category=EntityCategory.CONFIG,
                         ),
                     ),
-                ]
+                ],
             ),
+            "a6nttc41": [TuyaLockMotorStateMapping(dp_id=33)],
         }
     ),
     "szjqr": TuyaBLECategorySwitchMapping(
@@ -189,7 +539,10 @@ mapping: dict[str, TuyaBLECategorySwitchMapping] = {
                     "blliqpsj",
                     "ndvkgsrm",
                     "yiihr7zh",
-                    "neq16kgd"
+                    "neq16kgd",
+                    "6jcvqwh0",
+                    "riecov42",
+                    "h8kdwywx",
                 ],  # Fingerbot Plus
                 [
                     TuyaBLEFingerbotSwitchMapping(dp_id=2),
@@ -238,6 +591,137 @@ mapping: dict[str, TuyaBLECategorySwitchMapping] = {
                     TuyaBLEReversePositionsMapping(dp_id=11),
                 ],
             ),
+            "yn4x5fa7": [
+                TuyaBLEFingerbotSwitchMapping(dp_id=1),
+                TuyaBLEReversePositionsMapping(dp_id=6),
+            ],
+        },
+    ),
+    "jtmspro": TuyaBLECategorySwitchMapping(
+        products={
+            "y2yaegze": [
+                TuyaBLESwitchMapping(
+                    dp_id=33,
+                    description=SwitchEntityDescription(
+                        key="automatic_lock",
+                        icon="mdi:lock-clock",
+                        entity_category=EntityCategory.CONFIG,
+                    ),
+                ),
+            ],
+            **dict.fromkeys(
+                [
+                    "stugc8dl",
+                    "xicdxood",
+                ],
+                [
+                    TuyaBLESwitchMapping(
+                        dp_id=33,
+                        description=SwitchEntityDescription(
+                            key="automatic_lock",
+                            icon="mdi:lock-clock",
+                            entity_category=EntityCategory.CONFIG,
+                        ),
+                    ),
+                ],
+            ),
+            "kholoaew": [  # Smart Lock
+                TuyaBLESwitchMapping(
+                    dp_id=33,
+                    description=SwitchEntityDescription(
+                        key="automatic_lock",
+                        icon="mdi:lock-clock",
+                        entity_category=EntityCategory.CONFIG,
+                    ),
+                ),
+            ],
+            "ajk32biq": [
+                TuyaBLESwitchMapping(
+                    dp_id=33,
+                    description=SwitchEntityDescription(
+                        key="automatic_lock",
+                        icon="mdi:lock-clock",
+                        entity_category=EntityCategory.CONFIG,
+                    ),
+                ),
+                TuyaBLESwitchMapping(
+                    dp_id=46,
+                    description=SwitchEntityDescription(
+                        key="manual_lock",
+                        icon="mdi:lock-plus",
+                    ),
+                ),
+            ],
+            "yfqp0shy": [
+                TuyaLockMotorStateMapping(dp_id=47),
+                TuyaBLESwitchMapping(
+                    dp_id=46,
+                    description=SwitchEntityDescription(
+                        key="manual_lock",
+                        icon="mdi:lock-plus",
+                    ),
+                ),
+                TuyaBLESwitchMapping(
+                    dp_id=33,
+                    description=SwitchEntityDescription(
+                        key="automatic_lock",
+                        icon="mdi:lock-clock",
+                        entity_category=EntityCategory.CONFIG,
+                    ),
+                ),
+            ],
+        }
+    ),
+    "kg": TuyaBLECategorySwitchMapping(
+        products={
+            **dict.fromkeys(
+                [
+                    "mknd4lci",
+                    "riecov42",
+                    "bs3ubslo",
+                    "gnpbj0bq",
+                    "6jcvqwh0",
+                ],  # Fingerbot Plus
+                [
+                    TuyaBLEFingerbotSwitchMapping(dp_id=1),
+                    TuyaBLEReversePositionsMapping(dp_id=104),
+                    TuyaBLESwitchMapping(
+                        dp_id=107,
+                        description=SwitchEntityDescription(
+                            key="manual_control",
+                            icon="mdi:gesture-tap-box",
+                            entity_category=EntityCategory.CONFIG,
+                        ),
+                    ),
+                    TuyaBLESwitchMapping(
+                        dp_id=1,
+                        description=SwitchEntityDescription(
+                            key="program",
+                            icon="mdi:repeat",
+                        ),
+                        is_available=is_fingerbot_in_program_mode,
+                    ),
+                    TuyaBLESwitchMapping(
+                        dp_id=109,
+                        description=SwitchEntityDescription(
+                            key="program_repeat_forever",
+                            icon="mdi:repeat",
+                            entity_category=EntityCategory.CONFIG,
+                        ),
+                        getter=get_fingerbot_program_repeat_forever,
+                        is_available=is_fingerbot_in_program_mode,
+                        setter=set_fingerbot_program_repeat_forever,
+                    ),
+                ],
+            ),
+            "4ctjfrzq": [
+                TuyaBLESwitchMapping(
+                    dp_id=1,
+                    description=SwitchEntityDescription(
+                        key="switch",
+                    ),
+                ),
+            ],
         },
     ),
     "wk": TuyaBLECategorySwitchMapping(
@@ -246,6 +730,7 @@ mapping: dict[str, TuyaBLECategorySwitchMapping] = {
                 [
                     "drlajpqc",
                     "nhj2j7su",
+                    "zmachryv",
                 ],  # Thermostatic Radiator Valve
                 [
                     TuyaBLESwitchMapping(
@@ -317,7 +802,7 @@ mapping: dict[str, TuyaBLECategorySwitchMapping] = {
     ),
     "ggq": TuyaBLECategorySwitchMapping(
         products={
-            "6pahkcau": [  # Irrigation computer
+            "6pahkcau": [  # Irrigation computer PARKSIDE PPB A1
                 TuyaBLESwitchMapping(
                     dp_id=1,
                     description=SwitchEntityDescription(
@@ -326,19 +811,176 @@ mapping: dict[str, TuyaBLECategorySwitchMapping] = {
                     ),
                 ),
             ],
-            "hfgdqhho": [  # Irrigation computer
+            **dict.fromkeys(
+                [
+                    "hfgdqhho",
+                    "qycalacn",
+                    "fnlw6npo",
+                    "jjqi2syk",
+                    "jntxv3q4",
+                ],  # Irrigation computer - dual outlet
+                [
+                    TuyaBLESwitchMapping(
+                        dp_id=105,
+                        description=SwitchEntityDescription(
+                            key="water_valve_z1",
+                            name="CH1 Valve",
+                            entity_registry_enabled_default=True,
+                        ),
+                    ),
+                    TuyaBLESwitchMapping(
+                        dp_id=104,
+                        description=SwitchEntityDescription(
+                            key="water_valve_z2",
+                            name="CH2 Valve",
+                            entity_registry_enabled_default=True,
+                        ),
+                    ),
+                ],
+            ),
+        },
+    ),
+    "dcb": TuyaBLECategorySwitchMapping(
+        products={
+            **dict.fromkeys(
+                [
+                    "ajrhf1aj",
+                    "z5ztlw3k",
+                    "vllfabvs",
+                    "fay1puxy",
+                ],
+                [  # PARKSIDE Smart battery
+                    TuyaBLESwitchMapping(
+                        dp_id=12,
+                        description=SwitchEntityDescription(
+                            key="upper_temp_switch",
+                            icon="mdi:thermometer-chevron-up",
+                            entity_category=EntityCategory.CONFIG,
+                        ),
+                    ),
+                    TuyaBLESwitchMapping(
+                        dp_id=22,
+                        description=SwitchEntityDescription(
+                            key="security_switch",
+                            icon="mdi:shield-lock-outline",
+                            entity_category=EntityCategory.CONFIG,
+                        ),
+                    ),
+                    TuyaBLESwitchMapping(
+                        dp_id=155,
+                        description=SwitchEntityDescription(
+                            key="kick_back_switch",
+                            icon="mdi:car-esp",
+                            entity_category=EntityCategory.CONFIG,
+                        ),
+                    ),
+                    TuyaBLESwitchMapping(
+                        dp_id=163,
+                        description=SwitchEntityDescription(
+                            key="lamp_switch",
+                            device_class=SwitchDeviceClass.SWITCH,
+                            icon="mdi:lightbulb",
+                            entity_category=EntityCategory.CONFIG,
+                        ),
+                    ),
+                    TuyaBLESwitchMapping(
+                        dp_id=170,
+                        description=SwitchEntityDescription(
+                            key="cw_or_ccw_control",
+                            icon="mdi:rotate-right",
+                            entity_category=EntityCategory.CONFIG,
+                        ),
+                    ),
+                    TuyaBLESwitchMapping(
+                        dp_id=185,
+                        description=SwitchEntityDescription(
+                            key="laser_switch",
+                            icon="mdi:laser-pointer",
+                            entity_category=EntityCategory.CONFIG,
+                        ),
+                    ),
+                    TuyaBLESwitchMapping(
+                        dp_id=186,
+                        description=SwitchEntityDescription(
+                            key="laser_pulse_switch",
+                            icon="mdi:pulse",
+                            entity_category=EntityCategory.CONFIG,
+                        ),
+                    ),
+                ],
+            ),
+        },
+    ),
+    "ccjqr": TuyaBLECategorySwitchMapping(
+        products={
+            "pnxl0r3l": [  # Window Cleaner Robot
                 TuyaBLESwitchMapping(
-                    dp_id=105,
+                    dp_id=1,
                     description=SwitchEntityDescription(
-                        key="water_valve_z1",
-                        entity_registry_enabled_default=True,
+                        key="window_cleaner_switch",
+                        icon="mdi:window-open",
+                        device_class=SwitchDeviceClass.SWITCH,
                     ),
                 ),
                 TuyaBLESwitchMapping(
-                    dp_id=104,
+                    dp_id=103,
                     description=SwitchEntityDescription(
-                        key="water_valve_z2",
-                        entity_registry_enabled_default=True,
+                        key="water_auto",
+                        icon="mdi:water-auto",
+                        entity_category=EntityCategory.CONFIG,
+                    ),
+                ),
+            ],
+        },
+    ),
+    "gcj": TuyaBLECategorySwitchMapping(
+        products={
+            "9hdajpiw": [
+                # Generic Tuya vacuum switch, superseded by DP 115 on this
+                # mower, so it is disabled by default.
+                TuyaBLESwitchMapping(
+                    dp_id=2,  # switch_go
+                    dp_type=TuyaBLEDataPointType.DT_BOOL,
+                    description=SwitchEntityDescription(
+                        key="switch_go",
+                        icon="mdi:mower",
+                        entity_registry_enabled_default=False,
+                    ),
+                ),
+                TuyaBLESwitchMapping(
+                    dp_id=139,  # RainTimedelay, the switch in its first byte
+                    dp_type=TuyaBLEDataPointType.DT_RAW,
+                    description=SwitchEntityDescription(
+                        key="rain_delay",
+                        icon="mdi:weather-rainy",
+                        entity_category=EntityCategory.CONFIG,
+                    ),
+                    getter=get_parkside_rain_delay,
+                    setter=set_parkside_rain_delay,
+                    is_available=is_parkside_rain_delay_read,
+                ),
+                TuyaBLESwitchMapping(
+                    dp_id=104,  # MachineRainMode
+                    description=SwitchEntityDescription(
+                        key="rain_mode",
+                        icon="mdi:weather-pouring",
+                        entity_category=EntityCategory.CONFIG,
+                    ),
+                ),
+                TuyaBLESwitchMapping(
+                    dp_id=118,  # HedgehogPROT
+                    description=SwitchEntityDescription(
+                        key="hedgehog_protection",
+                        icon="mdi:paw",
+                        entity_category=EntityCategory.CONFIG,
+                    ),
+                ),
+                TuyaBLESwitchMapping(
+                    dp_id=121,  # backwardbladestop
+                    description=SwitchEntityDescription(
+                        key="backward_blade_stop",
+                        icon="mdi:saw-blade",
+                        entity_category=EntityCategory.CONFIG,
                     ),
                 ),
             ],
@@ -348,6 +990,7 @@ mapping: dict[str, TuyaBLECategorySwitchMapping] = {
 
 
 def get_mapping_by_device(device: TuyaBLEDevice) -> list[TuyaBLECategorySwitchMapping]:
+    """Lookup mapping for a given device"""
     category = mapping.get(device.category)
     if category is not None and category.products is not None:
         product_mapping = category.products.get(device.product_id)
@@ -355,14 +998,14 @@ def get_mapping_by_device(device: TuyaBLEDevice) -> list[TuyaBLECategorySwitchMa
             return product_mapping
         if category.mapping is not None:
             return category.mapping
-        else:
-            return []
-    else:
-        return []
+
+    return []
 
 
 class TuyaBLESwitch(TuyaBLEEntity, SwitchEntity):
     """Representation of a Tuya BLE Switch."""
+
+    platform = Platform.SWITCH
 
     def __init__(
         self,

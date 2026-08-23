@@ -1,0 +1,699 @@
+{
+  "config": {
+    "abort": {
+      "no_unconfigured_devices": "Keine unkonfigurierten Geräte gefunden."
+    },
+    "error": {
+      "device_not_registered": "Gerät ist nicht in der Tuya-Cloud registriert",
+      "invalid_auth": "Ungültige Authentifizierung",
+      "login_error": "Anmeldefehler ({code}): {msg}",
+      "invalid_uuid": "UUID sieht ungültig aus",
+      "invalid_local_key": "Local Key sieht ungültig aus (mindestens 6 Zeichen)",
+      "invalid_device_id": "Device ID ist erforderlich",
+      "invalid_product_id": "Product ID ist erforderlich",
+      "invalid_category": "Kategorie ist erforderlich"
+    },
+    "flow_title": "{name}",
+    "step": {
+      "device": {
+        "data": {
+          "address": "Tuya BLE-Gerät"
+        },
+        "description": "Wählen Sie das einzurichtende Tuya BLE-Gerät aus. Das Gerät muss über die mobile Anwendung in der Cloud registriert sein. Es wird empfohlen, das Gerät von einem eventuell vorhandenen Tuya Bluetooth-Gateway zu trennen."
+      },
+      "login": {
+        "data": {
+          "access_id": "Tuya IoT Access ID",
+          "access_secret": "Tuya IoT Access Secret",
+          "sec_key": "Tuya BLE SecKey (optional)",
+          "country_code": "Land",
+          "password": "Passwort",
+          "username": "Konto"
+        },
+        "description": "Tuya BLE erfordert das Abrufen des Verschlüsselungsschlüssels aus der Tuya-Cloud. Fast alle Geräte müssen während der Einrichtung nur einmal auf die Cloud zugreifen.\n\nInformationen zum Abrufen der Cloud-Anmeldeinformationen finden Sie in der Dokumentation zur Tuya-Integration unter {url}\n\nGeben Sie Ihre Tuya-Zugangsdaten ein."
+      },
+      "user": {
+        "title": "Tuya BLE",
+        "description": "Wie sollen die Gerätedaten (Device ID, UUID, Local Key) beschafft werden?",
+        "menu_options": {
+          "login": "Aus der Tuya-IoT-Cloud abrufen (empfohlen bei Ersteinrichtung)",
+          "manual": "Manuell eingeben (kein Cloud-Zugriff nötig)"
+        }
+      },
+      "manual": {
+        "title": "Manuelle Zugangsdaten",
+        "description": "Zugangsdaten des Tuya-BLE-Geräts eingeben. Sie stammen z. B. aus einer früheren Einrichtung (`.storage/core.config_entries`, Abschnitt `options` des Eintrags) oder aus der Tuya IoT Platform. Während Home Assistant mit dem Gerät spricht, darf es nicht mit einem Handy oder Tuya-Gateway verbunden sein.",
+        "data": {
+          "address": "Tuya-BLE-Gerät",
+          "uuid": "UUID (z. B. tuya2a3142…)",
+          "local_key": "Local Key",
+          "sec_key": "Security Key (nur neuere BLE-Geräte, optional)",
+          "device_id": "Device ID",
+          "product_id": "Product ID (z. B. neq16kgd)",
+          "category": "Kategorie (z. B. szjqr für Fingerbots)",
+          "device_name": "Gerätename (optional)"
+        }
+      }
+    }
+  },
+  "entity": {
+    "binary_sensor": {
+      "fault": {
+        "name": "Fehler"
+      },
+      "lack_water": {
+        "name": "Wassermangel"
+      },
+      "low_battery": {
+        "name": "Batterie"
+      },
+      "lock_motor_state": {
+        "name": "Motorzustand"
+      },
+      "low_temp": {
+        "name": "Niedrige Temperatur"
+      },
+      "motor_fault": {
+        "name": "Motorfehler"
+      },
+      "sensor_fault": {
+        "name": "Sensorfehler"
+      },
+      "machine_problem": {
+        "name": "Problem"
+      },
+      "machine_cover": {
+        "name": "Abdeckung"
+      }
+    },
+    "button": {
+      "push": {
+        "name": "Drücken"
+      },
+      "ble_unlock_check": {
+        "name": "Entriegeln"
+      },
+      "bluetooth_unlock": {
+        "name": "Entriegeln"
+      },
+      "start_mowing": {
+        "name": "Mähen starten"
+      },
+      "pause_work": {
+        "name": "Pause"
+      },
+      "cancel_work": {
+        "name": "Auftrag abbrechen"
+      },
+      "start_return_station": {
+        "name": "Zur Ladestation"
+      },
+      "continue_work": {
+        "name": "Auftrag fortsetzen"
+      },
+      "edge_mowing": {
+        "name": "Kantenmähen"
+      },
+      "clear_schedule": {
+        "name": "Zeitplan löschen"
+      },
+      "refresh_schedule": {
+        "name": "Zeitplan aktualisieren"
+      },
+      "refresh_zones": {
+        "name": "Zonen aktualisieren"
+      },
+      "clear_zones": {
+        "name": "Zonen löschen"
+      }
+    },
+    "event": {
+      "event": {
+        "name": "Ereignis"
+      }
+    },
+    "lawn_mower": {
+      "lawn_mower": {
+        "name": "Mähroboter"
+      }
+    },
+    "number": {
+      "ble_unlock_check": {
+        "name": "Entriegeln"
+      },
+      "brightness": {
+        "name": "Helligkeit"
+      },
+      "carbon_dioxide_alarm_level": {
+        "name": "Alarmstufe"
+      },
+      "countdown": {
+        "name": "Countdown"
+      },
+      "countdown_duration": {
+        "name": "Bewässerungsdauer"
+      },
+      "countdown_duration_z1": {
+        "name": "Bewässerungsdauer - Zone 1"
+      },
+      "countdown_duration_z2": {
+        "name": "Bewässerungsdauer - Zone 2"
+      },
+      "down_position": {
+        "name": "Untere Position"
+      },
+      "hold_time": {
+        "name": "Haltezeit"
+      },
+      "humidity_calibration": {
+        "name": "Luftfeuchtigkeitskalibrierung"
+      },
+      "program_idle_position": {
+        "name": "Ruheposition"
+      },
+      "program_repeats_count": {
+        "name": "Wiederholungsanzahl"
+      },
+      "recommended_water_intake": {
+        "name": "Empfohlene Wasseraufnahme"
+      },
+      "reporting_period": {
+        "name": "Berichtszeitraum"
+      },
+      "temperature_calibration": {
+        "name": "Temperaturkalibrierung"
+      },
+      "up_position": {
+        "name": "Obere Position"
+      },
+      "work_time": {
+        "name": "Laufzeit"
+      },
+      "rain_delay_time": {
+        "name": "Regenverzögerungsdauer"
+      }
+    },
+    "select": {
+      "beep_volume": {
+        "name": "Lautstärke sperren"
+      },
+      "language": {
+        "name": "Schloss-Sprache"
+      },
+      "fingerbot_mode": {
+        "name": "Modus",
+        "state": {
+          "program": "Programm",
+          "push": "Drücken",
+          "switch": "Schalter"
+        }
+      },
+      "weather_delay": {
+        "name": "Wetterverzögerung",
+        "state": {
+          "cancel": "Abbrechen",
+          "1day": "1 Tag",
+          "2day": "2 Tage",
+          "3day": "3 Tage",
+          "4day": "4 Tage",
+          "5day": "5 Tage",
+          "6day": "6 Tage",
+          "7day": "7 Tage"
+        }
+      },
+      "weather": {
+        "name": "Wetter",
+        "state": {
+          "sunny": "Sonnig",
+          "rainy": "Regnerisch"
+        }
+      },
+      "weather_delay_z1": {
+        "name": "Wetterverzögerung - Zone 1"
+      },
+      "weather_delay_z2": {
+        "name": "Wetterverzögerung - Zone 2"
+      },
+      "smart_weather": {
+        "name": "Intelligentes Wetter"
+      },
+      "reminder_mode": {
+        "name": "Erinnerungsmodus",
+        "state": {
+          "interval_reminder": "Intervall",
+          "schedule_reminder": "Zeitplan"
+        }
+      },
+      "temperature_unit": {
+        "name": "Temperatureinheit"
+      },
+      "mode": {
+        "name": "Reinigungsmodus",
+        "state": {
+          "smart": "Smart",
+          "z_mode": "Z-Modus",
+          "n_mode": "N-Modus",
+          "edge": "Kante",
+          "spot": "Punkt"
+        }
+      },
+      "direction_control": {
+        "name": "Richtung",
+        "state": {
+          "forward": "Vorwärts",
+          "backward": "Rückwärts",
+          "turn_left": "Nach links drehen",
+          "turn_right": "Nach rechts drehen",
+          "stop": "Stopp"
+        }
+      },
+      "timer": {
+        "name": "Timer",
+        "state": {
+          "cancel": "Abbrechen",
+          "1h": "1 Stunde",
+          "3h": "3 Stunden",
+          "6h": "6 Stunden"
+        }
+      },
+      "scene": {
+        "name": "Szene",
+        "state": {
+          "night": "Nacht",
+          "read": "Lesen",
+          "work": "Arbeiten",
+          "rest": "Entspannen",
+          "grassland": "Wiese",
+          "colorful": "Party",
+          "gorgeous": "Prachtvoll",
+          "dazzle": "Flackern"
+        }
+      },
+      "spray_mode": {
+        "name": "Sprühmodus",
+        "state": {
+          "small": "Niedrig",
+          "large": "Hoch"
+        }
+      },
+      "work_mode": {
+        "name": "Betriebsmodus",
+        "state": {
+          "standby": "Bereitschaft",
+          "random": "Zufällig",
+          "smart": "Smart",
+          "spot": "Punktuell",
+          "goto_charge": "Zur Ladestation"
+        }
+      }
+    },
+    "sensor": {
+      "alarm_lock": {
+        "name": "Alarm",
+        "state": {
+          "wrong_finger": "Falscher Fingerabdruck",
+          "wrong_password": "Falsches Passwort",
+          "low_battery": "Niedriger Batteriestatus",
+          "power_off": "Ausgeschaltet"
+        }
+      },
+      "power_off": {
+        "name": "Ausgeschaltet"
+      },
+      "battery": {
+        "name": "Batterie"
+      },
+      "battery_charging": {
+        "name": "Batterieladung",
+        "state": {
+          "charged": "Geladen",
+          "charging": "Lädt",
+          "not_charging": "Lädt nicht"
+        }
+      },
+      "battery_state": {
+        "name": "Batteriezustand",
+        "state": {
+          "high": "Hoch",
+          "low": "Niedrig",
+          "middle": "Mittel",
+          "normal": "Normal"
+        }
+      },
+      "carbon_dioxide": {
+        "name": "Kohlendioxid"
+      },
+      "carbon_dioxide_alarm": {
+        "name": "Kohlendioxidwert",
+        "state": {
+          "alarm": "Alarm",
+          "normal": "Normal"
+        }
+      },
+      "day_usage_after_reset": {
+        "name": "Täglicher Verbrauch nach Zurücksetzen"
+      },
+      "day_water_usage": {
+        "name": "Täglicher Wasserverbrauch"
+      },
+      "flow_velocity": {
+        "name": "Durchflussrate"
+      },
+      "lock_door_status": {
+        "name": "Türstatus",
+        "state": {
+          "door_status_unknown": "Unbekannt",
+          "door_status_open": "Offen",
+          "door_status_closed": "Geschlossen"
+        }
+      },
+      "humidity": {
+        "name": "Luftfeuchtigkeit"
+      },
+      "low_battery": {
+        "name": "Niedriger Batteriestatus"
+      },
+      "moisture": {
+        "name": "Bodenfeuchtigkeit"
+      },
+      "work_state": {
+        "name": "Betriebszustand",
+        "state": {
+          "auto": "Auto",
+          "manual": "Manuell",
+          "idle": "Inaktiv"
+        }
+      },
+      "work_state_z1": {
+        "name": "Betriebszustand - Zone 1",
+        "state": {
+          "auto": "Auto",
+          "manual": "Manuell",
+          "idle": "Inaktiv",
+          "working": "In Betrieb",
+          "rain_delay": "Regenverzögerung"
+        }
+      },
+      "work_state_z2": {
+        "name": "Betriebszustand - Zone 2",
+        "state": {
+          "auto": "Auto",
+          "manual": "Manuell",
+          "idle": "Inaktiv",
+          "working": "In Betrieb",
+          "rain_delay": "Regenverzögerung"
+        }
+      },
+      "residual_electricity": {
+        "name": "Batterie"
+      },
+      "signal_strength": {
+        "name": "Signalstärke"
+      },
+      "temperature": {
+        "name": "Temperatur"
+      },
+      "time_left": {
+        "name": "Verbleibende Bewässerungszeit"
+      },
+      "time_left_z1": {
+        "name": "Verbleibende Bewässerungszeit - Zone 1"
+      },
+      "time_left_z2": {
+        "name": "Verbleibende Bewässerungszeit - Zone 2"
+      },
+      "total_usage_after_reset": {
+        "name": "Gesamtverbrauch nach Zurücksetzen"
+      },
+      "use_time_z1": {
+        "name": "Letzte Bewässerungszeit - Zone 1"
+      },
+      "use_time_z2": {
+        "name": "Letzte Bewässerungszeit - Zone 2"
+      },
+      "use_time": {
+        "name": "Akkumulierte Nutzungszeit"
+      },
+      "use_time_one": {
+        "name": "Letzte Bewässerungszeit"
+      },
+      "water_intake": {
+        "name": "Wasseraufnahme"
+      },
+      "water_once": {
+        "name": "Wasserverbrauch der letzten Sitzung"
+      },
+      "water_use_data": {
+        "name": "Gesamter Wasserverbrauch"
+      },
+      "wrong_finger": {
+        "name": "Falscher Fingerabdruck"
+      },
+      "wrong_password": {
+        "name": "Falsches Passwort"
+      },
+      "unlock_fingerprint": {
+        "name": "Zuletzt verwendeter Fingerabdruck"
+      },
+      "unlock_card": {
+        "name": "Zuletzt verwendete Karte"
+      },
+      "unlock_password": {
+        "name": "Zuletzt verwendetes Passwort"
+      },
+      "unlock_key": {
+        "name": "Zuletzt verwendeter Schlüssel"
+      },
+      "unlock_dynamic": {
+        "name": "Zuletzt verwendetes dynamisches Passwort"
+      },
+      "unlock_ble": {
+        "name": "Zuletzt verwendetes Bluetooth"
+      },
+      "unlock_app": {
+        "name": "Zuletzt verwendete App"
+      },
+      "unlock_voice": {
+        "name": "Zuletzt verwendete Sprachsteuerung"
+      },
+      "unlock_temp_pwd": {
+        "name": "Zuletzt verwendetes temporäres Passwort"
+      },
+      "key_tone": {
+        "name": "Tastenton"
+      },
+      "time_remaining": {
+        "name": "Restzeit"
+      },
+      "activity": {
+        "name": "Aktivität",
+        "state": {
+          "standby": "Bereitschaft",
+          "charging": "Lädt",
+          "mowing": "Mäht",
+          "paused": "Pausiert",
+          "park": "Fährt zur Ladestation",
+          "updata": "Aktualisiert",
+          "fixed_mowing": "Punktmähen",
+          "error": "Fehler",
+          "self_test": "Selbsttest",
+          "charging_with_task_suspend": "Lädt, Auftrag unterbrochen",
+          "emergency": "Not-Aus",
+          "locked": "Gesperrt",
+          "edge": "Kantenmähen"
+        }
+      },
+      "machine_warning": {
+        "name": "Warnung",
+        "state": {
+          "mower_lean": "Geneigt",
+          "mower_steep": "An einem steilen Hang",
+          "rain_park": "Fährt zur Ladestation wegen Regen",
+          "battery_not_enough": "Akku schwach, lädt bald",
+          "no_loop_signal": "Kein Begrenzungssignal",
+          "close_topcover": "Abdeckung schließen",
+          "mower_in_station": "Mäher von der Ladestation nehmen",
+          "mower_out_station": "Mäher auf die Ladestation stellen",
+          "place_inside": "Mäher innerhalb der Begrenzung platzieren",
+          "fixed_end": "Punktmähen beendet",
+          "charging_disconnect": "Laden instabil, Kontakte prüfen",
+          "charging_pause": "Laden unterbrochen, Ladestation prüfen",
+          "work_interrupt": "Arbeit unterbrochen, Auftrag neu starten",
+          "fixed_mowing_interupt": "Auftrag beendet, Umgebung prüfen",
+          "turn_on_button": "Physischen Schalter einschalten",
+          "press_start_key": "Starttaste drücken",
+          "timeset_30min": "Zeitplan überschreitet 30 Minuten",
+          "timeset_unlegal": "Zeitplan ist ungültig",
+          "chargr_current_low": "Ladestrom niedrig",
+          "rain_out_station": "Weicht Regen aus",
+          "updata_fail": "Aktualisierung fehlgeschlagen",
+          "continue_tooltip": "Auftrag fortsetzen",
+          "mower_emergency": "Not-Aus",
+          "mower_ui_locked": "Bildschirm gesperrt",
+          "discharge_error": "Entladung fehlerhaft",
+          "charge_temp_error": "Akkutemperatur fehlerhaft",
+          "hedgehog": "Igelschutz aktiv",
+          "ntc": "Temperatursensor fehlerhaft"
+        }
+      },
+      "firmware_version": {
+        "name": "Firmware-Version"
+      },
+      "error_log": {
+        "name": "Fehlerprotokoll"
+      },
+      "work_log": {
+        "name": "Arbeitsprotokoll"
+      },
+      "schedule": {
+        "name": "Zeitplan"
+      },
+      "zones": {
+        "name": "Zonen"
+      }
+    },
+    "switch": {
+      "automatic_lock": {
+        "name": "Automatische Sperre"
+      },
+      "antifreeze": {
+        "name": "Frostschutz"
+      },
+      "carbon_dioxide_alarm_switch": {
+        "name": "Alarm aktiviert"
+      },
+      "carbon_dioxide_severely_exceed_alarm": {
+        "name": "Kritischer Grenzwert-Alarm"
+      },
+      "child_lock": {
+        "name": "Kindersicherung"
+      },
+      "lock_motor_state": {
+        "name": "Motorzustand"
+      },
+      "low_battery_alarm": {
+        "name": "Niedriger Batteriestatus-Alarm"
+      },
+      "manual_control": {
+        "name": "Manuelle Steuerung"
+      },
+      "program": {
+        "name": "Programm"
+      },
+      "program_repeat_forever": {
+        "name": "Endlos wiederholen"
+      },
+      "programming_mode": {
+        "name": "Programmiermodus"
+      },
+      "programming_switch": {
+        "name": "Programmierschalter"
+      },
+      "reverse_positions": {
+        "name": "Positionen umkehren"
+      },
+      "switch": {
+        "name": "Schalter"
+      },
+      "water_scale_proof": {
+        "name": "Antikalkschutz"
+      },
+      "water_valve": {
+        "name": "Bewässerungsventil"
+      },
+      "water_valve_z1": {
+        "name": "Bewässerungsventil - Zone 1"
+      },
+      "water_valve_z2": {
+        "name": "Bewässerungsventil - Zone 2"
+      },
+      "weather_switch": {
+        "name": "Wetterschalter"
+      },
+      "window_check": {
+        "name": "Fensterprüfung"
+      },
+      "window_cleaner_switch": {
+        "name": "Reinigung"
+      },
+      "water_auto": {
+        "name": "Automatisches Sprühen"
+      },
+      "switch_spray": {
+        "name": "Sprühen"
+      },
+      "rain_mode": {
+        "name": "Regenmodus"
+      },
+      "hedgehog_protection": {
+        "name": "Igelschutz"
+      },
+      "backward_blade_stop": {
+        "name": "Messerstopp bei Rückwärtsfahrt"
+      },
+      "switch_go": {
+        "name": "Mähschalter"
+      },
+      "rain_delay": {
+        "name": "Regenverzögerung"
+      }
+    },
+    "text": {
+      "program": {
+        "name": "Programm: Position[/Zeit];..."
+      }
+    },
+    "vacuum": {
+      "vacuum": {
+        "name": "Fensterreiniger"
+      },
+      "clean_time": {
+        "name": "Reinigungszeit"
+      }
+    }
+  },
+  "options": {
+    "error": {
+      "device_not_registered": "Gerät ist nicht in der Tuya-Cloud registriert",
+      "invalid_auth": "Ungültige Authentifizierung",
+      "login_error": "Anmeldefehler ({code}): {msg}",
+      "invalid_uuid": "UUID sieht ungültig aus",
+      "invalid_local_key": "Local Key sieht ungültig aus (mindestens 6 Zeichen)",
+      "invalid_device_id": "Device ID ist erforderlich",
+      "invalid_product_id": "Product ID ist erforderlich",
+      "invalid_category": "Kategorie ist erforderlich"
+    },
+    "step": {
+      "login": {
+        "data": {
+          "access_id": "Tuya IoT Access ID",
+          "access_secret": "Tuya IoT Access Secret",
+          "country_code": "Land",
+          "password": "Passwort",
+          "username": "Konto"
+        },
+        "description": "Informationen zum Abrufen der Cloud-Anmeldeinformationen finden Sie in der Dokumentation zur Tuya-Integration unter {url}\n\nGeben Sie Ihre Tuya-Zugangsdaten ein."
+      },
+      "init": {
+        "title": "Tuya-BLE-Optionen",
+        "menu_options": {
+          "login": "Zugangsdaten aus der Tuya-IoT-Cloud neu abrufen",
+          "manual": "Zugangsdaten manuell bearbeiten"
+        }
+      },
+      "manual": {
+        "title": "Manuelle Zugangsdaten",
+        "description": "Gespeicherte Zugangsdaten bearbeiten. Nach einem Neu-Koppeln in der Smart-Life-App hat das Gerät einen neuen Local Key.",
+        "data": {
+          "uuid": "UUID (z. B. tuya2a3142…)",
+          "local_key": "Local Key",
+          "sec_key": "Security Key (nur neuere BLE-Geräte, optional)",
+          "device_id": "Device ID",
+          "product_id": "Product ID (z. B. neq16kgd)",
+          "category": "Kategorie (z. B. szjqr für Fingerbots)",
+          "device_name": "Gerätename (optional)"
+        }
+      }
+    }
+  }
+}

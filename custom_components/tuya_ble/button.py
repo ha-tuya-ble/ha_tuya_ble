@@ -1,4 +1,5 @@
 """The Tuya BLE integration."""
+
 from __future__ import annotations
 
 from dataclasses import dataclass, field
@@ -9,13 +10,16 @@ from typing import Callable
 from homeassistant.components.button import (
     ButtonEntityDescription,
     ButtonEntity,
+    ButtonDeviceClass,
 )
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
+from homeassistant.const import Platform
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator
+from homeassistant.helpers.entity import EntityCategory
 
-from .const import DOMAIN
+from .const import DOMAIN, PARKSIDE_MOWER_COMMANDS
 from .devices import TuyaBLEData, TuyaBLEEntity, TuyaBLEProductInfo
 from .tuya_ble import TuyaBLEDataPointType, TuyaBLEDevice
 
@@ -27,11 +31,15 @@ TuyaBLEButtonIsAvailable = Callable[["TuyaBLEButton", TuyaBLEProductInfo], bool]
 
 @dataclass
 class TuyaBLEButtonMapping:
+    """Model a DP, description and default values"""
+
     dp_id: int
     description: ButtonEntityDescription
     force_add: bool = True
     dp_type: TuyaBLEDataPointType | None = None
     is_available: TuyaBLEButtonIsAvailable = None
+    value: bytes | bool | int | str | None = None
+    """Fixed value to write, using dp_type, instead of toggling a bool."""
 
 
 def is_fingerbot_in_push_mode(self: TuyaBLEButton, product: TuyaBLEProductInfo) -> bool:
@@ -45,6 +53,8 @@ def is_fingerbot_in_push_mode(self: TuyaBLEButton, product: TuyaBLEProductInfo) 
 
 @dataclass
 class TuyaBLEFingerbotModeMapping(TuyaBLEButtonMapping):
+    """Describes availability of a given button"""
+
     description: ButtonEntityDescription = field(
         default_factory=lambda: ButtonEntityDescription(
             key="push",
@@ -54,12 +64,58 @@ class TuyaBLEFingerbotModeMapping(TuyaBLEButtonMapping):
 
 
 @dataclass
+class TuyaBLELockMapping(TuyaBLEButtonMapping):
+    """Describes availability of a given button"""
+
+    description: ButtonEntityDescription = field(
+        default_factory=lambda: ButtonEntityDescription(
+            key="push",
+        )
+    )
+    is_available: TuyaBLEButtonIsAvailable = 0
+
+
+@dataclass
 class TuyaBLECategoryButtonMapping:
+    """Describes a dict of products and their mappings"""
+
     products: dict[str, list[TuyaBLEButtonMapping]] | None = None
     mapping: list[TuyaBLEButtonMapping] | None = None
 
 
 mapping: dict[str, TuyaBLECategoryButtonMapping] = {
+    "dcb": TuyaBLECategoryButtonMapping(
+        products={
+            **dict.fromkeys(
+                [
+                    "ajrhf1aj",
+                    "z5ztlw3k",
+                    "vllfabvs",
+                    "fay1puxy",
+                ],  # PARKSIDE Smart battery
+                [
+                    TuyaBLEButtonMapping(
+                        dp_id=115,
+                        description=ButtonEntityDescription(
+                            key="battery_finder",
+                            icon="mdi:find-replace",
+                            entity_category=EntityCategory.DIAGNOSTIC,
+                        ),
+                    ),
+                    TuyaBLEButtonMapping(
+                        dp_id=162,
+                        description=ButtonEntityDescription(
+                            key="factory_data_reset",
+                            device_class=ButtonDeviceClass.RESTART,
+                            icon="mdi:restore",
+                            entity_category=EntityCategory.CONFIG,
+                        ),
+                        dp_type=TuyaBLEDataPointType.DT_RAW,
+                    ),
+                ],
+            ),
+        },
+    ),
     "szjqr": TuyaBLECategoryButtonMapping(
         products={
             **dict.fromkeys(
@@ -72,8 +128,11 @@ mapping: dict[str, TuyaBLECategoryButtonMapping] = {
                 [
                     "blliqpsj",
                     "ndvkgsrm",
-                    "yiihr7zh", 
-                    "neq16kgd"
+                    "riecov42",
+                    "yiihr7zh",
+                    "neq16kgd",
+                    "6jcvqwh0",
+                    "h8kdwywx",
                 ],  # Fingerbot Plus
                 [
                     TuyaBLEFingerbotModeMapping(dp_id=2),
@@ -95,14 +154,240 @@ mapping: dict[str, TuyaBLECategoryButtonMapping] = {
             ),
         },
     ),
+    "kg": TuyaBLECategoryButtonMapping(
+        products={
+            **dict.fromkeys(
+                [
+                    "mknd4lci",
+                    "riecov42",
+                    "bs3ubslo",
+                    "gnpbj0bq",
+                    "6jcvqwh0",
+                ],  # Fingerbot Plus
+                [
+                    TuyaBLEFingerbotModeMapping(dp_id=108),
+                ],
+            ),
+        },
+    ),
     "znhsb": TuyaBLECategoryButtonMapping(
         products={
-            "cdlandip":  # Smart water bottle
-            [
+            "cdlandip": [  # Smart water bottle
                 TuyaBLEButtonMapping(
                     dp_id=109,
                     description=ButtonEntityDescription(
                         key="bright_lid_screen",
+                    ),
+                ),
+            ],
+        },
+    ),
+    "jtmspro": TuyaBLECategoryButtonMapping(
+        products={
+            "hc7n0urm": [  # A1 Ultra-JM
+                TuyaBLEButtonMapping(
+                    dp_id=71,  # BLE unlock check
+                    description=ButtonEntityDescription(
+                        key="ble_unlock_check",
+                        icon="mdi:lock-open-variant-outline",
+                    ),
+                ),
+            ],
+            **dict.fromkeys(
+                [
+                    "stugc8dl",  # HU06 Smart Lock
+                    "xicdxood",  # Raycube K7 Pro+
+                    "rlyxv7pe",  # A1 PRO MAX
+                ],
+                [
+                    # Raycube K7 Pro+, unclear if applicable to A1 PRO MAX
+                    TuyaBLEButtonMapping(
+                        dp_id=71,  # On click it opens the lock, just like connecting via Smart Life App
+                        # and holding the center button
+                        description=ButtonEntityDescription(
+                            key="bluetooth_unlock",
+                            icon="mdi:lock-open-variant-outline",
+                        ),
+                    ),
+                ],
+            ),
+            "oyqux5vv": [  # LA-01 Smart lock
+                TuyaBLEButtonMapping(
+                    dp_id=71,
+                    description=ButtonEntityDescription(
+                        key="bluetooth_unlock",
+                        icon="mdi:lock-open-variant-outline",
+                    ),
+                    dp_type=TuyaBLEDataPointType.DT_RAW,
+                ),
+            ],
+            "hs21i377": [  # Raycube K7 Pro+
+                TuyaBLEButtonMapping(
+                    dp_id=71,
+                    description=ButtonEntityDescription(
+                        key="bluetooth_unlock",
+                        icon="mdi:lock-open-check-outline",
+                    ),
+                    dp_type=TuyaBLEDataPointType.DT_RAW,
+                ),
+            ],
+            "kholoaew": [  # Smart Lock
+                TuyaBLEButtonMapping(
+                    dp_id=46,
+                    description=ButtonEntityDescription(key="manual_lock"),
+                ),
+                TuyaBLEButtonMapping(
+                    dp_id=71,
+                    description=ButtonEntityDescription(
+                        key="bluetooth_unlock",
+                        icon="mdi:lock-open-check-outline",
+                    ),
+                    dp_type=TuyaBLEDataPointType.DT_RAW,
+                ),
+            ],
+        },
+    ),
+    "ms": TuyaBLECategoryButtonMapping(
+        products={
+            **dict.fromkeys(
+                [
+                    "okkyfgfs",
+                    "k53ok3u9",
+                    "sidhzylo",
+                    "a6nttc41",
+                    "wgv4haro",
+                    "uyf1ewof",
+                ],  # Smart Lock
+                [
+                    TuyaBLEButtonMapping(
+                        dp_id=6,
+                        description=ButtonEntityDescription(
+                            key="bluetooth_unlock",
+                        ),
+                    ),
+                    # TuyaBLEButtonMapping(
+                    #    dp_id=12,
+                    #    description=ButtonEntityDescription(
+                    #        key="unlock_fingerprint",
+                    #    ),
+                    # ),
+                ],
+            ),
+            "kpn4zaf7": [
+                TuyaBLEButtonMapping(
+                    dp_id=71,  # BLE unlock check
+                    description=ButtonEntityDescription(
+                        key="ble_unlock_check",
+                        icon="mdi:lock-open-variant-outline",
+                    ),
+                ),
+            ],
+        }
+    ),
+    "gcj": TuyaBLECategoryButtonMapping(
+        products={
+            # Each button writes one command value of DP 115
+            # (MachineControlCmd). They complement the lawn mower entity,
+            # which only exposes the start, pause and dock commands.
+            "9hdajpiw": [
+                TuyaBLEButtonMapping(
+                    dp_id=115,
+                    dp_type=TuyaBLEDataPointType.DT_ENUM,
+                    value=PARKSIDE_MOWER_COMMANDS.index("StartMowing"),
+                    description=ButtonEntityDescription(
+                        key="start_mowing",
+                        icon="mdi:play",
+                    ),
+                ),
+                TuyaBLEButtonMapping(
+                    dp_id=115,
+                    dp_type=TuyaBLEDataPointType.DT_ENUM,
+                    value=PARKSIDE_MOWER_COMMANDS.index("PauseWork"),
+                    description=ButtonEntityDescription(
+                        key="pause_work",
+                        icon="mdi:pause",
+                    ),
+                ),
+                TuyaBLEButtonMapping(
+                    dp_id=115,
+                    dp_type=TuyaBLEDataPointType.DT_ENUM,
+                    value=PARKSIDE_MOWER_COMMANDS.index("CancelWork"),
+                    description=ButtonEntityDescription(
+                        key="cancel_work",
+                        icon="mdi:stop",
+                    ),
+                ),
+                TuyaBLEButtonMapping(
+                    dp_id=115,
+                    dp_type=TuyaBLEDataPointType.DT_ENUM,
+                    value=PARKSIDE_MOWER_COMMANDS.index("StartReturnStation"),
+                    description=ButtonEntityDescription(
+                        key="start_return_station",
+                        icon="mdi:home-import-outline",
+                    ),
+                ),
+                TuyaBLEButtonMapping(
+                    dp_id=115,
+                    dp_type=TuyaBLEDataPointType.DT_ENUM,
+                    value=PARKSIDE_MOWER_COMMANDS.index("ContinueWork"),
+                    description=ButtonEntityDescription(
+                        key="continue_work",
+                        icon="mdi:play-pause",
+                    ),
+                ),
+                TuyaBLEButtonMapping(
+                    dp_id=115,
+                    dp_type=TuyaBLEDataPointType.DT_ENUM,
+                    value=PARKSIDE_MOWER_COMMANDS.index("EDGE"),
+                    description=ButtonEntityDescription(
+                        key="edge_mowing",
+                        icon="mdi:border-outside",
+                    ),
+                ),
+                # Write-only trigger DPs. They expect True on every press, so
+                # the value is fixed rather than toggled.
+                TuyaBLEButtonMapping(
+                    dp_id=107,  # ClearAppointment
+                    dp_type=TuyaBLEDataPointType.DT_BOOL,
+                    value=True,
+                    description=ButtonEntityDescription(
+                        key="clear_schedule",
+                        icon="mdi:calendar-remove",
+                        entity_category=EntityCategory.CONFIG,
+                        entity_registry_enabled_default=False,
+                    ),
+                ),
+                TuyaBLEButtonMapping(
+                    dp_id=108,  # QueryAppointment
+                    dp_type=TuyaBLEDataPointType.DT_BOOL,
+                    value=True,
+                    description=ButtonEntityDescription(
+                        key="refresh_schedule",
+                        icon="mdi:calendar-refresh",
+                        entity_category=EntityCategory.CONFIG,
+                        entity_registry_enabled_default=False,
+                    ),
+                ),
+                TuyaBLEButtonMapping(
+                    dp_id=109,  # QueryPartition
+                    dp_type=TuyaBLEDataPointType.DT_BOOL,
+                    value=True,
+                    description=ButtonEntityDescription(
+                        key="refresh_zones",
+                        icon="mdi:map-search",
+                        entity_category=EntityCategory.CONFIG,
+                        entity_registry_enabled_default=False,
+                    ),
+                ),
+                TuyaBLEButtonMapping(
+                    dp_id=114,  # clearmachinepartition
+                    dp_type=TuyaBLEDataPointType.DT_BOOL,
+                    value=True,
+                    description=ButtonEntityDescription(
+                        key="clear_zones",
+                        icon="mdi:map-marker-remove",
+                        entity_category=EntityCategory.CONFIG,
+                        entity_registry_enabled_default=False,
                     ),
                 ),
             ],
@@ -119,14 +404,14 @@ def get_mapping_by_device(device: TuyaBLEDevice) -> list[TuyaBLECategoryButtonMa
             return product_mapping
         if category.mapping is not None:
             return category.mapping
-        else:
-            return []
-    else:
-        return []
+
+    return []
 
 
 class TuyaBLEButton(TuyaBLEEntity, ButtonEntity):
     """Representation of a Tuya BLE Button."""
+
+    platform = Platform.BUTTON
 
     def __init__(
         self,
@@ -139,15 +424,69 @@ class TuyaBLEButton(TuyaBLEEntity, ButtonEntity):
         super().__init__(hass, coordinator, device, product, mapping.description)
         self._mapping = mapping
 
+    async def _run_hs21i377_unlock(self) -> None:
+        """Run the validated dp71 unlock flow for hs21i377 and oyqux5vv."""
+        # hs21i377 and oyqux5vv (LA-01) use a device-specific dp71 unlock payload.
+        # Practical testing confirmed multiple payload variants can unlock,
+        # so this is not treated as a fixed "known lock code". We keep an
+        # empirically validated value here until the payload semantics are
+        # understood better.
+        dp71_value = bytes.fromhex("0001ffff36383538313536320169ab34cd0000")
+
+        dp71 = self._device.datapoints.get_or_create(
+            71,
+            TuyaBLEDataPointType.DT_RAW,
+            b"",
+        )
+        if dp71:
+            await dp71.set_value(dp71_value)
+
+    async def _run_kholoaew_unlock(self) -> None:
+        """Run the validated dp71 unlock flow for kholoaew."""
+        # It seems like kholoaew requires the same type of unlock as hs21i377
+        # but I haven't been able to make it work.
+        dp71_value = bytes.fromhex("0001ffff3038383532353836016a1f49270000")
+
+        dp71 = self._device.datapoints.get_or_create(
+            71,
+            TuyaBLEDataPointType.DT_RAW,
+            b"",
+        )
+        if dp71:
+            await dp71.set_value(dp71_value)
+
     def press(self) -> None:
         """Press the button."""
+        if self._device.product_id == "kholoaew":
+            if self._mapping.description.key == "bluetooth_unlock":
+                self._hass.create_task(self._run_kholoaew_unlock())
+                return
+        if self._device.product_id in ("hs21i377", "oyqux5vv"):
+            if self._mapping.description.key == "bluetooth_unlock":
+                self._hass.create_task(self._run_hs21i377_unlock())
+                return
+
+        if self._mapping.value is not None:
+            datapoint = self._device.datapoints.get_or_create(
+                self._mapping.dp_id,
+                self._mapping.dp_type or TuyaBLEDataPointType.DT_BOOL,
+                self._mapping.value,
+            )
+            if datapoint:
+                self._hass.create_task(datapoint.set_value(self._mapping.value))
+            return
+
         datapoint = self._device.datapoints.get_or_create(
             self._mapping.dp_id,
             TuyaBLEDataPointType.DT_BOOL,
             False,
         )
         if datapoint:
-            self._hass.create_task(datapoint.set_value(not bool(datapoint.value)))
+            if self._product.lock:
+                # Lock needs true to activate lock/unlock commands
+                self._hass.create_task(datapoint.set_value(True))
+            else:
+                self._hass.create_task(datapoint.set_value(not bool(datapoint.value)))
 
     @property
     def available(self) -> bool:

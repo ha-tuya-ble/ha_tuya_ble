@@ -1,7 +1,9 @@
 """The Tuya BLE integration."""
+
 from __future__ import annotations
 
 from dataclasses import dataclass, field
+from typing import Callable
 
 import logging
 
@@ -10,9 +12,9 @@ from homeassistant.components.select import (
     SelectEntity,
 )
 from homeassistant.config_entries import ConfigEntry
-from homeassistant.const import UnitOfTemperature
+from homeassistant.const import UnitOfTemperature, Platform
 from homeassistant.core import HomeAssistant
-from homeassistant.const import EntityCategory
+from homeassistant.helpers.entity import EntityCategory
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator
 
@@ -30,6 +32,8 @@ _LOGGER = logging.getLogger(__name__)
 
 @dataclass
 class TuyaBLESelectMapping:
+    """Model a DP, description and default values"""
+
     dp_id: int
     description: SelectEntityDescription
     force_add: bool = True
@@ -38,6 +42,8 @@ class TuyaBLESelectMapping:
 
 @dataclass
 class TemperatureUnitDescription(SelectEntityDescription):
+    """Description of temperature unit"""
+
     key: str = "temperature_unit"
     icon: str = "mdi:thermometer"
     entity_category: EntityCategory = EntityCategory.CONFIG
@@ -45,16 +51,52 @@ class TemperatureUnitDescription(SelectEntityDescription):
 
 @dataclass
 class TuyaBLEFingerbotModeMapping(TuyaBLESelectMapping):
+    """Fingerbot mode mapping"""
+
     description: SelectEntityDescription = field(
         default_factory=lambda: SelectEntityDescription(
             key="fingerbot_mode",
             entity_category=EntityCategory.CONFIG,
-            options=
-                [
-                    FINGERBOT_MODE_PUSH, 
-                    FINGERBOT_MODE_SWITCH,
-                    FINGERBOT_MODE_PROGRAM,
-                ],
+            options=[
+                FINGERBOT_MODE_PUSH,
+                FINGERBOT_MODE_SWITCH,
+                FINGERBOT_MODE_PROGRAM,
+            ],
+        )
+    )
+
+
+@dataclass
+class TuyaBLEWeatherDelayMapping(TuyaBLESelectMapping):
+    description: SelectEntityDescription = field(
+        default_factory=lambda: SelectEntityDescription(
+            key="weather_delay",
+            entity_category=EntityCategory.CONFIG,
+            options=[
+                "cancel",
+                "24h",
+                "48h",
+                "72h",
+                "96h",
+                "120h",
+                "144h",
+                "168h",
+            ],
+        )
+    )
+
+
+@dataclass
+class TuyaBLESmartWeatherMapping(TuyaBLESelectMapping):
+    description: SelectEntityDescription = field(
+        default_factory=lambda: SelectEntityDescription(
+            key="smart_weather",
+            entity_category=EntityCategory.CONFIG,
+            options=[
+                "sunny",
+                "cloudy",
+                "rainy",
+            ],
         )
     )
 
@@ -65,27 +107,287 @@ class TuyaBLECategorySelectMapping:
     mapping: list[TuyaBLESelectMapping] | None = None
 
 
+@dataclass
+class TuyaBLETemperatureUnitMapping(TuyaBLESelectMapping):
+    description: TemperatureUnitDescription = field(
+        default_factory=lambda: TemperatureUnitDescription(
+            options=[
+                UnitOfTemperature.CELSIUS,
+                UnitOfTemperature.FAHRENHEIT,
+            ],
+            entity_registry_enabled_default=False,
+        )
+    )
+
+
 mapping: dict[str, TuyaBLECategorySelectMapping] = {
-    "co2bj": TuyaBLECategorySelectMapping(
+    "sfkzq": TuyaBLECategorySelectMapping(
         products={
-            "59s19z5m":  # CO2 Detector
-            [
+            "ojrvmfkk": [
+                # Weather delay - DP 10
                 TuyaBLESelectMapping(
-                    dp_id=101,
-                    description=TemperatureUnitDescription(
+                    dp_id=10,
+                    description=SelectEntityDescription(
+                        key="weather_delay",
                         options=[
-                            UnitOfTemperature.CELSIUS,
-                            UnitOfTemperature.FAHRENHEIT,
+                            "cancel",
+                            "1day",
+                            "2day",
+                            "3day",
+                            "4day",
+                            "5day",
+                            "6day",
+                            "7day",
                         ],
-                    )
+                        entity_category=EntityCategory.CONFIG,
+                    ),
+                    dp_type=TuyaBLEDataPointType.DT_STRING,
+                ),
+                # Weather - DP 13
+                TuyaBLESelectMapping(
+                    dp_id=13,
+                    description=SelectEntityDescription(
+                        key="weather",
+                        options=[
+                            "sunny",
+                            "rainy",
+                        ],
+                        entity_category=EntityCategory.CONFIG,
+                    ),
+                    dp_type=TuyaBLEDataPointType.DT_STRING,
                 ),
             ],
+            "16wgjvck": [
+                TuyaBLESelectMapping(
+                    dp_id=12,
+                    description=SelectEntityDescription(
+                        key="work_state",
+                        options=["auto", "manual"],
+                        entity_category=EntityCategory.CONFIG,
+                    ),
+                ),
+            ],
+            "8t5hebn0": [  # MoistenLand Water Timer
+                TuyaBLESelectMapping(
+                    dp_id=10,
+                    dp_type=TuyaBLEDataPointType.DT_STRING,
+                    description=SelectEntityDescription(
+                        key="weather_delay",
+                        options=[
+                            "cancel",
+                            "24h",
+                            "48h",
+                            "72h",
+                        ],
+                        entity_category=EntityCategory.CONFIG,
+                    ),
+                ),
+            ],
+            "tqzkwarw": [  # HCT-611 Water Timer
+                TuyaBLESelectMapping(
+                    dp_id=10,
+                    description=SelectEntityDescription(
+                        key="weather_delay",
+                        options=[
+                            "cancel",
+                            "24h",
+                            "48h",
+                            "72h",
+                        ],
+                        entity_category=EntityCategory.CONFIG,
+                    ),
+                ),
+                TuyaBLESelectMapping(
+                    dp_id=13,
+                    description=SelectEntityDescription(
+                        key="smart_weather",
+                        options=[
+                            "sunny",
+                            "clear",
+                            "cloud",
+                            "cloudy",
+                            "rainy",
+                            "snow",
+                            "fog",
+                        ],
+                        entity_category=EntityCategory.CONFIG,
+                    ),
+                ),
+            ],
+            **dict.fromkeys(
+                ["46zia2nz", "1fcnd8xk", "0axr5s0b", "e1poaiwa"],
+                [
+                    TuyaBLESelectMapping(
+                        dp_id=10,
+                        description=SelectEntityDescription(
+                            key="weather_delay",
+                            options=[
+                                "cancel",
+                                "24h",
+                                "48h",
+                                "72h",
+                            ],
+                            entity_category=EntityCategory.CONFIG,
+                        ),
+                    ),
+                    TuyaBLESelectMapping(
+                        dp_id=12,
+                        description=SelectEntityDescription(
+                            key="work_state",
+                            options=["auto", "manual", "idle"],
+                            entity_category=EntityCategory.CONFIG,
+                        ),
+                    ),
+                ],
+            ),
+            "nxquc5lb": [  # Smart water timer - SOP10
+                TuyaBLEWeatherDelayMapping(dp_id=10),
+                TuyaBLESmartWeatherMapping(dp_id=13),
+            ],
+            "svhikeyq": [  # Smart water timer
+                TuyaBLESelectMapping(
+                    dp_id=10,
+                    description=SelectEntityDescription(
+                        key="weather_delay",
+                        options=[
+                            "cancel",
+                            "24h",
+                            "48h",
+                            "72h",
+                        ],
+                        entity_category=EntityCategory.CONFIG,
+                    ),
+                ),
+                TuyaBLESmartWeatherMapping(dp_id=13),
+            ],
+            "d4vpmigg": [
+                TuyaBLESelectMapping(
+                    dp_id=10,
+                    description=SelectEntityDescription(
+                        key="weather_delay",
+                        options=[
+                            "cancel",
+                            "24h",
+                            "48h",
+                            "72h",
+                        ],
+                        entity_category=EntityCategory.CONFIG,
+                    ),
+                ),
+                TuyaBLESelectMapping(
+                    dp_id=12,
+                    description=SelectEntityDescription(
+                        key="work_state",
+                        options=["auto", "manual", "idle"],
+                        entity_category=EntityCategory.CONFIG,
+                    ),
+                ),
+                TuyaBLESmartWeatherMapping(dp_id=13),
+            ],
+        },
+    ),
+    "ggq": TuyaBLECategorySelectMapping(
+        products={
+            "jntxv3q4": [  # YZD02B dual irrigation timer
+                TuyaBLESelectMapping(
+                    dp_id=117,
+                    dp_type=TuyaBLEDataPointType.DT_ENUM,
+                    description=SelectEntityDescription(
+                        key="weather_delay_z1",
+                        options=[
+                            "cancel",
+                            "24h",
+                            "48h",
+                            "72h",
+                            "96h",
+                            "120h",
+                            "144h",
+                            "168h",
+                        ],
+                        entity_category=EntityCategory.CONFIG,
+                    ),
+                ),
+                TuyaBLESelectMapping(
+                    dp_id=114,
+                    dp_type=TuyaBLEDataPointType.DT_ENUM,
+                    description=SelectEntityDescription(
+                        key="weather_delay_z2",
+                        options=[
+                            "cancel",
+                            "24h",
+                            "48h",
+                            "72h",
+                            "96h",
+                            "120h",
+                            "144h",
+                            "168h",
+                        ],
+                        entity_category=EntityCategory.CONFIG,
+                    ),
+                ),
+            ],
+        },
+    ),
+    "co2bj": TuyaBLECategorySelectMapping(
+        products={
+            "59s19z5m": [TuyaBLETemperatureUnitMapping(dp_id=101)],  # CO2 Detector
+        },
+    ),
+    "dcb": TuyaBLECategorySelectMapping(
+        products={
+            **dict.fromkeys(
+                [
+                    "ajrhf1aj",
+                    "z5ztlw3k",
+                    "vllfabvs",
+                    "fay1puxy",
+                ],  # PARKSIDE Smart battery
+                [
+                    TuyaBLESelectMapping(
+                        dp_id=105,
+                        description=SelectEntityDescription(
+                            key="battery_work_mode",
+                            icon="mdi:leaf-circle-outline",
+                            options=[
+                                "Performance",
+                                "Balanced",
+                                "Eco",
+                                "Expert",
+                            ],
+                            entity_category=EntityCategory.CONFIG,
+                        ),
+                    ),
+                    TuyaBLESelectMapping(
+                        dp_id=174,
+                        description=SelectEntityDescription(
+                            key="pack_work_mode",
+                            icon="mdi:leaf-circle-outline",
+                            options=[
+                                "Performance",
+                                "Balanced",
+                                "Eco",
+                                "Expert",
+                            ],
+                            entity_category=EntityCategory.CONFIG,
+                        ),
+                    ),
+                ],
+            ),
         },
     ),
     "ms": TuyaBLECategorySelectMapping(
         products={
             **dict.fromkeys(
-                ["ludzroix", "isk2p555"], # Smart Lock
+                [
+                    "ludzroix",
+                    "isk2p555",
+                    "gumrixyt",
+                    "uamrw6h3",
+                    "okkyfgfs",
+                    "sidhzylo",
+                    "7a4xvbtt",
+                    "wgv4haro",
+                ],  # Smart Lock
                 [
                     TuyaBLESelectMapping(
                         dp_id=31,
@@ -100,14 +402,248 @@ mapping: dict[str, TuyaBLECategorySelectMapping] = {
                             entity_category=EntityCategory.CONFIG,
                         ),
                     ),
-                ]
+                ],
             ),
+            **dict.fromkeys(
+                ["6fibxtph", "99gv5nmz", "kpn4zaf7"],
+                [
+                    TuyaBLESelectMapping(
+                        dp_id=31,
+                        description=SelectEntityDescription(
+                            key="beep_volume",
+                            options=[
+                                "mute",
+                                "low",
+                                "normal",
+                                "high",
+                            ],
+                            entity_category=EntityCategory.CONFIG,
+                        ),
+                    ),
+                    TuyaBLESelectMapping(
+                        dp_id=28,
+                        description=SelectEntityDescription(
+                            key="language",
+                            icon="mdi:translate",
+                            options=[
+                                "chinese_simplified",
+                                "english",
+                            ],
+                            entity_category=EntityCategory.CONFIG,
+                        ),
+                    ),
+                ],
+            ),
+            "mqc2hevy": [
+                TuyaBLESelectMapping(
+                    dp_id=31,
+                    description=SelectEntityDescription(
+                        key="beep_volume",
+                        icon="mdi:volume-high",
+                        options=[
+                            "mute",
+                            "low",
+                            "normal",
+                            "high",
+                        ],
+                        entity_category=EntityCategory.CONFIG,
+                    ),
+                    dp_type=TuyaBLEDataPointType.DT_ENUM,
+                ),
+                TuyaBLESelectMapping(
+                    dp_id=28,
+                    description=SelectEntityDescription(
+                        key="language",
+                        icon="mdi:translate",
+                        options=[
+                            "chinese_simplified",
+                            "english",
+                            "japanese",
+                            "russian",
+                            "german",
+                            "spanish",
+                            "french",
+                            "korean",
+                        ],
+                        entity_category=EntityCategory.CONFIG,
+                    ),
+                    dp_type=TuyaBLEDataPointType.DT_ENUM,
+                ),
+                TuyaBLESelectMapping(
+                    dp_id=68,
+                    description=SelectEntityDescription(
+                        key="special_function",
+                        icon="mdi:tools",
+                        options=[
+                            "function1",
+                            "function2",
+                        ],
+                        entity_category=EntityCategory.CONFIG,
+                    ),
+                ),
+            ],
+        }
+    ),
+    "jtmspro": TuyaBLECategorySelectMapping(
+        products={
+            "hc7n0urm": [  # A1 Ultra-JM
+                TuyaBLESelectMapping(
+                    dp_id=31,
+                    description=SelectEntityDescription(
+                        key="beep_volume",
+                        icon="mdi:volume-high",
+                        options=[
+                            "mute",
+                            "normal",
+                        ],
+                        entity_category=EntityCategory.CONFIG,
+                    ),
+                    dp_type=TuyaBLEDataPointType.DT_ENUM,
+                ),
+            ],
+            **dict.fromkeys(
+                [
+                    "stugc8dl",  # HU06 Smart Lock
+                    "xicdxood",  # Raycube K7 Pro+
+                    "rlyxv7pe",  # A1 PRO MAX - Experimental
+                    "oyqux5vv",  # LA-01 - Experimental
+                    "z7lj676i",  # Smart Cylinder Lock - Experimental
+                    "pyawczjj",  # CS-9 Smart Fingerprint Lock - Experimental
+                ],
+                [
+                    TuyaBLESelectMapping(
+                        dp_id=31,
+                        description=SelectEntityDescription(
+                            key="beep_volume",
+                            options=[
+                                "Mute",
+                                "Low",
+                                "Normal",
+                                "High",
+                            ],
+                            entity_category=EntityCategory.CONFIG,
+                        ),
+                    ),
+                    TuyaBLESelectMapping(
+                        dp_id=28,
+                        description=SelectEntityDescription(
+                            key="language",
+                            options=[
+                                "Chinese Simplified",
+                                "English",
+                                "Arabic",
+                                "Indonesian",
+                                "Portuguese",
+                            ],
+                            entity_category=EntityCategory.CONFIG,
+                        ),
+                    ),
+                ],
+            ),
+            "ajk32biq": [
+                TuyaBLESelectMapping(
+                    dp_id=31,
+                    description=SelectEntityDescription(
+                        key="beep_volume",
+                        options=[
+                            "Mute",
+                            "Low",
+                            "Normal",
+                            "High",
+                        ],
+                        entity_category=EntityCategory.CONFIG,
+                    ),
+                ),
+                TuyaBLESelectMapping(
+                    dp_id=28,
+                    description=SelectEntityDescription(
+                        key="language",
+                        options=[
+                            "Chinese Simplified",
+                            "English",
+                            "Arabic",
+                            "Indonesian",
+                            "Portuguese",
+                            "Russian",
+                            "Spanish",
+                            "Thai",
+                            "Vietnamese",
+                        ],
+                        entity_category=EntityCategory.CONFIG,
+                    ),
+                ),
+                TuyaBLESelectMapping(
+                    dp_id=89,
+                    description=SelectEntityDescription(
+                        key="autolock_delay",
+                        options=[
+                            "Inactive",
+                            "4s",
+                            "6s",
+                            "8s",
+                            "10s",
+                            "12s",
+                        ],
+                        entity_category=EntityCategory.CONFIG,
+                    ),
+                ),
+                TuyaBLESelectMapping(
+                    dp_id=34,
+                    description=SelectEntityDescription(
+                        key="double_verification",
+                        options=[
+                            "Single Unlock",
+                            "Combination Unlock",
+                        ],
+                        entity_category=EntityCategory.CONFIG,
+                    ),
+                ),
+            ],
+            "yfqp0shy": [
+                TuyaBLESelectMapping(
+                    dp_id=34,
+                    description=SelectEntityDescription(
+                        key="double_verification",
+                        options=[
+                            "Single Unlock",
+                            "Combination Unlock",
+                        ],
+                        entity_category=EntityCategory.CONFIG,
+                    ),
+                ),
+            ],
+            "kholoaew": [
+                TuyaBLESelectMapping(
+                    dp_id=31,
+                    description=SelectEntityDescription(
+                        key="beep_volume",
+                        options=[
+                            "Mute",
+                            "Low",
+                            "Normal",
+                            "High",
+                        ],
+                        entity_category=EntityCategory.CONFIG,
+                    ),
+                ),
+                TuyaBLESelectMapping(
+                    dp_id=28,
+                    description=SelectEntityDescription(
+                        key="language",
+                        options=[
+                            "Chinese Simplified",
+                            "English",
+                        ],
+                        entity_category=EntityCategory.CONFIG,
+                    ),
+                ),
+            ],
         }
     ),
     "szjqr": TuyaBLECategorySelectMapping(
         products={
             **dict.fromkeys(
-                ["3yqdo5yt", "xhf790if"],  # CubeTouch 1s and II
+                ["3yqdo5yt", "xhf790if", "yn4x5fa7"],  # CubeTouch 1s and II
                 [
                     TuyaBLEFingerbotModeMapping(dp_id=2),
                 ],
@@ -116,60 +652,75 @@ mapping: dict[str, TuyaBLECategorySelectMapping] = {
                 [
                     "blliqpsj",
                     "ndvkgsrm",
-                    "yiihr7zh", 
-                    "neq16kgd"
+                    "yiihr7zh",
+                    "neq16kgd",
+                    "6jcvqwh0",
+                    "riecov42",
+                    "h8kdwywx",
                 ],  # Fingerbot Plus
                 [
                     TuyaBLEFingerbotModeMapping(dp_id=8),
                 ],
             ),
             **dict.fromkeys(
-                ["ltak7e1p", "y6kttvd6", "yrnk7mnn",
-                    "nvr2rocq", "bnt7wajf", "rvdceqjh",
-                    "5xhbk964"],  # Fingerbot
+                [
+                    "ltak7e1p",
+                    "y6kttvd6",
+                    "yrnk7mnn",
+                    "nvr2rocq",
+                    "bnt7wajf",
+                    "rvdceqjh",
+                    "5xhbk964",
+                ],  # Fingerbot
                 [
                     TuyaBLEFingerbotModeMapping(dp_id=8),
                 ],
             ),
         },
     ),
+    "kg": TuyaBLECategorySelectMapping(
+        products={
+            **dict.fromkeys(
+                [
+                    "mknd4lci",
+                    "riecov42",
+                    "bs3ubslo",
+                    "gnpbj0bq",
+                    "6jcvqwh0",
+                ],  # Fingerbot Plus
+                [
+                    TuyaBLEFingerbotModeMapping(dp_id=101),
+                ],
+            ),
+        },
+    ),
     "wsdcg": TuyaBLECategorySelectMapping(
         products={
-            "ojzlzzsw":  # Soil moisture sensor
-            [
-                TuyaBLESelectMapping(
-                    dp_id=9,
-                    description=TemperatureUnitDescription(
-                        options=[
-                            UnitOfTemperature.CELSIUS,
-                            UnitOfTemperature.FAHRENHEIT,
-                        ],
-                        entity_registry_enabled_default=False,
-                    )
-                ),
-            ],
+            **dict.fromkeys(
+                [
+                    "ojzlzzsw",
+                    "iv7hudlj",
+                    "jm6iasmb",
+                    "vlzqwckk",
+                    "tr0kabuq",
+                    "vyfoip9h",
+                    "1jvidcsf",
+                ],
+                [TuyaBLETemperatureUnitMapping(dp_id=9)],
+            )
         },
     ),
     "znhsb": TuyaBLECategorySelectMapping(
         products={
-            "cdlandip":  # Smart water bottle
-            [
-                TuyaBLESelectMapping(
-                    dp_id=106,
-                    description=TemperatureUnitDescription(
-                        options=[
-                            UnitOfTemperature.CELSIUS,
-                            UnitOfTemperature.FAHRENHEIT,
-                        ],
-                    )
-                ),
+            "cdlandip": [  # Smart water bottle
+                TuyaBLETemperatureUnitMapping(dp_id=106),
                 TuyaBLESelectMapping(
                     dp_id=107,
                     description=SelectEntityDescription(
                         key="reminder_mode",
                         options=[
                             "interval_reminder",
-                            "schedule_reminder",
+                            "alarm_reminder",  # TODO: schedule_reminder?
                         ],
                         entity_category=EntityCategory.CONFIG,
                     ),
@@ -177,28 +728,101 @@ mapping: dict[str, TuyaBLECategorySelectMapping] = {
             ],
         },
     ),
-    "znhsb": TuyaBLECategorySelectMapping(
+    "ccjqr": TuyaBLECategorySelectMapping(
         products={
-            "cdlandip":  # Smart water bottle
-            [
+            "pnxl0r3l": [  # Window Cleaner Robot
                 TuyaBLESelectMapping(
-                    dp_id=106,
-                    description=TemperatureUnitDescription(
-                        options=[
-                            UnitOfTemperature.CELSIUS,
-                            UnitOfTemperature.FAHRENHEIT,
-                        ],
-                    )
+                    dp_id=2,
+                    description=SelectEntityDescription(
+                        key="mode",
+                        icon="mdi:robot-mower",
+                        options=["smart", "z_mode", "n_mode", "edge", "spot"],
+                        entity_category=EntityCategory.CONFIG,
+                    ),
                 ),
                 TuyaBLESelectMapping(
-                    dp_id=107,
+                    dp_id=3,
                     description=SelectEntityDescription(
-                        key="reminder_mode",
+                        key="direction_control",
+                        icon="mdi:navigation",
                         options=[
-                            "interval_reminder",
-                            "alarm_reminder",
+                            "forward",
+                            "backward",
+                            "turn_left",
+                            "turn_right",
+                            "stop",
+                        ],
+                    ),
+                ),
+            ],
+        },
+    ),
+    "jsq": TuyaBLECategorySelectMapping(
+        products={
+            "if1nolcm": [
+                TuyaBLESelectMapping(
+                    dp_id=3,
+                    description=SelectEntityDescription(
+                        key="spray_mode",
+                        options=[
+                            "small",
+                            "large",
                         ],
                         entity_category=EntityCategory.CONFIG,
+                    ),
+                ),
+                TuyaBLESelectMapping(
+                    dp_id=5,
+                    description=SelectEntityDescription(
+                        key="timer",
+                        options=[
+                            "cancel",
+                            "1h",
+                            "3h",
+                            "6h",
+                        ],
+                        entity_category=EntityCategory.CONFIG,
+                    ),
+                ),
+                TuyaBLESelectMapping(
+                    dp_id=101,
+                    description=SelectEntityDescription(
+                        key="scene",
+                        options=[
+                            "night",
+                            "read",
+                            "work",
+                            "rest",
+                            "grassland",
+                            "colorful",
+                            "dazzle",
+                            "gorgeous",
+                        ],
+                        entity_category=EntityCategory.CONFIG,
+                    ),
+                ),
+            ],
+        },
+    ),
+    "gcj": TuyaBLECategorySelectMapping(
+        products={
+            "9hdajpiw": [
+                # Generic Tuya vacuum work mode, superseded by DP 115 on this
+                # mower, so it is disabled by default.
+                TuyaBLESelectMapping(
+                    dp_id=3,  # mode
+                    dp_type=TuyaBLEDataPointType.DT_ENUM,
+                    description=SelectEntityDescription(
+                        key="work_mode",
+                        icon="mdi:mower",
+                        entity_registry_enabled_default=False,
+                        options=[
+                            "standby",
+                            "random",
+                            "smart",
+                            "spot",
+                            "goto_charge",
+                        ],
                     ),
                 ),
             ],
@@ -207,9 +831,7 @@ mapping: dict[str, TuyaBLECategorySelectMapping] = {
 }
 
 
-def get_mapping_by_device(
-    device: TuyaBLEDevice
-) -> list[TuyaBLECategorySelectMapping]:
+def get_mapping_by_device(device: TuyaBLEDevice) -> list[TuyaBLECategorySelectMapping]:
     category = mapping.get(device.category)
     if category is not None and category.products is not None:
         product_mapping = category.products.get(device.product_id)
@@ -217,14 +839,14 @@ def get_mapping_by_device(
             return product_mapping
         if category.mapping is not None:
             return category.mapping
-        else:
-            return []
-    else:
-        return []
+
+    return []
 
 
 class TuyaBLESelect(TuyaBLEEntity, SelectEntity):
     """Representation of a Tuya BLE select."""
+
+    platform = Platform.SELECT
 
     def __init__(
         self,
@@ -234,41 +856,42 @@ class TuyaBLESelect(TuyaBLEEntity, SelectEntity):
         product: TuyaBLEProductInfo,
         mapping: TuyaBLESelectMapping,
     ) -> None:
-        super().__init__(
-            hass,
-            coordinator,
-            device,
-            product,
-            mapping.description
-        )
+        super().__init__(hass, coordinator, device, product, mapping.description)
         self._mapping = mapping
         self._attr_options = mapping.description.options
 
     @property
     def current_option(self) -> str | None:
         """Return the selected entity option to represent the entity state."""
-        # Raw value
-        value: str | None = None
         datapoint = self._device.datapoints[self._mapping.dp_id]
         if datapoint:
             value = datapoint.value
-            if value >= 0 and value < len(self._attr_options):
+            if isinstance(value, int) and 0 <= value < len(self._attr_options):
                 return self._attr_options[value]
-            else:
-                return value
+
+            return str(value) if value is not None else None
         return None
 
     def select_option(self, value: str) -> None:
         """Change the selected option."""
         if value in self._attr_options:
-            int_value = self._attr_options.index(value)
-            datapoint = self._device.datapoints.get_or_create(
-                self._mapping.dp_id,
-                TuyaBLEDataPointType.DT_ENUM,
-                int_value,
-            )
-            if datapoint:
-                self._hass.create_task(datapoint.set_value(int_value))
+            if self._mapping.dp_type == TuyaBLEDataPointType.DT_STRING:
+                datapoint = self._device.datapoints.get_or_create(
+                    self._mapping.dp_id,
+                    TuyaBLEDataPointType.DT_STRING,
+                    value,
+                )
+                if datapoint:
+                    self._hass.create_task(datapoint.set_value(value))
+            else:
+                int_value = self._attr_options.index(value)
+                datapoint = self._device.datapoints.get_or_create(
+                    self._mapping.dp_id,
+                    TuyaBLEDataPointType.DT_ENUM,
+                    int_value,
+                )
+                if datapoint:
+                    self._hass.create_task(datapoint.set_value(int_value))
 
 
 async def async_setup_entry(
@@ -281,15 +904,16 @@ async def async_setup_entry(
     mappings = get_mapping_by_device(data.device)
     entities: list[TuyaBLESelect] = []
     for mapping in mappings:
-        if (
-            mapping.force_add or
-            data.device.datapoints.has_id(mapping.dp_id, mapping.dp_type)
+        if mapping.force_add or data.device.datapoints.has_id(
+            mapping.dp_id, mapping.dp_type
         ):
-            entities.append(TuyaBLESelect(
-                hass,
-                data.coordinator,
-                data.device,
-                data.product,
-                mapping,
-            ))
+            entities.append(
+                TuyaBLESelect(
+                    hass,
+                    data.coordinator,
+                    data.device,
+                    data.product,
+                    mapping,
+                )
+            )
     async_add_entities(entities)

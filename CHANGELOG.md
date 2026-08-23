@@ -5,6 +5,411 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog],
 and this project adheres to [Semantic Versioning].
 
+## [0.10.0](https://github.com/ha-tuya-ble/ha_tuya_ble/compare/0.9.0...0.10.0) (2026-08-23)
+
+
+### Features
+
+* add Lawn Mower platform, Parkside PAMRC 250 A1 robot mower (gcj/9hdajpiw) ([667038a](https://github.com/ha-tuya-ble/ha_tuya_ble/commit/667038ae47e217b289495c17ddf56cd5a137e3c1))
+* add Parkside mower buttons, sensors and switches ([890d6d4](https://github.com/ha-tuya-ble/ha_tuya_ble/commit/890d6d40b4843a2d94ac8873b4dad46570939fc8))
+* add Parkside PAMRC 250 A1 robot mower (gcj/9hdajpiw) ([8162184](https://github.com/ha-tuya-ble/ha_tuya_ble/commit/8162184e39a8940c15bc93c97b8ec6ec94367b05))
+* add remaining Parkside mower schedule, zone and mode entities ([d9d6790](https://github.com/ha-tuya-ble/ha_tuya_ble/commit/d9d6790c5fe0253fb02a756a28715a0e28b126ff))
+* decode the raw Parkside mower logs, schedules and zones ([6495107](https://github.com/ha-tuya-ble/ha_tuya_ble/commit/64951072fc7434ccbff9cd6d6464141d6d71dbe5))
+* enhance diagnostics support ([accf9b0](https://github.com/ha-tuya-ble/ha_tuya_ble/commit/accf9b001d861c4fe43455878ca181bcfa0d4173))
+* enhance diagnostics support (via @SittingDuck52) ([01911f8](https://github.com/ha-tuya-ble/ha_tuya_ble/commit/01911f814cdb8c86c4aa6e101efe1e9fd0fffb18))
+
+
+### Bug Fixes
+
+* cancel the running job before docking the Parkside mower ([38deade](https://github.com/ha-tuya-ble/ha_tuya_ble/commit/38deadeba9278740c491ddc875c39663a2fe4c81))
+* clear the Parkside mower warning and add the cover sensor ([de37c5b](https://github.com/ha-tuya-ble/ha_tuya_ble/commit/de37c5ba62b6c78de72d094316aebebbfa85fd1d))
+* Conflicting colormodes for pmmalpkw ([c508884](https://github.com/ha-tuya-ble/ha_tuya_ble/commit/c508884ab626ab0ad6771a98dc4f07fb0307adf4))
+* drop the Parkside mower warning and problem heuristics ([b4cbcc0](https://github.com/ha-tuya-ble/ha_tuya_ble/commit/b4cbcc0a52a712f8f6cc3d7d0aaf6a1128ef45a4))
+* drop the unsupported Parkside mower detailed error log ([5260739](https://github.com/ha-tuya-ble/ha_tuya_ble/commit/5260739409b720cf72e3c99eef7fbabd72b84d6a))
+* drop the unsupported Parkside mower work schedule ([794a3fa](https://github.com/ha-tuya-ble/ha_tuya_ble/commit/794a3fa68603b0299acbedaadaa96cd6cf3a5337))
+* expose the Parkside mower running time as a number ([9722d65](https://github.com/ha-tuya-ble/ha_tuya_ble/commit/9722d65ad895568d9a83804dc1e6de11037bdf5b))
+* split the Parkside mower rain delay into two controls ([ad8c3ad](https://github.com/ha-tuya-ble/ha_tuya_ble/commit/ad8c3adbf1ae02d96cc4dc5cab0329c5d62f613b))
+* update translations for target languages to match en.json ([330de88](https://github.com/ha-tuya-ble/ha_tuya_ble/commit/330de88fa24585622fd3ba74302af9080ede34c0))
+* update translations for target languages to match en.json ([273934c](https://github.com/ha-tuya-ble/ha_tuya_ble/commit/273934c1e72f75cbd0c0d34b5f921dcdb18d7ee3))
+
+## [0.9.0](https://github.com/ha-tuya-ble/ha_tuya_ble/compare/0.8.3...0.9.0) (2026-08-15)
+
+
+### Features
+
+* add support for Parkside 4Ah and 12Ah batteries ([5028b1f](https://github.com/ha-tuya-ble/ha_tuya_ble/commit/5028b1f177ab9fad07480ac2b80f02cdfadd3b6c))
+
+## [0.8.3](https://github.com/ha-tuya-ble/ha_tuya_ble/compare/0.8.2...0.8.3) (2026-08-14)
+
+
+### Bug Fixes
+
+* add support for Example Product Securosmart lock (uyf1ewof) on m… ([cd56792](https://github.com/ha-tuya-ble/ha_tuya_ble/commit/cd567924aff50a22f2c847085dafae3062829755))
+* add support for Example Product Securosmart lock (uyf1ewof) on ms category ([6545eeb](https://github.com/ha-tuya-ble/ha_tuya_ble/commit/6545eebbd94cc05baa710d3866ee6b9a742856c8))
+* correct category for window cleaner robot (cxjmb → ccjqr) ([efc681f](https://github.com/ha-tuya-ble/ha_tuya_ble/commit/efc681f32c0f18f90126eec7f221542c7db6c82d))
+* correct category for window cleaner robot (cxjmb → ccjqr) ([bbcc961](https://github.com/ha-tuya-ble/ha_tuya_ble/commit/bbcc961069208d46b7bc1a621b1a88ec2abaa713))
+
+## [0.8.2](https://github.com/ha-tuya-ble/ha_tuya_ble/compare/0.8.1...0.8.2) (2026-08-11)
+
+
+### Bug Fixes
+
+* add raw bluetooth unlock support for LA-01 (oyqux5vv) ([047db1e](https://github.com/ha-tuya-ble/ha_tuya_ble/commit/047db1e1cbc750882332817167f8d6d1bb9facca))
+* add raw bluetooth unlock support for LA-01 (oyqux5vv) ([#279](https://github.com/ha-tuya-ble/ha_tuya_ble/issues/279)) ([fd0e9b9](https://github.com/ha-tuya-ble/ha_tuya_ble/commit/fd0e9b98f61a1d0a4e6d1544566879119075891d))
+* add support for Example Product Securosmart lock (uyf1ewof) ([7011781](https://github.com/ha-tuya-ble/ha_tuya_ble/commit/701178136027e5845a1f8cfd6d04d6bc369daf95))
+* **device:** Add MoistenLand Water Timer (8t5hebn0) mapping ([#273](https://github.com/ha-tuya-ble/ha_tuya_ble/issues/273)) ([72ff9ba](https://github.com/ha-tuya-ble/ha_tuya_ble/commit/72ff9ba26d0128c38cd4aefb224af24c0b096b1a))
+* **device:** add support for Product Securosmart lock (uyf1ewof) ([2496f94](https://github.com/ha-tuya-ble/ha_tuya_ble/commit/2496f94bf31f7cbdb7067b3c55a82e95fc07abcd))
+* **device:** map Fingerbot Plus 6jcvqwh0 in the kg category ([#276](https://github.com/ha-tuya-ble/ha_tuya_ble/issues/276)) ([aa7491b](https://github.com/ha-tuya-ble/ha_tuya_ble/commit/aa7491b4c7253b058da20fc44c5c915c329a7c73))
+* **protocol:** release a connection that dropped unexpectedly ([228485d](https://github.com/ha-tuya-ble/ha_tuya_ble/commit/228485d39ff98940b96d39920d3516fb9b853a3d))
+
+## [0.8.1](https://github.com/ha-tuya-ble/ha_tuya_ble/compare/0.8.0...0.8.1) (2026-08-03)
+
+
+### Bug Fixes
+
+* add support for wkf climate category and llflaywg TRV ([da77c6b](https://github.com/ha-tuya-ble/ha_tuya_ble/commit/da77c6b1bfb3c4845b486415834ed1e0aace7b51))
+* add support for wkf climate category and llflaywg TRV ([#261](https://github.com/ha-tuya-ble/ha_tuya_ble/issues/261)) ([c456c54](https://github.com/ha-tuya-ble/ha_tuya_ble/commit/c456c54d384a7e8ecfb0c47fcf1521acf284519b))
+* **device:** Add support for BSTUOKEY Invisible Lock ([#234](https://github.com/ha-tuya-ble/ha_tuya_ble/issues/234)) ([c016d3e](https://github.com/ha-tuya-ble/ha_tuya_ble/commit/c016d3e100209e8c589c6079b9971337f46c969d))
+* **device:** Add support for Dituo DT-T2190A Aroma Diffuser ([#260](https://github.com/ha-tuya-ble/ha_tuya_ble/issues/260)) ([dc419b9](https://github.com/ha-tuya-ble/ha_tuya_ble/commit/dc419b95f75e9c00c4642dd4e996a9fb575e5478))
+* **device:** Add support for LED BULB B509Z2 ([#263](https://github.com/ha-tuya-ble/ha_tuya_ble/issues/263)) ([62a37dd](https://github.com/ha-tuya-ble/ha_tuya_ble/commit/62a37dded59009e3613417d65922ce48f8e6bc0c))
+* **device:** Add support for Unistyle WT-04W Water Timer (ojrvmfkk) ([#232](https://github.com/ha-tuya-ble/ha_tuya_ble/issues/232)) ([9f404f5](https://github.com/ha-tuya-ble/ha_tuya_ble/commit/9f404f5aff8e0f720529366a6c938256583651ee))
+* Remove doubled translations ([868a94a](https://github.com/ha-tuya-ble/ha_tuya_ble/commit/868a94a2d112b325d511747306b56fefee31ec02))
+* Remove doubled translations ([364f10a](https://github.com/ha-tuya-ble/ha_tuya_ble/commit/364f10a443a143b464f74b6f782d016962f85505))
+* **select:** Expose YZD02B weather delays ([b053d4e](https://github.com/ha-tuya-ble/ha_tuya_ble/commit/b053d4e81ed0d6879423087c51d1d24143f7b6ea))
+* **sensor:** Expose YZD02B zone work states ([566d5cd](https://github.com/ha-tuya-ble/ha_tuya_ble/commit/566d5cd30107209cd9afc0229bb0f9589f61094a))
+* update wgv4haro lock and unlock mapping ([#272](https://github.com/ha-tuya-ble/ha_tuya_ble/issues/272)) ([a7c00d3](https://github.com/ha-tuya-ble/ha_tuya_ble/commit/a7c00d38f7742e8e0ddb21a7e23f0779756506d8))
+
+## [0.8.0](https://github.com/ha-tuya-ble/ha_tuya_ble/compare/0.7.2...0.8.0) (2026-08-02)
+
+
+### Features
+
+* add dynamic GATT characteristics selection for Tuya BLE devices ([#249](https://github.com/ha-tuya-ble/ha_tuya_ble/issues/249)) via @Shirkamdev ([706b02c](https://github.com/ha-tuya-ble/ha_tuya_ble/commit/706b02c43005207259fb22b88928a37289fac231))
+* add support for HCT-611 Water Timer (tqzkwarw) ([#247](https://github.com/ha-tuya-ble/ha_tuya_ble/issues/247)) ([e6f4815](https://github.com/ha-tuya-ble/ha_tuya_ble/commit/e6f481558f7bb0e97ce068b47ccc5dab72ac5233))
+* **device:** Support YZD02B irrigation timer ([aae29cf](https://github.com/ha-tuya-ble/ha_tuya_ble/commit/aae29cf00a26ea2857c3631a687ce5445758a25b))
+* **protocol:** Add Tuya BLE v4 datapoint transport ([ad9d694](https://github.com/ha-tuya-ble/ha_tuya_ble/commit/ad9d6945adba0e7fa09776ef27805e701dcc438d))
+* **protocol:** Add Tuya BLE v4 datapoint transport ([#254](https://github.com/ha-tuya-ble/ha_tuya_ble/issues/254)) ([13948ad](https://github.com/ha-tuya-ble/ha_tuya_ble/commit/13948ad916d85c1a2faf5e1fc6fde73e93ec0587))
+* **security:** Support Tuya BLE SecKey authentication ([c55aa6b](https://github.com/ha-tuya-ble/ha_tuya_ble/commit/c55aa6bb64975af1250209257c9cb03e1dd81a8e))
+* **security:** Support Tuya BLE SecKey authentication ([f0bd8f5](https://github.com/ha-tuya-ble/ha_tuya_ble/commit/f0bd8f5718ba52670cab0fe919931f6798db31bb))
+
+
+### Bug Fixes
+
+* **device:** add Guard Dog Security BS_PLD01 smart lock support (fix [#251](https://github.com/ha-tuya-ble/ha_tuya_ble/issues/251)) ([1833e2e](https://github.com/ha-tuya-ble/ha_tuya_ble/commit/1833e2e5be48998e1c208581cd6e942123baaf57))
+* **device:** Support YZD02B irrigation timer ([3feb418](https://github.com/ha-tuya-ble/ha_tuya_ble/commit/3feb418e62c24d329579646a56ad665ff1519196))
+
+## [0.7.2](https://github.com/ha-tuya-ble/ha_tuya_ble/compare/0.7.1...0.7.2) (2026-07-20)
+
+
+### Bug Fixes
+
+* Add support for Drawer Lock CTL20H (y2yaegze) - Experimental ([#166](https://github.com/ha-tuya-ble/ha_tuya_ble/issues/166)) ([de320e0](https://github.com/ha-tuya-ble/ha_tuya_ble/commit/de320e0417dd5b8e779a7e58f36a4a143a36b2e3))
+* Support XCase NX-4964 Lock Box (qicggi0m) - Experimental ([#246](https://github.com/ha-tuya-ble/ha_tuya_ble/issues/246)) ([71b4980](https://github.com/ha-tuya-ble/ha_tuya_ble/commit/71b49808850b23b4017e5b5d35a6ce247735826a))
+
+## [0.7.1](https://github.com/ha-tuya-ble/ha_tuya_ble/releases/tag/0.7.1) - 2026-07-20
+
+### Features
+* Add Home Assistant vacuum platform support for Tuya BLE devices via @buliaksk by @CloCkWeRX in https://github.com/ha-tuya-ble/ha_tuya_ble/pull/237
+
+### Devices
+* Add support for HU06 Smart Lock (stugc8dl) by @CloCkWeRX in https://github.com/ha-tuya-ble/ha_tuya_ble/pull/231
+* Add YZD05 water valve (d4vpmigg) support via @hippich by @CloCkWeRX in https://github.com/ha-tuya-ble/ha_tuya_ble/pull/198
+* Add support for robotic window cleaner (cxjmb / product pnxl0r3l) by @buliaksk in https://github.com/ha-tuya-ble/ha_tuya_ble/pull/159
+* fix: Add support for TH05 Temperature Sensor (vyfoip9h, 1jvidcsf) by @CloCkWeRX in https://github.com/ha-tuya-ble/ha_tuya_ble/pull/238
+
+### Misc
+* Add release-please GitHub action by @CloCkWeRX in https://github.com/ha-tuya-ble/ha_tuya_ble/pull/239
+* fix: Update CHANGELOG for version 0.3.1 by @CloCkWeRX in https://github.com/ha-tuya-ble/ha_tuya_ble/pull/240
+* Update translations to sync with en.json by @CloCkWeRX in https://github.com/ha-tuya-ble/ha_tuya_ble/pull/233
+
+### New Contributors
+* @buliaksk made their first contribution in https://github.com/ha-tuya-ble/ha_tuya_ble/pull/159
+
+**Full Changelog**: https://github.com/ha-tuya-ble/ha_tuya_ble/compare/0.7.0...0.7.1
+
+## [0.7.0](https://github.com/ha-tuya-ble/ha_tuya_ble/releases/tag/0.7.0) - 2026-07-19
+
+### What's Changed
+* Pin pytest-homeassistant-custom-component version by @CloCkWeRX in https://github.com/ha-tuya-ble/ha_tuya_ble/pull/195
+* Report zwjcy soil sensor humidity DP as soil moisture by @sytchi in https://github.com/ha-tuya-ble/ha_tuya_ble/pull/196
+* Terminate 'ensure connected' and reconnect tasks on "Bluetooth is already shutdown" by @CloCkWeRX in https://github.com/ha-tuya-ble/ha_tuya_ble/pull/201
+* Add support and enhancements for Aldi Gardenline (16wgjvck) water valve mappings. And added support for Atomic Multi-Datapoint Payloads (simultaneous DP dispatch). by @ProfessorQuantumUniverse in https://github.com/ha-tuya-ble/ha_tuya_ble/pull/151
+* Add support for Primebras Athenas (6fibxtph) and Foxgard (99gv5nmz) locks by @CloCkWeRX in https://github.com/ha-tuya-ble/ha_tuya_ble/pull/226
+* Fix support for B16 (ajk32biq) lock (#121) by @CloCkWeRX in https://github.com/ha-tuya-ble/ha_tuya_ble/pull/225
+* Add translations for multiple languages by @CloCkWeRX in https://github.com/ha-tuya-ble/ha_tuya_ble/pull/229
+* Add Arlec Smart Button support by @CloCkWeRX in https://github.com/ha-tuya-ble/ha_tuya_ble/pull/228
+* Add support for Gainsborough Liberty Lock (yfqp0shy) via @deg3n by @CloCkWeRX in https://github.com/ha-tuya-ble/ha_tuya_ble/pull/230
+
+### New Contributors
+* @ProfessorQuantumUniverse made their first contribution in https://github.com/ha-tuya-ble/ha_tuya_ble/pull/151
+
+**Full Changelog**: https://github.com/ha-tuya-ble/ha_tuya_ble/compare/0.6.0...0.7.0
+
+## [0.6.0](https://github.com/ha-tuya-ble/ha_tuya_ble/releases/tag/0.6.0) - 2026-07-18
+
+### Breaking change
+* Fix entity ID wrong domain issue by @CloCkWeRX in https://github.com/ha-tuya-ble/ha_tuya_ble/pull/193
+
+  Previously, a bug generated the entity_ids all in the sensor domain. This has now been corrected, but means all existing entity ids will be regenerated in the correct domain on upgrade; ie "button.xyz"
+
+  If you have automations that rely on specific entity ids; ensure you plan out time to migrate.
+
+### What's Changed
+* Add support for CS-9 Smart Fingerprint Lock by @CloCkWeRX in https://github.com/ha-tuya-ble/ha_tuya_ble/pull/189
+* Add support for A1 Ultra-JM (hc7n0urm) smart lock by @CloCkWeRX in https://github.com/ha-tuya-ble/ha_tuya_ble/pull/190
+* Add basic CI by @CloCkWeRX in https://github.com/ha-tuya-ble/ha_tuya_ble/pull/7
+* Implement minimal passing test coverage for all basic entities by @CloCkWeRX in https://github.com/ha-tuya-ble/ha_tuya_ble/pull/194
+
+**Full Changelog**: https://github.com/ha-tuya-ble/ha_tuya_ble/compare/0.5.0...0.6.0
+
+## [0.5.0](https://github.com/ha-tuya-ble/ha_tuya_ble/releases/tag/0.5.0) - 2026-07-18
+
+### What's Changed
+* Reformat supported devices list in README.md by @CloCkWeRX in https://github.com/ha-tuya-ble/ha_tuya_ble/pull/187
+* Update README.md with missing product IDs and remove 'not up to date' wording by @CloCkWeRX in https://github.com/ha-tuya-ble/ha_tuya_ble/pull/188
+* Fix Tuya BLE connection / notification packet handling issue after reconnect by @CloCkWeRX in https://github.com/ha-tuya-ble/ha_tuya_ble/pull/174
+
+**Full Changelog**: https://github.com/ha-tuya-ble/ha_tuya_ble/compare/0.4.9...0.5.0
+
+## [0.4.9](https://github.com/ha-tuya-ble/ha_tuya_ble/releases/tag/0.4.9) - 2026-07-18
+
+### What's Changed
+* Add support for RESTMO BT Water Meter (FML026A) by @phoenixxx-1 in https://github.com/ha-tuya-ble/ha_tuya_ble/pull/165
+* Add support for Rainpoint TTV102B smart irrigation controller by @edmcman in https://github.com/ha-tuya-ble/ha_tuya_ble/pull/156
+* Add support for Tuya BLE Fingerbot SM-FB-01B by @CloCkWeRX in https://github.com/ha-tuya-ble/ha_tuya_ble/pull/167
+* AOK AM25 Roller Blinds Motor (v3fzfd2y) via @cpw in https://github.com/ha-tuya-ble/ha_tuya_ble/pull/126
+* Add support for Temperature Humidity Sensor SS302 (6lbesej0) via @Sathen in https://github.com/ha-tuya-ble/ha_tuya_ble/pull/186
+* Add support for Lock P1 (product_id 7a4xvbtt) via @jpmreis in https://github.com/ha-tuya-ble/ha_tuya_ble/pull/185
+
+### New Contributors
+* @phoenixxx-1 made their first contribution in https://github.com/ha-tuya-ble/ha_tuya_ble/pull/165
+* @edmcman made their first contribution in https://github.com/ha-tuya-ble/ha_tuya_ble/pull/156
+
+**Full Changelog**: https://github.com/ha-tuya-ble/ha_tuya_ble/compare/0.4.8...0.4.9
+
+## [0.4.8](https://github.com/ha-tuya-ble/ha_tuya_ble/releases/tag/0.4.8) - 2026-07-17
+
+### What's Changed
+* Add support to ZX-7378 Smart Irrigation Controller (product: ldcdnigc) by @Zoatik in https://github.com/ha-tuya-ble/ha_tuya_ble/pull/146
+* Fix 'Device is not registered in Tuya cloud' when factory-infos returns colon-separated MACs by @sytchi in https://github.com/ha-tuya-ble/ha_tuya_ble/pull/164
+* Add support for jtmspro kholoaew smart lock by @Test-subj in https://github.com/ha-tuya-ble/ha_tuya_ble/pull/155
+
+### New Contributors
+* @Zoatik made their first contribution in https://github.com/ha-tuya-ble/ha_tuya_ble/pull/146
+* @sytchi made their first contribution in https://github.com/ha-tuya-ble/ha_tuya_ble/pull/164
+* @Test-subj made their first contribution in https://github.com/ha-tuya-ble/ha_tuya_ble/pull/155
+
+**Full Changelog**: https://github.com/ha-tuya-ble/ha_tuya_ble/compare/0.4.7...0.4.8
+
+## [0.4.7](https://github.com/ha-tuya-ble/ha_tuya_ble/releases/tag/0.4.7) - 2026-04-21
+
+### What's Changed
+* Fix documentation URL in manifest.json by @agarthand in https://github.com/ha-tuya-ble/ha_tuya_ble/pull/142
+* Add support for Switch Robot (kg / 4ctjfrzq) by @michelhn in https://github.com/ha-tuya-ble/ha_tuya_ble/pull/141
+* Add support for jtmspro hs21i377 smart lock by @agarthand in https://github.com/ha-tuya-ble/ha_tuya_ble/pull/143
+* Remove redundant imports by @CloCkWeRX in https://github.com/ha-tuya-ble/ha_tuya_ble/pull/144
+* Docs by @CloCkWeRX in https://github.com/ha-tuya-ble/ha_tuya_ble/pull/145
+
+### New Contributors
+* @agarthand made their first contribution in https://github.com/ha-tuya-ble/ha_tuya_ble/pull/142
+* @michelhn made their first contribution in https://github.com/ha-tuya-ble/ha_tuya_ble/pull/141
+
+**Full Changelog**: https://github.com/ha-tuya-ble/ha_tuya_ble/compare/0.4.6...0.4.7
+
+## [0.4.6](https://github.com/ha-tuya-ble/ha_tuya_ble/releases/tag/0.4.6) - 2026-03-08
+
+### What's Changed
+* fix for HA 2026.3 by @tabascoz in https://github.com/ha-tuya-ble/ha_tuya_ble/pull/129
+* Add a6nttc41 lock (Orion Smart Door Handle Lock) by @hcoohb in https://github.com/ha-tuya-ble/ha_tuya_ble/pull/134
+
+### New Contributors
+* @hcoohb made their first contribution in https://github.com/ha-tuya-ble/ha_tuya_ble/pull/134
+
+**Full Changelog**: https://github.com/ha-tuya-ble/ha_tuya_ble/compare/0.4.5.1...0.4.6
+
+## [0.4.5.1](https://github.com/ha-tuya-ble/ha_tuya_ble/releases/tag/0.4.5.1) - 2026-02-14
+
+### What's Changed
+* Fix translation validation errors for URLs by @CloCkWeRX in https://github.com/ha-tuya-ble/ha_tuya_ble/pull/123
+* Fix minor typo by @CloCkWeRX in https://github.com/ha-tuya-ble/ha_tuya_ble/pull/125
+* Ensure we pass a LockEntityDescription by @CloCkWeRX in https://github.com/ha-tuya-ble/ha_tuya_ble/pull/127
+
+**Full Changelog**: https://github.com/ha-tuya-ble/ha_tuya_ble/compare/0.4.5...0.4.5.1
+
+## [0.4.5](https://github.com/ha-tuya-ble/ha_tuya_ble/releases/tag/0.4.5) - 2025-12-28
+
+* Remove doorbell for the moment by @CloCkWeRX
+
+**Full Changelog**: https://github.com/ha-tuya-ble/ha_tuya_ble/compare/0.4.4...0.4.5
+
+## [0.4.4](https://github.com/ha-tuya-ble/ha_tuya_ble/releases/tag/0.4.4) - 2025-12-28
+
+### What's Changed
+* Fix lock platform by @CloCkWeRX in https://github.com/ha-tuya-ble/ha_tuya_ble/pull/113
+
+**Full Changelog**: https://github.com/ha-tuya-ble/ha_tuya_ble/compare/0.4.3...0.4.4
+
+## [0.4.3](https://github.com/ha-tuya-ble/ha_tuya_ble/releases/tag/0.4.3) - 2025-12-28
+
+### What's Changed
+* Remove duplicate const by @CloCkWeRX in https://github.com/ha-tuya-ble/ha_tuya_ble/pull/112
+
+**Full Changelog**: https://github.com/ha-tuya-ble/ha_tuya_ble/compare/0.4.2...0.4.3
+
+## [0.4.2](https://github.com/ha-tuya-ble/ha_tuya_ble/releases/tag/0.4.2) - 2025-12-28
+
+### What's Changed
+* Add support for AOK AM24 Venetian Blinds Motor (product_id 'dy4dh1q0') - Experimental by @google-labs-jules[bot] in https://github.com/ha-tuya-ble/ha_tuya_ble/pull/85
+* Add generic smart lock 'sidhzylo' based on @akelmanson 's work by @CloCkWeRX in https://github.com/ha-tuya-ble/ha_tuya_ble/pull/104
+* Create CONTRIBUTING.md by @CloCkWeRX in https://github.com/ha-tuya-ble/ha_tuya_ble/pull/77
+* feat: Add support for SRB-PM01 soil moisture device by @google-labs-jules[bot] in https://github.com/ha-tuya-ble/ha_tuya_ble/pull/91
+* Add support for MHO-C402 'tr0kabuq' - experimental by @CloCkWeRX in https://github.com/ha-tuya-ble/ha_tuya_ble/pull/106
+* Add experimental support for RGB Strip Light '0qgrjxum' by @CloCkWeRX in https://github.com/ha-tuya-ble/ha_tuya_ble/pull/107
+* Add basic Smart Lock (product_id 'mqc2hevy') support - experimental by @CloCkWeRX in https://github.com/ha-tuya-ble/ha_tuya_ble/pull/108
+
+**Full Changelog**: https://github.com/ha-tuya-ble/ha_tuya_ble/compare/0.4.1...0.4.2
+
+## [0.4.1](https://github.com/ha-tuya-ble/ha_tuya_ble/releases/tag/0.4.1) - 2025-12-28
+
+Adds a number of new locks, however items marked experimental have not had their DPs properly checked.
+
+### What's Changed
+* Add support for Gimdow A1 Pro Max smart lock (experimental) by @google-labs-jules[bot] in https://github.com/ha-tuya-ble/ha_tuya_ble/pull/93
+* feat: Add support for LA-01 Smart lock (experimental) by @google-labs-jules[bot] in https://github.com/ha-tuya-ble/ha_tuya_ble/pull/102
+* Add support for B16 smart lock by @google-labs-jules[bot] in https://github.com/ha-tuya-ble/ha_tuya_ble/pull/99
+* Add support for Smart Cylinder Lock (product_id 'Z7lj676i') - Experimental by @CloCkWeRX in https://github.com/ha-tuya-ble/ha_tuya_ble/pull/103
+
+**Full Changelog**: https://github.com/ha-tuya-ble/ha_tuya_ble/compare/0.4.0...0.4.1
+
+## [0.4.0](https://github.com/ha-tuya-ble/ha_tuya_ble/releases/tag/0.4.0) - 2025-12-28
+
+Adds proof of concept lock platform.
+* Flags "ludzroix", "isk2p555", "gumrixyt", "uamrw6h3" as locks
+* Amends all existing locks to support the async lock/unlock features
+
+### What's Changed
+* Return UUID for devices if found in advertisement and cloud data not available.
+* Refactoring: Clean up lock_motor_state, alarm_lock and temperature mapping by @CloCkWeRX in https://github.com/ha-tuya-ble/ha_tuya_ble/pull/100
+* Add lock platform by @CloCkWeRX in https://github.com/ha-tuya-ble/ha_tuya_ble/pull/101
+
+**Full Changelog**: https://github.com/ha-tuya-ble/ha_tuya_ble/compare/0.3.7...0.4.0
+
+## [0.3.7](https://github.com/ha-tuya-ble/ha_tuya_ble/releases/tag/0.3.7) - 2025-11-07
+
+### What's Changed
+* feat: Add support for Nedis SmartLife Finger Robot by @google-labs-jules[bot] in https://github.com/ha-tuya-ble/ha_tuya_ble/pull/78
+* Drop unused constants for HA 2025.11.0 by @CloCkWeRX and @tabascoz in https://github.com/ha-tuya-ble/ha_tuya_ble/pull/89
+
+### New Contributors
+* @google-labs-jules[bot] made their first contribution in https://github.com/ha-tuya-ble/ha_tuya_ble/pull/78
+
+**Full Changelog**: https://github.com/ha-tuya-ble/ha_tuya_ble/compare/0.3.6...0.3.7
+
+## [0.3.6](https://github.com/ha-tuya-ble/ha_tuya_ble/releases/tag/0.3.6) - 2025-09-27
+
+### What's Changed
+* Add support for Amazon HeyBlinds blinds by @jiriappl in https://github.com/ha-tuya-ble/ha_tuya_ble/pull/80
+
+### New Contributors
+* @jiriappl made their first contribution in https://github.com/ha-tuya-ble/ha_tuya_ble/pull/80
+
+**Full Changelog**: https://github.com/ha-tuya-ble/ha_tuya_ble/compare/0.3.5...0.3.6
+
+## [0.3.5](https://github.com/ha-tuya-ble/ha_tuya_ble/releases/tag/0.3.5) - 2025-08-24
+
+Review and consolidation of all of the active forks.
+* Add ulughw4g blind robot by @l3enjamin in https://github.com/ha-tuya-ble/ha_tuya_ble/pull/63
+* Add k53ok3u9 Fingerprint Smart Lock by @square-spade in https://github.com/ha-tuya-ble/ha_tuya_ble/pull/65
+* Add dependabot by @CloCkWeRX in https://github.com/ha-tuya-ble/ha_tuya_ble/pull/67
+* Add T55d padlock (bvclwu9b) via @szupi-ipuzs in https://github.com/ha-tuya-ble/ha_tuya_ble/pull/66
+* Add umzu0c2y, 6jxcdae1 via @elijahr in https://github.com/ha-tuya-ble/ha_tuya_ble/pull/73
+
+**Full Changelog**: https://github.com/ha-tuya-ble/ha_tuya_ble/compare/0.3.4...0.3.5
+
+## [0.3.4](https://github.com/ha-tuya-ble/ha_tuya_ble/releases/tag/0.3.4) - 2025-08-24
+
+### What's Changed
+* add jm6iasmb Bluetooth Temperature Humidity Sensor by @zalsader in https://github.com/ha-tuya-ble/ha_tuya_ble/pull/59
+
+### New Contributors
+* @zalsader made their first contribution in https://github.com/ha-tuya-ble/ha_tuya_ble/pull/59
+
+**Full Changelog**: https://github.com/ha-tuya-ble/ha_tuya_ble/compare/0.3.3...0.3.4
+
+## [0.3.3](https://github.com/ha-tuya-ble/ha_tuya_ble/releases/tag/0.3.3) - 2025-07-08
+
+### What's Changed
+* Add support for Parkside Performance Smart Battery 4Ah and 8Ah by @Koky05 in https://github.com/ha-tuya-ble/ha_tuya_ble/pull/54
+
+### New Contributors
+* @Koky05 made their first contribution in https://github.com/ha-tuya-ble/ha_tuya_ble/pull/54
+
+**Full Changelog**: https://github.com/ha-tuya-ble/ha_tuya_ble/compare/0.3.2...0.3.3
+
+## [0.3.2](https://github.com/ha-tuya-ble/ha_tuya_ble/releases/tag/0.3.2) - 2025-06-20
+
+### What's Changed
+* Water Valve - Add Device Functionality - [svhikeyq] by @square-spade in https://github.com/ha-tuya-ble/ha_tuya_ble/pull/52
+
+### New Contributors
+* @square-spade made their first contribution in https://github.com/ha-tuya-ble/ha_tuya_ble/pull/52
+
+**Full Changelog**: https://github.com/ha-tuya-ble/ha_tuya_ble/compare/0.3.1...0.3.2
+
+## [0.3.1](https://github.com/ha-tuya-ble/ha_tuya_ble/releases/tag/0.3.1) - 2025-05-14
+
+### What's Changed
+* Add hassfest validation by @CloCkWeRX in https://github.com/ha-tuya-ble/ha_tuya_ble/pull/36
+* Fix hassfest errors by @CloCkWeRX in https://github.com/ha-tuya-ble/ha_tuya_ble/pull/44
+* Attempt to bring back eslint by @CloCkWeRX in https://github.com/ha-tuya-ble/ha_tuya_ble/pull/45
+* add support for '46zia2nz' and '1fcnd8xk' water valve controllers by @tabascoz in https://github.com/ha-tuya-ble/ha_tuya_ble/pull/49
+
+### New Contributors
+* @tabascoz made their first contribution in https://github.com/ha-tuya-ble/ha_tuya_ble/pull/49
+
+**Full Changelog**: https://github.com/ha-tuya-ble/ha_tuya_ble/compare/0.3.0...0.3.1
+
+## [0.3.0](https://github.com/ha-tuya-ble/ha_tuya_ble/releases/tag/0.3.0) - 2025-04-01
+
+Work in progress release, integrating all of the forks.
+
+Be warned, this is still very much an unstable quality project
+
+### What's Changed
+#### Code style and cleanup:
+* Remove dud constants by @CloCkWeRX in https://github.com/ha-tuya-ble/ha_tuya_ble/pull/8
+* Fix spelling by @CloCkWeRX in https://github.com/ha-tuya-ble/ha_tuya_ble/pull/9
+* Add debugging for when a light device isn't found by @CloCkWeRX in https://github.com/ha-tuya-ble/ha_tuya_ble/pull/12
+* Fix ATTR_COLOR_TEMP by @CloCkWeRX in https://github.com/ha-tuya-ble/ha_tuya_ble/pull/14
+* Smartoctopus's Fork - merge (1 of many) by @CloCkWeRX in https://github.com/ha-tuya-ble/ha_tuya_ble/pull/15
+* Smartoctopus merge (part 2 of many) by @CloCkWeRX in https://github.com/ha-tuya-ble/ha_tuya_ble/pull/16
+* Smartoctopus merge (part 3 of many) by @CloCkWeRX in https://github.com/ha-tuya-ble/ha_tuya_ble/pull/17
+* Smartoctopus merge (4 of many) by @CloCkWeRX in https://github.com/ha-tuya-ble/ha_tuya_ble/pull/18
+* Smartoctopus merge (part 5 of many) by @CloCkWeRX in https://github.com/ha-tuya-ble/ha_tuya_ble/pull/19
+* Black by @CloCkWeRX in https://github.com/ha-tuya-ble/ha_tuya_ble/pull/20
+* Check linting by @CloCkWeRX in https://github.com/ha-tuya-ble/ha_tuya_ble/pull/31
+
+#### Bug fixes:
+* Revert "Update Reconnect" by @CloCkWeRX in https://github.com/ha-tuya-ble/ha_tuya_ble/pull/39
+* Fix spelling of debug message by @CloCkWeRX in https://github.com/ha-tuya-ble/ha_tuya_ble/pull/40
+* Fix/reconcile strings.json and translations/en.json by @pauln in https://github.com/ha-tuya-ble/ha_tuya_ble/pull/34
+
+#### Features:
+* Add support for Fingerbot Plus with product_id h8kdwywx by @jhthorsen in https://github.com/ha-tuya-ble/ha_tuya_ble/pull/37
+* Improve debug logging of cloud API details by @CloCkWeRX in https://github.com/ha-tuya-ble/ha_tuya_ble/pull/41
+* Add basic device Diagnostics by @CloCkWeRX in https://github.com/ha-tuya-ble/ha_tuya_ble/pull/43
+
+### New Contributors
+* @pauln made their first contribution in https://github.com/ha-tuya-ble/ha_tuya_ble/pull/34
+* @jhthorsen made their first contribution in https://github.com/ha-tuya-ble/ha_tuya_ble/pull/37
+
+**Full Changelog**: https://github.com/ha-tuya-ble/ha_tuya_ble/commits/0.3.0
+
+
+## [0.2.0] - 2025-02-01
+
+- Add support for kg family and model bs3ubslo
+
 ## [0.1.0] - 2023-04-22
 
 - Initial release
@@ -85,3 +490,47 @@ and this project adheres to [Semantic Versioning].
 
 - Connection to the device is postponed now. Previously some out of range device might prevents HA from fully booting.
 - Improved connection stability.
+
+
+## [0.2.0] - 2024-03-21
+
+### Added
+
+- Add sfkzq/nxquc5lb device
+
+### Changed
+
+- Update readme (forked from)
+
+### Fixed
+
+- fix: Compatibility with HA 2024.1
+- Fix deprecated
+
+## [0.2.1] - 2025-03-26
+
+### Added
+
+- Add ggq/hfgdqhho device
+
+### Fixed
+
+- fix: Compatibility with HA 2025.3
+- Fix deprecated
+
+## [0.2.2] - 2025-04-16
+
+### Fixed
+
+- Fix deprecated with Home assistant 2025.4.2
+
+### Update
+
+- Update README about device support
+
+## [0.2.3] - 2025-04-25
+
+### Added
+
+- Add ggq/fnlw6npo device
+- Add jtmspro/ebd5e0uauqx0vfsp device

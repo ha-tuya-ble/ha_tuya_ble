@@ -1,4 +1,5 @@
 """The Tuya BLE integration."""
+
 from __future__ import annotations
 
 import asyncio
@@ -22,12 +23,18 @@ from .devices import TuyaBLECoordinator, TuyaBLEData, get_device_product_info
 PLATFORMS: list[Platform] = [
     Platform.BUTTON,
     Platform.CLIMATE,
+    Platform.LAWN_MOWER,
+    Platform.LOCK,
     Platform.NUMBER,
     Platform.SENSOR,
     Platform.BINARY_SENSOR,
+    Platform.LIGHT,
     Platform.SELECT,
     Platform.SWITCH,
     Platform.TEXT,
+    Platform.COVER,
+    Platform.EVENT,
+    Platform.VACUUM,
 ]
 
 _LOGGER = logging.getLogger(__name__)
@@ -35,6 +42,7 @@ _LOGGER = logging.getLogger(__name__)
 
 async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     """Set up Tuya BLE from a config entry."""
+
     address: str = entry.data[CONF_ADDRESS]
     ble_device = bluetooth.async_ble_device_from_address(
         hass, address.upper(), True
@@ -43,6 +51,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
         raise ConfigEntryNotReady(
             f"Could not find Tuya BLE device with address {address}"
         )
+
     manager = HASSTuyaBLEDeviceManager(hass, entry.options.copy())
     device = TuyaBLEDevice(manager, ble_device)
     await device.initialize()
@@ -50,15 +59,38 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
 
     coordinator = TuyaBLECoordinator(hass, device)
 
-    '''
-    try:
-        await device.update()
-    except BLEAK_EXCEPTIONS as ex:
-        raise ConfigEntryNotReady(
-            f"Could not communicate with Tuya BLE device with address {address}"
-        ) from ex
-    '''
-    entry.async_create_background_task(hass, device.update(), "tuya_ble_initial_update")
+    async def _initial_update() -> None:
+        """Perform the first update, retrying until the device answers.
+
+        The first update used to be fired with `hass.add_job()` and never awaited.
+        When the device is out of range while the entry is being set up,
+        `_ensure_connected()` exhausts its attempts and raises `BleakNotFoundError`
+        out of a task nobody watches ("Task exception was never retrieved"), so the
+        device is never polled again and stays unavailable until Home Assistant is
+        restarted. Retrying in an entry-scoped background task keeps the device
+        recoverable without a restart; the task is cancelled when the entry unloads.
+        """
+        delay = 60
+        while True:
+            try:
+                # Cap a single attempt: `_ensure_connected()` retries internally and
+                # can occupy the task for a long time, which would delay the next
+                # real attempt long after the device became reachable again.
+                await asyncio.wait_for(device.update(), 240)
+                return
+            except BLEAK_EXCEPTIONS + (TimeoutError,) as ex:
+                _LOGGER.debug(
+                    "%s: Initial update failed (%s); retrying in %s s",
+                    address,
+                    type(ex).__name__,
+                    delay,
+                )
+                await asyncio.sleep(delay)
+                delay = min(delay * 2, 300)
+
+    entry.async_create_background_task(
+        hass, _initial_update(), f"tuya_ble initial update {address}"
+    )
 
     @callback
     def _async_update_ble(
@@ -109,11 +141,22 @@ async def _async_update_listener(hass: HomeAssistant, entry: ConfigEntry) -> Non
 
 async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     """Unload a config entry."""
-    unload_ok = await hass.config_entries.async_unload_platforms(entry, PLATFORMS)
-    data: TuyaBLEData | None = hass.data.get(DOMAIN, {}).pop(entry.entry_id, None)
-    if data:
+    if unload_ok := await hass.config_entries.async_unload_platforms(entry, PLATFORMS):
+        data: TuyaBLEData = hass.data[DOMAIN].pop(entry.entry_id)
+        # stop() -> _execute_disconnect() waits for self._connect_lock, which
+        # _ensure_connected() holds for the whole duration of its retry loop.
+        # While that loop runs, unloading blocks and the entry is stuck in
+        # ConfigEntryState.UNLOAD_IN_PROGRESS, so reloading the entry (and every
+        # operation that reloads it, e.g. renaming it or changing its options)
+        # never completes and only a Home Assistant restart clears it.
+        # Give the disconnect a bounded amount of time; the abandoned connection
+        # is dropped by the adapter/proxy anyway once the client is discarded.
         try:
             await asyncio.wait_for(data.device.stop(), 15)
-        except Exception:  # pylint: disable=broad-except
-            _LOGGER.debug("Stopping device failed, unloading anyway", exc_info=True)
+        except TimeoutError:
+            _LOGGER.warning(
+                "%s: Timed out waiting for the device to disconnect, unloading anyway",
+                entry.data[CONF_ADDRESS],
+            )
+
     return unload_ok

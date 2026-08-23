@@ -1,37 +1,53 @@
 from __future__ import annotations
 
 from abc import ABC, abstractmethod
-from dataclasses import dataclass
+from dataclasses import dataclass, field
+from typing import List
 
 
 @dataclass
 class TuyaBLEDeviceCredentials:
+    """Model of credentials"""
+
     uuid: str
-    local_key: str
+    local_key: str = field(repr=False)
     device_id: str
     category: str
     product_id: str
     device_name: str | None
     product_model: str | None
     product_name: str | None
+    functions: List | None
+    status_range: List | None
+    sec_key: str | None = field(default=None, repr=False)
 
     def __str__(self):
         return (
-            "uuid: xxxxxxxxxxxxxxxx, "
-            "local_key: xxxxxxxxxxxxxxxx, "
-            "device_id: xxxxxxxxxxxxxxxx, "
+            "uuid: %s, "
+            "local_key: %s, "
+            "sec_key: %s, "
+            "device_id: %s, "
             "category: %s, "
             "product_id: %s, "
             "device_name: %s, "
             "product_model: %s, "
             "product_name: %s"
+            "functions: %s"
+            "status_range: %s"
         ) % (
+            self.uuid,
+            "**REDACTED**",
+            "**REDACTED**" if self.sec_key else None,
+            self.device_id,
             self.category,
             self.product_id,
             self.device_name,
             self.product_model,
             self.product_name,
+            self.functions,
+            self.status_range,
         )
+
 
 class AbstaractTuyaBLEDeviceManager(ABC):
     """Abstaract manager of the Tuya BLE devices credentials."""
@@ -55,16 +71,14 @@ class AbstaractTuyaBLEDeviceManager(ABC):
         category: str | None,
         product_id: str | None,
         device_name: str | None,
+        product_model: str | None,
         product_name: str | None,
+        functions: List | None,
+        status_range: List | None,
+        sec_key: str | None = None,
     ) -> TuyaBLEDeviceCredentials | None:
         """Checks and creates credentials of the Tuya BLE device."""
-        if (
-            uuid and 
-            local_key and 
-            device_id and
-            category and
-            product_id
-        ):
+        if uuid and local_key and device_id and category and product_id:
             return TuyaBLEDeviceCredentials(
                 uuid,
                 local_key,
@@ -72,7 +86,11 @@ class AbstaractTuyaBLEDeviceManager(ABC):
                 category,
                 product_id,
                 device_name,
+                product_model,
                 product_name,
+                functions,
+                status_range,
+                sec_key,
             )
-        else:
-            return None
+
+        return None
