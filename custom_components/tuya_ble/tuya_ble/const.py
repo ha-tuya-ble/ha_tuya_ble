@@ -33,7 +33,22 @@ SERVICE_UUID_TEMP = "0000a201-0000-1000-8000-00805f9b34fb"
 
 MANUFACTURER_DATA_ID = 0x07D0
 
-RESPONSE_WAIT_TIMEOUT = 60
+# The device answers within a few hundred ms or not at all.
+RESPONSE_WAIT_TIMEOUT = 15
+
+# Connection attempts per _ensure_connected() call and reconnect backoff.
+CONNECT_ATTEMPTS = 5
+RECONNECT_BACKOFF_MIN = 5
+RECONNECT_BACKOFF_MAX = 300
+
+# Give the link time to settle after connect and retry the notify
+# subscription on transient GATT errors (e.g. 133 on ESP32 proxies).
+POST_CONNECT_DELAY = 0.3
+NOTIFY_ATTEMPTS = 3
+NOTIFY_RETRY_DELAY = 0.5
+
+# On-demand mode: seconds of inactivity before the link is dropped.
+DEFAULT_IDLE_DISCONNECT_DELAY = 30
 
 
 class TuyaBLECode(Enum):
