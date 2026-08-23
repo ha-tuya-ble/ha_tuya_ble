@@ -5,6 +5,33 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog],
 and this project adheres to [Semantic Versioning].
 
+## [0.10.0](https://github.com/ha-tuya-ble/ha_tuya_ble/compare/0.9.0...0.10.0) (2026-08-23)
+
+
+### Features
+
+* add Lawn Mower platform, Parkside PAMRC 250 A1 robot mower (gcj/9hdajpiw) ([667038a](https://github.com/ha-tuya-ble/ha_tuya_ble/commit/667038ae47e217b289495c17ddf56cd5a137e3c1))
+* add Parkside mower buttons, sensors and switches ([890d6d4](https://github.com/ha-tuya-ble/ha_tuya_ble/commit/890d6d40b4843a2d94ac8873b4dad46570939fc8))
+* add Parkside PAMRC 250 A1 robot mower (gcj/9hdajpiw) ([8162184](https://github.com/ha-tuya-ble/ha_tuya_ble/commit/8162184e39a8940c15bc93c97b8ec6ec94367b05))
+* add remaining Parkside mower schedule, zone and mode entities ([d9d6790](https://github.com/ha-tuya-ble/ha_tuya_ble/commit/d9d6790c5fe0253fb02a756a28715a0e28b126ff))
+* decode the raw Parkside mower logs, schedules and zones ([6495107](https://github.com/ha-tuya-ble/ha_tuya_ble/commit/64951072fc7434ccbff9cd6d6464141d6d71dbe5))
+* enhance diagnostics support ([accf9b0](https://github.com/ha-tuya-ble/ha_tuya_ble/commit/accf9b001d861c4fe43455878ca181bcfa0d4173))
+* enhance diagnostics support (via @SittingDuck52) ([01911f8](https://github.com/ha-tuya-ble/ha_tuya_ble/commit/01911f814cdb8c86c4aa6e101efe1e9fd0fffb18))
+
+
+### Bug Fixes
+
+* cancel the running job before docking the Parkside mower ([38deade](https://github.com/ha-tuya-ble/ha_tuya_ble/commit/38deadeba9278740c491ddc875c39663a2fe4c81))
+* clear the Parkside mower warning and add the cover sensor ([de37c5b](https://github.com/ha-tuya-ble/ha_tuya_ble/commit/de37c5ba62b6c78de72d094316aebebbfa85fd1d))
+* Conflicting colormodes for pmmalpkw ([c508884](https://github.com/ha-tuya-ble/ha_tuya_ble/commit/c508884ab626ab0ad6771a98dc4f07fb0307adf4))
+* drop the Parkside mower warning and problem heuristics ([b4cbcc0](https://github.com/ha-tuya-ble/ha_tuya_ble/commit/b4cbcc0a52a712f8f6cc3d7d0aaf6a1128ef45a4))
+* drop the unsupported Parkside mower detailed error log ([5260739](https://github.com/ha-tuya-ble/ha_tuya_ble/commit/5260739409b720cf72e3c99eef7fbabd72b84d6a))
+* drop the unsupported Parkside mower work schedule ([794a3fa](https://github.com/ha-tuya-ble/ha_tuya_ble/commit/794a3fa68603b0299acbedaadaa96cd6cf3a5337))
+* expose the Parkside mower running time as a number ([9722d65](https://github.com/ha-tuya-ble/ha_tuya_ble/commit/9722d65ad895568d9a83804dc1e6de11037bdf5b))
+* split the Parkside mower rain delay into two controls ([ad8c3ad](https://github.com/ha-tuya-ble/ha_tuya_ble/commit/ad8c3adbf1ae02d96cc4dc5cab0329c5d62f613b))
+* update translations for target languages to match en.json ([330de88](https://github.com/ha-tuya-ble/ha_tuya_ble/commit/330de88fa24585622fd3ba74302af9080ede34c0))
+* update translations for target languages to match en.json ([273934c](https://github.com/ha-tuya-ble/ha_tuya_ble/commit/273934c1e72f75cbd0c0d34b5f921dcdb18d7ee3))
+
 ## [0.9.0](https://github.com/ha-tuya-ble/ha_tuya_ble/compare/0.8.3...0.9.0) (2026-08-15)
 
 
