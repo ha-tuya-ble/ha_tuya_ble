@@ -185,16 +185,16 @@ def _manual_schema(
             )
         ] = vol.In(address_choices)
     fields[vol.Required(CONF_UUID, default=defaults.get(CONF_UUID, ""))] = str
-    fields[
-        vol.Required(CONF_LOCAL_KEY, default=defaults.get(CONF_LOCAL_KEY, ""))
-    ] = TextSelector(TextSelectorConfig(type=TextSelectorType.PASSWORD))
-    fields[
-        vol.Optional(CONF_SEC_KEY, default=defaults.get(CONF_SEC_KEY, ""))
-    ] = TextSelector(TextSelectorConfig(type=TextSelectorType.PASSWORD))
+    fields[vol.Required(CONF_LOCAL_KEY, default=defaults.get(CONF_LOCAL_KEY, ""))] = (
+        TextSelector(TextSelectorConfig(type=TextSelectorType.PASSWORD))
+    )
+    fields[vol.Optional(CONF_SEC_KEY, default=defaults.get(CONF_SEC_KEY, ""))] = (
+        TextSelector(TextSelectorConfig(type=TextSelectorType.PASSWORD))
+    )
     fields[vol.Required(CONF_DEVICE_ID, default=defaults.get(CONF_DEVICE_ID, ""))] = str
-    fields[
-        vol.Required(CONF_PRODUCT_ID, default=defaults.get(CONF_PRODUCT_ID, ""))
-    ] = str
+    fields[vol.Required(CONF_PRODUCT_ID, default=defaults.get(CONF_PRODUCT_ID, ""))] = (
+        str
+    )
     fields[
         vol.Required(CONF_CATEGORY, default=defaults.get(CONF_CATEGORY, "szjqr"))
     ] = str
