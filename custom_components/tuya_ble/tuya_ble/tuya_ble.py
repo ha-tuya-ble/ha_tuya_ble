@@ -30,8 +30,14 @@ from .const import (
     CHARACTERISTIC_NOTIFY,
     CHARACTERISTIC_NOTIFY_FD50,
     CHARACTERISTIC_WRITE,
+    CONNECT_ATTEMPTS,
     GATT_MTU,
     MANUFACTURER_DATA_ID,
+    NOTIFY_ATTEMPTS,
+    NOTIFY_RETRY_DELAY,
+    POST_CONNECT_DELAY,
+    RECONNECT_BACKOFF_MAX,
+    RECONNECT_BACKOFF_MIN,
     RESPONSE_WAIT_TIMEOUT,
     SERVICE_CHARACTERISTICS,
     SERVICE_UUID_TEMP,
@@ -319,6 +325,11 @@ class TuyaBLEDevice:
         self._security_material: TuyaBLESecurityMaterial | None = None
 
         self._is_paired = False
+        self._stopped = False
+        self._reconnect_backoff = RECONNECT_BACKOFF_MIN
+        self._reconnect_task: asyncio.Task | None = None
+        self._last_connect_error: str | None = None
+        self._last_connected_at: float | None = None
 
         self._input_buffer: bytearray | None = None
         self._input_expected_packet_num = 0
@@ -662,6 +673,9 @@ class TuyaBLEDevice:
     async def stop(self) -> None:
         """Stop the TuyaBLE."""
         _LOGGER.debug("%s: Stop", self.address)
+        self._stopped = True
+        if self._reconnect_task and not self._reconnect_task.done():
+            self._reconnect_task.cancel()
         await self._execute_disconnect()
 
     def _disconnected(self, client: BleakClientWithServiceCache) -> None:
@@ -735,7 +749,7 @@ class TuyaBLEDevice:
         acts on the device, so there is nothing here for it to disturb.
         """
         await self._release_client(client)
-        await self._reconnect()
+        self._schedule_reconnect(0)
 
     def _disconnect(self) -> None:
         """Disconnect from device."""
@@ -765,7 +779,7 @@ class TuyaBLEDevice:
     async def _ensure_connected(self) -> None:
         """Ensure connection to device is established."""
         global global_connect_lock
-        if self._expected_disconnect:
+        if self._expected_disconnect or self._stopped:
             return
         if self._connect_lock.locked():
             _LOGGER.debug(
@@ -781,16 +795,20 @@ class TuyaBLEDevice:
             await asyncio.sleep(0.01)
             if self._client and self._client.is_connected and self._is_paired:
                 return
-            attempts_count = 100
-            while attempts_count > 0:
-                attempts_count -= 1
-                if attempts_count == 0:
+            attempts_count = CONNECT_ATTEMPTS
+            attempt = 0
+            while True:
+                if self._stopped:
+                    return
+                if attempt >= attempts_count:
                     _LOGGER.error(
-                        "%s: Connecting, all attempts failed; RSSI: %s",
+                        "%s: Connecting, all %s attempts failed; RSSI: %s",
                         self.address,
+                        attempts_count,
                         self.rssi,
                     )
-                    raise BleakNotFoundError()
+                    break
+                attempt += 1
                 try:
                     async with global_connect_lock:
                         _LOGGER.debug(
@@ -804,7 +822,8 @@ class TuyaBLEDevice:
                             use_services_cache=True,
                             ble_device_callback=lambda: self._ble_device,
                         )
-                except BleakNotFoundError:
+                except BleakNotFoundError as ex:
+                    self._last_connect_error = str(ex) or "Device not found"
                     _LOGGER.error(
                         "%s: device not found, not in range, or poor RSSI: %s",
                         self.address,
@@ -813,6 +832,7 @@ class TuyaBLEDevice:
                     )
                     continue
                 except BLEAK_EXCEPTIONS as ex:
+                    self._last_connect_error = str(ex)
                     if "Bluetooth is already shutdown" in str(ex):
                         _LOGGER.debug(
                             "%s: Bluetooth is already shutdown, terminating connection attempts",
@@ -824,6 +844,7 @@ class TuyaBLEDevice:
                     )
                     continue
                 except Exception as ex:
+                    self._last_connect_error = str(ex)
                     if "Bluetooth is already shutdown" in str(ex):
                         _LOGGER.debug(
                             "%s: Bluetooth is already shutdown, terminating connection attempts",
@@ -844,32 +865,12 @@ class TuyaBLEDevice:
                             self._characteristic_notify = notify_uuid
                             self._characteristic_write = write_uuid
                             break
-                    try:
-                        notify_kwargs = (
-                            {"bluez": {"use_start_notify": True}}
-                            if self._requires_fd50_device_info_handshake()
-                            else {}
-                        )
-                        await self._client.start_notify(
-                            self._characteristic_notify,
-                            self._notification_handler,
-                            **notify_kwargs,
-                        )
-                    except Exception as ex:  # [BLEAK_EXCEPTIONS, BleakNotFoundError]:
-                        if "Bluetooth is already shutdown" in str(ex):
-                            _LOGGER.debug(
-                                "%s: Bluetooth is already shutdown, terminating connection attempts",
-                                self.address,
-                            )
-                            raise
-                        self._client = None
-                        _LOGGER.error(
-                            "%s: starting notifications failed",
-                            self.address,
-                            exc_info=True,
-                        )
+                    await asyncio.sleep(POST_CONNECT_DELAY)
+                    if not await self._start_notify_with_retry():
+                        await self._drop_client()
                         continue
                 else:
+                    await self._drop_client()
                     continue
 
                 if self._client and self._client.is_connected:
@@ -885,25 +886,25 @@ class TuyaBLEDevice:
                             0,
                             True,
                         ):
-                            self._client = None
                             _LOGGER.error(
                                 "%s: Sending device info request failed",
                                 self.address,
                             )
+                            await self._drop_client()
                             continue
-                    except Exception as ex:  # [BLEAK_EXCEPTIONS, BleakNotFoundError]:
+                    except Exception as ex:
                         if "Bluetooth is already shutdown" in str(ex):
                             _LOGGER.debug(
                                 "%s: Bluetooth is already shutdown, terminating connection attempts",
                                 self.address,
                             )
                             raise
-                        self._client = None
                         _LOGGER.error(
                             "%s: Sending device info request failed",
                             self.address,
                             exc_info=True,
                         )
+                        await self._drop_client()
                         continue
                 else:
                     continue
@@ -917,35 +918,40 @@ class TuyaBLEDevice:
                             0,
                             True,
                         ):
-                            self._client = None
                             _LOGGER.error(
                                 "%s: Sending pairing request failed",
                                 self.address,
                             )
+                            await self._drop_client()
                             continue
-                    except Exception as ex:  # [BLEAK_EXCEPTIONS, BleakNotFoundError]:
+                    except Exception as ex:
                         if "Bluetooth is already shutdown" in str(ex):
                             _LOGGER.debug(
                                 "%s: Bluetooth is already shutdown, terminating connection attempts",
                                 self.address,
                             )
                             raise
-                        self._client = None
                         _LOGGER.error(
                             "%s: Sending pairing request failed",
                             self.address,
                             exc_info=True,
                         )
+                        await self._drop_client()
                         continue
                 else:
                     continue
 
                 break
 
+        if self._stopped:
+            return
         if self._client:
             if self._client.is_connected:
                 if self._is_paired:
                     _LOGGER.debug("%s: Successfully connected", self.address)
+                    self._reconnect_backoff = RECONNECT_BACKOFF_MIN
+                    self._last_connect_error = None
+                    self._last_connected_at = time.monotonic()
                     self._fire_connected_callbacks()
                 else:
                     _LOGGER.error("%s: Connected but not paired", self.address)
@@ -954,33 +960,123 @@ class TuyaBLEDevice:
         else:
             _LOGGER.error("%s: No client device", self.address)
 
-    async def _reconnect(self) -> None:
-        """Attempt a reconnect"""
+        if not (self._client and self._client.is_connected and self._is_paired):
+            self._schedule_reconnect(self._next_backoff())
+            raise BleakNotFoundError()
+
+    async def _start_notify_with_retry(self) -> bool:
+        """Subscribe to notifications; retry transient GATT errors (e.g. 133)."""
+        for attempt in range(1, NOTIFY_ATTEMPTS + 1):
+            if self._stopped or not (self._client and self._client.is_connected):
+                return False
+            try:
+                notify_kwargs = (
+                    {"bluez": {"use_start_notify": True}}
+                    if self._requires_fd50_device_info_handshake()
+                    else {}
+                )
+                await self._client.start_notify(
+                    self._characteristic_notify,
+                    self._notification_handler,
+                    **notify_kwargs,
+                )
+                return True
+            except BLEAK_EXCEPTIONS as ex:
+                if attempt < NOTIFY_ATTEMPTS and self._client.is_connected:
+                    _LOGGER.warning(
+                        "%s: starting notifications failed (attempt %s/%s, retrying): %s",
+                        self.address,
+                        attempt,
+                        NOTIFY_ATTEMPTS,
+                        ex,
+                    )
+                    await asyncio.sleep(NOTIFY_RETRY_DELAY)
+                    continue
+                _LOGGER.error(
+                    "%s: starting notifications failed",
+                    self.address,
+                    exc_info=True,
+                )
+                return False
+            except Exception:  # pylint: disable=broad-except
+                _LOGGER.error(
+                    "%s: starting notifications failed",
+                    self.address,
+                    exc_info=True,
+                )
+                return False
+        return False
+
+    async def _drop_client(self) -> None:
+        """Forget the current client and really close the link so the
+        adapter/proxy slot is freed before the next attempt."""
+        client = self._client
+        self._client = None
+        self._is_paired = False
+        if client is None:
+            return
+        try:
+            self._expected_disconnect = True
+            await asyncio.wait_for(client.disconnect(), 5)
+        except Exception:  # pylint: disable=broad-except
+            _LOGGER.debug("%s: dropping client failed", self.address, exc_info=True)
+        finally:
+            if not self._stopped:
+                self._expected_disconnect = False
+
+    def _next_backoff(self) -> float:
+        delay = self._reconnect_backoff
+        self._reconnect_backoff = min(
+            self._reconnect_backoff * 2, RECONNECT_BACKOFF_MAX
+        )
+        return delay
+
+    def _schedule_reconnect(self, delay: float) -> None:
+        """Schedule a single reconnect attempt after delay (deduplicated)."""
+        if self._stopped:
+            return
+        if (
+            self._reconnect_task
+            and not self._reconnect_task.done()
+            and asyncio.current_task() != self._reconnect_task
+        ):
+            return
+        self._reconnect_task = asyncio.create_task(self._reconnect(delay))
+
+    async def _reconnect(self, delay: float = 0) -> None:
+        """Attempt a reconnect after an optional delay."""
+        if delay > 0:
+            _LOGGER.debug("%s: Reconnect in %.0f s", self.address, delay)
+            await asyncio.sleep(delay)
+        if self._stopped:
+            return
         _LOGGER.debug("%s: Reconnect, ensuring connection", self.address)
         async with self._seq_num_lock:
             self._current_seq_num = 1
         try:
-            if self._expected_disconnect:
-                return
             await self._ensure_connected()
-            if self._expected_disconnect:
+            if self._stopped:
                 return
             _LOGGER.debug("%s: Reconnect, connection ensured", self.address)
-        except BLEAK_EXCEPTIONS as ex:  # BleakNotFoundError:
-            if "Bluetooth is already shutdown" in str(ex):
-                _LOGGER.debug(
-                    "%s: Reconnect failed because Bluetooth is already shutdown; not scheduling another reconnect",
-                    self.address,
-                )
-                return
+        except BLEAK_EXCEPTIONS:
+            # _ensure_connected already scheduled the next attempt with backoff
+            _LOGGER.debug("%s: Reconnect failed", self.address)
+        except Exception:  # pylint: disable=broad-except
             _LOGGER.debug(
-                "%s: Reconnect, failed to ensure connection - backing off",
-                self.address,
-                exc_info=True,
+                "%s: Reconnect, unexpected error", self.address, exc_info=True
             )
-            await asyncio.sleep(BLEAK_BACKOFF_TIME)
-            _LOGGER.debug("%s: Reconnecting again", self.address)
-            asyncio.create_task(self._reconnect())
+
+    @property
+    def is_connected(self) -> bool:
+        return bool(self._client and self._client.is_connected and self._is_paired)
+
+    @property
+    def last_connect_error(self) -> str | None:
+        return self._last_connect_error
+
+    @property
+    def last_connected_at(self) -> float | None:
+        return self._last_connected_at
 
     @staticmethod
     def _calc_crc16(data: bytes) -> int:
@@ -1098,10 +1194,10 @@ class TuyaBLEDevice:
         # retry: int | None = None,
     ) -> None:
         """Send packet to device and optional read response."""
-        if self._expected_disconnect:
+        if self._stopped:
             return
         await self._ensure_connected()
-        if self._expected_disconnect:
+        if self._stopped:
             return
         await self._send_packet_while_connected(code, data, 0, wait_for_response)
 
@@ -1159,6 +1255,8 @@ class TuyaBLEDevice:
                 )
                 result = False
             self._input_expected_responses.pop(seq_num, None)
+            if self._stopped:
+                result = False
 
         return result
 
@@ -1193,10 +1291,10 @@ class TuyaBLEDevice:
                 raise
 
     async def _resend_packets(self, packets: list[bytes]) -> None:
-        if self._expected_disconnect:
+        if self._stopped:
             return
         await self._ensure_connected()
-        if self._expected_disconnect:
+        if self._stopped:
             return
         await self._int_send_packet_while_connected(packets)
 
@@ -1223,7 +1321,7 @@ class TuyaBLEDevice:
             if self._is_paired:
                 asyncio.create_task(self._resend_packets(packets))
             else:
-                asyncio.create_task(self._reconnect())
+                self._schedule_reconnect(0)
             raise BleakError from ex
         except BleakError as ex:
             if "Bluetooth is already shutdown" in str(ex):
@@ -1242,7 +1340,7 @@ class TuyaBLEDevice:
             if self._is_paired:
                 asyncio.create_task(self._resend_packets(packets))
             else:
-                asyncio.create_task(self._reconnect())
+                self._schedule_reconnect(0)
             raise
 
     async def _int_send_packets_locked(self, packets: list[bytes]) -> None:

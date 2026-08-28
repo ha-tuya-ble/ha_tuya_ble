@@ -77,13 +77,14 @@ async def test_dropped_client_is_released_before_reconnecting(
     async def _disconnect() -> None:
         calls.append("release")
 
-    async def _reconnect() -> None:
+    async def _reconnect(delay: float = 0) -> None:
         calls.append("reconnect")
 
     dropped.disconnect = _disconnect
 
     with patch.object(device, "_reconnect", _reconnect):
         await device._release_and_reconnect(dropped)
+        await asyncio.sleep(0)
 
     assert calls == ["release", "reconnect"]
 
