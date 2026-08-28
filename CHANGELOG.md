@@ -5,6 +5,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog],
 and this project adheres to [Semantic Versioning].
 
+## [0.10.1](https://github.com/ha-tuya-ble/ha_tuya_ble/compare/0.10.0...0.10.1) (2026-08-24)
+
+
+### Bug Fixes
+
+* customize release-please config for authors and device section ([eceda4d](https://github.com/ha-tuya-ble/ha_tuya_ble/commit/eceda4d9c4827f664e2231a8077f9330d6acebbe))
+* Do not let unload block forever on the connection lock ([0cd64de](https://github.com/ha-tuya-ble/ha_tuya_ble/commit/0cd64de2112b0209eb2922f707f066452a5b7f31))
+* Retry the initial update instead of losing it in an unwatched task ([bc8e56b](https://github.com/ha-tuya-ble/ha_tuya_ble/commit/bc8e56bcddbe95bc314337e50e2e4d28063b2886))
+
 ## [0.10.0](https://github.com/ha-tuya-ble/ha_tuya_ble/compare/0.9.0...0.10.0) (2026-08-23)
 
 
