@@ -39,6 +39,9 @@ PLATFORMS: list[Platform] = [
 
 _LOGGER = logging.getLogger(__name__)
 
+# How long unloading waits for a disconnect before giving up on it.
+DISCONNECT_TIMEOUT = 15
+
 
 async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     """Set up Tuya BLE from a config entry."""
@@ -152,7 +155,7 @@ async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
         # Give the disconnect a bounded amount of time; the abandoned connection
         # is dropped by the adapter/proxy anyway once the client is discarded.
         try:
-            await asyncio.wait_for(data.device.stop(), 15)
+            await asyncio.wait_for(data.device.stop(), DISCONNECT_TIMEOUT)
         except TimeoutError:
             _LOGGER.warning(
                 "%s: Timed out waiting for the device to disconnect, unloading anyway",
