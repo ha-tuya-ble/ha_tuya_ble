@@ -6,7 +6,12 @@
         "error": {
             "device_not_registered": "Device is not registered in Tuya cloud",
             "invalid_auth": "Invalid authentication",
-            "login_error": "Login error ({code}): {msg}"
+            "login_error": "Login error ({code}): {msg}",
+            "invalid_uuid": "UUID looks invalid",
+            "invalid_local_key": "Local key looks invalid (at least 6 characters)",
+            "invalid_device_id": "Device ID is required",
+            "invalid_product_id": "Product ID is required",
+            "invalid_category": "Category is required"
         },
         "flow_title": "{name}",
         "step": {
@@ -26,6 +31,28 @@
                     "username": "Account"
                 },
                 "description": "Tuya BLE requires obtaining encryption key from Tuya cloud. Almost all devices only need to access the cloud once during setup.\n\nRefer to documentation of Tuya integration to retrieve the cloud credentials {url}\n\nEnter your Tuya credentials."
+            },
+            "user": {
+                "title": "Tuya BLE",
+                "description": "How should the device credentials (device ID, UUID, local key) be obtained?",
+                "menu_options": {
+                    "login": "Fetch from Tuya IoT cloud (recommended for first setup)",
+                    "manual": "Enter manually (no cloud access needed)"
+                }
+            },
+            "manual": {
+                "title": "Manual credentials",
+                "description": "Enter the credentials of the Tuya BLE device. You can copy them from a previous setup (`.storage/core.config_entries`, `options` of the entry) or from the Tuya IoT platform. The device must not be connected to a phone or Tuya gateway while Home Assistant talks to it.",
+                "data": {
+                    "address": "Tuya BLE device",
+                    "uuid": "UUID (e.g. tuya2a3142…)",
+                    "local_key": "Local key",
+                    "sec_key": "Security key (newer BLE devices only, optional)",
+                    "device_id": "Device ID",
+                    "product_id": "Product ID (e.g. neq16kgd)",
+                    "category": "Category (e.g. szjqr for Fingerbots)",
+                    "device_name": "Device name (optional)"
+                }
             }
         }
     },
@@ -615,7 +642,12 @@
         "error": {
             "device_not_registered": "Device is not registered in Tuya cloud",
             "invalid_auth": "Invalid authentication",
-            "login_error": "Login error ({code}): {msg}"
+            "login_error": "Login error ({code}): {msg}",
+            "invalid_uuid": "UUID looks invalid",
+            "invalid_local_key": "Local key looks invalid (at least 6 characters)",
+            "invalid_device_id": "Device ID is required",
+            "invalid_product_id": "Product ID is required",
+            "invalid_category": "Category is required"
         },
         "step": {
             "login": {
@@ -627,6 +659,26 @@
                     "username": "Account"
                 },
                 "description": "Refer to documentation of Tuya integration to retrieve the cloud credentials {url}\n\nEnter your Tuya credentials."
+            },
+            "init": {
+                "title": "Tuya BLE options",
+                "menu_options": {
+                    "login": "Refresh credentials from Tuya IoT cloud",
+                    "manual": "Edit credentials manually"
+                }
+            },
+            "manual": {
+                "title": "Manual credentials",
+                "description": "Edit the stored credentials. Use this after re-pairing the device in the Smart Life app (it then has a new local key).",
+                "data": {
+                    "uuid": "UUID (e.g. tuya2a3142…)",
+                    "local_key": "Local key",
+                    "sec_key": "Security key (newer BLE devices only, optional)",
+                    "device_id": "Device ID",
+                    "product_id": "Product ID (e.g. neq16kgd)",
+                    "category": "Category (e.g. szjqr for Fingerbots)",
+                    "device_name": "Device name (optional)"
+                }
             }
         }
     }

@@ -6,7 +6,12 @@
         "error": {
             "device_not_registered": "Gerät ist nicht in der Tuya-Cloud registriert",
             "invalid_auth": "Ungültige Authentifizierung",
-            "login_error": "Anmeldefehler ({code}): {msg}"
+            "login_error": "Anmeldefehler ({code}): {msg}",
+            "invalid_uuid": "UUID sieht ungültig aus",
+            "invalid_local_key": "Local Key sieht ungültig aus (mindestens 6 Zeichen)",
+            "invalid_device_id": "Device ID ist erforderlich",
+            "invalid_product_id": "Product ID ist erforderlich",
+            "invalid_category": "Kategorie ist erforderlich"
         },
         "flow_title": "{name}",
         "step": {
@@ -26,6 +31,28 @@
                     "username": "Konto"
                 },
                 "description": "Tuya BLE erfordert das Abrufen des Verschlüsselungsschlüssels aus der Tuya-Cloud. Fast alle Geräte müssen während der Einrichtung nur einmal auf die Cloud zugreifen.\n\nInformationen zum Abrufen der Cloud-Anmeldeinformationen finden Sie in der Dokumentation zur Tuya-Integration unter {url}\n\nGeben Sie Ihre Tuya-Zugangsdaten ein."
+            },
+            "user": {
+                "title": "Tuya BLE",
+                "description": "Wie sollen die Gerätedaten (Device ID, UUID, Local Key) beschafft werden?",
+                "menu_options": {
+                    "login": "Aus der Tuya-IoT-Cloud abrufen (empfohlen bei Ersteinrichtung)",
+                    "manual": "Manuell eingeben (kein Cloud-Zugriff nötig)"
+                }
+            },
+            "manual": {
+                "title": "Manuelle Zugangsdaten",
+                "description": "Zugangsdaten des Tuya-BLE-Geräts eingeben. Sie stammen z. B. aus einer früheren Einrichtung (`.storage/core.config_entries`, Abschnitt `options` des Eintrags) oder aus der Tuya IoT Platform. Während Home Assistant mit dem Gerät spricht, darf es nicht mit einem Handy oder Tuya-Gateway verbunden sein.",
+                "data": {
+                    "address": "Tuya-BLE-Gerät",
+                    "uuid": "UUID (z. B. tuya2a3142…)",
+                    "local_key": "Local Key",
+                    "sec_key": "Security Key (nur neuere BLE-Geräte, optional)",
+                    "device_id": "Device ID",
+                    "product_id": "Product ID (z. B. neq16kgd)",
+                    "category": "Kategorie (z. B. szjqr für Fingerbots)",
+                    "device_name": "Gerätename (optional)"
+                }
             }
         }
     },
@@ -629,7 +656,12 @@
         "error": {
             "device_not_registered": "Gerät ist nicht in der Tuya-Cloud registriert",
             "invalid_auth": "Ungültige Authentifizierung",
-            "login_error": "Anmeldefehler ({code}): {msg}"
+            "login_error": "Anmeldefehler ({code}): {msg}",
+            "invalid_uuid": "UUID sieht ungültig aus",
+            "invalid_local_key": "Local Key sieht ungültig aus (mindestens 6 Zeichen)",
+            "invalid_device_id": "Device ID ist erforderlich",
+            "invalid_product_id": "Product ID ist erforderlich",
+            "invalid_category": "Kategorie ist erforderlich"
         },
         "step": {
             "login": {
@@ -641,6 +673,26 @@
                     "username": "Konto"
                 },
                 "description": "Informationen zum Abrufen der Cloud-Anmeldeinformationen finden Sie in der Dokumentation zur Tuya-Integration unter {url}\n\nGeben Sie Ihre Tuya-Zugangsdaten ein."
+            },
+            "init": {
+                "title": "Tuya-BLE-Optionen",
+                "menu_options": {
+                    "login": "Zugangsdaten aus der Tuya-IoT-Cloud neu abrufen",
+                    "manual": "Zugangsdaten manuell bearbeiten"
+                }
+            },
+            "manual": {
+                "title": "Manuelle Zugangsdaten",
+                "description": "Gespeicherte Zugangsdaten bearbeiten. Nach einem Neu-Koppeln in der Smart-Life-App hat das Gerät einen neuen Local Key.",
+                "data": {
+                    "uuid": "UUID (z. B. tuya2a3142…)",
+                    "local_key": "Local Key",
+                    "sec_key": "Security Key (nur neuere BLE-Geräte, optional)",
+                    "device_id": "Device ID",
+                    "product_id": "Product ID (z. B. neq16kgd)",
+                    "category": "Kategorie (z. B. szjqr für Fingerbots)",
+                    "device_name": "Gerätename (optional)"
+                }
             }
         }
     }
