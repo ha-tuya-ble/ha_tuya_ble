@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog],
 and this project adheres to [Semantic Versioning].
 
+## [0.11.0](https://github.com/ha-tuya-ble/ha_tuya_ble/compare/0.10.1...0.11.0) (2026-08-28)
+
+
+### Features
+
+* Improve exponential backoff reconnect logic (via @SittingDuck) ([#293](https://github.com/ha-tuya-ble/ha_tuya_ble/issues/293)) ([064d45b](https://github.com/ha-tuya-ble/ha_tuya_ble/commit/064d45bc3d882a5393cdf442a20ea5977a9f1cf4))
+* manual credentials entry in config and options flow ([4766753](https://github.com/ha-tuya-ble/ha_tuya_ble/commit/476675320ee163cbbc42d5d9b02401279b5124a7))
+
 ## [0.10.1](https://github.com/ha-tuya-ble/ha_tuya_ble/compare/0.10.0...0.10.1) (2026-08-24)
 
 
