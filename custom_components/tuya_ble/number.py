@@ -15,6 +15,7 @@ from homeassistant.components.number.const import NumberDeviceClass, NumberMode
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import (
     PERCENTAGE,
+    UnitOfRatio,
     UnitOfTemperature,
     UnitOfTime,
     UnitOfVolume,
@@ -22,16 +23,6 @@ from homeassistant.const import (
     UnitOfElectricPotential,
     Platform,
 )
-
-try:
-    from homeassistant.const import UnitOfRatio
-
-    CONCENTRATION_PARTS_PER_MILLION = UnitOfRatio.PARTS_PER_MILLION
-except ImportError:
-    try:
-        from homeassistant.const import CONCENTRATION_PARTS_PER_MILLION
-    except ImportError:
-        CONCENTRATION_PARTS_PER_MILLION = "ppm"
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity import EntityCategory
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
@@ -303,7 +294,7 @@ mapping: dict[str, TuyaBLECategoryNumberMapping] = {
                         icon="mdi:molecule-co2",
                         native_max_value=5000,
                         native_min_value=400,
-                        native_unit_of_measurement=CONCENTRATION_PARTS_PER_MILLION,
+                        native_unit_of_measurement=UnitOfRatio.PARTS_PER_MILLION,
                         native_step=100,
                         entity_category=EntityCategory.CONFIG,
                     ),
