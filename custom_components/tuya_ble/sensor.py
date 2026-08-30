@@ -12,7 +12,6 @@ from homeassistant.components.sensor import (
 )
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import (
-    CONCENTRATION_PARTS_PER_MILLION,
     PERCENTAGE,
     SIGNAL_STRENGTH_DECIBELS_MILLIWATT,
     UnitOfTemperature,
@@ -22,6 +21,16 @@ from homeassistant.const import (
     UnitOfElectricPotential,
     Platform,
 )
+
+try:
+    from homeassistant.const import UnitOfRatio
+
+    CONCENTRATION_PARTS_PER_MILLION = UnitOfRatio.PARTS_PER_MILLION
+except ImportError:
+    try:
+        from homeassistant.const import CONCENTRATION_PARTS_PER_MILLION
+    except ImportError:
+        CONCENTRATION_PARTS_PER_MILLION = "ppm"
 from homeassistant.core import HomeAssistant, callback
 from homeassistant.helpers.entity import EntityCategory
 from homeassistant.util import dt as dt_util
