@@ -347,7 +347,10 @@ class TuyaBLEConfigFlow(ConfigFlow, domain=DOMAIN):
         self._discovery_info = discovery_info
         if self._manager is None:
             self._manager = HASSTuyaBLEDeviceManager(self.hass, self._data)
-        await self._manager.build_cache()
+        try:
+            await self._manager.build_cache()
+        except Exception:
+            _LOGGER.exception("Error building cloud cache during bluetooth step")
         self.context["title_placeholders"] = {
             "name": await get_device_readable_name(
                 discovery_info,
@@ -362,7 +365,10 @@ class TuyaBLEConfigFlow(ConfigFlow, domain=DOMAIN):
         """Choose between cloud lookup and manual credentials."""
         if self._manager is None:
             self._manager = HASSTuyaBLEDeviceManager(self.hass, self._data)
-            await self._manager.build_cache()
+            try:
+                await self._manager.build_cache()
+            except Exception:
+                _LOGGER.exception("Error building cloud cache during user step")
         return self.async_show_menu(
             step_id="user",
             menu_options=["login", "manual"],
