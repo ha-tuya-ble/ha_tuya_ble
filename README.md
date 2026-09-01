@@ -224,8 +224,8 @@ See a device marked Experimental you have? We could use real world testing feedb
       <td>—</td>
     </tr>
     <tr>
-      <td>Drawer Lock CTL20H</td>
-      <td><code>y2yaegze</code></td>
+      <td>Drawer Lock CTL20H / CTL20H_8018 SmartLock</td>
+      <td><code>y2yaegze</code>, <code>qcrilcpr</code></td>
       <td>—</td>
     </tr>
     <tr>
