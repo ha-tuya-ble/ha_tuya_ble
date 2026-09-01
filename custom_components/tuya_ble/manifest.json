@@ -24,7 +24,6 @@
     "tuya"
   ],
   "documentation": "https://github.com/ha-tuya-ble/ha_tuya_ble",
-  "homeassistant": "2025.1.0",
   "iot_class": "local_push",
   "issue_tracker": "https://github.com/ha-tuya-ble/ha_tuya_ble/issues",
   "requirements": [
