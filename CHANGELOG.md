@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog],
 and this project adheres to [Semantic Versioning].
 
+## [0.11.2](https://github.com/ha-tuya-ble/ha_tuya_ble/compare/0.11.1...0.11.2) (2026-09-01)
+
+
+### Bug Fixes
+
+* **diagnostics:** default keep_connection fallback to True ([#307](https://github.com/ha-tuya-ble/ha_tuya_ble/issues/307)) ([df061bc](https://github.com/ha-tuya-ble/ha_tuya_ble/commit/df061bc13d883d0278da2ba060a76b18051048f5))
+* skip cloud login and cache build for manual entries ([#309](https://github.com/ha-tuya-ble/ha_tuya_ble/issues/309)) ([937c178](https://github.com/ha-tuya-ble/ha_tuya_ble/commit/937c1789daaccac886f6050a321cf5b509c2f434))
+
 ## [0.11.1](https://github.com/ha-tuya-ble/ha_tuya_ble/compare/0.11.0...0.11.1) (2026-09-01)
 
 
