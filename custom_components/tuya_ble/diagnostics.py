@@ -99,7 +99,7 @@ async def async_get_config_entry_diagnostics(
         "device_version": device.device_version,
         "hardware_version": device.hardware_version,
         "protocol_version": device.protocol_version,
-        "keep_connection": getattr(device, "keep_connection", False),
+        "keep_connection": getattr(device, "keep_connection", True),
         "connected": is_connected,
         "coordinator_connected": (
             data.coordinator.connected if data.coordinator else False

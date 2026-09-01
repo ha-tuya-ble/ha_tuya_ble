@@ -134,6 +134,7 @@ async def test_diagnostics_loaded_entry(hass: HomeAssistant) -> None:
     # Verify device state details
     assert diagnostics["device"]["loaded"] is True
     assert diagnostics["device"]["address"] == DEVICE_ADDRESS
+    assert diagnostics["device"]["keep_connection"] is True
     assert diagnostics["device"]["coordinator_connected"] is False
 
     # Verify product info
