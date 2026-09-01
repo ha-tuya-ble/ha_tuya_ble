@@ -90,6 +90,13 @@ async def test_sensor(hass: HomeAssistant) -> None:
     assert entity.native_value == 600
 
 
+async def test_sensor_co2_unit(hass: HomeAssistant) -> None:
+    from custom_components.tuya_ble.sensor import mapping as sensor_mapping
+
+    co2_mapping = sensor_mapping["co2bj"].products["59s19z5m"][1]
+    assert co2_mapping.description.native_unit_of_measurement == "ppm"
+
+
 async def test_sensor_rssi(hass: HomeAssistant) -> None:
     from pytest_homeassistant_custom_component.common import MockConfigEntry
     from custom_components.tuya_ble.const import DOMAIN

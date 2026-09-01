@@ -3,6 +3,17 @@
 from typing import Any
 from unittest.mock import Mock
 
+import homeassistant.const as ha_const
+
+if not hasattr(ha_const, "UnitOfRatio"):
+
+    class UnitOfRatio:
+        PARTS_PER_MILLION = "ppm"
+        PARTS_PER_BILLION = "ppb"
+        PERCENTAGE = "%"
+
+    ha_const.UnitOfRatio = UnitOfRatio  # type: ignore[attr-defined]
+
 from bleak.backends.device import BLEDevice
 from homeassistant.components.binary_sensor import BinarySensorEntityDescription
 from homeassistant.core import HomeAssistant

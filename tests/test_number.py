@@ -101,3 +101,10 @@ async def test_number(hass: HomeAssistant) -> None:
     device._send_datapoints.assert_called_once_with([11])
     assert device.datapoints[11].value == 250
     assert entity.native_value == 25.0
+
+
+async def test_number_co2_unit(hass: HomeAssistant) -> None:
+    from custom_components.tuya_ble.number import mapping as number_mapping
+
+    co2_alarm_num_mapping = number_mapping["co2bj"].products["59s19z5m"][1]
+    assert co2_alarm_num_mapping.description.native_unit_of_measurement == "ppm"
