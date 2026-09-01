@@ -53,8 +53,12 @@ from .const import (
     CONF_PRODUCT_ID,
     CONF_PRODUCT_MODEL,
     CONF_PRODUCT_NAME,
+    CONF_IDLE_DISCONNECT_DELAY,
+    CONF_KEEP_CONNECTION,
     CONF_SEC_KEY,
     CONF_UUID,
+    DEFAULT_IDLE_DISCONNECT_DELAY,
+    DEFAULT_KEEP_CONNECTION,
     DOMAIN,
 )
 from .devices import TuyaBLEData, get_device_readable_name
@@ -244,6 +248,24 @@ def _validate_manual(
     return result
 
 
+def _settings_schema(defaults: dict[str, Any]) -> vol.Schema:
+    """Schema for the connection policy."""
+    return vol.Schema(
+        {
+            vol.Required(
+                CONF_KEEP_CONNECTION,
+                default=defaults.get(CONF_KEEP_CONNECTION, DEFAULT_KEEP_CONNECTION),
+            ): bool,
+            vol.Required(
+                CONF_IDLE_DISCONNECT_DELAY,
+                default=defaults.get(
+                    CONF_IDLE_DISCONNECT_DELAY, DEFAULT_IDLE_DISCONNECT_DELAY
+                ),
+            ): vol.All(vol.Coerce(int), vol.Range(min=5, max=3600)),
+        }
+    )
+
+
 class TuyaBLEOptionsFlow(OptionsFlowWithConfigEntry):
     """Handle a Tuya BLE options flow."""
 
@@ -257,7 +279,21 @@ class TuyaBLEOptionsFlow(OptionsFlowWithConfigEntry):
         """Manage the options."""
         return self.async_show_menu(
             step_id="init",
-            menu_options=["login", "manual"],
+            menu_options=["login", "manual", "settings"],
+        )
+
+    async def async_step_settings(
+        self, user_input: dict[str, Any] | None = None
+    ) -> FlowResult:
+        """Connection policy."""
+        if user_input is not None:
+            return self.async_create_entry(
+                title=self.config_entry.title,
+                data={**self.config_entry.options, **user_input},
+            )
+        return self.async_show_form(
+            step_id="settings",
+            data_schema=_settings_schema(dict(self.config_entry.options)),
         )
 
     async def async_step_manual(

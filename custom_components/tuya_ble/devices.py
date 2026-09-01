@@ -281,6 +281,10 @@ class TuyaBLECoordinator(DataUpdateCoordinator[None]):
 
     @property
     def connected(self) -> bool:
+        if not self._device.keep_connection:
+            # On-demand mode: the link is dropped on purpose between commands,
+            # so availability follows "has been reached", not "is connected".
+            return self._device.reachable
         return not self._disconnected
 
     @callback

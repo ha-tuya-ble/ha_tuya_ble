@@ -17,7 +17,13 @@ from homeassistant.exceptions import ConfigEntryNotReady
 from .tuya_ble import TuyaBLEDevice
 
 from .cloud import HASSTuyaBLEDeviceManager
-from .const import DOMAIN
+from .const import (
+    CONF_IDLE_DISCONNECT_DELAY,
+    CONF_KEEP_CONNECTION,
+    DEFAULT_IDLE_DISCONNECT_DELAY,
+    DEFAULT_KEEP_CONNECTION,
+    DOMAIN,
+)
 from .devices import TuyaBLECoordinator, TuyaBLEData, get_device_product_info
 
 PLATFORMS: list[Platform] = [
@@ -56,7 +62,16 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
         )
 
     manager = HASSTuyaBLEDeviceManager(hass, entry.options.copy())
-    device = TuyaBLEDevice(manager, ble_device)
+    device = TuyaBLEDevice(
+        manager,
+        ble_device,
+        keep_connection=entry.options.get(
+            CONF_KEEP_CONNECTION, DEFAULT_KEEP_CONNECTION
+        ),
+        idle_disconnect_delay=entry.options.get(
+            CONF_IDLE_DISCONNECT_DELAY, DEFAULT_IDLE_DISCONNECT_DELAY
+        ),
+    )
     await device.initialize()
     product_info = get_device_product_info(device)
 
@@ -138,6 +153,14 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
 async def _async_update_listener(hass: HomeAssistant, entry: ConfigEntry) -> None:
     """Handle options update."""
     data: TuyaBLEData = hass.data[DOMAIN][entry.entry_id]
+    if (
+        entry.options.get(CONF_KEEP_CONNECTION, DEFAULT_KEEP_CONNECTION)
+        != data.device.keep_connection
+        or entry.options.get(CONF_IDLE_DISCONNECT_DELAY, DEFAULT_IDLE_DISCONNECT_DELAY)
+        != data.device.idle_disconnect_delay
+    ):
+        await hass.config_entries.async_reload(entry.entry_id)
+        return
     if entry.title != data.title:
         await hass.config_entries.async_reload(entry.entry_id)
 

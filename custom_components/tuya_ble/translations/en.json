@@ -678,7 +678,8 @@
                 "title": "Tuya BLE options",
                 "menu_options": {
                     "login": "Refresh credentials from Tuya IoT cloud",
-                    "manual": "Edit credentials manually"
+                    "manual": "Edit credentials manually",
+                    "settings": "Connection settings"
                 }
             },
             "manual": {
@@ -692,6 +693,14 @@
                     "product_id": "Product ID (e.g. neq16kgd)",
                     "category": "Category (e.g. szjqr for Fingerbots)",
                     "device_name": "Device name (optional)"
+                }
+            },
+            "settings": {
+                "title": "Connection settings",
+                "description": "Keep connection: the BLE link stays open permanently (fastest response, occupies one active connection slot on the adapter/proxy, higher battery drain on battery-powered devices). Off: connect on demand and disconnect after the idle delay (1–3 s latency per command).",
+                "data": {
+                    "keep_connection": "Keep BLE connection open",
+                    "idle_disconnect_delay": "Idle disconnect delay (seconds)"
                 }
             }
         }
