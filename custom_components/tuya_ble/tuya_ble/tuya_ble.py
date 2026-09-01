@@ -765,6 +765,11 @@ class TuyaBLEDevice:
         return self._keep_connection
 
     @property
+    def idle_disconnect_delay(self) -> int:
+        """Return the idle timeout used in on-demand mode."""
+        return self._idle_disconnect_delay
+
+    @property
     def reachable(self) -> bool:
         """Return whether the device has been reached at least once."""
         return self._last_connected_at is not None

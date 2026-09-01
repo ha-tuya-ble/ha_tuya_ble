@@ -156,6 +156,8 @@ async def _async_update_listener(hass: HomeAssistant, entry: ConfigEntry) -> Non
     if (
         entry.options.get(CONF_KEEP_CONNECTION, DEFAULT_KEEP_CONNECTION)
         != data.device.keep_connection
+        or entry.options.get(CONF_IDLE_DISCONNECT_DELAY, DEFAULT_IDLE_DISCONNECT_DELAY)
+        != data.device.idle_disconnect_delay
     ):
         await hass.config_entries.async_reload(entry.entry_id)
         return
