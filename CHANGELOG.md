@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog],
 and this project adheres to [Semantic Versioning].
 
+## [0.11.1](https://github.com/ha-tuya-ble/ha_tuya_ble/compare/0.11.0...0.11.1) (2026-09-01)
+
+
+### Bug Fixes
+
+* update CONCENTRATION_PARTS_PER_MILLION to support UnitOfRatio ([#303](https://github.com/ha-tuya-ble/ha_tuya_ble/issues/303)) ([5cb0f7c](https://github.com/ha-tuya-ble/ha_tuya_ble/commit/5cb0f7cd94b28be0ebeaf97f25fd7b18c1e9a5cb))
+
 ## [0.11.0](https://github.com/ha-tuya-ble/ha_tuya_ble/compare/0.10.1...0.11.0) (2026-08-28)
 
 
