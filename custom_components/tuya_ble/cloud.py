@@ -126,7 +126,7 @@ class HASSTuyaBLEDeviceManager(AbstaractTuyaBLEDeviceManager):
         """Login into Tuya cloud using credentials from data dictionary."""
         global _cache
 
-        if len(data) == 0:
+        if len(data) == 0 or not self._has_login(data):
             return {}
 
         api = TuyaOpenAPI(
@@ -248,6 +248,8 @@ class HASSTuyaBLEDeviceManager(AbstaractTuyaBLEDeviceManager):
         for config_entry in tuya_config_entries:
             data.clear()
             data.update(config_entry.data)
+            if not self._has_login(data):
+                continue
             key = self._get_cache_key(data)
             item = _cache.get(key)
             if item is None or len(item.credentials) == 0:
@@ -260,6 +262,8 @@ class HASSTuyaBLEDeviceManager(AbstaractTuyaBLEDeviceManager):
         for config_entry in ble_config_entries:
             data.clear()
             data.update(config_entry.options)
+            if not self._has_login(data):
+                continue
             key = self._get_cache_key(data)
             item = _cache.get(key)
             if item is None or len(item.credentials) == 0:
