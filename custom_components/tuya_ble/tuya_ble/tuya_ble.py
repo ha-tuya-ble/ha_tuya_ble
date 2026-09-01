@@ -36,6 +36,7 @@ from .const import (
     NOTIFY_ATTEMPTS,
     NOTIFY_RETRY_DELAY,
     POST_CONNECT_DELAY,
+    DEFAULT_IDLE_DISCONNECT_DELAY,
     RECONNECT_BACKOFF_MAX,
     RECONNECT_BACKOFF_MIN,
     RESPONSE_WAIT_TIMEOUT,
@@ -290,6 +291,8 @@ class TuyaBLEDevice:
         device_manager: AbstaractTuyaBLEDeviceManager,
         ble_device: BLEDevice,
         advertisement_data: AdvertisementData | None = None,
+        keep_connection: bool = True,
+        idle_disconnect_delay: int = DEFAULT_IDLE_DISCONNECT_DELAY,
     ) -> None:
         """Init the TuyaBLE."""
         self._device_manager = device_manager
@@ -330,6 +333,13 @@ class TuyaBLEDevice:
         self._reconnect_task: asyncio.Task | None = None
         self._last_connect_error: str | None = None
         self._last_connected_at: float | None = None
+
+        # Connection policy: hold the link open, or connect on demand and
+        # drop it again after idle_disconnect_delay seconds of inactivity.
+        self._keep_connection = keep_connection
+        self._idle_disconnect_delay = idle_disconnect_delay
+        self._idle_task: asyncio.Task | None = None
+        self._idle_disconnecting = False
 
         self._input_buffer: bytearray | None = None
         self._input_expected_packet_num = 0
@@ -674,8 +684,10 @@ class TuyaBLEDevice:
         """Stop the TuyaBLE."""
         _LOGGER.debug("%s: Stop", self.address)
         self._stopped = True
-        if self._reconnect_task and not self._reconnect_task.done():
-            self._reconnect_task.cancel()
+        for task in (self._reconnect_task, self._idle_task):
+            if task and not task.done():
+                task.cancel()
+        self._idle_task = None
         await self._execute_disconnect()
 
     def _disconnected(self, client: BleakClientWithServiceCache) -> None:
@@ -704,9 +716,58 @@ class TuyaBLEDevice:
                 self.address,
                 self.rssi,
             )
-            asyncio.create_task(self._release_and_reconnect(dropped_client))
+            if self._keep_connection:
+                asyncio.create_task(self._release_and_reconnect(dropped_client))
+            else:
+                asyncio.create_task(self._release_client(dropped_client))
         elif dropped_client is not None:
             asyncio.create_task(self._release_client(dropped_client))
+
+    # ---- on-demand connection handling ----
+
+    def _touch(self) -> None:
+        """Note activity; (re)start the idle timer in on-demand mode."""
+        if self._keep_connection or self._stopped:
+            return
+        if self._idle_task and not self._idle_task.done():
+            self._idle_task.cancel()
+        self._idle_task = asyncio.create_task(self._idle_disconnect())
+
+    async def _idle_disconnect(self) -> None:
+        """Drop the link after a period without traffic."""
+        try:
+            await asyncio.sleep(self._idle_disconnect_delay)
+            while self._operation_lock.locked() or self._input_expected_responses:
+                await asyncio.sleep(1)
+            if self._stopped or not (self._client and self._client.is_connected):
+                return
+            _LOGGER.debug(
+                "%s: Idle for %ss, disconnecting",
+                self.address,
+                self._idle_disconnect_delay,
+            )
+            self._idle_disconnecting = True
+            try:
+                await asyncio.wait_for(self._execute_disconnect(), 10)
+            except Exception:  # pylint: disable=broad-except
+                _LOGGER.debug("%s: Idle disconnect failed", self.address, exc_info=True)
+            finally:
+                await asyncio.sleep(0.5)
+                self._idle_disconnecting = False
+                self._expected_disconnect = False
+                self._is_paired = False
+        except asyncio.CancelledError:
+            pass
+
+    @property
+    def keep_connection(self) -> bool:
+        """Return whether the BLE link is held open permanently."""
+        return self._keep_connection
+
+    @property
+    def reachable(self) -> bool:
+        """Return whether the device has been reached at least once."""
+        return self._last_connected_at is not None
 
     async def _release_client(self, client: BleakClientWithServiceCache | None) -> None:
         """Let go of a connection that dropped on us.
@@ -779,7 +840,14 @@ class TuyaBLEDevice:
     async def _ensure_connected(self) -> None:
         """Ensure connection to device is established."""
         global global_connect_lock
-        if self._expected_disconnect or self._stopped:
+        if self._stopped:
+            return
+        # An idle disconnect may be in flight; let it finish before reconnecting.
+        while self._idle_disconnecting:
+            await asyncio.sleep(0.05)
+        if not self._keep_connection:
+            self._expected_disconnect = False
+        if self._expected_disconnect:
             return
         if self._connect_lock.locked():
             _LOGGER.debug(
@@ -953,6 +1021,7 @@ class TuyaBLEDevice:
                     self._last_connect_error = None
                     self._last_connected_at = time.monotonic()
                     self._fire_connected_callbacks()
+                    self._touch()
                 else:
                     _LOGGER.error("%s: Connected but not paired", self.address)
             else:
@@ -1200,6 +1269,7 @@ class TuyaBLEDevice:
         if self._stopped:
             return
         await self._send_packet_while_connected(code, data, 0, wait_for_response)
+        self._touch()
 
     async def _send_response(
         self,

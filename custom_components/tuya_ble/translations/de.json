@@ -678,7 +678,8 @@
                 "title": "Tuya-BLE-Optionen",
                 "menu_options": {
                     "login": "Zugangsdaten aus der Tuya-IoT-Cloud neu abrufen",
-                    "manual": "Zugangsdaten manuell bearbeiten"
+                    "manual": "Zugangsdaten manuell bearbeiten",
+                    "settings": "Verbindungseinstellungen"
                 }
             },
             "manual": {
@@ -692,6 +693,14 @@
                     "product_id": "Product ID (z. B. neq16kgd)",
                     "category": "Kategorie (z. B. szjqr für Fingerbots)",
                     "device_name": "Gerätename (optional)"
+                }
+            },
+            "settings": {
+                "title": "Verbindungseinstellungen",
+                "description": "Verbindung halten: Die BLE-Verbindung bleibt dauerhaft offen (schnellste Reaktion, belegt einen aktiven Slot am Bluetooth-Adapter/-Proxy, höherer Batterieverbrauch). Aus: Verbindung nur bei Bedarf, Trennung nach der Leerlaufzeit (1–3 s Verzögerung pro Befehl).",
+                "data": {
+                    "keep_connection": "BLE-Verbindung dauerhaft halten",
+                    "idle_disconnect_delay": "Leerlaufzeit bis zur Trennung (Sekunden)"
                 }
             }
         }

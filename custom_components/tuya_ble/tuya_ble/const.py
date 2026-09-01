@@ -41,6 +41,9 @@ CONNECT_ATTEMPTS = 5
 RECONNECT_BACKOFF_MIN = 5
 RECONNECT_BACKOFF_MAX = 300
 
+# On-demand mode: seconds of inactivity before the link is dropped.
+DEFAULT_IDLE_DISCONNECT_DELAY = 30
+
 # Give the link time to settle after connect and retry the notify
 # subscription on transient GATT errors (e.g. 133 on ESP32 proxies).
 POST_CONNECT_DELAY = 0.3
