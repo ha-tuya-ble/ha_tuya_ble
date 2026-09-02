@@ -6,6 +6,17 @@
         "error": {
             "device_not_registered": "Gerät ist nicht in der Tuya-Cloud registriert",
             "invalid_auth": "Ungültige Authentifizierung",
+            "mobile_account_locked": "Das Tuya-Konto ist vorübergehend gesperrt",
+            "mobile_captcha_required": "Tuya verlangt ein interaktives Captcha. Gib die Gerätezugangsdaten manuell ein.",
+            "mobile_credentials_required": "Die automatische Ermittlung der Zugangsdaten ist fehlgeschlagen. Gib die Gerätezugangsdaten manuell ein.",
+            "mobile_device_not_found": "Das ausgewählte Gerät wurde im Konto der mobilen Anwendung nicht gefunden",
+            "mobile_endpoint_unsupported": "Die ausgewählte mobile Anwendung unterstützt die Passwortanmeldung nicht mehr. Gib die Gerätezugangsdaten manuell ein.",
+            "mobile_identity_mismatch": "Die mobilen Zugangsdaten stimmen nicht mit dem von Tuya IoT zurückgegebenen Gerät überein",
+            "mobile_invalid_auth": "Das Konto oder Passwort der mobilen Anwendung wurde abgelehnt",
+            "mobile_invalid_credentials": "Die mobile Anwendung hat unvollständige oder ungültige Geräteschlüssel zurückgegeben",
+            "mobile_mfa_required": "Tuya verlangt eine Mehrfaktor-Authentifizierung. Gib die Gerätezugangsdaten manuell ein.",
+            "mobile_profile_expired": "Das integrierte Profil der mobilen Anwendung wird von Tuya nicht mehr akzeptiert",
+            "mobile_transport_error": "Der mobile Tuya-Dienst ist nicht erreichbar",
             "login_error": "Anmeldefehler ({code}): {msg}",
             "invalid_uuid": "UUID sieht ungültig aus",
             "invalid_local_key": "Local Key sieht ungültig aus (mindestens 6 Zeichen)",
@@ -31,6 +42,13 @@
                     "username": "Konto"
                 },
                 "description": "Tuya BLE erfordert das Abrufen des Verschlüsselungsschlüssels aus der Tuya-Cloud. Fast alle Geräte müssen während der Einrichtung nur einmal auf die Cloud zugreifen.\n\nInformationen zum Abrufen der Cloud-Anmeldeinformationen finden Sie in der Dokumentation zur Tuya-Integration unter {url}\n\nGeben Sie Ihre Tuya-Zugangsdaten ein."
+            },
+            "mobile_app": {
+                "title": "Mobile Anwendung",
+                "description": "Die Tuya-IoT-Cloud hat keinen Sicherheitsschlüssel zurückgegeben. Wähle das Anwendungskonto aus, dem dieses Gerät gehört, damit Home Assistant das vollständige Schlüsselpaar einmalig abrufen kann.",
+                "data": {
+                    "mobile_app": "Anwendung"
+                }
             },
             "user": {
                 "title": "Tuya BLE",
@@ -656,6 +674,17 @@
         "error": {
             "device_not_registered": "Gerät ist nicht in der Tuya-Cloud registriert",
             "invalid_auth": "Ungültige Authentifizierung",
+            "mobile_account_locked": "Das Tuya-Konto ist vorübergehend gesperrt",
+            "mobile_captcha_required": "Tuya verlangt ein interaktives Captcha. Gib die Gerätezugangsdaten manuell ein.",
+            "mobile_credentials_required": "Die automatische Ermittlung der Zugangsdaten ist fehlgeschlagen. Gib die Gerätezugangsdaten manuell ein.",
+            "mobile_device_not_found": "Das ausgewählte Gerät wurde im Konto der mobilen Anwendung nicht gefunden",
+            "mobile_endpoint_unsupported": "Die ausgewählte mobile Anwendung unterstützt die Passwortanmeldung nicht mehr. Gib die Gerätezugangsdaten manuell ein.",
+            "mobile_identity_mismatch": "Die mobilen Zugangsdaten stimmen nicht mit dem von Tuya IoT zurückgegebenen Gerät überein",
+            "mobile_invalid_auth": "Das Konto oder Passwort der mobilen Anwendung wurde abgelehnt",
+            "mobile_invalid_credentials": "Die mobile Anwendung hat unvollständige oder ungültige Geräteschlüssel zurückgegeben",
+            "mobile_mfa_required": "Tuya verlangt eine Mehrfaktor-Authentifizierung. Gib die Gerätezugangsdaten manuell ein.",
+            "mobile_profile_expired": "Das integrierte Profil der mobilen Anwendung wird von Tuya nicht mehr akzeptiert",
+            "mobile_transport_error": "Der mobile Tuya-Dienst ist nicht erreichbar",
             "login_error": "Anmeldefehler ({code}): {msg}",
             "invalid_uuid": "UUID sieht ungültig aus",
             "invalid_local_key": "Local Key sieht ungültig aus (mindestens 6 Zeichen)",
@@ -673,6 +702,13 @@
                     "username": "Konto"
                 },
                 "description": "Informationen zum Abrufen der Cloud-Anmeldeinformationen finden Sie in der Dokumentation zur Tuya-Integration unter {url}\n\nGeben Sie Ihre Tuya-Zugangsdaten ein."
+            },
+            "mobile_app": {
+                "title": "Mobile Anwendung",
+                "description": "Die Tuya-IoT-Cloud hat keinen Sicherheitsschlüssel zurückgegeben. Wähle das Anwendungskonto aus, dem dieses Gerät gehört, damit Home Assistant einmalig ein neues Schlüsselpaar abrufen kann.",
+                "data": {
+                    "mobile_app": "Anwendung"
+                }
             },
             "init": {
                 "title": "Tuya-BLE-Optionen",

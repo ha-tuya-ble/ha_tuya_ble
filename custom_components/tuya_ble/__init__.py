@@ -10,7 +10,12 @@ from bleak_retry_connector import BLEAK_RETRY_EXCEPTIONS as BLEAK_EXCEPTIONS, ge
 from homeassistant.components import bluetooth
 from homeassistant.components.bluetooth.match import ADDRESS, BluetoothCallbackMatcher
 from homeassistant.config_entries import ConfigEntry
-from homeassistant.const import CONF_ADDRESS, EVENT_HOMEASSISTANT_STOP, Platform
+from homeassistant.const import (
+    CONF_ADDRESS,
+    CONF_DEVICE_ID,
+    EVENT_HOMEASSISTANT_STOP,
+    Platform,
+)
 from homeassistant.core import Event, HomeAssistant, callback
 from homeassistant.exceptions import ConfigEntryNotReady
 
@@ -18,6 +23,11 @@ from .tuya_ble import TuyaBLEDevice
 
 from .cloud import HASSTuyaBLEDeviceManager
 from .const import (
+    CONF_CATEGORY,
+    CONF_LOCAL_KEY,
+    CONF_PRODUCT_ID,
+    CONF_SEC_KEY,
+    CONF_UUID,
     CONF_IDLE_DISCONNECT_DELAY,
     CONF_KEEP_CONNECTION,
     DEFAULT_IDLE_DISCONNECT_DELAY,
@@ -44,6 +54,15 @@ PLATFORMS: list[Platform] = [
 ]
 
 _LOGGER = logging.getLogger(__name__)
+
+CREDENTIAL_OPTION_KEYS = (
+    CONF_UUID,
+    CONF_LOCAL_KEY,
+    CONF_SEC_KEY,
+    CONF_DEVICE_ID,
+    CONF_PRODUCT_ID,
+    CONF_CATEGORY,
+)
 
 # How long unloading waits for a disconnect before giving up on it.
 DISCONNECT_TIMEOUT = 15
@@ -158,6 +177,10 @@ async def _async_update_listener(hass: HomeAssistant, entry: ConfigEntry) -> Non
         != data.device.keep_connection
         or entry.options.get(CONF_IDLE_DISCONNECT_DELAY, DEFAULT_IDLE_DISCONNECT_DELAY)
         != data.device.idle_disconnect_delay
+        or any(
+            entry.options.get(key) != data.manager.data.get(key)
+            for key in CREDENTIAL_OPTION_KEYS
+        )
     ):
         await hass.config_entries.async_reload(entry.entry_id)
         return

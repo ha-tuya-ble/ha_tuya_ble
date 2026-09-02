@@ -6,6 +6,17 @@
         "error": {
             "device_not_registered": "设备未在涂鸦云端注册",
             "invalid_auth": "身份验证无效",
+            "mobile_account_locked": "涂鸦账号已被临时锁定",
+            "mobile_captcha_required": "涂鸦要求进行交互式验证码验证。请手动输入设备凭据。",
+            "mobile_credentials_required": "自动获取凭据失败。请手动输入设备凭据。",
+            "mobile_device_not_found": "在手机应用账号中找不到所选设备",
+            "mobile_endpoint_unsupported": "所选手机应用不再支持密码登录。请手动输入设备凭据。",
+            "mobile_identity_mismatch": "手机应用凭据与涂鸦 IoT 返回的设备不匹配",
+            "mobile_invalid_auth": "手机应用账号或密码被拒绝",
+            "mobile_invalid_credentials": "手机应用返回了不完整或无效的设备密钥",
+            "mobile_mfa_required": "涂鸦要求进行多重身份验证。请手动输入设备凭据。",
+            "mobile_profile_expired": "涂鸦不再接受内置的手机应用配置文件",
+            "mobile_transport_error": "无法访问涂鸦手机服务",
             "login_error": "登录错误 ({code}): {msg}"
         },
         "flow_title": "{name}",
@@ -26,6 +37,13 @@
                     "username": "账号"
                 },
                 "description": "涂鸦 BLE 需要从涂鸦云端获取加密密钥。几乎所有设备在设置期间只需访问云端一次。\n\n请参考涂鸦集成的文档来检索云端凭据 {url}\n\n输入您的涂鸦凭据。"
+            },
+            "mobile_app": {
+                "title": "手机应用",
+                "description": "涂鸦 IoT 云端未返回安全密钥。请选择拥有此设备的应用账号，以便 Home Assistant 一次性获取完整的密钥对。",
+                "data": {
+                    "mobile_app": "应用"
+                }
             }
         }
     },
@@ -629,6 +647,17 @@
         "error": {
             "device_not_registered": "设备未在涂鸦云端注册",
             "invalid_auth": "身份验证无效",
+            "mobile_account_locked": "涂鸦账号已被临时锁定",
+            "mobile_captcha_required": "涂鸦要求进行交互式验证码验证。请手动输入设备凭据。",
+            "mobile_credentials_required": "自动获取凭据失败。请手动输入设备凭据。",
+            "mobile_device_not_found": "在手机应用账号中找不到所选设备",
+            "mobile_endpoint_unsupported": "所选手机应用不再支持密码登录。请手动输入设备凭据。",
+            "mobile_identity_mismatch": "手机应用凭据与涂鸦 IoT 返回的设备不匹配",
+            "mobile_invalid_auth": "手机应用账号或密码被拒绝",
+            "mobile_invalid_credentials": "手机应用返回了不完整或无效的设备密钥",
+            "mobile_mfa_required": "涂鸦要求进行多重身份验证。请手动输入设备凭据。",
+            "mobile_profile_expired": "涂鸦不再接受内置的手机应用配置文件",
+            "mobile_transport_error": "无法访问涂鸦手机服务",
             "login_error": "登录错误 ({code}): {msg}"
         },
         "step": {
@@ -641,6 +670,13 @@
                     "username": "账号"
                 },
                 "description": "请参考涂鸦集成的文档来检索云端凭据 {url}\n\n输入您的涂鸦凭据。"
+            },
+            "mobile_app": {
+                "title": "手机应用",
+                "description": "涂鸦 IoT 云端未返回安全密钥。请选择拥有此设备的应用账号，以便 Home Assistant 一次性获取新的密钥对。",
+                "data": {
+                    "mobile_app": "应用"
+                }
             }
         }
     }

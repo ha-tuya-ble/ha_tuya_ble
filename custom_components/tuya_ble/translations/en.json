@@ -6,6 +6,17 @@
         "error": {
             "device_not_registered": "Device is not registered in Tuya cloud",
             "invalid_auth": "Invalid authentication",
+            "mobile_account_locked": "The Tuya account is temporarily locked",
+            "mobile_captcha_required": "Tuya requires an interactive captcha. Enter the device credentials manually.",
+            "mobile_credentials_required": "Automatic credential retrieval failed. Enter the device credentials manually.",
+            "mobile_device_not_found": "The selected device was not found in the mobile application account",
+            "mobile_endpoint_unsupported": "The selected mobile application no longer supports password login. Enter the device credentials manually.",
+            "mobile_identity_mismatch": "The mobile credentials do not match the device returned by Tuya IoT",
+            "mobile_invalid_auth": "The mobile application account or password was rejected",
+            "mobile_invalid_credentials": "The mobile application returned incomplete or invalid device keys",
+            "mobile_mfa_required": "Tuya requires multi-factor authentication. Enter the device credentials manually.",
+            "mobile_profile_expired": "The bundled mobile application profile is no longer accepted by Tuya",
+            "mobile_transport_error": "The Tuya mobile service could not be reached",
             "login_error": "Login error ({code}): {msg}",
             "invalid_uuid": "UUID looks invalid",
             "invalid_local_key": "Local key looks invalid (at least 6 characters)",
@@ -31,6 +42,13 @@
                     "username": "Account"
                 },
                 "description": "Tuya BLE requires obtaining encryption key from Tuya cloud. Almost all devices only need to access the cloud once during setup.\n\nRefer to documentation of Tuya integration to retrieve the cloud credentials {url}\n\nEnter your Tuya credentials."
+            },
+            "mobile_app": {
+                "title": "Mobile application",
+                "description": "The Tuya IoT cloud did not return a security key. Select the application account that owns this device so Home Assistant can retrieve the complete key pair once.",
+                "data": {
+                    "mobile_app": "Application"
+                }
             },
             "user": {
                 "title": "Tuya BLE",
@@ -656,6 +674,17 @@
         "error": {
             "device_not_registered": "Device is not registered in Tuya cloud",
             "invalid_auth": "Invalid authentication",
+            "mobile_account_locked": "The Tuya account is temporarily locked",
+            "mobile_captcha_required": "Tuya requires an interactive captcha. Enter the device credentials manually.",
+            "mobile_credentials_required": "Automatic credential retrieval failed. Enter the device credentials manually.",
+            "mobile_device_not_found": "The selected device was not found in the mobile application account",
+            "mobile_endpoint_unsupported": "The selected mobile application no longer supports password login. Enter the device credentials manually.",
+            "mobile_identity_mismatch": "The mobile credentials do not match the device returned by Tuya IoT",
+            "mobile_invalid_auth": "The mobile application account or password was rejected",
+            "mobile_invalid_credentials": "The mobile application returned incomplete or invalid device keys",
+            "mobile_mfa_required": "Tuya requires multi-factor authentication. Enter the device credentials manually.",
+            "mobile_profile_expired": "The bundled mobile application profile is no longer accepted by Tuya",
+            "mobile_transport_error": "The Tuya mobile service could not be reached",
             "login_error": "Login error ({code}): {msg}",
             "invalid_uuid": "UUID looks invalid",
             "invalid_local_key": "Local key looks invalid (at least 6 characters)",
@@ -673,6 +702,13 @@
                     "username": "Account"
                 },
                 "description": "Refer to documentation of Tuya integration to retrieve the cloud credentials {url}\n\nEnter your Tuya credentials."
+            },
+            "mobile_app": {
+                "title": "Mobile application",
+                "description": "The Tuya IoT cloud did not return a security key. Select the application account that owns this device so Home Assistant can retrieve a fresh key pair once.",
+                "data": {
+                    "mobile_app": "Application"
+                }
             },
             "init": {
                 "title": "Tuya BLE options",

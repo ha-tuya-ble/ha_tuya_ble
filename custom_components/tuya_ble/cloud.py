@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import logging
 
-from dataclasses import dataclass
+from dataclasses import dataclass, replace
 import json
 from typing import Any, Iterable
 
@@ -17,6 +17,9 @@ from homeassistant.const import (
 )
 
 from homeassistant.core import HomeAssistant
+from homeassistant.helpers.aiohttp_client import async_get_clientsession
+
+from tuya_mobile import TuyaMobileApiError, TuyaPasswordClient
 
 from tuya_iot import (
     TuyaOpenAPI,
@@ -38,6 +41,7 @@ from .const import (
     CONF_PRODUCT_MODEL,
     CONF_UUID,
     CONF_LOCAL_KEY,
+    CONF_MOBILE_APP,
     CONF_SEC_KEY,
     CONF_CATEGORY,
     CONF_PRODUCT_ID,
@@ -53,6 +57,7 @@ from .const import (
     TUYA_RESPONSE_RESULT,
     TUYA_RESPONSE_SUCCESS,
 )
+from .mobile import get_mobile_endpoint
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -89,6 +94,10 @@ CONF_TUYA_DEVICE_KEYS = [
 ]
 
 _cache: dict[str, TuyaCloudCacheItem] = {}
+
+
+class TuyaMobileIdentityMismatch(TuyaMobileApiError):
+    """Mobile credentials do not belong to the OpenAPI device."""
 
 
 class HASSTuyaBLEDeviceManager(AbstaractTuyaBLEDeviceManager):
@@ -308,7 +317,16 @@ class HASSTuyaBLEDeviceManager(AbstaractTuyaBLEDeviceManager):
                 if self._is_login_success(await self.login(True)):
                     item = _cache.get(cache_key)
                     if item:
-                        await self._fill_cache_item(item)
+                        if force_update:
+                            refreshed_item = TuyaCloudCacheItem(
+                                item.api,
+                                item.login,
+                                {},
+                            )
+                            await self._fill_cache_item(refreshed_item)
+                            item.credentials = refreshed_item.credentials
+                        else:
+                            await self._fill_cache_item(item)
 
             if item:
                 credentials = item.credentials.get(address)
@@ -336,6 +354,65 @@ class HASSTuyaBLEDeviceManager(AbstaractTuyaBLEDeviceManager):
                 if sec_key:
                     self._data[CONF_SEC_KEY] = sec_key
 
+        return result
+
+    async def get_mobile_device_credentials(
+        self,
+        cloud_credentials: TuyaBLEDeviceCredentials,
+        save_data: bool = False,
+    ) -> TuyaBLEDeviceCredentials:
+        """Retrieve and validate an atomic mobile localKey/SecKey pair."""
+        mobile_app = self._data.get(CONF_MOBILE_APP)
+        if not mobile_app:
+            raise TuyaMobileApiError("No Tuya mobile application was selected")
+
+        client = TuyaPasswordClient.for_application(
+            mobile_app,
+            async_get_clientsession(self._hass),
+            username=self._data.get(CONF_USERNAME, ""),
+            endpoint=get_mobile_endpoint(self._data.get(CONF_ENDPOINT, "")),
+        )
+        await client.login_with_password(
+            self._data.get(CONF_PASSWORD, ""),
+            self._data.get(CONF_COUNTRY_CODE, ""),
+        )
+        mobile_credentials = await client.get_device_credentials(
+            cloud_credentials.device_id
+        )
+
+        if mobile_credentials.device_id != cloud_credentials.device_id:
+            raise TuyaMobileIdentityMismatch(
+                "Tuya mobile device ID does not match the OpenAPI device"
+            )
+        if (
+            mobile_credentials.uuid
+            and cloud_credentials.uuid
+            and mobile_credentials.uuid != cloud_credentials.uuid
+        ):
+            raise TuyaMobileIdentityMismatch(
+                "Tuya mobile UUID does not match the OpenAPI device"
+            )
+        if (
+            mobile_credentials.product_id
+            and cloud_credentials.product_id
+            and mobile_credentials.product_id != cloud_credentials.product_id
+        ):
+            raise TuyaMobileIdentityMismatch(
+                "Tuya mobile product does not match the OpenAPI device"
+            )
+
+        result = replace(
+            cloud_credentials,
+            local_key=mobile_credentials.local_key,
+            sec_key=mobile_credentials.sec_key,
+        )
+        if save_data:
+            self._data.update(
+                {
+                    CONF_LOCAL_KEY: mobile_credentials.local_key,
+                    CONF_SEC_KEY: mobile_credentials.sec_key,
+                }
+            )
         return result
 
     @property
