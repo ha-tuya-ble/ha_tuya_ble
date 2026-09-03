@@ -6,6 +6,17 @@
         "error": {
             "device_not_registered": "Il dispositivo non è registrato nel cloud Tuya",
             "invalid_auth": "Autenticazione non valida",
+            "mobile_account_locked": "L'account Tuya è temporaneamente bloccato",
+            "mobile_captcha_required": "Tuya richiede un captcha interattivo. Inserisci manualmente le credenziali del dispositivo.",
+            "mobile_credentials_required": "Il recupero automatico delle credenziali non è riuscito. Inserisci manualmente le credenziali del dispositivo.",
+            "mobile_device_not_found": "Il dispositivo selezionato non è stato trovato nell'account dell'applicazione mobile",
+            "mobile_endpoint_unsupported": "L'applicazione mobile selezionata non supporta più l'accesso con password. Inserisci manualmente le credenziali del dispositivo.",
+            "mobile_identity_mismatch": "Le credenziali mobili non corrispondono al dispositivo restituito da Tuya IoT",
+            "mobile_invalid_auth": "L'account o la password dell'applicazione mobile sono stati rifiutati",
+            "mobile_invalid_credentials": "L'applicazione mobile ha restituito chiavi del dispositivo incomplete o non valide",
+            "mobile_mfa_required": "Tuya richiede l'autenticazione a più fattori. Inserisci manualmente le credenziali del dispositivo.",
+            "mobile_profile_expired": "Il profilo integrato dell'applicazione mobile non è più accettato da Tuya",
+            "mobile_transport_error": "Il servizio mobile Tuya non è raggiungibile",
             "login_error": "Errore di accesso ({code}): {msg}"
         },
         "flow_title": "{name}",
@@ -26,6 +37,13 @@
                     "username": "Account"
                 },
                 "description": "Tuya BLE richiede di ottenere la chiave di crittografia dal cloud Tuya. Quasi tutti i dispositivi devono accedere al cloud solo una volta durante la configurazione.\n\nFai riferimento alla documentazione dell'integrazione Tuya per recuperare le credenziali cloud {url}\n\nInserisci le tue credenziali Tuya."
+            },
+            "mobile_app": {
+                "title": "Applicazione mobile",
+                "description": "Il cloud Tuya IoT non ha restituito una chiave di sicurezza. Seleziona l'account dell'applicazione che possiede il dispositivo affinché Home Assistant recuperi una volta la coppia completa di chiavi.",
+                "data": {
+                    "mobile_app": "Applicazione"
+                }
             }
         }
     },
@@ -629,6 +647,17 @@
         "error": {
             "device_not_registered": "Il dispositivo non è registrato nel cloud Tuya",
             "invalid_auth": "Autenticazione non valida",
+            "mobile_account_locked": "L'account Tuya è temporaneamente bloccato",
+            "mobile_captcha_required": "Tuya richiede un captcha interattivo. Inserisci manualmente le credenziali del dispositivo.",
+            "mobile_credentials_required": "Il recupero automatico delle credenziali non è riuscito. Inserisci manualmente le credenziali del dispositivo.",
+            "mobile_device_not_found": "Il dispositivo selezionato non è stato trovato nell'account dell'applicazione mobile",
+            "mobile_endpoint_unsupported": "L'applicazione mobile selezionata non supporta più l'accesso con password. Inserisci manualmente le credenziali del dispositivo.",
+            "mobile_identity_mismatch": "Le credenziali mobili non corrispondono al dispositivo restituito da Tuya IoT",
+            "mobile_invalid_auth": "L'account o la password dell'applicazione mobile sono stati rifiutati",
+            "mobile_invalid_credentials": "L'applicazione mobile ha restituito chiavi del dispositivo incomplete o non valide",
+            "mobile_mfa_required": "Tuya richiede l'autenticazione a più fattori. Inserisci manualmente le credenziali del dispositivo.",
+            "mobile_profile_expired": "Il profilo integrato dell'applicazione mobile non è più accettato da Tuya",
+            "mobile_transport_error": "Il servizio mobile Tuya non è raggiungibile",
             "login_error": "Errore di accesso ({code}): {msg}"
         },
         "step": {
@@ -641,6 +670,13 @@
                     "username": "Account"
                 },
                 "description": "Fai riferimento alla documentazione dell'integrazione Tuya per recuperare le credenziali cloud {url}\n\nInserisci le tue credenziali Tuya."
+            },
+            "mobile_app": {
+                "title": "Applicazione mobile",
+                "description": "Il cloud Tuya IoT non ha restituito una chiave di sicurezza. Seleziona l'account dell'applicazione che possiede il dispositivo affinché Home Assistant recuperi una volta una nuova coppia di chiavi.",
+                "data": {
+                    "mobile_app": "Applicazione"
+                }
             }
         }
     }

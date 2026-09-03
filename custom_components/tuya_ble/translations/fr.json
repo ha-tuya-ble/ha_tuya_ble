@@ -6,6 +6,17 @@
         "error": {
             "device_not_registered": "L'appareil n'est pas enregistré dans le cloud Tuya",
             "invalid_auth": "Authentification invalide",
+            "mobile_account_locked": "Le compte Tuya est temporairement verrouillé",
+            "mobile_captcha_required": "Tuya exige un captcha interactif. Saisissez manuellement les identifiants de l'appareil.",
+            "mobile_credentials_required": "La récupération automatique des identifiants a échoué. Saisissez manuellement les identifiants de l'appareil.",
+            "mobile_device_not_found": "L'appareil sélectionné est introuvable dans le compte de l'application mobile",
+            "mobile_endpoint_unsupported": "L'application mobile sélectionnée ne permet plus la connexion par mot de passe. Saisissez manuellement les identifiants de l'appareil.",
+            "mobile_identity_mismatch": "Les identifiants mobiles ne correspondent pas à l'appareil renvoyé par Tuya IoT",
+            "mobile_invalid_auth": "Le compte ou le mot de passe de l'application mobile a été refusé",
+            "mobile_invalid_credentials": "L'application mobile a renvoyé des clés d'appareil incomplètes ou invalides",
+            "mobile_mfa_required": "Tuya exige une authentification multifacteur. Saisissez manuellement les identifiants de l'appareil.",
+            "mobile_profile_expired": "Le profil intégré de l'application mobile n'est plus accepté par Tuya",
+            "mobile_transport_error": "Le service mobile Tuya est inaccessible",
             "login_error": "Erreur de connexion ({code}) : {msg}"
         },
         "flow_title": "{name}",
@@ -26,6 +37,13 @@
                     "username": "Compte"
                 },
                 "description": "Tuya BLE nécessite d'obtenir la clé de chiffrement auprès du cloud Tuya. Presque tous les appareils n'ont besoin d'accéder au cloud qu'une seule fois lors de la configuration.\n\nReportez-vous à la documentation de l'intégration Tuya pour récupérer les identifiants cloud {url}\n\nEntrez vos identifiants Tuya."
+            },
+            "mobile_app": {
+                "title": "Application mobile",
+                "description": "Le cloud Tuya IoT n'a pas renvoyé de clé de sécurité. Sélectionnez le compte de l'application qui possède cet appareil afin que Home Assistant récupère une fois la paire complète de clés.",
+                "data": {
+                    "mobile_app": "Application"
+                }
             }
         }
     },
@@ -629,6 +647,17 @@
         "error": {
             "device_not_registered": "L'appareil n'est pas enregistré dans le cloud Tuya",
             "invalid_auth": "Authentification invalide",
+            "mobile_account_locked": "Le compte Tuya est temporairement verrouillé",
+            "mobile_captcha_required": "Tuya exige un captcha interactif. Saisissez manuellement les identifiants de l'appareil.",
+            "mobile_credentials_required": "La récupération automatique des identifiants a échoué. Saisissez manuellement les identifiants de l'appareil.",
+            "mobile_device_not_found": "L'appareil sélectionné est introuvable dans le compte de l'application mobile",
+            "mobile_endpoint_unsupported": "L'application mobile sélectionnée ne permet plus la connexion par mot de passe. Saisissez manuellement les identifiants de l'appareil.",
+            "mobile_identity_mismatch": "Les identifiants mobiles ne correspondent pas à l'appareil renvoyé par Tuya IoT",
+            "mobile_invalid_auth": "Le compte ou le mot de passe de l'application mobile a été refusé",
+            "mobile_invalid_credentials": "L'application mobile a renvoyé des clés d'appareil incomplètes ou invalides",
+            "mobile_mfa_required": "Tuya exige une authentification multifacteur. Saisissez manuellement les identifiants de l'appareil.",
+            "mobile_profile_expired": "Le profil intégré de l'application mobile n'est plus accepté par Tuya",
+            "mobile_transport_error": "Le service mobile Tuya est inaccessible",
             "login_error": "Erreur de connexion ({code}) : {msg}"
         },
         "step": {
@@ -641,6 +670,13 @@
                     "username": "Compte"
                 },
                 "description": "Reportez-vous à la documentation de l'intégration Tuya pour récupérer les identifiants cloud {url}\n\nEntrez vos identifiants Tuya."
+            },
+            "mobile_app": {
+                "title": "Application mobile",
+                "description": "Le cloud Tuya IoT n'a pas renvoyé de clé de sécurité. Sélectionnez le compte de l'application qui possède cet appareil afin que Home Assistant récupère une fois une nouvelle paire de clés.",
+                "data": {
+                    "mobile_app": "Application"
+                }
             }
         }
     }

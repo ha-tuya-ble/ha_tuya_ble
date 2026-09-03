@@ -9,6 +9,7 @@ pylint==2.8.2
 pytest-asyncio
 pytest-cov
 tuya-iot-py-sdk==0.6.6
+tuya-mobile==1.2.0
 pycountry>23.0.0
 pyserial
 PyCryptodome
