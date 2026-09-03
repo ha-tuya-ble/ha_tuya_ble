@@ -31,5 +31,5 @@
     "tuya-mobile==1.2.0",
     "pycountry>23.0.0"
   ],
-  "version": "0.11.2"
+  "version": "0.12.0"
 }
