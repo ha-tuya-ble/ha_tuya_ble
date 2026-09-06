@@ -486,6 +486,7 @@ devices_database: dict[str, TuyaBLECategoryInfo] = {
             "z7lj676i": TuyaBLEProductInfo(name="Smart Cylinder Lock", lock=1),
             "hs21i377": TuyaBLEProductInfo(name="Smart Cylinder Lock"),
             "kholoaew": TuyaBLEProductInfo(name="Smart Lock"),
+            "2hmqh0ty": TuyaBLEProductInfo(name="EL605A Knob Lock", lock=1),
             "pyawczjj": TuyaBLEProductInfo(name="CS-9 Smart Fingerprint Lock", lock=1),
             "yfqp0shy": TuyaBLEProductInfo(
                 name="Gainsborough Liberty BLE Lock (GGC01HA)", lock=1

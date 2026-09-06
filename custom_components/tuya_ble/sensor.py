@@ -545,6 +545,9 @@ mapping: dict[str, TuyaBLECategorySensorMapping] = {
     ),
     "jtmspro": TuyaBLECategorySensorMapping(
         products={
+            "2hmqh0ty": [  # EL605A Knob Lock
+                TuyaBLEBatteryMapping(dp_id=8),
+            ],
             **dict.fromkeys(
                 [
                     "y2yaegze",

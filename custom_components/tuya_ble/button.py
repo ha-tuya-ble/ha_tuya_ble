@@ -193,6 +193,15 @@ mapping: dict[str, TuyaBLECategoryButtonMapping] = {
                     ),
                 ),
             ],
+            "2hmqh0ty": [  # EL605A Knob Lock
+                TuyaBLEButtonMapping(
+                    dp_id=71,  # Plain BLE unlock trigger, no encoded payload
+                    description=ButtonEntityDescription(
+                        key="bluetooth_unlock",
+                        icon="mdi:lock-open-variant-outline",
+                    ),
+                ),
+            ],
             **dict.fromkeys(
                 [
                     "stugc8dl",  # HU06 Smart Lock

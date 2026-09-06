@@ -95,6 +95,19 @@ class TuyaBLELock(TuyaBLEEntity, LockEntity):
 
     async def async_unlock(self, **kwargs: Any) -> None:
         """Unlock the lock."""
+        if self._device.product_id == "2hmqh0ty":
+            # EL605A knob lock: unlock is a DP71 (ble_unlock_check, Raw)
+            # trigger; a zero-length payload is enough. It also exposes
+            # manual_lock (DP46), so without this branch it would fall into
+            # the generic manual_lock path below and write DP46=False, which
+            # does not move the bolt. Verified on hardware.
+            if ble_unlock := self._device.datapoints.get_or_create(
+                71,
+                TuyaBLEDataPointType.DT_RAW,
+                b"",
+            ):
+                await ble_unlock.set_value(b"")
+            return
         manual_lock_id = self.find_dpid(DPCode.MANUAL_LOCK)
         if manual_lock_id is not None:
             if manual_lock := self._device.datapoints.get_or_create(
