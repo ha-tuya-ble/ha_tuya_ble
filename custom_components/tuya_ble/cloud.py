@@ -218,6 +218,18 @@ class HASSTuyaBLEDeviceManager(AbstaractTuyaBLEDeviceManager):
                             if sec_key:
                                 item.credentials[mac][CONF_SEC_KEY] = sec_key
 
+                            # Some devices (e.g. jtmspro knob locks) report the
+                            # MAC byte-reversed in the cloud factory info
+                            # compared to what they advertise over BLE, so the
+                            # credentials can never be matched to the scanned
+                            # device. Index the same entry under the reversed
+                            # address too. Existing keys win, so a device that
+                            # genuinely owns that address is never clobbered.
+                            reversed_mac = ":".join(reversed(mac.split(":")))
+                            item.credentials.setdefault(
+                                reversed_mac, item.credentials[mac]
+                            )
+
                             spec_response = await self._hass.async_add_executor_job(
                                 item.api.get,
                                 TUYA_API_DEVICE_SPECIFICATION % device.get("id"),

@@ -62,14 +62,13 @@ from .exceptions import (
 from .manager import AbstaractTuyaBLEDeviceManager, TuyaBLEDeviceCredentials
 from .security import TuyaBLESecurityMaterial
 
-
 _LOGGER = logging.getLogger(__name__)
 
 
 BLEAK_EXCEPTIONS = (*BLEAK_RETRY_EXCEPTIONS, OSError)
 
 
-FD50_DEVICE_INFO_PRODUCT_IDS = frozenset({"jntxv3q4", "9hdajpiw"})
+FD50_DEVICE_INFO_PRODUCT_IDS = frozenset({"jntxv3q4", "9hdajpiw", "2hmqh0ty"})
 
 
 # @dataclass

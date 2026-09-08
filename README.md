@@ -136,8 +136,8 @@ See a device marked Experimental you have? We could use real world testing feedb
       <td>—</td>
     </tr>
     <tr>
-      <td rowspan="24"><strong>Smart Locks</strong></td>
-      <td rowspan="24"><code>ms</code>, <code>jtmspro</code></td>
+      <td rowspan="25"><strong>Smart Locks</strong></td>
+      <td rowspan="25"><code>ms</code>, <code>jtmspro</code></td>
       <td>Smart Lock</td>
       <td><code>ludzroix</code>, <code>isk2p555</code>, <code>gumrixyt</code>, <code>uamrw6h3</code>, <code>sidhzylo</code>, <code>mqc2hevy</code>, <code>7a4xvbtt</code></td>
       <td>—</td>
@@ -251,6 +251,11 @@ See a device marked Experimental you have? We could use real world testing feedb
       <td>XCase NX-4964 Lock Box</td>
       <td><code>qicggi0m</code></td>
       <td>—</td>
+    </tr>
+    <tr>
+      <td>EL605A Knob Lock</td>
+      <td><code>2hmqh0ty</code></td>
+      <td>BLE unlock via DP71. Requires the FD50 device-info handshake.</td>
     </tr>
     <tr>
       <td>Example Product Securosmart lock</td>
