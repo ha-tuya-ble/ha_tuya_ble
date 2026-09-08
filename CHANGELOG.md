@@ -5,6 +5,27 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog],
 and this project adheres to [Semantic Versioning].
 
+## [0.12.0](https://github.com/ha-tuya-ble/ha_tuya_ble/compare/0.11.2...0.12.0) (2026-09-08)
+
+
+### Devices
+
+* **device:** add support for CTL20H_8018 SmartLock (qcrilcpr) ([#305](https://github.com/ha-tuya-ble/ha_tuya_ble/issues/305)) ([695bd93](https://github.com/ha-tuya-ble/ha_tuya_ble/commit/695bd93db60ec562ce9bdbdc6ce45e1971cef4a8))
+* **device:** add support for EL605A Knob Lock (jtmspro/2hmqh0ty), index reversed mac addresses ([bd44a70](https://github.com/ha-tuya-ble/ha_tuya_ble/commit/bd44a7011cf5fe13bae1bbddf69718dbff75a4fd))
+
+
+### Bug Fixes
+
+* reload the entry when only the idle disconnect delay changed ([d50272a](https://github.com/ha-tuya-ble/ha_tuya_ble/commit/d50272a82ad96f30235adf43fcced689788d3c97))
+
+
+### Features
+
+* **cloud:** retrieve protocol-v2 credentials from mobile API ([2a4db13](https://github.com/ha-tuya-ble/ha_tuya_ble/commit/2a4db130d84087bb53a1a088d1f73c3893f57b8c))
+* **cloud:** retrieve protocol-v2 credentials from mobile API ([103f321](https://github.com/ha-tuya-ble/ha_tuya_ble/commit/103f321f0301d9f8b0a0fb7faefa4a57dc5cfd91))
+* optional on-demand BLE connection mode ([75e84d3](https://github.com/ha-tuya-ble/ha_tuya_ble/commit/75e84d33ef0da850d19da205467ea39600d14b17))
+* optional on-demand BLE connection mode ([d68b47d](https://github.com/ha-tuya-ble/ha_tuya_ble/commit/d68b47da9f72dcf13db270303158f284d909ba78))
+
 ## [0.11.2](https://github.com/ha-tuya-ble/ha_tuya_ble/compare/0.11.1...0.11.2) (2026-09-01)
 
 
