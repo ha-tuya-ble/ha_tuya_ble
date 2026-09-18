@@ -78,6 +78,15 @@ class TuyaBLECategoryCoverMapping:
 # - [X] 105 - Speed
 # - [ ] 107 - Reset
 
+# Tubular Motor (AM25 Plus L)
+# - [X] 1   - State (0=open, 1=stop, 2=close, 3=continue)
+# - [X] 2   - Position (SET)
+# - [X] 3   - Position (RAW)
+# - [ ] 5   - Motor Direction (forward/back)
+# - [X] 7   - Work State (opening/closing)
+# - [ ] 12  - Fault (bitmap: motor_fault)
+# - [ ] 105 - Border (up/down)
+
 # Curtain Controller
 # - [X] 1   - State (0=open, 1=stop, 2=close)
 # - [X] 2   - Position Set
@@ -107,6 +116,15 @@ mapping: dict[str, TuyaBLECategoryCoverMapping] = {
                     )
                 ],
             ),
+            "y0dtvgqf": [
+                TuyaBLECoverMapping(  # AM25 Plus L Tubular Motor
+                    description=CoverEntityDescription(key="ble_blind_controller"),
+                    cover_state_dp_id=1,
+                    cover_position_set_dp=2,
+                    cover_position_dp_id=3,
+                    cover_work_state_dp_id=7,
+                )
+            ],
             "v3fzfd2y": [
                 TuyaBLECoverMapping(
                     description=CoverEntityDescription(key="ble_blind_controller"),
