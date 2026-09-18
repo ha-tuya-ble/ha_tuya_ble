@@ -68,7 +68,15 @@ _LOGGER = logging.getLogger(__name__)
 BLEAK_EXCEPTIONS = (*BLEAK_RETRY_EXCEPTIONS, OSError)
 
 
-FD50_DEVICE_INFO_PRODUCT_IDS = frozenset({"jntxv3q4", "9hdajpiw", "2hmqh0ty"})
+FD50_DEVICE_INFO_PRODUCT_IDS = frozenset(
+    {"jntxv3q4", "9hdajpiw", "2hmqh0ty", "qcrilcpr"}
+)
+
+# Devices that need the FD50 device-info payload quirk above, but must
+# still use v1 (legacy) key derivation even when the cloud API returns a
+# sec_key. The FD50 payload format and v2 key derivation are independent
+# device properties that happen to coincide for every other known device.
+LEGACY_KEY_DERIVATION_PRODUCT_IDS = frozenset({"qcrilcpr"})
 
 
 # @dataclass
@@ -404,7 +412,11 @@ class TuyaBLEDevice:
             if self._device_info:
                 self._security_material = TuyaBLESecurityMaterial(
                     self._device_info.local_key,
-                    self._device_info.sec_key,
+                    (
+                        None
+                        if self.product_id in LEGACY_KEY_DERIVATION_PRODUCT_IDS
+                        else self._device_info.sec_key
+                    ),
                 )
                 self._local_key = self._security_material.pairing_login_key
                 self._login_key = self._security_material.login_key
