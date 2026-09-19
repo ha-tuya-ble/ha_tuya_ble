@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog],
 and this project adheres to [Semantic Versioning].
 
+## [0.12.1](https://github.com/ha-tuya-ble/ha_tuya_ble/compare/0.12.0...0.12.1) (2026-09-18)
+
+
+### Bug Fixes
+
+* qcrilcpr needs FD50 payload framing with legacy (v1) key derivation ([83690ee](https://github.com/ha-tuya-ble/ha_tuya_ble/commit/83690eec8864a8351cacd6b162f7c6767f40e60f))
+* qcrilcpr needs FD50 payload framing with legacy (v1) key derivation ([aa726dd](https://github.com/ha-tuya-ble/ha_tuya_ble/commit/aa726dd9b9bdaf7bdd8412088b0b97904b2276e3))
+
 ## [0.12.0](https://github.com/ha-tuya-ble/ha_tuya_ble/compare/0.11.2...0.12.0) (2026-09-08)
 
 
