@@ -17,7 +17,12 @@
             "mobile_mfa_required": "A Tuya exige autenticação multifator. Insira manualmente as credenciais do dispositivo.",
             "mobile_profile_expired": "O perfil integrado do aplicativo móvel não é mais aceito pela Tuya",
             "mobile_transport_error": "Não foi possível acessar o serviço móvel da Tuya",
-            "login_error": "Erro de login ({code}): {msg}"
+            "login_error": "Erro de login ({code}): {msg}",
+            "invalid_uuid": "O UUID parece inválido",
+            "invalid_local_key": "A chave local parece inválida (pelo menos 6 caracteres)",
+            "invalid_device_id": "O ID do dispositivo é obrigatório",
+            "invalid_product_id": "O ID do produto é obrigatório",
+            "invalid_category": "A categoria é obrigatória"
         },
         "flow_title": "{name}",
         "step": {
@@ -43,6 +48,28 @@
                 "description": "A nuvem Tuya IoT não retornou uma chave de segurança. Selecione a conta do aplicativo que possui o dispositivo para que o Home Assistant recupere uma vez o par completo de chaves.",
                 "data": {
                     "mobile_app": "Aplicativo"
+                }
+            },
+            "user": {
+                "title": "Tuya BLE",
+                "description": "Como as credenciais do dispositivo (ID do dispositivo, UUID, chave local) devem ser obtidas?",
+                "menu_options": {
+                    "login": "Obter da nuvem Tuya IoT (recomendado para a primeira configuração)",
+                    "manual": "Inserir manualmente (sem necessidade de acesso à nuvem)"
+                }
+            },
+            "manual": {
+                "title": "Credenciais manuais",
+                "description": "Insira as credenciais do dispositivo Tuya BLE. Você pode copiá-las de uma configuração anterior (`.storage/core.config_entries`, `options` da entrada) ou da plataforma Tuya IoT. O dispositivo não deve estar conectado a um celular ou gateway Tuya enquanto o Home Assistant se comunica com ele.",
+                "data": {
+                    "address": "Dispositivo Tuya BLE",
+                    "uuid": "UUID (ex.: tuya2a3142…)",
+                    "local_key": "Chave local",
+                    "sec_key": "Chave de segurança (apenas dispositivos BLE mais recentes, opcional)",
+                    "device_id": "ID do dispositivo",
+                    "product_id": "ID do produto (ex.: neq16kgd)",
+                    "category": "Categoria (ex.: szjqr para Fingerbots)",
+                    "device_name": "Nome do dispositivo (opcional)"
                 }
             }
         }
@@ -658,7 +685,12 @@
             "mobile_mfa_required": "A Tuya exige autenticação multifator. Insira manualmente as credenciais do dispositivo.",
             "mobile_profile_expired": "O perfil integrado do aplicativo móvel não é mais aceito pela Tuya",
             "mobile_transport_error": "Não foi possível acessar o serviço móvel da Tuya",
-            "login_error": "Erro de login ({code}): {msg}"
+            "login_error": "Erro de login ({code}): {msg}",
+            "invalid_uuid": "O UUID parece inválido",
+            "invalid_local_key": "A chave local parece inválida (pelo menos 6 caracteres)",
+            "invalid_device_id": "O ID do dispositivo é obrigatório",
+            "invalid_product_id": "O ID do produto é obrigatório",
+            "invalid_category": "A categoria é obrigatória"
         },
         "step": {
             "login": {
@@ -676,6 +708,35 @@
                 "description": "A nuvem Tuya IoT não retornou uma chave de segurança. Selecione a conta do aplicativo que possui o dispositivo para que o Home Assistant recupere uma vez um novo par de chaves.",
                 "data": {
                     "mobile_app": "Aplicativo"
+                }
+            },
+            "init": {
+                "title": "Opções do Tuya BLE",
+                "menu_options": {
+                    "login": "Atualizar credenciais da nuvem Tuya IoT",
+                    "manual": "Editar credenciais manualmente",
+                    "settings": "Configurações de conexão"
+                }
+            },
+            "manual": {
+                "title": "Credenciais manuais",
+                "description": "Edite as credenciais armazenadas. Use isso após emparelhar novamente o dispositivo no aplicativo Smart Life (ele terá uma nova chave local).",
+                "data": {
+                    "uuid": "UUID (ex.: tuya2a3142…)",
+                    "local_key": "Chave local",
+                    "sec_key": "Chave de segurança (apenas dispositivos BLE mais recentes, opcional)",
+                    "device_id": "ID do dispositivo",
+                    "product_id": "ID do produto (ex.: neq16kgd)",
+                    "category": "Categoria (ex.: szjqr para Fingerbots)",
+                    "device_name": "Nome do dispositivo (opcional)"
+                }
+            },
+            "settings": {
+                "title": "Configurações de conexão",
+                "description": "Manter conexão: a conexão BLE permanece aberta permanentemente (resposta mais rápida, ocupa um slot de conexão ativo no adaptador/proxy, maior consumo de bateria em dispositivos a pilha). Desligado: conecta sob demanda e desconecta após o tempo de inatividade (1 a 3 s de latência por comando).",
+                "data": {
+                    "keep_connection": "Manter conexão BLE aberta",
+                    "idle_disconnect_delay": "Atraso de desconexão por inatividade (segundos)"
                 }
             }
         }
