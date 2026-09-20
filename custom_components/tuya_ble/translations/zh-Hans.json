@@ -17,7 +17,12 @@
             "mobile_mfa_required": "涂鸦要求进行多重身份验证。请手动输入设备凭据。",
             "mobile_profile_expired": "涂鸦不再接受内置的手机应用配置文件",
             "mobile_transport_error": "无法访问涂鸦手机服务",
-            "login_error": "登录错误 ({code}): {msg}"
+            "login_error": "登录错误 ({code}): {msg}",
+            "invalid_uuid": "UUID 格式无效",
+            "invalid_local_key": "Local key 格式无效（至少 6 个字符）",
+            "invalid_device_id": "需要提供 Device ID",
+            "invalid_product_id": "需要提供 Product ID",
+            "invalid_category": "需要提供品类"
         },
         "flow_title": "{name}",
         "step": {
@@ -43,6 +48,28 @@
                 "description": "涂鸦 IoT 云端未返回安全密钥。请选择拥有此设备的应用账号，以便 Home Assistant 一次性获取完整的密钥对。",
                 "data": {
                     "mobile_app": "应用"
+                }
+            },
+            "user": {
+                "title": "涂鸦 BLE",
+                "description": "如何获取设备凭据（Device ID、UUID、Local Key）？",
+                "menu_options": {
+                    "login": "从涂鸦 IoT 云端获取（首次设置推荐）",
+                    "manual": "手动输入（无需云端访问）"
+                }
+            },
+            "manual": {
+                "title": "手动凭据",
+                "description": "输入涂鸦 BLE 设备的凭据。您可以从之前的设置（`.storage/core.config_entries`，配置项的 `options`）或涂鸦 IoT 平台复制它们。在 Home Assistant 与设备通信时，设备不得连接到手机或涂鸦网关。",
+                "data": {
+                    "address": "涂鸦 BLE 设备",
+                    "uuid": "UUID（例如 tuya2a3142…）",
+                    "local_key": "Local Key",
+                    "sec_key": "安全密钥（仅较新的 BLE 设备需要，可选）",
+                    "device_id": "Device ID",
+                    "product_id": "Product ID（例如 neq16kgd）",
+                    "category": "品类（例如 Fingerbot 为 szjqr）",
+                    "device_name": "设备名称（可选）"
                 }
             }
         }
@@ -658,7 +685,12 @@
             "mobile_mfa_required": "涂鸦要求进行多重身份验证。请手动输入设备凭据。",
             "mobile_profile_expired": "涂鸦不再接受内置的手机应用配置文件",
             "mobile_transport_error": "无法访问涂鸦手机服务",
-            "login_error": "登录错误 ({code}): {msg}"
+            "login_error": "登录错误 ({code}): {msg}",
+            "invalid_uuid": "UUID 格式无效",
+            "invalid_local_key": "Local key 格式无效（至少 6 个字符）",
+            "invalid_device_id": "需要提供 Device ID",
+            "invalid_product_id": "需要提供 Product ID",
+            "invalid_category": "需要提供品类"
         },
         "step": {
             "login": {
@@ -676,6 +708,35 @@
                 "description": "涂鸦 IoT 云端未返回安全密钥。请选择拥有此设备的应用账号，以便 Home Assistant 一次性获取新的密钥对。",
                 "data": {
                     "mobile_app": "应用"
+                }
+            },
+            "init": {
+                "title": "涂鸦 BLE 选项",
+                "menu_options": {
+                    "login": "从涂鸦 IoT 云端刷新凭据",
+                    "manual": "手动编辑凭据",
+                    "settings": "连接设置"
+                }
+            },
+            "manual": {
+                "title": "手动凭据",
+                "description": "编辑保存的凭据。在 Smart Life 应用中重新配对设备后（此时设备将生成新的 Local Key）可使用此功能。",
+                "data": {
+                    "uuid": "UUID（例如 tuya2a3142…）",
+                    "local_key": "Local Key",
+                    "sec_key": "安全密钥（仅较新的 BLE 设备需要，可选）",
+                    "device_id": "Device ID",
+                    "product_id": "Product ID（例如 neq16kgd）",
+                    "category": "品类（例如 Fingerbot 为 szjqr）",
+                    "device_name": "设备名称（可选）"
+                }
+            },
+            "settings": {
+                "title": "连接设置",
+                "description": "保持连接：BLE 链路将保持永久打开状态（响应最快，占用适配器/代理上的一个活动连接槽位，电池供电设备耗电量更高）。关闭：按需连接并在空闲延迟后断开（每个命令有 1–3 秒延迟）。",
+                "data": {
+                    "keep_connection": "保持 BLE 连接打开",
+                    "idle_disconnect_delay": "空闲断开延迟（秒）"
                 }
             }
         }
