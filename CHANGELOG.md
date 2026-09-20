@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog],
 and this project adheres to [Semantic Versioning].
 
+## [0.12.2](https://github.com/ha-tuya-ble/ha_tuya_ble/compare/0.12.1...0.12.2) (2026-09-20)
+
+
+### Bug Fixes
+
+* update translations to match en.json ([cb1e3d2](https://github.com/ha-tuya-ble/ha_tuya_ble/commit/cb1e3d26ece697b4ae754481d8ab5ea31614d1b3))
+* update translations to match en.json ([cdc19f3](https://github.com/ha-tuya-ble/ha_tuya_ble/commit/cdc19f3527d03c77dcd89fd1a0904cb035d1a13e))
+
 ## [0.12.1](https://github.com/ha-tuya-ble/ha_tuya_ble/compare/0.12.0...0.12.1) (2026-09-18)
 
 
