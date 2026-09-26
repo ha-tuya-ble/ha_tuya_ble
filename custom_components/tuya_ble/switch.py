@@ -524,10 +524,8 @@ mapping: dict[str, TuyaBLECategorySwitchMapping] = {
             ),
             "a6nttc41": [TuyaLockMotorStateMapping(dp_id=33)],
             "0qxp5u7s": [  # Pulido PLD_P130 Smart Lever Lock
-                TuyaBLESwitchMapping(
-                    dp_id=46,
-                    description=SwitchEntityDescription(key="manual_lock"),
-                ),
+                # DP46 (manual_lock) is not exposed: on this lock it can only
+                # lock (off does nothing). Locking is done by the lock entity.
                 TuyaBLESwitchMapping(
                     dp_id=33,
                     description=SwitchEntityDescription(
