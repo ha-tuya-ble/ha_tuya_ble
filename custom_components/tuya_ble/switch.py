@@ -523,6 +523,20 @@ mapping: dict[str, TuyaBLECategorySwitchMapping] = {
                 ],
             ),
             "a6nttc41": [TuyaLockMotorStateMapping(dp_id=33)],
+            "0qxp5u7s": [  # Pulido PLD_P130 Smart Lever Lock
+                TuyaBLESwitchMapping(
+                    dp_id=46,
+                    description=SwitchEntityDescription(key="manual_lock"),
+                ),
+                TuyaBLESwitchMapping(
+                    dp_id=33,
+                    description=SwitchEntityDescription(
+                        key="free_passage_mode",
+                        icon="mdi:door-open",
+                        entity_category=EntityCategory.CONFIG,
+                    ),
+                ),
+            ],
         }
     ),
     "szjqr": TuyaBLECategorySwitchMapping(

@@ -435,6 +435,10 @@ devices_database: dict[str, TuyaBLECategoryInfo] = {
                 manufacturer="Guard Dog Security",
                 lock=1,
             ),
+            "0qxp5u7s": TuyaBLEProductInfo(
+                name="Pulido PLD_P130 Smart Lever Lock",
+                lock=1,
+            ),
         },
     ),
     "dcb": TuyaBLECategoryInfo(
