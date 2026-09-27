@@ -627,6 +627,7 @@ devices_database: dict[str, TuyaBLECategoryInfo] = {
     ),
     "wsdcg": TuyaBLECategoryInfo(
         products={
+            "gpkyrocn": TuyaBLEProductInfo(name="Soil moisture sensor"),
             "ojzlzzsw": TuyaBLEProductInfo(name="Soil moisture sensor"),
             "iv7hudlj": TuyaBLEProductInfo(name="Temperature Humidity Sensor"),
             "jm6iasmb": TuyaBLEProductInfo(name="Temperature Humidity Sensor"),
@@ -777,6 +778,12 @@ devices_database: dict[str, TuyaBLECategoryInfo] = {
     ),
     "zwjcy": TuyaBLECategoryInfo(
         products={
+            "gpkyrocn": TuyaBLEProductInfo(
+                name="Soil moisture sensor",
+            ),
+            "gvygg3m8": TuyaBLEProductInfo(
+                name="Smartlife Plant Sensor SGS01",
+            ),
             "jabotj1z": TuyaBLEProductInfo(
                 name="SRB-PM01 Soil Moisture Sensor",
             ),

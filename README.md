@@ -100,8 +100,8 @@ See a device marked Experimental you have? We could use real world testing feedb
       <td rowspan="6"><strong>Temperature and humidity sensors</strong></td>
       <td rowspan="6"><code>wsdcg</code>, <code>zwjcy</code></td>
       <td>Soil moisture sensor</td>
-      <td><code>ojzlzzsw</code></td>
-      <td>—</td>
+      <td><code>ojzlzzsw</code>, <code>gpkyrocn</code></td>
+      <td>Experimental for <code>gpkyrocn</code></td>
     </tr>
     <tr>
       <td>SRB-PM01 Soil Moisture Sensor</td>

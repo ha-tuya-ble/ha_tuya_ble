@@ -900,41 +900,44 @@ mapping: dict[str, TuyaBLECategorySensorMapping] = {
     ),
     "wsdcg": TuyaBLECategorySensorMapping(
         products={
-            "ojzlzzsw": [  # Soil moisture sensor
-                TuyaBLETemperatureMapping(
-                    dp_id=1,
-                    coefficient=10.0,
-                ),
-                TuyaBLESensorMapping(
-                    dp_id=2,
-                    description=SensorEntityDescription(
-                        key="moisture",
-                        device_class=SensorDeviceClass.MOISTURE,
-                        native_unit_of_measurement=PERCENTAGE,
-                        state_class=SensorStateClass.MEASUREMENT,
+            **dict.fromkeys(
+                ["gpkyrocn", "ojzlzzsw"],  # Soil moisture sensor
+                [
+                    TuyaBLETemperatureMapping(
+                        dp_id=1,
+                        coefficient=10.0,
                     ),
-                ),
-                TuyaBLESensorMapping(
-                    dp_id=3,
-                    description=SensorEntityDescription(
-                        key="battery_state",
-                        icon="mdi:battery",
-                        device_class=SensorDeviceClass.ENUM,
-                        entity_category=EntityCategory.DIAGNOSTIC,
-                        options=[
-                            BATTERY_STATE_LOW,
-                            BATTERY_STATE_NORMAL,
-                            BATTERY_STATE_HIGH,
+                    TuyaBLESensorMapping(
+                        dp_id=2,
+                        description=SensorEntityDescription(
+                            key="moisture",
+                            device_class=SensorDeviceClass.MOISTURE,
+                            native_unit_of_measurement=PERCENTAGE,
+                            state_class=SensorStateClass.MEASUREMENT,
+                        ),
+                    ),
+                    TuyaBLESensorMapping(
+                        dp_id=3,
+                        description=SensorEntityDescription(
+                            key="battery_state",
+                            icon="mdi:battery",
+                            device_class=SensorDeviceClass.ENUM,
+                            entity_category=EntityCategory.DIAGNOSTIC,
+                            options=[
+                                BATTERY_STATE_LOW,
+                                BATTERY_STATE_NORMAL,
+                                BATTERY_STATE_HIGH,
+                            ],
+                        ),
+                        icons=[
+                            "mdi:battery-alert",
+                            "mdi:battery-50",
+                            "mdi:battery-check",
                         ],
                     ),
-                    icons=[
-                        "mdi:battery-alert",
-                        "mdi:battery-50",
-                        "mdi:battery-check",
-                    ],
-                ),
-                TuyaBLEBatteryMapping(dp_id=4),
-            ],
+                    TuyaBLEBatteryMapping(dp_id=4),
+                ],
+            ),
             "iv7hudlj": [  # Bluetooth Temperature Humidity Sensor
                 TuyaBLETemperatureMapping(
                     dp_id=1,
@@ -1726,6 +1729,7 @@ mapping: dict[str, TuyaBLECategorySensorMapping] = {
         products={
             **dict.fromkeys(
                 [
+                    "gpkyrocn",  # SGS01B Soil moisture sensor
                     "gvygg3m8",  # Smartlife Plant Sensor SGS01
                     "jabotj1z",  # SRB-PM01 Soil Moisture Sensor
                 ],
