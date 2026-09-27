@@ -5,6 +5,25 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog],
 and this project adheres to [Semantic Versioning].
 
+## [0.12.2](https://github.com/ha-tuya-ble/ha_tuya_ble/compare/0.12.1...0.12.2) (2026-09-27)
+
+
+### Devices
+
+* **device:** add Pulido PLD_P130 smart lever lock (0qxp5u7s) ([ccc77b5](https://github.com/ha-tuya-ble/ha_tuya_ble/commit/ccc77b5f9316911ff6c2cd970c0efb136071d33b))
+* **device:** add support for SGS01B soil moisture sensor (gpkyrocn) ([86df820](https://github.com/ha-tuya-ble/ha_tuya_ble/commit/86df820b0cce6665269e083b8892138f4fa15b93))
+* **device:** add support for XZ-JCO01 CO2 detector (wmb2xzj6) ([48659ee](https://github.com/ha-tuya-ble/ha_tuya_ble/commit/48659ee066ffdb612a0873acd10b398bc9275925))
+* **device:** add support for XZ-JCO01 CO2 detector (wmb2xzj6) ([0601154](https://github.com/ha-tuya-ble/ha_tuya_ble/commit/0601154ebfda281a8db2dcb850071f8a90ac6217))
+
+
+### Bug Fixes
+
+* add Pulido PLD_P130 smart lever lock (0qxp5u7s) ([219a0eb](https://github.com/ha-tuya-ble/ha_tuya_ble/commit/219a0eb24bdf844c568fd64efe3e1e06b975ff79))
+* add support for SGS01B soil moisture sensor (gpkyrocn) ([598897d](https://github.com/ha-tuya-ble/ha_tuya_ble/commit/598897da116b783f8bee9ac7fd2d5369ba053768))
+* map Pulido PLD_P130 lock actions to its real unlock modes ([d84b6a5](https://github.com/ha-tuya-ble/ha_tuya_ble/commit/d84b6a5d8f6f8d561d15d6d1cb4f3b112c7497b3))
+* update translations to match en.json ([cb1e3d2](https://github.com/ha-tuya-ble/ha_tuya_ble/commit/cb1e3d26ece697b4ae754481d8ab5ea31614d1b3))
+* update translations to match en.json ([cdc19f3](https://github.com/ha-tuya-ble/ha_tuya_ble/commit/cdc19f3527d03c77dcd89fd1a0904cb035d1a13e))
+
 ## [0.12.1](https://github.com/ha-tuya-ble/ha_tuya_ble/compare/0.12.0...0.12.1) (2026-09-18)
 
 
