@@ -304,6 +304,28 @@ async def test_pulido_pld_p130_lock(hass: HomeAssistant) -> None:
     entity.async_write_ha_state = Mock()
     coordinator._async_handle_connect()
 
+    # After a (re)connect nothing has been reported yet: state is unknown,
+    # not a defaulted "locked".
+    assert entity.is_locked is None
+
+    # The lock re-reports free passage mode (DP 33) on connect.
+    device.datapoints._update_from_device(33, 0, 0, TuyaBLEDataPointType.DT_BOOL, True)
+    entity._handle_coordinator_update()
+    assert entity.is_locked is False
+
+    device.datapoints._update_from_device(33, 0, 0, TuyaBLEDataPointType.DT_BOOL, False)
+    entity._handle_coordinator_update()
+    assert entity.is_locked is True
+
+    # Momentary open: motor state (DP 47) on while free passage is off.
+    device.datapoints._update_from_device(47, 0, 0, TuyaBLEDataPointType.DT_BOOL, True)
+    entity._handle_coordinator_update()
+    assert entity.is_locked is False
+
+    device.datapoints._update_from_device(47, 0, 0, TuyaBLEDataPointType.DT_BOOL, False)
+    entity._handle_coordinator_update()
+    assert entity.is_locked is True
+
     # Lock: DP 46 (manual_lock) = True, which also ends free passage mode
     device._send_datapoints.reset_mock()
     await entity.async_lock()

@@ -60,6 +60,20 @@ class TuyaBLELock(TuyaBLEEntity, LockEntity):
     @property
     def is_locked(self) -> bool | None:
         """Return true if lock is locked."""
+        if self._device.product_id == PULIDO_PLD_P130:
+            # "Unlocked" on this lock is held by free passage mode (DP33),
+            # which the lock re-reports on every connect. DP47 (motor state)
+            # is only sent on change, so after an HA restart it is absent and
+            # must not default the entity to locked.
+            free_passage = self._device.datapoints[33]
+            motor_state = self._device.datapoints[47]
+            if free_passage is None and motor_state is None:
+                return None
+            if free_passage is not None and free_passage.value:
+                return False
+            if motor_state is not None and motor_state.value:
+                return False  # momentary Open (DP6) in progress
+            return True
         dpid = self.find_dpid(DPCode.LOCK_MOTOR_STATE)
         if dpid is None:
             dpid = DPCode.LOCK_MOTOR_STATE
