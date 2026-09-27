@@ -132,7 +132,7 @@ See a device marked Experimental you have? We could use real world testing feedb
       <td><strong>CO2 sensors</strong></td>
       <td><code>co2bj</code></td>
       <td>CO2 Detector</td>
-      <td><code>59s19z5m</code></td>
+      <td><code>59s19z5m</code>, <code>wmb2xzj6</code></td>
       <td>—</td>
     </tr>
     <tr>

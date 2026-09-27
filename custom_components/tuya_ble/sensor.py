@@ -268,41 +268,44 @@ class TuyaBLEAlarmLockStateMapping(TuyaBLESensorMapping):
 mapping: dict[str, TuyaBLECategorySensorMapping] = {
     "co2bj": TuyaBLECategorySensorMapping(
         products={
-            "59s19z5m": [  # CO2 Detector
-                TuyaBLESensorMapping(
-                    dp_id=1,
-                    description=SensorEntityDescription(
-                        key="carbon_dioxide_alarm",
-                        icon="mdi:molecule-co2",
-                        device_class=SensorDeviceClass.ENUM,
-                        options=[
-                            CO2_LEVEL_ALARM,
-                            CO2_LEVEL_NORMAL,
-                        ],
+            **dict.fromkeys(
+                ["59s19z5m", "wmb2xzj6"],  # CO2 Detector
+                [
+                    TuyaBLESensorMapping(
+                        dp_id=1,
+                        description=SensorEntityDescription(
+                            key="carbon_dioxide_alarm",
+                            icon="mdi:molecule-co2",
+                            device_class=SensorDeviceClass.ENUM,
+                            options=[
+                                CO2_LEVEL_ALARM,
+                                CO2_LEVEL_NORMAL,
+                            ],
+                        ),
+                        is_available=is_co2_alarm_enabled,
                     ),
-                    is_available=is_co2_alarm_enabled,
-                ),
-                TuyaBLESensorMapping(
-                    dp_id=2,
-                    description=SensorEntityDescription(
-                        key="carbon_dioxide",
-                        device_class=SensorDeviceClass.CO2,
-                        native_unit_of_measurement=UnitOfRatio.PARTS_PER_MILLION,
-                        state_class=SensorStateClass.MEASUREMENT,
+                    TuyaBLESensorMapping(
+                        dp_id=2,
+                        description=SensorEntityDescription(
+                            key="carbon_dioxide",
+                            device_class=SensorDeviceClass.CO2,
+                            native_unit_of_measurement=UnitOfRatio.PARTS_PER_MILLION,
+                            state_class=SensorStateClass.MEASUREMENT,
+                        ),
                     ),
-                ),
-                TuyaBLEBatteryMapping(dp_id=15),
-                TuyaBLETemperatureMapping(dp_id=18),
-                TuyaBLESensorMapping(
-                    dp_id=19,
-                    description=SensorEntityDescription(
-                        key="humidity",
-                        device_class=SensorDeviceClass.HUMIDITY,
-                        native_unit_of_measurement=PERCENTAGE,
-                        state_class=SensorStateClass.MEASUREMENT,
+                    TuyaBLEBatteryMapping(dp_id=15),
+                    TuyaBLETemperatureMapping(dp_id=18),
+                    TuyaBLESensorMapping(
+                        dp_id=19,
+                        description=SensorEntityDescription(
+                            key="humidity",
+                            device_class=SensorDeviceClass.HUMIDITY,
+                            native_unit_of_measurement=PERCENTAGE,
+                            state_class=SensorStateClass.MEASUREMENT,
+                        ),
                     ),
-                ),
-            ]
+                ],
+            ),
         }
     ),
     "wxkg": TuyaBLECategorySensorMapping(

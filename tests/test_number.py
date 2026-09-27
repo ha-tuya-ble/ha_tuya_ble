@@ -106,5 +106,8 @@ async def test_number(hass: HomeAssistant) -> None:
 async def test_number_co2_unit(hass: HomeAssistant) -> None:
     from custom_components.tuya_ble.number import mapping as number_mapping
 
-    co2_alarm_num_mapping = number_mapping["co2bj"].products["59s19z5m"][1]
-    assert co2_alarm_num_mapping.description.native_unit_of_measurement == "ppm"
+    co2_alarm_num_mapping_1 = number_mapping["co2bj"].products["59s19z5m"][1]
+    assert co2_alarm_num_mapping_1.description.native_unit_of_measurement == "ppm"
+
+    co2_alarm_num_mapping_2 = number_mapping["co2bj"].products["wmb2xzj6"][1]
+    assert co2_alarm_num_mapping_2.description.native_unit_of_measurement == "ppm"
