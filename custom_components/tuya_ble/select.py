@@ -698,6 +698,7 @@ mapping: dict[str, TuyaBLECategorySelectMapping] = {
         products={
             **dict.fromkeys(
                 [
+                    "gpkyrocn",
                     "ojzlzzsw",
                     "iv7hudlj",
                     "jm6iasmb",
