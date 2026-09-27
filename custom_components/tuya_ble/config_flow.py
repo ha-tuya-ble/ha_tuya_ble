@@ -302,9 +302,12 @@ def _manual_schema(
     fields[vol.Required(CONF_LOCAL_KEY, default=defaults.get(CONF_LOCAL_KEY, ""))] = (
         TextSelector(TextSelectorConfig(type=TextSelectorType.PASSWORD))
     )
-    fields[vol.Optional(CONF_SEC_KEY, default=defaults.get(CONF_SEC_KEY, ""))] = (
-        TextSelector(TextSelectorConfig(type=TextSelectorType.PASSWORD))
-    )
+    fields[
+        vol.Optional(
+            CONF_SEC_KEY,
+            description={"suggested_value": defaults.get(CONF_SEC_KEY, "")},
+        )
+    ] = TextSelector(TextSelectorConfig(type=TextSelectorType.PASSWORD))
     fields[vol.Required(CONF_DEVICE_ID, default=defaults.get(CONF_DEVICE_ID, ""))] = str
     fields[vol.Required(CONF_PRODUCT_ID, default=defaults.get(CONF_PRODUCT_ID, ""))] = (
         str

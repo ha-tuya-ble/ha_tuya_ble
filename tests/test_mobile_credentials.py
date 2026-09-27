@@ -188,10 +188,14 @@ def _manual_input(*, include_address: bool = False) -> dict[str, str]:
     return data
 
 
-def _schema_defaults(schema) -> dict[str, object]:
-    """Extract field defaults from a voluptuous schema used by HA forms."""
+def _schema_prefill(schema) -> dict[str, object]:
+    """Extract suggested values or defaults used to prefill HA forms."""
     return {
-        field.schema: field.default()
+        field.schema: (
+            field.description["suggested_value"]
+            if field.description and "suggested_value" in field.description
+            else field.default()
+        )
         for field in schema.schema
         if hasattr(field, "default")
     }
@@ -729,7 +733,7 @@ async def test_options_mobile_failure_shares_prefilled_manual_fallback(
     assert fallback["step_id"] == "manual"
     assert fallback["errors"] == {"base": "mobile_invalid_auth"}
     assert raw_error not in repr(fallback)
-    defaults = _schema_defaults(fallback["data_schema"])
+    defaults = _schema_prefill(fallback["data_schema"])
     assert defaults[CONF_LOCAL_KEY] == OLD_LOCAL_KEY
     assert defaults[CONF_SEC_KEY] == ""
     assert defaults[CONF_DEVICE_ID] == DEVICE_ID
@@ -966,6 +970,48 @@ async def test_direct_manual_setup_never_calls_cloud_or_mobile(
     assert result["options"][CONF_SEC_KEY] == NEW_SEC_KEY
     mobile_factory.assert_not_called()
     cloud_lookup.assert_not_awaited()
+
+
+@pytest.mark.parametrize("sec_key", (None, "", OLD_SEC_KEY, NEW_SEC_KEY))
+async def test_manual_options_can_clear_or_replace_security_key(
+    hass: HomeAssistant, sec_key: str | None
+) -> None:
+    """Clearing the optional form field must not restore the stored SecKey."""
+    old_options = {
+        **_manager_data(sec_key=OLD_SEC_KEY),
+        CONF_KEEP_CONNECTION: False,
+        CONF_IDLE_DISCONNECT_DELAY: 123,
+    }
+    entry = MockConfigEntry(
+        domain=DOMAIN,
+        data={CONF_ADDRESS: ADDRESS},
+        options=old_options,
+        title="Fixture",
+    )
+    flow = TuyaBLEOptionsFlow(entry)
+    flow.hass = hass
+    form = await flow.async_step_manual()
+    assert _schema_prefill(form["data_schema"])[CONF_SEC_KEY] == OLD_SEC_KEY
+    user_input = _manual_input()
+    if sec_key is None:
+        # The frontend omits an optional field when its contents are cleared.
+        user_input.pop(CONF_SEC_KEY)
+    else:
+        user_input[CONF_SEC_KEY] = sec_key
+
+    # Apply the form schema as the flow manager does before calling the step.
+    validated_input = form["data_schema"](user_input)
+    result = await flow.async_step_manual(validated_input)
+
+    assert result["type"] is FlowResultType.CREATE_ENTRY
+    if sec_key:
+        assert result["data"][CONF_SEC_KEY] == sec_key
+    else:
+        assert CONF_SEC_KEY not in result["data"]
+    assert result["data"][CONF_LOCAL_KEY] == NEW_LOCAL_KEY
+    assert result["data"][CONF_KEEP_CONNECTION] is False
+    assert result["data"][CONF_IDLE_DISCONNECT_DELAY] == 123
+    assert entry.options == old_options
 
 
 async def test_legacy_entry_without_mobile_app_keeps_existing_pair(
