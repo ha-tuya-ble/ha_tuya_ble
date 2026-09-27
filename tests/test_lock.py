@@ -240,3 +240,97 @@ async def test_guard_dog_lock(hass: HomeAssistant) -> None:
     assert any(
         m.description.key == "beep_volume" and m.dp_id == 31 for m in select_mappings
     )
+
+
+async def test_pulido_pld_p130_lock(hass: HomeAssistant) -> None:
+    from pytest_homeassistant_custom_component.common import MockConfigEntry
+    from custom_components.tuya_ble.const import DOMAIN
+    from custom_components.tuya_ble.cloud import HASSTuyaBLEDeviceManager
+    from custom_components.tuya_ble.devices import (
+        TuyaBLEDevice,
+        TuyaBLECoordinator,
+        TuyaBLEData,
+        get_device_product_info,
+    )
+    from custom_components.tuya_ble.tuya_ble.manager import TuyaBLEDeviceCredentials
+    from bleak.backends.device import BLEDevice
+
+    entry = MockConfigEntry(
+        domain=DOMAIN,
+        data={
+            "devices": CONFIG,
+            "address": DEVICE_ADDRESS,
+        },
+        title="Mock TuyaBLE Pulido",
+    )
+    entry.add_to_hass(hass)
+
+    ble_device = BLEDevice(name="bob", address="11:22:33", details="", rssi=-50)
+    manager = HASSTuyaBLEDeviceManager(hass, entry.options.copy())
+    device = TuyaBLEDevice(manager, ble_device)
+    await device.initialize()
+
+    device._device_info = TuyaBLEDeviceCredentials(
+        uuid="uuid123",
+        local_key="wV[NcWGUSFF`dSgO",
+        device_id="767823809c9c1f458745",
+        category="ms",
+        product_id="0qxp5u7s",
+        device_name="Pulido Lock",
+        product_model="PLD_P130",
+        product_name="Pulido PLD_P130 Smart Lever Lock",
+        functions=[],
+        status_range=[],
+    )
+
+    device._send_datapoints = AsyncMock()
+
+    product_info = get_device_product_info(device)
+    assert product_info is not None
+    assert product_info.name == "Pulido PLD_P130 Smart Lever Lock"
+    assert product_info.lock == 1
+
+    hass.data.setdefault(DOMAIN, {})
+    coordinator = TuyaBLECoordinator(hass, device)
+    hass.data[DOMAIN][entry.entry_id] = TuyaBLEData(
+        title="Hello",
+        device=device,
+        manager=manager,
+        product=product_info,
+        coordinator=coordinator,
+    )
+
+    entity = TuyaBLELock(hass, coordinator, device, product_info)
+    entity.async_write_ha_state = Mock()
+    coordinator._async_handle_connect()
+
+    # Lock: DP 46 (manual_lock) = True, which also ends free passage mode
+    device._send_datapoints.reset_mock()
+    await entity.async_lock()
+    await hass.async_block_till_done()
+    device._send_datapoints.assert_called_with([46])
+    assert device.datapoints[46].value is True
+
+    # Unlock: hold the lock open with free passage mode, DP 33 = True
+    device._send_datapoints.reset_mock()
+    await entity.async_unlock()
+    await hass.async_block_till_done()
+    device._send_datapoints.assert_called_with([33])
+    assert device.datapoints[33].value is True
+
+    # Open: momentary Bluetooth unlock, DP 6 = True (sent again on each call)
+    for _ in range(2):
+        device._send_datapoints.reset_mock()
+        await entity.async_open()
+        await hass.async_block_till_done()
+        device._send_datapoints.assert_called_with([6])
+    assert device.datapoints[6].value is True
+
+    # The manual_lock switch is not exposed for this lock
+    from custom_components.tuya_ble.switch import (
+        get_mapping_by_device as get_switch_mapping,
+    )
+
+    switch_dps = {m.dp_id for m in get_switch_mapping(device)}
+    assert 46 not in switch_dps
+    assert 33 in switch_dps

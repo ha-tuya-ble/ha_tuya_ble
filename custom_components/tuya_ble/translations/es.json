@@ -574,6 +574,9 @@
             "automatic_lock": {
                 "name": "Bloqueo automático"
             },
+            "free_passage_mode": {
+                "name": "Modo de paso libre"
+            },
             "antifreeze": {
                 "name": "Anticongelante"
             },

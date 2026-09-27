@@ -266,6 +266,7 @@ mapping: dict[str, TuyaBLECategoryButtonMapping] = {
                     "a6nttc41",
                     "wgv4haro",
                     "uyf1ewof",
+                    "0qxp5u7s",
                 ],  # Smart Lock
                 [
                     TuyaBLEButtonMapping(

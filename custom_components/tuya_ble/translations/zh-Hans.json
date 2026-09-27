@@ -574,6 +574,9 @@
             "automatic_lock": {
                 "name": "自动上锁"
             },
+            "free_passage_mode": {
+                "name": "常开模式"
+            },
             "antifreeze": {
                 "name": "防冻"
             },

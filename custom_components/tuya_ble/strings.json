@@ -560,6 +560,9 @@
             "automatic_lock": {
                 "name": "Automatic lock"
             },
+            "free_passage_mode": {
+                "name": "Free passage mode"
+            },
             "antifreeze": {
                 "name": "Antifreeze"
             },

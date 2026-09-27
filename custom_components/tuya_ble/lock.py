@@ -22,6 +22,9 @@ from .devices import (
 )
 from .tuya_ble import TuyaBLEDataPointType, TuyaBLEDevice
 
+# Pulido PLD_P130 Smart Lever Lock: momentary lever lock with free passage mode.
+PULIDO_PLD_P130 = "0qxp5u7s"
+
 
 async def async_setup_entry(
     hass: HomeAssistant,
@@ -68,6 +71,14 @@ class TuyaBLELock(TuyaBLEEntity, LockEntity):
 
     async def async_lock(self, **kwargs: Any) -> None:
         """Lock the lock."""
+        if self._device.product_id == PULIDO_PLD_P130:
+            # Pulido PLD_P130: DP46 (manual_lock) = True locks and also ends
+            # free passage mode (DP33). DP46 = False does nothing on this lock.
+            if manual_lock := self._device.datapoints.get_or_create(
+                46, TuyaBLEDataPointType.DT_BOOL, True
+            ):
+                await manual_lock.set_value(True)
+            return
         manual_lock_id = self.find_dpid(DPCode.MANUAL_LOCK)
         if manual_lock_id is not None:
             if manual_lock := self._device.datapoints.get_or_create(
@@ -95,6 +106,16 @@ class TuyaBLELock(TuyaBLEEntity, LockEntity):
 
     async def async_unlock(self, **kwargs: Any) -> None:
         """Unlock the lock."""
+        if self._device.product_id == PULIDO_PLD_P130:
+            # Pulido PLD_P130 relocks by itself a few seconds after a BLE unlock,
+            # so "unlocked" is held by turning on free passage mode (DP33).
+            # The lock reports DP47 (motor state) on while it is held open, so
+            # is_locked stays accurate. Use Open for a momentary unlock.
+            if free_passage := self._device.datapoints.get_or_create(
+                33, TuyaBLEDataPointType.DT_BOOL, True
+            ):
+                await free_passage.set_value(True)
+            return
         if self._device.product_id == "2hmqh0ty":
             # EL605A knob lock: unlock is a DP71 (ble_unlock_check, Raw)
             # trigger; a zero-length payload is enough. It also exposes
@@ -138,4 +159,11 @@ class TuyaBLELock(TuyaBLEEntity, LockEntity):
 
     async def async_open(self, **kwargs: Any) -> None:
         """Open the covering."""
+        if self._device.product_id == PULIDO_PLD_P130:
+            # Momentary BLE unlock (DP6); the lock relocks after ~3 seconds.
+            if bluetooth_unlock := self._device.datapoints.get_or_create(
+                6, TuyaBLEDataPointType.DT_BOOL, True
+            ):
+                await bluetooth_unlock.set_value(True)
+            return
         await self.async_unlock(**kwargs)

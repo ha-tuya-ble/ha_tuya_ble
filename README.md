@@ -136,7 +136,7 @@ See a device marked Experimental you have? We could use real world testing feedb
       <td>—</td>
     </tr>
     <tr>
-      <td rowspan="25"><strong>Smart Locks</strong></td>
+      <td rowspan="26"><strong>Smart Locks</strong></td>
       <td rowspan="25"><code>ms</code>, <code>jtmspro</code></td>
       <td>Smart Lock</td>
       <td><code>ludzroix</code>, <code>isk2p555</code>, <code>gumrixyt</code>, <code>uamrw6h3</code>, <code>sidhzylo</code>, <code>mqc2hevy</code>, <code>7a4xvbtt</code></td>
@@ -156,6 +156,11 @@ See a device marked Experimental you have? We could use real world testing feedb
       <td>Guard Dog Security Smart Lock (BS_PLD01)</td>
       <td><code>wgv4haro</code></td>
       <td>Experimental</td>
+    </tr>
+    <tr>
+      <td>Pulido PLD_P130 Smart Lever Lock</td>
+      <td><code>0qxp5u7s</code></td>
+      <td>Fingerprint and BLE unlock. DP 33 (<code>automatic_lock</code> in the Tuya cloud) is exposed as Free passage mode.</td>
     </tr>
     <tr>
       <td>HU06 Smart Lock</td>
