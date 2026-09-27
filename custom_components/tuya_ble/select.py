@@ -330,7 +330,10 @@ mapping: dict[str, TuyaBLECategorySelectMapping] = {
     ),
     "co2bj": TuyaBLECategorySelectMapping(
         products={
-            "59s19z5m": [TuyaBLETemperatureUnitMapping(dp_id=101)],  # CO2 Detector
+            **dict.fromkeys(
+                ["59s19z5m", "wmb2xzj6"],  # CO2 Detector
+                [TuyaBLETemperatureUnitMapping(dp_id=101)],
+            ),
         },
     ),
     "dcb": TuyaBLECategorySelectMapping(

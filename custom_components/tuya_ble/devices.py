@@ -355,8 +355,11 @@ class TuyaBLECategoryInfo:
 devices_database: dict[str, TuyaBLECategoryInfo] = {
     "co2bj": TuyaBLECategoryInfo(
         products={
-            "59s19z5m": TuyaBLEProductInfo(  # device product_id
-                name="CO2 Detector",
+            **dict.fromkeys(
+                ["59s19z5m", "wmb2xzj6"],  # device product_id
+                TuyaBLEProductInfo(
+                    name="CO2 Detector",
+                ),
             ),
         },
     ),

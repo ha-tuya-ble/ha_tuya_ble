@@ -273,33 +273,36 @@ class TuyaBLECategoryNumberMapping:
 mapping: dict[str, TuyaBLECategoryNumberMapping] = {
     "co2bj": TuyaBLECategoryNumberMapping(
         products={
-            "59s19z5m": [  # CO2 Detector
-                TuyaBLENumberMapping(
-                    dp_id=17,
-                    description=NumberEntityDescription(
-                        key="brightness",
-                        icon="mdi:brightness-percent",
-                        native_max_value=100,
-                        native_min_value=0,
-                        native_unit_of_measurement=PERCENTAGE,
-                        native_step=1,
-                        entity_category=EntityCategory.CONFIG,
+            **dict.fromkeys(
+                ["59s19z5m", "wmb2xzj6"],  # CO2 Detector
+                [
+                    TuyaBLENumberMapping(
+                        dp_id=17,
+                        description=NumberEntityDescription(
+                            key="brightness",
+                            icon="mdi:brightness-percent",
+                            native_max_value=100,
+                            native_min_value=0,
+                            native_unit_of_measurement=PERCENTAGE,
+                            native_step=1,
+                            entity_category=EntityCategory.CONFIG,
+                        ),
+                        mode=NumberMode.SLIDER,
                     ),
-                    mode=NumberMode.SLIDER,
-                ),
-                TuyaBLENumberMapping(
-                    dp_id=26,
-                    description=NumberEntityDescription(
-                        key="carbon_dioxide_alarm_level",
-                        icon="mdi:molecule-co2",
-                        native_max_value=5000,
-                        native_min_value=400,
-                        native_unit_of_measurement=UnitOfRatio.PARTS_PER_MILLION,
-                        native_step=100,
-                        entity_category=EntityCategory.CONFIG,
+                    TuyaBLENumberMapping(
+                        dp_id=26,
+                        description=NumberEntityDescription(
+                            key="carbon_dioxide_alarm_level",
+                            icon="mdi:molecule-co2",
+                            native_max_value=5000,
+                            native_min_value=400,
+                            native_unit_of_measurement=UnitOfRatio.PARTS_PER_MILLION,
+                            native_step=100,
+                            entity_category=EntityCategory.CONFIG,
+                        ),
                     ),
-                ),
-            ],
+                ],
+            ),
             "8t5hebn0": [  # MoistenLand Water Timer
                 TuyaBLENumberMapping(
                     dp_id=11,
