@@ -5,6 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog],
 and this project adheres to [Semantic Versioning].
 
+## [0.12.2](https://github.com/ha-tuya-ble/ha_tuya_ble/compare/0.12.1...0.12.2) (2026-09-27)
+
+
+### Devices
+
+* **device:** add Pulido PLD_P130 smart lever lock (0qxp5u7s) ([ccc77b5](https://github.com/ha-tuya-ble/ha_tuya_ble/commit/ccc77b5f9316911ff6c2cd970c0efb136071d33b))
+* **device:** add support for SGS01B soil moisture sensor (gpkyrocn) ([86df820](https://github.com/ha-tuya-ble/ha_tuya_ble/commit/86df820b0cce6665269e083b8892138f4fa15b93))
+* **device:** add support for XZ-JCO01 CO2 detector (wmb2xzj6) ([48659ee](https://github.com/ha-tuya-ble/ha_tuya_ble/commit/48659ee066ffdb612a0873acd10b398bc9275925))
+
+### Bug Fixes
+
+* update translations to match en.json ([cb1e3d2](https://github.com/ha-tuya-ble/ha_tuya_ble/commit/cb1e3d26ece697b4ae754481d8ab5ea31614d1b3))
 ## [0.12.1](https://github.com/ha-tuya-ble/ha_tuya_ble/compare/0.12.0...0.12.1) (2026-09-18)
 
 
