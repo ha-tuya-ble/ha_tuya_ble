@@ -72,11 +72,9 @@ FD50_DEVICE_INFO_PRODUCT_IDS = frozenset(
     {"jntxv3q4", "9hdajpiw", "2hmqh0ty", "qcrilcpr"}
 )
 
-# Devices that need the FD50 device-info payload quirk above, but must
-# still use v1 (legacy) key derivation even when the cloud API returns a
-# sec_key. The FD50 payload format and v2 key derivation are independent
-# device properties that happen to coincide for every other known device.
-LEGACY_KEY_DERIVATION_PRODUCT_IDS = frozenset({"qcrilcpr"})
+# Devices that use legacy key derivation even when the cloud returns a sec_key.
+# This is independent of the FD50 payload quirk: mknd4lci uses standard framing.
+LEGACY_KEY_DERIVATION_PRODUCT_IDS = frozenset({"qcrilcpr", "mknd4lci"})
 
 
 # @dataclass
