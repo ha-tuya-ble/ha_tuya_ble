@@ -150,3 +150,61 @@ async def test_sensor_rssi(hass: HomeAssistant) -> None:
     coordinator._async_handle_connect()
     entity._handle_coordinator_update()
     assert entity.native_value == -65
+
+
+async def test_sensor_zwjcy_gpkyrocn(hass: HomeAssistant) -> None:
+    from custom_components.tuya_ble.sensor import get_mapping_by_device
+    from custom_components.tuya_ble.devices import TuyaBLEDevice, TuyaBLECoordinator, TuyaBLEProductInfo, TuyaBLEDeviceCredentials
+    from bleak.backends.device import BLEDevice
+
+    ble_device = BLEDevice(name="SGS01B-JR", address="11:22:33", details="", rssi=-50)
+    device = TuyaBLEDevice(Mock(), ble_device)
+    device._device_info = TuyaBLEDeviceCredentials(
+        uuid="uuid123",
+        local_key="0000000000000000",
+        device_id="bf2c23dntrqxugvw",
+        category="zwjcy",
+        product_id="gpkyrocn",
+        device_name="SGS01B-JR",
+        product_model="SGS01B-JR",
+        product_name="SGS01B-JR",
+        functions=[],
+        status_range=[],
+    )
+    await device.initialize()
+
+    mappings = get_mapping_by_device(device)
+    assert len(mappings) == 4
+    dp_ids = [m.dp_id for m in mappings]
+    assert dp_ids == [5, 3, 14, 15]
+
+    coordinator = TuyaBLECoordinator(hass, device)
+    product_info = TuyaBLEProductInfo("Soil moisture sensor")
+
+    # Test temp_current (DP 5)
+    temp_sensor = TuyaBLESensor(hass, coordinator, device, product_info, mappings[0])
+    temp_sensor.async_write_ha_state = Mock()
+    device.datapoints._update_from_device(5, 0, 0, TuyaBLEDataPointType.DT_VALUE, 235)
+    temp_sensor._handle_coordinator_update()
+    assert temp_sensor.native_value == 23.5
+
+    # Test moisture (DP 3)
+    moisture_sensor = TuyaBLESensor(hass, coordinator, device, product_info, mappings[1])
+    moisture_sensor.async_write_ha_state = Mock()
+    device.datapoints._update_from_device(3, 0, 0, TuyaBLEDataPointType.DT_VALUE, 45)
+    moisture_sensor._handle_coordinator_update()
+    assert moisture_sensor.native_value == 45
+
+    # Test battery_state (DP 14)
+    bat_state_sensor = TuyaBLESensor(hass, coordinator, device, product_info, mappings[2])
+    bat_state_sensor.async_write_ha_state = Mock()
+    device.datapoints._update_from_device(14, 0, 0, TuyaBLEDataPointType.DT_ENUM, 1)
+    bat_state_sensor._handle_coordinator_update()
+    assert bat_state_sensor.native_value == "normal"
+
+    # Test battery_percentage (DP 15)
+    bat_pct_sensor = TuyaBLESensor(hass, coordinator, device, product_info, mappings[3])
+    bat_pct_sensor.async_write_ha_state = Mock()
+    device.datapoints._update_from_device(15, 0, 0, TuyaBLEDataPointType.DT_VALUE, 85)
+    bat_pct_sensor._handle_coordinator_update()
+    assert bat_pct_sensor.native_value == 85
