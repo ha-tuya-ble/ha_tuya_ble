@@ -701,7 +701,6 @@ mapping: dict[str, TuyaBLECategorySelectMapping] = {
         products={
             **dict.fromkeys(
                 [
-                    "gpkyrocn",
                     "ojzlzzsw",
                     "iv7hudlj",
                     "jm6iasmb",
@@ -709,6 +708,18 @@ mapping: dict[str, TuyaBLECategorySelectMapping] = {
                     "tr0kabuq",
                     "vyfoip9h",
                     "1jvidcsf",
+                ],
+                [TuyaBLETemperatureUnitMapping(dp_id=9)],
+            )
+        },
+    ),
+    "zwjcy": TuyaBLECategorySelectMapping(
+        products={
+            **dict.fromkeys(
+                [
+                    "gpkyrocn",
+                    "gvygg3m8",
+                    "jabotj1z",
                 ],
                 [TuyaBLETemperatureUnitMapping(dp_id=9)],
             )

@@ -101,3 +101,41 @@ async def test_select(hass: HomeAssistant) -> None:
     device._send_datapoints.assert_called_once_with([31])
     assert device.datapoints[31].value == 3
     assert entity.current_option == "high"
+
+
+async def test_select_zwjcy_gpkyrocn(hass: HomeAssistant) -> None:
+    from custom_components.tuya_ble.select import get_mapping_by_device, TuyaBLESelect
+    from custom_components.tuya_ble.devices import TuyaBLEDevice, TuyaBLECoordinator, TuyaBLEProductInfo, TuyaBLEDeviceCredentials
+    from bleak.backends.device import BLEDevice
+
+    ble_device = BLEDevice(name="SGS01B-JR", address="11:22:33", details="", rssi=-50)
+    device = TuyaBLEDevice(Mock(), ble_device)
+    device._device_info = TuyaBLEDeviceCredentials(
+        uuid="uuid123",
+        local_key="0000000000000000",
+        device_id="bf2c23dntrqxugvw",
+        category="zwjcy",
+        product_id="gpkyrocn",
+        device_name="SGS01B-JR",
+        product_model="SGS01B-JR",
+        product_name="SGS01B-JR",
+        functions=[],
+        status_range=[],
+    )
+    await device.initialize()
+
+    mappings = get_mapping_by_device(device)
+    assert len(mappings) == 1
+    assert mappings[0].dp_id == 9
+
+    coordinator = TuyaBLECoordinator(hass, device)
+    product_info = TuyaBLEProductInfo("Soil moisture sensor")
+
+    entity = TuyaBLESelect(hass, coordinator, device, product_info, mappings[0])
+    entity.async_write_ha_state = Mock()
+
+    # Update state: DP 9 = 0 -> UnitOfTemperature.CELSIUS
+    from homeassistant.const import UnitOfTemperature
+    device.datapoints._update_from_device(9, 0, 0, TuyaBLEDataPointType.DT_ENUM, 0)
+    entity._handle_coordinator_update()
+    assert entity.current_option == UnitOfTemperature.CELSIUS

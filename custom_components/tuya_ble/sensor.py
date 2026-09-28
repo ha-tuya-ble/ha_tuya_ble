@@ -926,7 +926,7 @@ mapping: dict[str, TuyaBLECategorySensorMapping] = {
     "wsdcg": TuyaBLECategorySensorMapping(
         products={
             **dict.fromkeys(
-                ["gpkyrocn", "ojzlzzsw"],  # Soil moisture sensor
+                ["ojzlzzsw"],  # Soil moisture sensor
                 [
                     TuyaBLETemperatureMapping(
                         dp_id=1,

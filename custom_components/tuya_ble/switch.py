@@ -809,7 +809,7 @@ mapping: dict[str, TuyaBLECategorySwitchMapping] = {
     "wsdcg": TuyaBLECategorySwitchMapping(
         products={
             **dict.fromkeys(
-                ["gpkyrocn", "ojzlzzsw"],  # Soil moisture sensor
+                ["ojzlzzsw"],  # Soil moisture sensor
                 [
                     TuyaBLESwitchMapping(
                         dp_id=21,
