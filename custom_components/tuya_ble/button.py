@@ -4,7 +4,10 @@ from __future__ import annotations
 
 from dataclasses import dataclass, field
 
+import base64
 import logging
+from struct import pack, unpack
+import time
 from typing import Callable
 
 from homeassistant.components.button import (
@@ -24,6 +27,40 @@ from .devices import TuyaBLEData, TuyaBLEEntity, TuyaBLEProductInfo
 from .tuya_ble import TuyaBLEDataPointType, TuyaBLEDevice
 
 _LOGGER = logging.getLogger(__name__)
+
+
+# Products that unlock by writing DP71 (ble_unlock_check) with the per-device
+# check code. TuyaOS FD50 locks report DP71 as
+#   member id | 0xFFFF | check code (8 ASCII) | 0x01 | unix time | result
+# (result 0x0000 = unlocked) while the app sends
+#   0xFFFF | member id | check code | 0x01 | unix time | 0x0001
+BLE_UNLOCK_CHECK_PRODUCTS = frozenset({"tkbdvrzr"})
+
+
+def parse_ble_unlock_check(raw: bytes) -> tuple[int, bytes] | None:
+    """Return (member id, check code) from a ble_unlock_check value."""
+    if len(raw) < 12:
+        return None
+    first, second = unpack(">HH", raw[:4])
+    member_id = second if first == 0xFFFF else first
+    check_code = raw[4:12]
+    if member_id == 0xFFFF or not all(0x20 < b < 0x7F for b in check_code):
+        return None
+    return member_id, check_code
+
+
+def build_ble_unlock_check_command(
+    member_id: int, check_code: bytes, now: int | None = None
+) -> bytes:
+    """Build the DP71 unlock command the official app sends."""
+    timestamp = int(time.time()) if now is None else now
+    return (
+        pack(">HH", 0xFFFF, member_id)
+        + check_code
+        + b"\x01"
+        + pack(">I", timestamp & 0xFFFFFFFF)
+        + b"\x00\x01"
+    )
 
 
 TuyaBLEButtonIsAvailable = Callable[["TuyaBLEButton", TuyaBLEProductInfo], bool] | None
@@ -207,6 +244,16 @@ mapping: dict[str, TuyaBLECategoryButtonMapping] = {
                         key="ble_unlock_check",
                         icon="mdi:lock-open-variant-outline",
                     ),
+                ),
+            ],
+            "tkbdvrzr": [  # CTL20 SmartLock
+                TuyaBLEButtonMapping(
+                    dp_id=71,  # ble_unlock_check, built at press time
+                    description=ButtonEntityDescription(
+                        key="bluetooth_unlock",
+                        icon="mdi:lock-open-variant-outline",
+                    ),
+                    dp_type=TuyaBLEDataPointType.DT_RAW,
                 ),
             ],
             "2hmqh0ty": [  # EL605A Knob Lock
@@ -481,8 +528,50 @@ class TuyaBLEButton(TuyaBLEEntity, ButtonEntity):
         if dp71:
             await dp71.set_value(dp71_value)
 
+    def _ble_unlock_check_source(self) -> bytes | None:
+        """Return the raw ble_unlock_check value (cloud first, then device)."""
+        cloud_value = getattr(self._device, "ble_unlock_check", None)
+        if cloud_value:
+            try:
+                return base64.b64decode(cloud_value)
+            except ValueError:
+                _LOGGER.warning(
+                    "%s: ble_unlock_check from the cloud is not base64",
+                    self._device.address,
+                )
+        reported = self._device.datapoints[71]
+        if reported and isinstance(reported.value, (bytes, bytearray)):
+            return bytes(reported.value)
+        return None
+
+    async def _run_ble_unlock_check_unlock(self) -> None:
+        """Unlock through DP71 using the per-device check code."""
+        raw = self._ble_unlock_check_source()
+        parsed = parse_ble_unlock_check(raw) if raw else None
+        if parsed is None:
+            _LOGGER.error(
+                "%s: no usable ble_unlock_check value; unlock the lock once "
+                "from the Tuya/Smart Life app and reload the Tuya BLE credentials",
+                self._device.address,
+            )
+            return
+        command = build_ble_unlock_check_command(*parsed)
+        datapoint = self._device.datapoints.get_or_create(
+            71,
+            TuyaBLEDataPointType.DT_RAW,
+            b"",
+        )
+        if datapoint:
+            await datapoint.set_value(command)
+
     def press(self) -> None:
         """Press the button."""
+        if (
+            self._device.product_id in BLE_UNLOCK_CHECK_PRODUCTS
+            and self._mapping.description.key == "bluetooth_unlock"
+        ):
+            self._hass.create_task(self._run_ble_unlock_check_unlock())
+            return
         if self._device.product_id == "kholoaew":
             if self._mapping.description.key == "bluetooth_unlock":
                 self._hass.create_task(self._run_kholoaew_unlock())

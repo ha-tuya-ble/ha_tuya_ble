@@ -260,6 +260,7 @@ class TuyaBLEAlarmLockStateMapping(TuyaBLESensorMapping):
                 "low_battery",
                 "power_off",
                 "shock",
+                "defense",
             ],
         )
     )
@@ -668,6 +669,7 @@ mapping: dict[str, TuyaBLECategorySensorMapping] = {
                 [
                     "y2yaegze",
                     "qcrilcpr",
+                    "tkbdvrzr",
                 ],
                 [
                     TuyaBLEAlarmLockStateMapping(dp_id=21),
@@ -2282,6 +2284,9 @@ mapping: dict[str, TuyaBLECategorySensorMapping] = {
                 ],
             ),
             "ousymtkt": [  # Blind Controller
+                TuyaBLEBatteryMapping(dp_id=13),
+            ],
+            "cq7xquhj": [  # Curtain Robot (rechargeable)
                 TuyaBLEBatteryMapping(dp_id=13),
             ],
         }

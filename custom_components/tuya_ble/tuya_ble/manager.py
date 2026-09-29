@@ -20,6 +20,7 @@ class TuyaBLEDeviceCredentials:
     functions: List | None
     status_range: List | None
     sec_key: str | None = field(default=None, repr=False)
+    ble_unlock_check: str | None = field(default=None, repr=False)
 
     def __str__(self):
         return (

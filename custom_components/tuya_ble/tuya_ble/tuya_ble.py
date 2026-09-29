@@ -69,12 +69,17 @@ BLEAK_EXCEPTIONS = (*BLEAK_RETRY_EXCEPTIONS, OSError)
 
 
 FD50_DEVICE_INFO_PRODUCT_IDS = frozenset(
-    {"jntxv3q4", "9hdajpiw", "2hmqh0ty", "qcrilcpr", "djrqe0q6"}
+    {"jntxv3q4", "9hdajpiw", "2hmqh0ty", "qcrilcpr", "djrqe0q6", "tkbdvrzr"}
 )
 
 # Devices that use legacy key derivation even when the cloud returns a sec_key.
 # This is independent of the FD50 payload quirk: mknd4lci uses standard framing.
-LEGACY_KEY_DERIVATION_PRODUCT_IDS = frozenset({"qcrilcpr", "mknd4lci", "gvygg3m8"})
+# cq7xquhj (curtain robot) does not use the FD50 framing, but ignores the
+# device-info request when it is encrypted with the v2 (SecKey) login key.
+# tkbdvrzr (CTL20 SmartLock) behaves like qcrilcpr: FD50 framing + v1 keys.
+LEGACY_KEY_DERIVATION_PRODUCT_IDS = frozenset(
+    {"qcrilcpr", "mknd4lci", "gvygg3m8", "cq7xquhj", "tkbdvrzr"}
+)
 
 
 # @dataclass
@@ -584,6 +589,13 @@ class TuyaBLEDevice:
     @property
     def hardware_version(self) -> str:
         return self._hardware_version
+
+    @property
+    def ble_unlock_check(self) -> str | None:
+        """Raw (base64) ble_unlock_check status value from the cloud."""
+        if self._device_info:
+            return self._device_info.ble_unlock_check
+        return None
 
     @property
     def protocol_version(self) -> str:
