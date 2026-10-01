@@ -5,6 +5,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog],
 and this project adheres to [Semantic Versioning].
 
+## [0.12.3](https://github.com/ha-tuya-ble/ha_tuya_ble/compare/0.12.2...0.12.3) (2026-09-30)
+
+
+### Bug Fixes
+
+* allow clearing the manual security key ([a06223e](https://github.com/ha-tuya-ble/ha_tuya_ble/commit/a06223e4cbb096a15874f6d9f8c08552989cfd94))
+* correct DP mappings and category for SGS01B soil moisture sensor (gpkyrocn) ([7ff2b4b](https://github.com/ha-tuya-ble/ha_tuya_ble/commit/7ff2b4b15f491a1e1c8e3bb302559e29d2c75d25))
+* correct DP mappings and category for SGS01B soil moisture sensor (gpkyrocn) ([7aff4da](https://github.com/ha-tuya-ble/ha_tuya_ble/commit/7aff4dadf04d28196f67db605179b898906ed1eb))
+* report Pulido PLD_P130 lock state from free passage mode after reconnect ([ee399bb](https://github.com/ha-tuya-ble/ha_tuya_ble/commit/ee399bb1f99f8f07c04eca7c5d58ad7df17ca6c3))
+* report Pulido PLD_P130 lock state from free passage mode after reconnect ([7df7f19](https://github.com/ha-tuya-ble/ha_tuya_ble/commit/7df7f197d64985563d061a4a8e0086ca0e6d49f4))
+* restore mknd4lci Fingerbot authentication and key clearing ([40899ae](https://github.com/ha-tuya-ble/ha_tuya_ble/commit/40899aeff5f1bcb63aca26fba4ee59b76e101681))
+* use legacy authentication for mknd4lci Fingerbots ([b57d5b3](https://github.com/ha-tuya-ble/ha_tuya_ble/commit/b57d5b3094f820dd5ecd6bdf2ce22f8e1d9b0573))
+
 ## [0.12.2](https://github.com/ha-tuya-ble/ha_tuya_ble/compare/0.12.1...0.12.2) (2026-09-27)
 
 
