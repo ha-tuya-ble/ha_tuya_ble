@@ -305,8 +305,8 @@ See a device marked Experimental you have? We could use real world testing feedb
       <td>—</td>
     </tr>
     <tr>
-      <td rowspan="6"><strong>Covers</strong></td>
-      <td rowspan="6"><code>cl</code></td>
+      <td rowspan="7"><strong>Covers</strong></td>
+      <td rowspan="7"><code>cl</code></td>
       <td>Moes Roller Blind Motor</td>
       <td><code>4pbr8eig</code></td>
       <td>—</td>
@@ -335,6 +335,11 @@ See a device marked Experimental you have? We could use real world testing feedb
       <td>AOK AM24 Venetian Blinds Motor</td>
       <td><code>dy4dh1q0</code></td>
       <td>Experimental.</td>
+    </tr>
+    <tr>
+      <td>Roller Blind Robot RSH-MC27</td>
+      <td><code>ousymtkt</code></td>
+      <td>—</td>
     </tr>
     <tr>
       <td rowspan="9"><strong>Water valve controller</strong></td>
