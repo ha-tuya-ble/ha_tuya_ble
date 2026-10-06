@@ -136,8 +136,8 @@ See a device marked Experimental you have? We could use real world testing feedb
       <td>—</td>
     </tr>
     <tr>
-      <td rowspan="26"><strong>Smart Locks</strong></td>
-      <td rowspan="25"><code>ms</code>, <code>jtmspro</code></td>
+      <td rowspan="27"><strong>Smart Locks</strong></td>
+      <td rowspan="27"><code>ms</code>, <code>jtmspro</code></td>
       <td>Smart Lock</td>
       <td><code>ludzroix</code>, <code>isk2p555</code>, <code>gumrixyt</code>, <code>uamrw6h3</code>, <code>sidhzylo</code>, <code>mqc2hevy</code>, <code>7a4xvbtt</code></td>
       <td>—</td>
@@ -261,6 +261,11 @@ See a device marked Experimental you have? We could use real world testing feedb
       <td>EL605A Knob Lock</td>
       <td><code>2hmqh0ty</code></td>
       <td>BLE unlock via DP71. Requires the FD50 device-info handshake.</td>
+    </tr>
+    <tr>
+      <td>Smart Lock C-014S</td>
+      <td><code>djrqe0q6</code></td>
+      <td>Experimental. BLE unlock via DP71, lock via DP46, state from DP47 (no separate unlock button; the lock entity covers it). FD50 device-info handshake enabled. Battery, alarm, unlock-method counters, auto-lock, volume, double verification and doorbell exposed.</td>
     </tr>
     <tr>
       <td>Example Product Securosmart lock</td>
