@@ -156,6 +156,9 @@
             }
         },
         "number": {
+            "auto_lock_time": {
+                "name": "Auto lock delay"
+            },
             "ble_unlock_check": {
                 "name": "Unlock"
             },
@@ -213,7 +216,20 @@
         },
         "select": {
             "beep_volume": {
-                "name": "Lock Volume"
+                "name": "Lock Volume",
+                "state": {
+                    "mute": "Mute",
+                    "low": "Low",
+                    "normal": "Normal",
+                    "high": "High"
+                }
+            },
+            "unlock_switch": {
+                "name": "Double verification",
+                "state": {
+                    "single_unlock": "Single unlock",
+                    "combination": "Combination"
+                }
             },
             "language": {
                 "name": "Lock Language"
@@ -331,8 +347,19 @@
                 "state": {
                     "wrong_finger": "Wrong Fingerprint",
                     "wrong_password": "Wrong Password",
+                    "wrong_card": "Wrong card",
+                    "wrong_face": "Wrong face",
+                    "tongue_bad": "Bolt jammed",
+                    "too_hot": "High temperature",
+                    "unclosed_time": "Door left open",
+                    "tongue_not_out": "Bolt not extended",
+                    "pry": "Tamper",
+                    "key_in": "Key inserted",
                     "low_battery": "Low Battery",
-                    "power_off": "Power off"
+                    "power_off": "Power off",
+                    "shock": "Vibration",
+                    "defense": "Armed alarm",
+                    "wrong_unlock": "Wrong unlock"
                 }
             },
             "power_off": {
@@ -472,6 +499,15 @@
             },
             "unlock_fingerprint": {
                 "name": "Last used Fingerprint"
+            },
+            "unlock_temporary": {
+                "name": "Last used temporary password"
+            },
+            "unlock_voice_remote": {
+                "name": "Last used remote voice"
+            },
+            "unlock_phone_remote": {
+                "name": "Last used remote phone"
             },
             "unlock_card": {
                 "name": "Last used Card"

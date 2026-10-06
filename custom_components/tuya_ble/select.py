@@ -489,6 +489,36 @@ mapping: dict[str, TuyaBLECategorySelectMapping] = {
     ),
     "jtmspro": TuyaBLECategorySelectMapping(
         products={
+            "djrqe0q6": [  # Smart Lock C-014S
+                TuyaBLESelectMapping(
+                    dp_id=31,
+                    description=SelectEntityDescription(
+                        key="beep_volume",
+                        icon="mdi:volume-high",
+                        options=[
+                            "mute",
+                            "low",
+                            "normal",
+                            "high",
+                        ],
+                        entity_category=EntityCategory.CONFIG,
+                    ),
+                    dp_type=TuyaBLEDataPointType.DT_ENUM,
+                ),
+                TuyaBLESelectMapping(
+                    dp_id=34,
+                    description=SelectEntityDescription(
+                        key="unlock_switch",
+                        icon="mdi:shield-lock-outline",
+                        options=[
+                            "single_unlock",
+                            "combination",
+                        ],
+                        entity_category=EntityCategory.CONFIG,
+                    ),
+                    dp_type=TuyaBLEDataPointType.DT_ENUM,
+                ),
+            ],
             "hc7n0urm": [  # A1 Ultra-JM
                 TuyaBLESelectMapping(
                     dp_id=31,
