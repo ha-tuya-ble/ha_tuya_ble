@@ -86,7 +86,7 @@
                 "name": "Battery"
             },
             "lock_motor_state": {
-                "name": "Motor State"
+                "name": "Motor state"
             },
             "low_temp": {
                 "name": "Low temperature"
@@ -213,7 +213,7 @@
         },
         "select": {
             "beep_volume": {
-                "name": "Lock Volume"
+                "name": "Lock volume"
             },
             "language": {
                 "name": "Lock Language"
@@ -329,9 +329,9 @@
             "alarm_lock": {
                 "name": "Alarm",
                 "state": {
-                    "wrong_finger": "Wrong Fingerprint",
-                    "wrong_password": "Wrong Password",
-                    "low_battery": "Low Battery",
+                    "wrong_finger": "Wrong fingerprint",
+                    "wrong_password": "Wrong password",
+                    "low_battery": "Low battery",
                     "power_off": "Power off"
                 }
             },
@@ -381,7 +381,7 @@
                 "name": "Humidity"
             },
             "low_battery": {
-                "name": "Low Battery"
+                "name": "Low battery"
             },
             "moisture": {
                 "name": "Moisture"
@@ -457,25 +457,25 @@
                 "name": "Total water usage"
             },
             "wrong_finger": {
-                "name": "Wrong Fingerprint"
+                "name": "Wrong fingerprint"
             },
             "wrong_password": {
-                "name": "Wrong Password"
+                "name": "Wrong password"
             },
             "unlock_fingerprint": {
-                "name": "Last used Fingerprint"
+                "name": "Last used fingerprint"
             },
             "unlock_card": {
-                "name": "Last used Card"
+                "name": "Last used card"
             },
             "unlock_password": {
-                "name": "Last used Password"
+                "name": "Last used password"
             },
             "unlock_key": {
-                "name": "Last used Key"
+                "name": "Last used key"
             },
             "unlock_dynamic": {
-                "name": "Last used Dynamic Password"
+                "name": "Last used dynamic password"
             },
             "unlock_ble": {
                 "name": "Last used Bluetooth"
@@ -576,7 +576,7 @@
                 "name": "Child Lock"
             },
             "lock_motor_state": {
-                "name": "Motor State"
+                "name": "Motor state"
             },
             "low_battery_alarm": {
                 "name": "Low battery alarm"
