@@ -465,7 +465,7 @@
                     "manual": "Manual",
                     "idle": "Idle",
                     "working": "Working",
-                    "rain_delay": "Rain Delay"
+                    "rain_delay": "Rain delay"
                 }
             },
             "work_state_z2": {
@@ -475,7 +475,7 @@
                     "manual": "Manual",
                     "idle": "Idle",
                     "working": "Working",
-                    "rain_delay": "Rain Delay"
+                    "rain_delay": "Rain delay"
                 }
             },
             "residual_electricity": {
@@ -658,7 +658,7 @@
                 "name": "Severely exceed alarm"
             },
             "child_lock": {
-                "name": "Child Lock"
+                "name": "Child lock"
             },
             "lock_motor_state": {
                 "name": "Motor state"
@@ -676,10 +676,10 @@
                 "name": "Repeat forever"
             },
             "programming_mode": {
-                "name": "Programming Mode"
+                "name": "Programming mode"
             },
             "programming_switch": {
-                "name": "Programming Switch"
+                "name": "Programming switch"
             },
             "reverse_positions": {
                 "name": "Reverse positions"
@@ -703,7 +703,7 @@
                 "name": "Weather switch"
             },
             "window_check": {
-                "name": "Window Check"
+                "name": "Window check"
             },
             "window_cleaner_switch": {
                 "name": "Cleaning"
@@ -737,7 +737,7 @@
         },
         "vacuum": {
             "vacuum": {
-                "name": "Window Cleaner"
+                "name": "Window cleaner"
             },
             "clean_time": {
                 "name": "Clean time"
