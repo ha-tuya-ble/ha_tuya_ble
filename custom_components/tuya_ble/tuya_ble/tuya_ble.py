@@ -74,7 +74,7 @@ FD50_DEVICE_INFO_PRODUCT_IDS = frozenset(
 
 # Devices that use legacy key derivation even when the cloud returns a sec_key.
 # This is independent of the FD50 payload quirk: mknd4lci uses standard framing.
-LEGACY_KEY_DERIVATION_PRODUCT_IDS = frozenset({"qcrilcpr", "mknd4lci"})
+LEGACY_KEY_DERIVATION_PRODUCT_IDS = frozenset({"qcrilcpr", "mknd4lci", "gvygg3m8"})
 
 
 # @dataclass
