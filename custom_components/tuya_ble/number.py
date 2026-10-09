@@ -956,6 +956,20 @@ mapping: dict[str, TuyaBLECategoryNumberMapping] = {
     ),
     "jtmspro": TuyaBLECategoryNumberMapping(
         products={
+            "djrqe0q6": [  # Smart Lock C-014S
+                TuyaBLENumberMapping(
+                    dp_id=36,
+                    description=NumberEntityDescription(
+                        key="auto_lock_time",
+                        icon="mdi:lock-clock",
+                        native_max_value=600,
+                        native_min_value=3,
+                        native_unit_of_measurement=UnitOfTime.SECONDS,
+                        native_step=1,
+                        entity_category=EntityCategory.CONFIG,
+                    ),
+                ),
+            ],
             **dict.fromkeys(
                 [
                     "stugc8dl",
