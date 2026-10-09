@@ -136,6 +136,14 @@ mapping: dict[str, TuyaBLECategoryCoverMapping] = {
                     cover_tilt_dp_id=101,
                 )
             ],
+            "ousymtkt": [
+                TuyaBLECoverMapping(
+                    description=CoverEntityDescription(key="ble_blind_controller"),
+                    cover_state_dp_id=1,
+                    cover_position_set_dp=9,
+                    cover_position_dp_id=8,
+                )
+            ],
         },
     ),
 }
