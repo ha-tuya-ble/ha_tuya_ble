@@ -5,6 +5,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog],
 and this project adheres to [Semantic Versioning].
 
+## [0.12.4](https://github.com/ha-tuya-ble/ha_tuya_ble/compare/0.12.3...0.12.4) (2026-10-09)
+
+
+### Devices
+
+* **device:** Add support for blind controller RSH-MC27 ("ousymtkt") ([dbbf9c2](https://github.com/ha-tuya-ble/ha_tuya_ble/commit/dbbf9c2fe501e3dbcaca3e140b4c2a870a95cb90))
+* **device:** use legacy key derivation for SGS01 plant sensor (gvygg3m8) ([d9662bf](https://github.com/ha-tuya-ble/ha_tuya_ble/commit/d9662bf6027c2fb6d755f8abbf7bbbf028aa85a3))
+* **device:** use legacy key derivation for SGS01 plant sensor (gvygg3m8) ([ab0c67d](https://github.com/ha-tuya-ble/ha_tuya_ble/commit/ab0c67dab5f01ef3f0a32e64f4bb71d09befae75))
+
 ## [0.12.3](https://github.com/ha-tuya-ble/ha_tuya_ble/compare/0.12.2...0.12.3) (2026-09-30)
 
 
