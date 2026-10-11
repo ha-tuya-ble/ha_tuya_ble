@@ -811,6 +811,13 @@ devices_database: dict[str, TuyaBLECategoryInfo] = {
             ),
         },
     ),
+    "swtz": TuyaBLECategoryInfo(
+        products={
+            "o3nnpkat": TuyaBLEProductInfo(
+                name="BTH08 Smart Meat Thermometer",
+            ),
+        },
+    ),
     "gcj": TuyaBLECategoryInfo(
         products={
             "9hdajpiw": TuyaBLEProductInfo(  # device product_id
