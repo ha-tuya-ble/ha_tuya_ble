@@ -568,6 +568,12 @@
             },
             "zones": {
                 "name": "Zonen"
+            },
+            "probe_1_temperature": {
+                "name": "Temperatur Fühler 1"
+            },
+            "probe_2_temperature": {
+                "name": "Temperatur Fühler 2"
             }
         },
         "switch": {

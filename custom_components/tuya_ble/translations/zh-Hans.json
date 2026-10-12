@@ -568,6 +568,12 @@
             },
             "zones": {
                 "name": "分区"
+            },
+            "probe_1_temperature": {
+                "name": "探针 1 温度"
+            },
+            "probe_2_temperature": {
+                "name": "探针 2 温度"
             }
         },
         "switch": {

@@ -455,6 +455,13 @@ See a device marked Experimental you have? We could use real world testing feedb
       <td><code>9hdajpiw</code></td>
       <td>Lawn mower entity (start / pause / dock), command and schedule buttons, battery, activity, warning, error and work logs, schedule and zones, running time, rain delay, rain mode, hedgehog protection and blade stop. Experimental</td>
     </tr>
+    <tr>
+      <td><strong>Cooking thermometers</strong></td>
+      <td><code>swtz</code></td>
+      <td>Lidl GRILLMEISTER Bluetooth Cooking Thermometer</td>
+      <td><code>iv13iqhf</code></td>
+      <td>Two probe temperatures and battery</td>
+    </tr>
   </tbody>
 </table>
 

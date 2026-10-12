@@ -819,6 +819,13 @@ devices_database: dict[str, TuyaBLECategoryInfo] = {
             ),
         },
     ),
+    "swtz": TuyaBLECategoryInfo(
+        products={
+            "iv13iqhf": TuyaBLEProductInfo(  # device product_id
+                name="GRILLMEISTER Bluetooth Cooking Thermometer",
+            ),
+        },
+    ),
 }
 
 

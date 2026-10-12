@@ -2473,6 +2473,33 @@ mapping: dict[str, TuyaBLECategorySensorMapping] = {
             ],
         },
     ),
+    "swtz": TuyaBLECategorySensorMapping(
+        products={
+            "iv13iqhf": [  # Lidl GRILLMEISTER Bluetooth Cooking Thermometer
+                TuyaBLEBatteryMapping(dp_id=1),
+                TuyaBLETemperatureMapping(
+                    dp_id=2,
+                    coefficient=10.0,
+                    description=SensorEntityDescription(
+                        key="probe_1_temperature",
+                        device_class=SensorDeviceClass.TEMPERATURE,
+                        native_unit_of_measurement=UnitOfTemperature.CELSIUS,
+                        state_class=SensorStateClass.MEASUREMENT,
+                    ),
+                ),
+                TuyaBLETemperatureMapping(
+                    dp_id=3,
+                    coefficient=10.0,
+                    description=SensorEntityDescription(
+                        key="probe_2_temperature",
+                        device_class=SensorDeviceClass.TEMPERATURE,
+                        native_unit_of_measurement=UnitOfTemperature.CELSIUS,
+                        state_class=SensorStateClass.MEASUREMENT,
+                    ),
+                ),
+            ],
+        },
+    ),
 }
 
 
