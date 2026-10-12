@@ -604,6 +604,12 @@
             },
             "zones": {
                 "name": "Zones"
+            },
+            "probe_1_temperature": {
+                "name": "Probe 1 temperature"
+            },
+            "probe_2_temperature": {
+                "name": "Probe 2 temperature"
             }
         },
         "switch": {
