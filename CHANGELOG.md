@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog],
 and this project adheres to [Semantic Versioning].
 
+## [0.12.5](https://github.com/ha-tuya-ble/ha_tuya_ble/compare/0.12.4...0.12.5) (2026-10-13)
+
+
+### Devices
+
+* **device:** add Lidl GRILLMEISTER cooking thermometer (swtz / iv13iqhf) ([0aa6bff](https://github.com/ha-tuya-ble/ha_tuya_ble/commit/0aa6bff5e534f707a4e4f11e0c4620432d5db507))
+
 ## [0.12.4](https://github.com/ha-tuya-ble/ha_tuya_ble/compare/0.12.3...0.12.4) (2026-10-12)
 
 
