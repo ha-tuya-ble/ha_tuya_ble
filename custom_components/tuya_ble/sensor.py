@@ -966,7 +966,6 @@ mapping: dict[str, TuyaBLECategorySensorMapping] = {
                             "mdi:power-plug-battery",
                             "mdi:battery-check",
                         ],
-                        default_value="none",
                     ),
                     TuyaBLEBatteryMapping(dp_id=8),
                 ],
