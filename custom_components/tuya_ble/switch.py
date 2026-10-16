@@ -106,6 +106,25 @@ def set_fingerbot_program_repeat_forever(
             self._hass.create_task(datapoint.set_value(new_value))
 
 
+def get_inverted_switch(self: TuyaBLESwitch, product: TuyaBLEProductInfo) -> bool:
+    """Represent CBF02V2's reported false (pressed) state as on."""
+    datapoint = self._device.datapoints[self._mapping.dp_id]
+    return not bool(datapoint.value) if datapoint else False
+
+
+def set_inverted_switch(
+    self: TuyaBLESwitch, product: TuyaBLEProductInfo, value: bool
+) -> None:
+    """Write the CBF02V2 actuator state with inverted polarity."""
+    datapoint = self._device.datapoints.get_or_create(
+        self._mapping.dp_id,
+        TuyaBLEDataPointType.DT_BOOL,
+        not value,
+    )
+    if datapoint:
+        self._hass.create_task(datapoint.set_value(not value))
+
+
 def set_16wgjvck_water_valve(
     self: TuyaBLESwitch, product: TuyaBLEProductInfo, value: bool
 ) -> None:
@@ -542,6 +561,17 @@ mapping: dict[str, TuyaBLECategorySwitchMapping] = {
     ),
     "szjqr": TuyaBLECategorySwitchMapping(
         products={
+            **dict.fromkeys(
+                ["bo25vaxy"],  # CBF02V2 Finger Robot
+                [
+                    TuyaBLEFingerbotSwitchMapping(
+                        dp_id=1,
+                        is_available=None,
+                        getter=get_inverted_switch,
+                        setter=set_inverted_switch,
+                    ),
+                ],
+            ),
             **dict.fromkeys(
                 ["3yqdo5yt", "xhf790if"],  # CubeTouch 1s and II
                 [

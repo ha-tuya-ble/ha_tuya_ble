@@ -237,6 +237,7 @@
             "fingerbot_mode": {
                 "name": "Mode",
                 "state": {
+                    "click": "Click",
                     "program": "Program",
                     "push": "Push",
                     "switch": "Switch"
@@ -371,6 +372,8 @@
             "battery_charging": {
                 "name": "Battery charging",
                 "state": {
+                    "none": "Not charging",
+                    "charge_done": "Charged",
                     "charged": "Charged",
                     "charging": "Charging",
                     "not_charging": "Not charging"

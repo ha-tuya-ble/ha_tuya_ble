@@ -55,8 +55,8 @@ See a device marked Experimental you have? We could use real world testing feedb
   </thead>
   <tbody>
     <tr>
-      <td rowspan="8"><strong>Fingerbots</strong></td>
-      <td rowspan="8"><code>szjqr</code></td>
+      <td rowspan="9"><strong>Fingerbots</strong></td>
+      <td rowspan="9"><code>szjqr</code></td>
       <td>Fingerbot</td>
       <td><code>ltak7e1p</code>, <code>y6kttvd6</code>, <code>yrnk7mnn</code>, <code>nvr2rocq</code>, <code>bnt7wajf</code>, <code>rvdceqjh</code>, <code>5xhbk964</code></td>
       <td>Original device, first in category, powered by CR2 battery.</td>
@@ -95,6 +95,11 @@ See a device marked Experimental you have? We could use real world testing feedb
       <td>Nedis SmartLife Finger Robot</td>
       <td><code>yn4x5fa7</code></td>
       <td>—</td>
+    </tr>
+    <tr>
+      <td>Finger Robot CBF02V2</td>
+      <td><code>bo25vaxy</code></td>
+      <td>Experimental. Click and Switch modes, hold time, 0-30 position controls, battery and reported charge status. Switch polarity is inverted for this model.</td>
     </tr>
     <tr>
       <td rowspan="6"><strong>Temperature and humidity sensors</strong></td>
