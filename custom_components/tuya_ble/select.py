@@ -676,6 +676,20 @@ mapping: dict[str, TuyaBLECategorySelectMapping] = {
     "szjqr": TuyaBLECategorySelectMapping(
         products={
             **dict.fromkeys(
+                ["bo25vaxy"],  # CBF02V2 Finger Robot
+                [
+                    TuyaBLESelectMapping(
+                        dp_id=2,
+                        description=SelectEntityDescription(
+                            key="fingerbot_mode",
+                            entity_category=EntityCategory.CONFIG,
+                            # BLE enum 1 is named long_press in the Thing Model.
+                            options=["click", "switch"],
+                        ),
+                    ),
+                ],
+            ),
+            **dict.fromkeys(
                 ["3yqdo5yt", "xhf790if", "yn4x5fa7"],  # CubeTouch 1s and II
                 [
                     TuyaBLEFingerbotModeMapping(dp_id=2),

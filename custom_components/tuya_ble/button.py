@@ -119,6 +119,10 @@ mapping: dict[str, TuyaBLECategoryButtonMapping] = {
     "szjqr": TuyaBLECategoryButtonMapping(
         products={
             **dict.fromkeys(
+                ["bo25vaxy"],  # CBF02V2 Finger Robot
+                [TuyaBLEFingerbotModeMapping(dp_id=1)],
+            ),
+            **dict.fromkeys(
                 ["3yqdo5yt", "xhf790if"],  # CubeTouch 1s and II
                 [
                     TuyaBLEFingerbotModeMapping(dp_id=1),
