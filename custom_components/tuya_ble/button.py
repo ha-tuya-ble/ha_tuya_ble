@@ -125,24 +125,12 @@ mapping: dict[str, TuyaBLECategoryButtonMapping] = {
                     TuyaBLEButtonMapping(
                         dp_id=102,
                         description=ButtonEntityDescription(
-                            key="display_state_test_true",
-                            icon="mdi:power",
+                            key="invert_switch_status",
+                            icon="mdi:swap-horizontal",
                             entity_category=EntityCategory.CONFIG,
-                            entity_registry_enabled_default=False,
                         ),
                         dp_type=TuyaBLEDataPointType.DT_BOOL,
                         value=True,
-                    ),
-                    TuyaBLEButtonMapping(
-                        dp_id=102,
-                        description=ButtonEntityDescription(
-                            key="display_state_test_false",
-                            icon="mdi:power",
-                            entity_category=EntityCategory.CONFIG,
-                            entity_registry_enabled_default=False,
-                        ),
-                        dp_type=TuyaBLEDataPointType.DT_BOOL,
-                        value=False,
                     ),
                 ],
             ),
