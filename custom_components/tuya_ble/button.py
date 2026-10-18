@@ -120,7 +120,31 @@ mapping: dict[str, TuyaBLECategoryButtonMapping] = {
         products={
             **dict.fromkeys(
                 ["bo25vaxy"],  # CBF02V2 Finger Robot
-                [TuyaBLEFingerbotModeMapping(dp_id=1)],
+                [
+                    TuyaBLEFingerbotModeMapping(dp_id=1),
+                    TuyaBLEButtonMapping(
+                        dp_id=102,
+                        description=ButtonEntityDescription(
+                            key="display_state_test_true",
+                            icon="mdi:power",
+                            entity_category=EntityCategory.CONFIG,
+                            entity_registry_enabled_default=False,
+                        ),
+                        dp_type=TuyaBLEDataPointType.DT_BOOL,
+                        value=True,
+                    ),
+                    TuyaBLEButtonMapping(
+                        dp_id=102,
+                        description=ButtonEntityDescription(
+                            key="display_state_test_false",
+                            icon="mdi:power",
+                            entity_category=EntityCategory.CONFIG,
+                            entity_registry_enabled_default=False,
+                        ),
+                        dp_type=TuyaBLEDataPointType.DT_BOOL,
+                        value=False,
+                    ),
+                ],
             ),
             **dict.fromkeys(
                 ["3yqdo5yt", "xhf790if"],  # CubeTouch 1s and II

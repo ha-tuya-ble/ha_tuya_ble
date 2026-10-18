@@ -99,7 +99,7 @@ See a device marked Experimental you have? We could use real world testing feedb
     <tr>
       <td>Finger Robot CBF02V2</td>
       <td><code>bo25vaxy</code></td>
-      <td>Experimental. Click and Switch modes, hold time, 0-30 position controls, battery and reported charge status. Switch polarity is inverted for this model.</td>
+      <td>Experimental. Click and Switch modes, hold time, 0-30 position controls, battery and reported charge status. Retains the previously tested switch inversion pending display-state alignment tests. This testing branch includes two disabled-by-default DP102 display-state test buttons.</td>
     </tr>
     <tr>
       <td rowspan="6"><strong>Temperature and humidity sensors</strong></td>

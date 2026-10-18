@@ -105,6 +105,12 @@
             }
         },
         "button": {
+            "display_state_test_true": {
+                "name": "Display state test (true)"
+            },
+            "display_state_test_false": {
+                "name": "Display state test (false)"
+            },
             "push": {
                 "name": "Push"
             },
