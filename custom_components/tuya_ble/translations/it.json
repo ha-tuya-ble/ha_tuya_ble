@@ -105,6 +105,9 @@
             }
         },
         "button": {
+            "invert_switch_status": {
+                "name": "Inverti stato interruttore"
+            },
             "push": {
                 "name": "Premi"
             },
@@ -156,6 +159,9 @@
             }
         },
         "number": {
+            "auto_lock_time": {
+                "name": "Ritardo blocco automatico"
+            },
             "ble_unlock_check": {
                 "name": "Sblocca"
             },
@@ -213,7 +219,20 @@
         },
         "select": {
             "beep_volume": {
-                "name": "Volume serratura"
+                "name": "Volume serratura",
+                "state": {
+                    "mute": "Muto",
+                    "low": "Basso",
+                    "normal": "Normale",
+                    "high": "Alto"
+                }
+            },
+            "unlock_switch": {
+                "name": "Doppia verifica",
+                "state": {
+                    "single_unlock": "Sblocco singolo",
+                    "combination": "Combinazione"
+                }
             },
             "language": {
                 "name": "Lingua serratura"
@@ -221,6 +240,7 @@
             "fingerbot_mode": {
                 "name": "Modalità",
                 "state": {
+                    "click": "Clic",
                     "program": "Programma",
                     "push": "Premi",
                     "switch": "Interruttore"
@@ -331,8 +351,19 @@
                 "state": {
                     "wrong_finger": "Impronta errata",
                     "wrong_password": "Password errata",
+                    "wrong_card": "Tessera errata",
+                    "wrong_face": "Volto errato",
+                    "tongue_bad": "Catenaccio bloccato",
+                    "too_hot": "Temperatura elevata",
+                    "unclosed_time": "Porta rimasta aperta",
+                    "tongue_not_out": "Catenaccio non esteso",
+                    "pry": "Manomissione",
+                    "key_in": "Chiave inserita",
                     "low_battery": "Batteria scarica",
-                    "power_off": "Spento"
+                    "power_off": "Spento",
+                    "shock": "Vibrazione",
+                    "defense": "Allarme armato",
+                    "wrong_unlock": "Sblocco errato"
                 }
             },
             "power_off": {
@@ -344,6 +375,8 @@
             "battery_charging": {
                 "name": "Ricarica batteria",
                 "state": {
+                    "none": "Non in carica",
+                    "charge_done": "Carica",
                     "charged": "Carica",
                     "charging": "In carica",
                     "not_charging": "Non in carica"
@@ -472,6 +505,15 @@
             },
             "unlock_fingerprint": {
                 "name": "Ultima impronta digitale utilizzata"
+            },
+            "unlock_temporary": {
+                "name": "Ultima password temporanea utilizzata"
+            },
+            "unlock_voice_remote": {
+                "name": "Ultimo comando vocale remoto utilizzato"
+            },
+            "unlock_phone_remote": {
+                "name": "Ultimo telefono remoto utilizzato"
             },
             "unlock_card": {
                 "name": "Ultima tessera utilizzata"

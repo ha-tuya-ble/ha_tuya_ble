@@ -105,6 +105,9 @@
             }
         },
         "button": {
+            "invert_switch_status": {
+                "name": "Inverter estado do interruptor"
+            },
             "push": {
                 "name": "Pressionar"
             },
@@ -156,6 +159,9 @@
             }
         },
         "number": {
+            "auto_lock_time": {
+                "name": "Atraso de bloqueio automático"
+            },
             "ble_unlock_check": {
                 "name": "Desbloquear"
             },
@@ -213,7 +219,20 @@
         },
         "select": {
             "beep_volume": {
-                "name": "Volume da fechadura"
+                "name": "Volume da fechadura",
+                "state": {
+                    "mute": "Mudo",
+                    "low": "Baixo",
+                    "normal": "Normal",
+                    "high": "Alto"
+                }
+            },
+            "unlock_switch": {
+                "name": "Verificação dupla",
+                "state": {
+                    "single_unlock": "Desbloqueio único",
+                    "combination": "Combinação"
+                }
             },
             "language": {
                 "name": "Idioma da fechadura"
@@ -221,6 +240,7 @@
             "fingerbot_mode": {
                 "name": "Modo",
                 "state": {
+                    "click": "Clique",
                     "program": "Programa",
                     "push": "Pressionar",
                     "switch": "Interruptor"
@@ -331,8 +351,19 @@
                 "state": {
                     "wrong_finger": "Impressão digital incorreta",
                     "wrong_password": "Senha incorreta",
+                    "wrong_card": "Cartão incorreto",
+                    "wrong_face": "Rosto incorreto",
+                    "tongue_bad": "Trinco emperrado",
+                    "too_hot": "Temperatura alta",
+                    "unclosed_time": "Porta aberta",
+                    "tongue_not_out": "Trinco não projetado",
+                    "pry": "Adulteração",
+                    "key_in": "Chave inserida",
                     "low_battery": "Bateria fraca",
-                    "power_off": "Desligado"
+                    "power_off": "Desligado",
+                    "shock": "Vibração",
+                    "defense": "Alarme armado",
+                    "wrong_unlock": "Desbloqueio incorreto"
                 }
             },
             "power_off": {
@@ -344,6 +375,8 @@
             "battery_charging": {
                 "name": "Carregamento da bateria",
                 "state": {
+                    "none": "Não está carregando",
+                    "charge_done": "Carregada",
                     "charged": "Carregada",
                     "charging": "Carregando",
                     "not_charging": "Não está carregando"
@@ -472,6 +505,15 @@
             },
             "unlock_fingerprint": {
                 "name": "Última digital utilizada"
+            },
+            "unlock_temporary": {
+                "name": "Última senha temporária utilizada"
+            },
+            "unlock_voice_remote": {
+                "name": "Última voz remota utilizada"
+            },
+            "unlock_phone_remote": {
+                "name": "Último telefone remoto utilizado"
             },
             "unlock_card": {
                 "name": "Último cartão utilizado"
