@@ -105,6 +105,9 @@
             }
         },
         "button": {
+            "invert_switch_status": {
+                "name": "反转开关状态"
+            },
             "push": {
                 "name": "按下"
             },
@@ -156,6 +159,9 @@
             }
         },
         "number": {
+            "auto_lock_time": {
+                "name": "自动上锁延迟"
+            },
             "ble_unlock_check": {
                 "name": "解锁"
             },
@@ -213,7 +219,20 @@
         },
         "select": {
             "beep_volume": {
-                "name": "锁音量"
+                "name": "锁音量",
+                "state": {
+                    "mute": "静音",
+                    "low": "低",
+                    "normal": "正常",
+                    "high": "高"
+                }
+            },
+            "unlock_switch": {
+                "name": "双重验证",
+                "state": {
+                    "single_unlock": "单人开锁",
+                    "combination": "组合开锁"
+                }
             },
             "language": {
                 "name": "锁语言"
@@ -221,6 +240,7 @@
             "fingerbot_mode": {
                 "name": "模式",
                 "state": {
+                    "click": "点击",
                     "program": "程序",
                     "push": "按下",
                     "switch": "开关"
@@ -331,8 +351,19 @@
                 "state": {
                     "wrong_finger": "指纹错误",
                     "wrong_password": "密码错误",
+                    "wrong_card": "刷卡错误",
+                    "wrong_face": "人脸错误",
+                    "tongue_bad": "锁舌卡住",
+                    "too_hot": "高温报警",
+                    "unclosed_time": "门未关好",
+                    "tongue_not_out": "锁舌未伸出",
+                    "pry": "防撬报警",
+                    "key_in": "钥匙插入",
                     "low_battery": "低电量",
-                    "power_off": "关机"
+                    "power_off": "关机",
+                    "shock": "震动报警",
+                    "defense": "布防报警",
+                    "wrong_unlock": "试错报警"
                 }
             },
             "power_off": {
@@ -344,6 +375,8 @@
             "battery_charging": {
                 "name": "电池充电",
                 "state": {
+                    "none": "未充电",
+                    "charge_done": "已充满",
                     "charged": "已充满",
                     "charging": "正在充电",
                     "not_charging": "未充电"
@@ -472,6 +505,15 @@
             },
             "unlock_fingerprint": {
                 "name": "上次使用的指纹"
+            },
+            "unlock_temporary": {
+                "name": "上次使用的临时密码开锁"
+            },
+            "unlock_voice_remote": {
+                "name": "上次使用的远程语音开锁"
+            },
+            "unlock_phone_remote": {
+                "name": "上次使用的远程手机开锁"
             },
             "unlock_card": {
                 "name": "上次使用的卡片"
