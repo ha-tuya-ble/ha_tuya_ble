@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from typing import Any
+import time
 
 from homeassistant.components.lock import (
     LockEntity,
@@ -10,6 +11,7 @@ from homeassistant.components.lock import (
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import Platform
 from homeassistant.core import HomeAssistant
+from homeassistant.exceptions import HomeAssistantError
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 
 from .const import DOMAIN, DPCode
@@ -21,11 +23,26 @@ from .devices import (
     get_device_product_info,
 )
 from .tuya_ble import TuyaBLEDataPointType, TuyaBLEDevice
+from .tuya_ble.security import decode_timestamped_ble_unlock_check
 
 # Pulido PLD_P130 Smart Lever Lock: momentary lever lock with free passage mode.
 PULIDO_PLD_P130 = "0qxp5u7s"
 
 DP71_RAW_UNLOCK_PRODUCT_IDS = frozenset({"2hmqh0ty", "djrqe0q6"})
+DP33_AUTOMATIC_LOCK_PRODUCT_IDS = frozenset({"dappsdq4"})
+DP71_TIMESTAMPED_UNLOCK_PRODUCT_IDS = frozenset({"dappsdq4"})
+
+
+def build_timestamped_unlock_command(ble_unlock_check: str, timestamp: int) -> bytes:
+    """Build a DP71 command using the check code and the current timestamp."""
+    check = decode_timestamped_ble_unlock_check(ble_unlock_check)
+    return (
+        b"\xff\xff\x00\x01"
+        + check[4:12]
+        + b"\x01"
+        + timestamp.to_bytes(4, "big")
+        + b"\x00\x01"
+    )
 
 
 async def async_setup_entry(
@@ -62,6 +79,9 @@ class TuyaBLELock(TuyaBLEEntity, LockEntity):
     @property
     def is_locked(self) -> bool | None:
         """Return true if lock is locked."""
+        if self._device.product_id in DP33_AUTOMATIC_LOCK_PRODUCT_IDS:
+            automatic_lock = self._device.datapoints[33]
+            return bool(automatic_lock.value) if automatic_lock else None
         if self._device.product_id == PULIDO_PLD_P130:
             # "Unlocked" on this lock is held by free passage mode (DP33),
             # which the lock re-reports on every connect. DP47 (motor state)
@@ -87,6 +107,12 @@ class TuyaBLELock(TuyaBLEEntity, LockEntity):
 
     async def async_lock(self, **kwargs: Any) -> None:
         """Lock the lock."""
+        if self._device.product_id in DP33_AUTOMATIC_LOCK_PRODUCT_IDS:
+            automatic_lock = self._device.datapoints.get_or_create(
+                33, TuyaBLEDataPointType.DT_BOOL, True
+            )
+            await automatic_lock.set_value(True)
+            return
         if self._device.product_id == PULIDO_PLD_P130:
             # Pulido PLD_P130: DP46 (manual_lock) = True locks and also ends
             # free passage mode (DP33). DP46 = False does nothing on this lock.
@@ -122,6 +148,12 @@ class TuyaBLELock(TuyaBLEEntity, LockEntity):
 
     async def async_unlock(self, **kwargs: Any) -> None:
         """Unlock the lock."""
+        if self._device.product_id in DP33_AUTOMATIC_LOCK_PRODUCT_IDS:
+            automatic_lock = self._device.datapoints.get_or_create(
+                33, TuyaBLEDataPointType.DT_BOOL, False
+            )
+            await automatic_lock.set_value(False)
+            return
         if self._device.product_id == PULIDO_PLD_P130:
             # Pulido PLD_P130 relocks by itself a few seconds after a BLE unlock,
             # so "unlocked" is held by turning on free passage mode (DP33).
@@ -175,6 +207,26 @@ class TuyaBLELock(TuyaBLEEntity, LockEntity):
 
     async def async_open(self, **kwargs: Any) -> None:
         """Open the covering."""
+        if self._device.product_id in DP71_TIMESTAMPED_UNLOCK_PRODUCT_IDS:
+            check = self._device._device_info.ble_unlock_check
+            if not check:
+                raise HomeAssistantError(
+                    "BLE unlock check is missing; refresh Tuya cloud credentials or "
+                    "enter ble_unlock_check in the integration options."
+                )
+            try:
+                command = build_timestamped_unlock_command(check, int(time.time()))
+            except ValueError as err:
+                raise HomeAssistantError(
+                    "BLE unlock check is invalid; refresh Tuya cloud credentials or "
+                    "enter ble_unlock_check in the integration options."
+                ) from err
+            # The app's undocumented 0x0023 preamble is intentionally omitted.
+            ble_unlock = self._device.datapoints.get_or_create(
+                71, TuyaBLEDataPointType.DT_RAW, command
+            )
+            await ble_unlock.set_value(command)
+            return
         if self._device.product_id == PULIDO_PLD_P130:
             # Momentary BLE unlock (DP6); the lock relocks after ~3 seconds.
             if bluetooth_unlock := self._device.datapoints.get_or_create(

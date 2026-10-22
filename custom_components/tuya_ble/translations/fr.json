@@ -22,7 +22,8 @@
             "invalid_local_key": "La clé locale semble invalide (au moins 6 caractères)",
             "invalid_device_id": "L'ID de l'appareil est requis",
             "invalid_product_id": "L'ID du produit est requis",
-            "invalid_category": "La catégorie est requise"
+            "invalid_category": "La catégorie est requise",
+            "invalid_ble_unlock_check": "Code de déverrouillage BLE non valide"
         },
         "flow_title": "{name}",
         "step": {
@@ -69,7 +70,8 @@
                     "device_id": "ID de l'appareil",
                     "product_id": "ID du produit (ex. neq16kgd)",
                     "category": "Catégorie (ex. szjqr pour les Fingerbots)",
-                    "device_name": "Nom de l'appareil (optionnel)"
+                    "device_name": "Nom de l'appareil (optionnel)",
+                    "ble_unlock_check": "Code de déverrouillage BLE (dappsdq4 uniquement, facultatif)"
                 }
             }
         }
@@ -741,7 +743,8 @@
             "invalid_local_key": "La clé locale semble invalide (au moins 6 caractères)",
             "invalid_device_id": "L'ID de l'appareil est requis",
             "invalid_product_id": "L'ID du produit est requis",
-            "invalid_category": "La catégorie est requise"
+            "invalid_category": "La catégorie est requise",
+            "invalid_ble_unlock_check": "Code de déverrouillage BLE non valide"
         },
         "step": {
             "login": {
@@ -779,7 +782,8 @@
                     "device_id": "ID de l'appareil",
                     "product_id": "ID du produit (ex. neq16kgd)",
                     "category": "Catégorie (ex. szjqr pour les Fingerbots)",
-                    "device_name": "Nom de l'appareil (optionnel)"
+                    "device_name": "Nom de l'appareil (optionnel)",
+                    "ble_unlock_check": "Code de déverrouillage BLE (dappsdq4 uniquement, facultatif)"
                 }
             },
             "settings": {

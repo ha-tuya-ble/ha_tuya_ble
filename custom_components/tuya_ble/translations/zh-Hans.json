@@ -22,7 +22,8 @@
             "invalid_local_key": "Local key 格式无效（至少 6 个字符）",
             "invalid_device_id": "需要提供 Device ID",
             "invalid_product_id": "需要提供 Product ID",
-            "invalid_category": "需要提供品类"
+            "invalid_category": "需要提供品类",
+            "invalid_ble_unlock_check": "BLE 解锁校验码无效"
         },
         "flow_title": "{name}",
         "step": {
@@ -69,7 +70,8 @@
                     "device_id": "Device ID",
                     "product_id": "Product ID（例如 neq16kgd）",
                     "category": "品类（例如 Fingerbot 为 szjqr）",
-                    "device_name": "设备名称（可选）"
+                    "device_name": "设备名称（可选）",
+                    "ble_unlock_check": "BLE 解锁校验码（仅限 dappsdq4，可选）"
                 }
             }
         }
@@ -741,7 +743,8 @@
             "invalid_local_key": "Local key 格式无效（至少 6 个字符）",
             "invalid_device_id": "需要提供 Device ID",
             "invalid_product_id": "需要提供 Product ID",
-            "invalid_category": "需要提供品类"
+            "invalid_category": "需要提供品类",
+            "invalid_ble_unlock_check": "BLE 解锁校验码无效"
         },
         "step": {
             "login": {
@@ -779,7 +782,8 @@
                     "device_id": "Device ID",
                     "product_id": "Product ID（例如 neq16kgd）",
                     "category": "品类（例如 Fingerbot 为 szjqr）",
-                    "device_name": "设备名称（可选）"
+                    "device_name": "设备名称（可选）",
+                    "ble_unlock_check": "BLE 解锁校验码（仅限 dappsdq4，可选）"
                 }
             },
             "settings": {
