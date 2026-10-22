@@ -1,6 +1,7 @@
 """Test Tuya BLE diagnostics."""
 
 from unittest.mock import AsyncMock, Mock, patch
+import pytest
 
 from homeassistant.components.bluetooth import BluetoothServiceInfoBleak
 from homeassistant.core import HomeAssistant
@@ -39,8 +40,12 @@ async def test_diagnostics_unloaded_entry(hass: HomeAssistant) -> None:
     )
     entry.add_to_hass(hass)
 
-    with patch("homeassistant.components.bluetooth.async_last_service_info", return_value=None), patch(
-        "homeassistant.components.bluetooth.async_scanner_count", return_value=2
+    with (
+        patch(
+            "homeassistant.components.bluetooth.async_last_service_info",
+            return_value=None,
+        ),
+        patch("homeassistant.components.bluetooth.async_scanner_count", return_value=2),
     ):
         diagnostics = await async_get_config_entry_diagnostics(hass, entry)
 
@@ -58,7 +63,8 @@ async def test_diagnostics_unloaded_entry(hass: HomeAssistant) -> None:
     assert diagnostics["device"] == {"loaded": False}
 
 
-async def test_diagnostics_loaded_entry(hass: HomeAssistant) -> None:
+@pytest.mark.parametrize("product_id", ["dappsdq4", "other-model"])
+async def test_diagnostics_loaded_entry(hass: HomeAssistant, product_id: str) -> None:
     """Test diagnostics output when the config entry is loaded with device data."""
     entry = MockConfigEntry(
         domain=DOMAIN,
@@ -81,12 +87,16 @@ async def test_diagnostics_loaded_entry(hass: HomeAssistant) -> None:
 
     device = TuyaBLEDevice(manager, ble_device)
     await device.initialize()
+    device._device_info = Mock(product_id=product_id)
 
     # Add datapoints to test formatting
     device.datapoints._update_from_device(1, 0, 0, TuyaBLEDataPointType.DT_BOOL, True)
     device.datapoints._update_from_device(2, 0, 0, TuyaBLEDataPointType.DT_VALUE, 42)
     device.datapoints._update_from_device(
         3, 0, 0, TuyaBLEDataPointType.DT_RAW, bytes.fromhex("01020304")
+    )
+    device.datapoints._update_from_device(
+        71, 0, 0, TuyaBLEDataPointType.DT_RAW, b"synthetic-secret"
     )
 
     product_info = TuyaBLEProductInfo(name="Test Product", manufacturer="Test Maker")
@@ -109,9 +119,13 @@ async def test_diagnostics_loaded_entry(hass: HomeAssistant) -> None:
     )
     service_info.name = "TuyaBLEDevice"
 
-    with patch(
-        "homeassistant.components.bluetooth.async_last_service_info", return_value=service_info
-    ), patch("homeassistant.components.bluetooth.async_scanner_count", return_value=3):
+    with (
+        patch(
+            "homeassistant.components.bluetooth.async_last_service_info",
+            return_value=service_info,
+        ),
+        patch("homeassistant.components.bluetooth.async_scanner_count", return_value=3),
+    ):
         diagnostics = await async_get_config_entry_diagnostics(hass, entry)
 
     # Verify entry redaction
@@ -148,4 +162,13 @@ async def test_diagnostics_loaded_entry(hass: HomeAssistant) -> None:
         {"id": 1, "type": "DT_BOOL", "value": True},
         {"id": 2, "type": "DT_VALUE", "value": 42},
         {"id": 3, "type": "DT_RAW", "value": "01020304"},
+        {
+            "id": 71,
+            "type": "DT_RAW",
+            "value": (
+                "**REDACTED**"
+                if product_id == "dappsdq4"
+                else b"synthetic-secret".hex()
+            ),
+        },
     ]

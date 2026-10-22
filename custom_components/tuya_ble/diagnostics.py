@@ -22,6 +22,8 @@ from .const import (
 )
 from .devices import TuyaBLEData
 
+SENSITIVE_DP71_PRODUCT_IDS = frozenset({"dappsdq4"})
+
 TO_REDACT = {
     CONF_ACCESS_ID,
     CONF_ACCESS_SECRET,
@@ -120,9 +122,13 @@ async def async_get_config_entry_diagnostics(
             "id": dp.id,
             "type": dp.type.name if dp.type else None,
             "value": (
-                dp.value
-                if not isinstance(dp.value, (bytes, bytearray))
-                else dp.value.hex()
+                "**REDACTED**"
+                if device.product_id in SENSITIVE_DP71_PRODUCT_IDS and dp.id == 71
+                else (
+                    dp.value
+                    if not isinstance(dp.value, (bytes, bytearray))
+                    else dp.value.hex()
+                )
             ),
         }
         for dp in _iter_datapoints(device)
