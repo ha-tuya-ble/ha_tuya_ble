@@ -57,6 +57,7 @@ from .const import (
     TUYA_RESPONSE_MSG,
     CONF_ACCESS_ID,
     CONF_ACCESS_SECRET,
+    CONF_BLE_UNLOCK_CHECK,
     CONF_APP_TYPE,
     CONF_AUTH_TYPE,
     CONF_CATEGORY,
@@ -79,6 +80,7 @@ from .const import (
 )
 from .devices import get_device_readable_name
 from .cloud import HASSTuyaBLEDeviceManager, TuyaMobileIdentityMismatch
+from .tuya_ble.security import decode_timestamped_ble_unlock_check
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -91,6 +93,7 @@ DEVICE_DATA_KEYS = (
     CONF_UUID,
     CONF_LOCAL_KEY,
     CONF_SEC_KEY,
+    CONF_BLE_UNLOCK_CHECK,
     CONF_DEVICE_ID,
     CONF_CATEGORY,
     CONF_PRODUCT_ID,
@@ -158,6 +161,7 @@ def _stored_identity_candidate(
         functions=options.get(CONF_FUNCTIONS),
         status_range=options.get(CONF_STATUS_RANGE),
         sec_key=None,
+        ble_unlock_check=options.get(CONF_BLE_UNLOCK_CHECK),
     )
 
 
@@ -308,6 +312,12 @@ def _manual_schema(
             description={"suggested_value": defaults.get(CONF_SEC_KEY, "")},
         )
     ] = TextSelector(TextSelectorConfig(type=TextSelectorType.PASSWORD))
+    fields[
+        vol.Optional(
+            CONF_BLE_UNLOCK_CHECK,
+            description={"suggested_value": defaults.get(CONF_BLE_UNLOCK_CHECK, "")},
+        )
+    ] = TextSelector(TextSelectorConfig(type=TextSelectorType.PASSWORD))
     fields[vol.Required(CONF_DEVICE_ID, default=defaults.get(CONF_DEVICE_ID, ""))] = str
     fields[vol.Required(CONF_PRODUCT_ID, default=defaults.get(CONF_PRODUCT_ID, ""))] = (
         str
@@ -328,6 +338,7 @@ def _validate_manual(
     uuid = user_input[CONF_UUID].strip()
     local_key = user_input[CONF_LOCAL_KEY].strip()
     sec_key = (user_input.get(CONF_SEC_KEY) or "").strip()
+    ble_unlock_check = (user_input.get(CONF_BLE_UNLOCK_CHECK) or "").strip()
     device_id = user_input[CONF_DEVICE_ID].strip()
     product_id = user_input[CONF_PRODUCT_ID].strip()
     category = user_input[CONF_CATEGORY].strip()
@@ -342,6 +353,11 @@ def _validate_manual(
         errors[CONF_PRODUCT_ID] = "invalid_product_id"
     if not category:
         errors[CONF_CATEGORY] = "invalid_category"
+    if ble_unlock_check:
+        try:
+            decode_timestamped_ble_unlock_check(ble_unlock_check)
+        except ValueError:
+            errors[CONF_BLE_UNLOCK_CHECK] = "invalid_ble_unlock_check"
     if errors:
         return None
 
@@ -358,6 +374,8 @@ def _validate_manual(
     }
     if sec_key:
         result[CONF_SEC_KEY] = sec_key
+    if ble_unlock_check:
+        result[CONF_BLE_UNLOCK_CHECK] = ble_unlock_check
     return result
 
 
@@ -426,6 +444,7 @@ class TuyaBLEOptionsFlow(OptionsFlowWithConfigEntry):
                     else self.config_entry.options
                 )
                 new_options.pop(CONF_SEC_KEY, None)
+                new_options.pop(CONF_BLE_UNLOCK_CHECK, None)
                 new_options.update(creds)
                 return self.async_create_entry(
                     title=self.config_entry.title,
@@ -607,6 +626,7 @@ class TuyaBLEConfigFlow(ConfigFlow, domain=DOMAIN):
                 if self._pending_credentials:
                     options = dict(self._data)
                     options.pop(CONF_SEC_KEY, None)
+                    options.pop(CONF_BLE_UNLOCK_CHECK, None)
                     options.update(creds)
                     options[CONF_ADDRESS] = address
                     title = self._pending_name or creds[CONF_DEVICE_NAME]
