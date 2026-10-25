@@ -25,6 +25,8 @@ from .tuya_ble import TuyaBLEDataPointType, TuyaBLEDevice
 # Pulido PLD_P130 Smart Lever Lock: momentary lever lock with free passage mode.
 PULIDO_PLD_P130 = "0qxp5u7s"
 
+DP71_RAW_UNLOCK_PRODUCT_IDS = frozenset({"2hmqh0ty", "djrqe0q6"})
+
 
 async def async_setup_entry(
     hass: HomeAssistant,
@@ -130,7 +132,7 @@ class TuyaBLELock(TuyaBLEEntity, LockEntity):
             ):
                 await free_passage.set_value(True)
             return
-        if self._device.product_id == "2hmqh0ty":
+        if self._device.product_id in DP71_RAW_UNLOCK_PRODUCT_IDS:
             # EL605A knob lock: unlock is a DP71 (ble_unlock_check, Raw)
             # trigger; a zero-length payload is enough. It also exposes
             # manual_lock (DP46), so without this branch it would fall into

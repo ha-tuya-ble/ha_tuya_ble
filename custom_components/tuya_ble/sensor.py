@@ -573,6 +573,97 @@ mapping: dict[str, TuyaBLECategorySensorMapping] = {
             "2hmqh0ty": [  # EL605A Knob Lock
                 TuyaBLEBatteryMapping(dp_id=8),
             ],
+            "djrqe0q6": [  # Smart Lock C-014S
+                TuyaBLEBatteryMapping(dp_id=8),
+                TuyaBLESensorMapping(
+                    dp_id=21,
+                    description=SensorEntityDescription(
+                        key="alarm_lock",
+                        icon="mdi:alert",
+                        device_class=SensorDeviceClass.ENUM,
+                        options=[
+                            "wrong_finger",
+                            "wrong_password",
+                            "wrong_card",
+                            "wrong_face",
+                            "tongue_bad",
+                            "too_hot",
+                            "unclosed_time",
+                            "tongue_not_out",
+                            "pry",
+                            "key_in",
+                            "low_battery",
+                            "power_off",
+                            "shock",
+                            "defense",
+                            "wrong_unlock",
+                        ],
+                    ),
+                ),
+                TuyaBLESensorMapping(
+                    dp_id=12,
+                    description=SensorEntityDescription(
+                        key="unlock_fingerprint",
+                        icon="mdi:fingerprint",
+                        suggested_display_precision=0,
+                        entity_category=EntityCategory.DIAGNOSTIC,
+                    ),
+                ),
+                TuyaBLESensorMapping(
+                    dp_id=13,
+                    description=SensorEntityDescription(
+                        key="unlock_password",
+                        icon="mdi:numeric-0-box-multiple-outline",
+                        suggested_display_precision=0,
+                        entity_category=EntityCategory.DIAGNOSTIC,
+                    ),
+                ),
+                TuyaBLESensorMapping(
+                    dp_id=15,
+                    description=SensorEntityDescription(
+                        key="unlock_card",
+                        icon="mdi:nfc-variant",
+                        suggested_display_precision=0,
+                        entity_category=EntityCategory.DIAGNOSTIC,
+                    ),
+                ),
+                TuyaBLESensorMapping(
+                    dp_id=19,
+                    description=SensorEntityDescription(
+                        key="unlock_ble",
+                        icon="mdi:bluetooth",
+                        suggested_display_precision=0,
+                        entity_category=EntityCategory.DIAGNOSTIC,
+                    ),
+                ),
+                TuyaBLESensorMapping(
+                    dp_id=55,
+                    description=SensorEntityDescription(
+                        key="unlock_temporary",
+                        icon="mdi:lock-clock",
+                        suggested_display_precision=0,
+                        entity_category=EntityCategory.DIAGNOSTIC,
+                    ),
+                ),
+                TuyaBLESensorMapping(
+                    dp_id=62,
+                    description=SensorEntityDescription(
+                        key="unlock_phone_remote",
+                        icon="mdi:cellphone-lock",
+                        suggested_display_precision=0,
+                        entity_category=EntityCategory.DIAGNOSTIC,
+                    ),
+                ),
+                TuyaBLESensorMapping(
+                    dp_id=63,
+                    description=SensorEntityDescription(
+                        key="unlock_voice_remote",
+                        icon="mdi:microphone",
+                        suggested_display_precision=0,
+                        entity_category=EntityCategory.DIAGNOSTIC,
+                    ),
+                ),
+            ],
             **dict.fromkeys(
                 [
                     "y2yaegze",
@@ -859,6 +950,26 @@ mapping: dict[str, TuyaBLECategorySensorMapping] = {
     ),
     "szjqr": TuyaBLECategorySensorMapping(
         products={
+            **dict.fromkeys(
+                ["bo25vaxy"],  # CBF02V2 Finger Robot
+                [
+                    TuyaBLESensorMapping(
+                        dp_id=7,
+                        description=SensorEntityDescription(
+                            key="battery_charging",
+                            device_class=SensorDeviceClass.ENUM,
+                            entity_category=EntityCategory.DIAGNOSTIC,
+                            options=["none", "charging", "charge_done"],
+                        ),
+                        icons=[
+                            "mdi:power-plug-off",
+                            "mdi:power-plug-battery",
+                            "mdi:battery-check",
+                        ],
+                    ),
+                    TuyaBLEBatteryMapping(dp_id=8),
+                ],
+            ),
             **dict.fromkeys(
                 ["3yqdo5yt", "xhf790if", "okkyfgfs"],  # CubeTouch 1s and II
                 [
@@ -2377,6 +2488,33 @@ mapping: dict[str, TuyaBLECategorySensorMapping] = {
                         options=[
                             warning.lower() for warning in PARKSIDE_MOWER_WARNINGS
                         ],
+                    ),
+                ),
+            ],
+        },
+    ),
+    "swtz": TuyaBLECategorySensorMapping(
+        products={
+            "iv13iqhf": [  # Lidl GRILLMEISTER Bluetooth Cooking Thermometer
+                TuyaBLEBatteryMapping(dp_id=1),
+                TuyaBLETemperatureMapping(
+                    dp_id=2,
+                    coefficient=10.0,
+                    description=SensorEntityDescription(
+                        key="probe_1_temperature",
+                        device_class=SensorDeviceClass.TEMPERATURE,
+                        native_unit_of_measurement=UnitOfTemperature.CELSIUS,
+                        state_class=SensorStateClass.MEASUREMENT,
+                    ),
+                ),
+                TuyaBLETemperatureMapping(
+                    dp_id=3,
+                    coefficient=10.0,
+                    description=SensorEntityDescription(
+                        key="probe_2_temperature",
+                        device_class=SensorDeviceClass.TEMPERATURE,
+                        native_unit_of_measurement=UnitOfTemperature.CELSIUS,
+                        state_class=SensorStateClass.MEASUREMENT,
                     ),
                 ),
             ],

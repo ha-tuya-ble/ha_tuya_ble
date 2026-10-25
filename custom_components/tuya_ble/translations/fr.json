@@ -105,6 +105,9 @@
             }
         },
         "button": {
+            "invert_switch_status": {
+                "name": "Inverser l'état de l'interrupteur"
+            },
             "push": {
                 "name": "Pousser"
             },
@@ -156,6 +159,9 @@
             }
         },
         "number": {
+            "auto_lock_time": {
+                "name": "Délai de verrouillage automatique"
+            },
             "ble_unlock_check": {
                 "name": "Déverrouiller"
             },
@@ -213,7 +219,20 @@
         },
         "select": {
             "beep_volume": {
-                "name": "Volume de la serrure"
+                "name": "Volume de la serrure",
+                "state": {
+                    "mute": "Sourdine",
+                    "low": "Bas",
+                    "normal": "Normal",
+                    "high": "Haut"
+                }
+            },
+            "unlock_switch": {
+                "name": "Double vérification",
+                "state": {
+                    "single_unlock": "Déverrouillage simple",
+                    "combination": "Combinaison"
+                }
             },
             "language": {
                 "name": "Langue de la serrure"
@@ -221,6 +240,7 @@
             "fingerbot_mode": {
                 "name": "Mode",
                 "state": {
+                    "click": "Clic",
                     "program": "Programme",
                     "push": "Pousser",
                     "switch": "Interrupteur"
@@ -331,8 +351,19 @@
                 "state": {
                     "wrong_finger": "Empreinte incorrecte",
                     "wrong_password": "Mot de passe incorrect",
+                    "wrong_card": "Carte incorrecte",
+                    "wrong_face": "Visage incorrect",
+                    "tongue_bad": "Pênes coincés",
+                    "too_hot": "Température élevée",
+                    "unclosed_time": "Porte laissée ouverte",
+                    "tongue_not_out": "Pêne non sorti",
+                    "pry": "Sabotage",
+                    "key_in": "Clé insérée",
                     "low_battery": "Batterie faible",
-                    "power_off": "Éteint"
+                    "power_off": "Éteint",
+                    "shock": "Vibration",
+                    "defense": "Alarme armée",
+                    "wrong_unlock": "Déverrouillage incorrect"
                 }
             },
             "power_off": {
@@ -344,6 +375,8 @@
             "battery_charging": {
                 "name": "Charge de la batterie",
                 "state": {
+                    "none": "Pas en charge",
+                    "charge_done": "Chargée",
                     "charged": "Chargée",
                     "charging": "En charge",
                     "not_charging": "Pas en charge"
@@ -473,6 +506,15 @@
             "unlock_fingerprint": {
                 "name": "Dernière empreinte utilisée"
             },
+            "unlock_temporary": {
+                "name": "Dernier mot de passe temporaire utilisé"
+            },
+            "unlock_voice_remote": {
+                "name": "Dernière commande vocale distante utilisée"
+            },
+            "unlock_phone_remote": {
+                "name": "Dernier téléphone distant utilisé"
+            },
             "unlock_card": {
                 "name": "Dernière carte utilisée"
             },
@@ -568,6 +610,12 @@
             },
             "zones": {
                 "name": "Zones"
+            },
+            "probe_1_temperature": {
+                "name": "Température sonde 1"
+            },
+            "probe_2_temperature": {
+                "name": "Température sonde 2"
             }
         },
         "switch": {

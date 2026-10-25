@@ -5,6 +5,26 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog],
 and this project adheres to [Semantic Versioning].
 
+## [0.12.5](https://github.com/ha-tuya-ble/ha_tuya_ble/compare/0.12.4...0.12.5) (2026-10-13)
+
+
+### Devices
+
+* **device:** add Lidl GRILLMEISTER cooking thermometer (swtz / iv13iqhf) ([0aa6bff](https://github.com/ha-tuya-ble/ha_tuya_ble/commit/0aa6bff5e534f707a4e4f11e0c4620432d5db507))
+
+## [0.12.4](https://github.com/ha-tuya-ble/ha_tuya_ble/compare/0.12.3...0.12.4) (2026-10-12)
+
+
+### Devices
+
+* **device:** add Smart Lock C-014S (jtmspro / djrqe0q6) ([b06781d](https://github.com/ha-tuya-ble/ha_tuya_ble/commit/b06781dab90fbdcda623c5c02205b594b0b3a59e))
+* **device:** Add support for blind controller RSH-MC27 ("ousymtkt") ([dbbf9c2](https://github.com/ha-tuya-ble/ha_tuya_ble/commit/dbbf9c2fe501e3dbcaca3e140b4c2a870a95cb90))
+
+
+### Bug Fixes
+
+* **device:** use legacy key derivation for SGS01 plant sensor (gvygg3m8) ([d9662bf](https://github.com/ha-tuya-ble/ha_tuya_ble/commit/d9662bf6027c2fb6d755f8abbf7bbbf028aa85a3))
+
 ## [0.12.3](https://github.com/ha-tuya-ble/ha_tuya_ble/compare/0.12.2...0.12.3) (2026-09-30)
 
 

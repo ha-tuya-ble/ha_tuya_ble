@@ -16,7 +16,7 @@ from homeassistant.const import (
     EVENT_HOMEASSISTANT_STOP,
     Platform,
 )
-from homeassistant.core import Event, HomeAssistant, callback
+from homeassistant.core import CALLBACK_TYPE, Event, HomeAssistant, callback
 from homeassistant.exceptions import ConfigEntryNotReady
 
 from .tuya_ble import TuyaBLEDevice
@@ -67,6 +67,67 @@ CREDENTIAL_OPTION_KEYS = (
 # How long unloading waits for a disconnect before giving up on it.
 DISCONNECT_TIMEOUT = 15
 
+# Watchers registered while a device could not be found, by entry id. These
+# cannot be tracked with `entry.async_on_unload()`: setting up an entry that
+# raises ConfigEntryNotReady is not a successful setup, so Home Assistant runs
+# its on-unload callbacks straight away and the watcher would be cancelled
+# before it ever saw an advertisement.
+_missing_device_watchers: dict[str, CALLBACK_TYPE] = {}
+
+
+@callback
+def _async_stop_watching(entry: ConfigEntry) -> None:
+    """Cancel the watcher for an entry, if one is registered."""
+    if unregister := _missing_device_watchers.pop(entry.entry_id, None):
+        unregister()
+
+
+@callback
+def _async_watch_for_device(
+    hass: HomeAssistant, entry: ConfigEntry, address: str
+) -> None:
+    """Reload the entry once a device we could not find advertises again.
+
+    A device that advertises rarely can stay unavailable indefinitely after it
+    briefly goes out of range, because nothing reliably retries once it is back:
+
+    - The setup retry backs off to one attempt every 10 minutes, while a remote
+      scanner only keeps an advertisement for a few minutes, so a retry usually
+      lands in a gap and finds nothing even for a device that is advertising.
+    - Home Assistant reloads an entry in the retry state when a bluetooth
+      discovery flow fires for its address, but the integration matcher
+      remembers an address once it has matched, so that rescue only happens on
+      the first matching advertisement after a restart.
+
+    Watching the address directly closes the gap: the entry is reloaded as soon
+    as the device is heard from. Registering in a non-passive mode also asks
+    scanners that support it to actively scan for this address while the device
+    is missing, which is otherwise only requested once the entry is set up.
+    """
+    if entry.entry_id in _missing_device_watchers:
+        return
+
+    @callback
+    def _async_device_found(
+        service_info: bluetooth.BluetoothServiceInfoBleak,
+        change: bluetooth.BluetoothChange,
+    ) -> None:
+        """Handle an advertisement from a device that was missing."""
+        _LOGGER.debug(
+            "%s: Device found again (RSSI %s), reloading entry",
+            address,
+            service_info.rssi,
+        )
+        _async_stop_watching(entry)
+        hass.config_entries.async_schedule_reload(entry.entry_id)
+
+    _missing_device_watchers[entry.entry_id] = bluetooth.async_register_callback(
+        hass,
+        _async_device_found,
+        BluetoothCallbackMatcher({ADDRESS: address}),
+        bluetooth.BluetoothScanningMode.ACTIVE,
+    )
+
 
 async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     """Set up Tuya BLE from a config entry."""
@@ -76,10 +137,12 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
         hass, address.upper(), True
     ) or await get_device(address)
     if not ble_device:
+        _async_watch_for_device(hass, entry, address.upper())
         raise ConfigEntryNotReady(
             f"Could not find Tuya BLE device with address {address}"
         )
 
+    _async_stop_watching(entry)
     manager = HASSTuyaBLEDeviceManager(hass, entry.options.copy())
     device = TuyaBLEDevice(
         manager,
@@ -190,6 +253,7 @@ async def _async_update_listener(hass: HomeAssistant, entry: ConfigEntry) -> Non
 
 async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     """Unload a config entry."""
+    _async_stop_watching(entry)
     if unload_ok := await hass.config_entries.async_unload_platforms(entry, PLATFORMS):
         data: TuyaBLEData = hass.data[DOMAIN].pop(entry.entry_id)
         # stop() -> _execute_disconnect() waits for self._connect_lock, which

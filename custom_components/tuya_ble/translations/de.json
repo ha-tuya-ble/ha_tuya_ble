@@ -105,6 +105,9 @@
             }
         },
         "button": {
+            "invert_switch_status": {
+                "name": "Schalterstatus umkehren"
+            },
             "push": {
                 "name": "Drücken"
             },
@@ -156,6 +159,9 @@
             }
         },
         "number": {
+            "auto_lock_time": {
+                "name": "Automatische Verriegelungsverzögerung"
+            },
             "ble_unlock_check": {
                 "name": "Entriegeln"
             },
@@ -213,7 +219,20 @@
         },
         "select": {
             "beep_volume": {
-                "name": "Lautstärke sperren"
+                "name": "Lautstärke sperren",
+                "state": {
+                    "mute": "Stumm",
+                    "low": "Niedrig",
+                    "normal": "Normal",
+                    "high": "Hoch"
+                }
+            },
+            "unlock_switch": {
+                "name": "Doppelte Verifizierung",
+                "state": {
+                    "single_unlock": "Einzelentsperrung",
+                    "combination": "Kombination"
+                }
             },
             "language": {
                 "name": "Schloss-Sprache"
@@ -221,6 +240,7 @@
             "fingerbot_mode": {
                 "name": "Modus",
                 "state": {
+                    "click": "Klick",
                     "program": "Programm",
                     "push": "Drücken",
                     "switch": "Schalter"
@@ -331,8 +351,19 @@
                 "state": {
                     "wrong_finger": "Falscher Fingerabdruck",
                     "wrong_password": "Falsches Passwort",
+                    "wrong_card": "Falsche Karte",
+                    "wrong_face": "Falsches Gesicht",
+                    "tongue_bad": "Riegel klemmt",
+                    "too_hot": "Hohe Temperatur",
+                    "unclosed_time": "Tür offen gelassen",
+                    "tongue_not_out": "Riegel nicht ausgefahren",
+                    "pry": "Sabotage",
+                    "key_in": "Schlüssel eingesteckt",
                     "low_battery": "Niedriger Batteriestatus",
-                    "power_off": "Ausgeschaltet"
+                    "power_off": "Ausgeschaltet",
+                    "shock": "Vibration",
+                    "defense": "Alarm scharfgeschaltet",
+                    "wrong_unlock": "Falsche Entsperrung"
                 }
             },
             "power_off": {
@@ -344,6 +375,8 @@
             "battery_charging": {
                 "name": "Batterieladung",
                 "state": {
+                    "none": "Lädt nicht",
+                    "charge_done": "Geladen",
                     "charged": "Geladen",
                     "charging": "Lädt",
                     "not_charging": "Lädt nicht"
@@ -473,6 +506,15 @@
             "unlock_fingerprint": {
                 "name": "Zuletzt verwendeter Fingerabdruck"
             },
+            "unlock_temporary": {
+                "name": "Zuletzt verwendetes temporäres Passwort"
+            },
+            "unlock_voice_remote": {
+                "name": "Zuletzt verwendete Remote-Sprachsteuerung"
+            },
+            "unlock_phone_remote": {
+                "name": "Zuletzt verwendetes Remote-Telefon"
+            },
             "unlock_card": {
                 "name": "Zuletzt verwendete Karte"
             },
@@ -568,6 +610,12 @@
             },
             "zones": {
                 "name": "Zonen"
+            },
+            "probe_1_temperature": {
+                "name": "Temperatur Fühler 1"
+            },
+            "probe_2_temperature": {
+                "name": "Temperatur Fühler 2"
             }
         },
         "switch": {

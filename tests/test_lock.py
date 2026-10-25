@@ -356,3 +356,86 @@ async def test_pulido_pld_p130_lock(hass: HomeAssistant) -> None:
     switch_dps = {m.dp_id for m in get_switch_mapping(device)}
     assert 46 not in switch_dps
     assert 33 in switch_dps
+
+
+async def test_c014s_lock_unlocks_via_dp71(hass: HomeAssistant) -> None:
+    """Smart Lock C-014S (jtmspro/djrqe0q6) must unlock with an empty DP71 write.
+
+    The lock also exposes manual_lock (DP46); without the product-specific
+    branch, async_unlock would write DP46=False, which does not move the bolt.
+    Locking still goes through DP46=True.
+    """
+    from pytest_homeassistant_custom_component.common import MockConfigEntry
+    from custom_components.tuya_ble.const import DOMAIN
+    from custom_components.tuya_ble.cloud import HASSTuyaBLEDeviceManager
+    from custom_components.tuya_ble.devices import (
+        TuyaBLEDevice,
+        TuyaBLECoordinator,
+        TuyaBLEData,
+        get_device_product_info,
+    )
+    from custom_components.tuya_ble.tuya_ble.manager import TuyaBLEDeviceCredentials
+    from bleak.backends.device import BLEDevice
+
+    entry = MockConfigEntry(
+        domain=DOMAIN,
+        data={
+            "devices": CONFIG,
+            "address": DEVICE_ADDRESS,
+        },
+        title="Mock TuyaBLE C-014S",
+    )
+    entry.add_to_hass(hass)
+
+    ble_device = BLEDevice(name="TyOS", address="11:22:33", details="", rssi=-50)
+    manager = HASSTuyaBLEDeviceManager(hass, entry.options.copy())
+    device = TuyaBLEDevice(manager, ble_device)
+    await device.initialize()
+
+    device._device_info = TuyaBLEDeviceCredentials(
+        uuid="uuid123",
+        local_key="wV[NcWGUSFF`dSgO",
+        device_id="767823809c9c1f458745",
+        category="jtmspro",
+        product_id="djrqe0q6",
+        device_name="Smart Lock C-014S",
+        product_model="",
+        product_name="Smart Lock C-014S",
+        functions=[],
+        status_range=[],
+    )
+
+    device._send_datapoints = AsyncMock()
+
+    product_info = get_device_product_info(device)
+    assert product_info is not None
+    assert product_info.name == "Smart Lock C-014S"
+    assert product_info.lock == 1
+
+    hass.data.setdefault(DOMAIN, {})
+    coordinator = TuyaBLECoordinator(hass, device)
+    hass.data[DOMAIN][entry.entry_id] = TuyaBLEData(
+        title="Hello",
+        device=device,
+        manager=manager,
+        product=product_info,
+        coordinator=coordinator,
+    )
+
+    entity = TuyaBLELock(hass, coordinator, device, product_info)
+    entity.async_write_ha_state = Mock()
+    coordinator._async_handle_connect()
+
+    # Lock: generic manual_lock = True (no cloud spec here, so the DPCode
+    # fallback key is used, exactly as in test_lock above)
+    await entity.async_lock()
+    await hass.async_block_till_done()
+    device._send_datapoints.assert_called_with([DPCode.MANUAL_LOCK])
+    assert device.datapoints[DPCode.MANUAL_LOCK].value is True
+
+    # Unlock: zero-length Raw write to DP71, manual_lock untouched
+    await entity.async_unlock()
+    await hass.async_block_till_done()
+    device._send_datapoints.assert_called_with([71])
+    assert device.datapoints[71].value == b""
+    assert device.datapoints[DPCode.MANUAL_LOCK].value is True

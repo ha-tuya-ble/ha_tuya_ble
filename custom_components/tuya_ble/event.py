@@ -62,7 +62,7 @@ mapping: dict[str, TuyaBLECategoryEventMapping] = {
     "jtmspro": TuyaBLECategoryEventMapping(
         products={
             **dict.fromkeys(
-                ["stugc8dl", "xicdxood", "yfqp0shy"],
+                ["stugc8dl", "xicdxood", "yfqp0shy", "djrqe0q6"],
                 [
                     TuyaBLEEventMapping(
                         dp_id=24,

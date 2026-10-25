@@ -494,6 +494,7 @@ devices_database: dict[str, TuyaBLECategoryInfo] = {
             "hs21i377": TuyaBLEProductInfo(name="Smart Cylinder Lock"),
             "kholoaew": TuyaBLEProductInfo(name="Smart Lock"),
             "2hmqh0ty": TuyaBLEProductInfo(name="EL605A Knob Lock", lock=1),
+            "djrqe0q6": TuyaBLEProductInfo(name="Smart Lock C-014S", lock=1),
             "pyawczjj": TuyaBLEProductInfo(name="CS-9 Smart Fingerprint Lock", lock=1),
             "yfqp0shy": TuyaBLEProductInfo(
                 name="Gainsborough Liberty BLE Lock (GGC01HA)", lock=1
@@ -507,6 +508,20 @@ devices_database: dict[str, TuyaBLECategoryInfo] = {
     ),
     "szjqr": TuyaBLECategoryInfo(
         products={
+            **dict.fromkeys(
+                ["bo25vaxy"],  # CBF02V2 Finger Robot
+                TuyaBLEProductInfo(
+                    name="Finger Robot CBF02V2",
+                    fingerbot=TuyaBLEFingerbotInfo(
+                        switch=1,
+                        mode=2,
+                        up_position=4,
+                        down_position=5,
+                        hold_time=3,
+                        reverse_positions=0,
+                    ),
+                ),
+            ),
             "3yqdo5yt": TuyaBLEProductInfo(  # device product_id
                 name="CUBETOUCH 1s",
                 fingerbot=TuyaBLEFingerbotInfo(
@@ -815,6 +830,13 @@ devices_database: dict[str, TuyaBLECategoryInfo] = {
         products={
             "9hdajpiw": TuyaBLEProductInfo(  # device product_id
                 name="Robot Mower PAMRC 250 A1 (BT) City",
+            ),
+        },
+    ),
+    "swtz": TuyaBLECategoryInfo(
+        products={
+            "iv13iqhf": TuyaBLEProductInfo(  # device product_id
+                name="GRILLMEISTER Bluetooth Cooking Thermometer",
             ),
         },
     ),

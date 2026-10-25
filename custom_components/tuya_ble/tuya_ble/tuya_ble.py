@@ -69,7 +69,7 @@ BLEAK_EXCEPTIONS = (*BLEAK_RETRY_EXCEPTIONS, OSError)
 
 
 FD50_DEVICE_INFO_PRODUCT_IDS = frozenset(
-    {"jntxv3q4", "9hdajpiw", "2hmqh0ty", "qcrilcpr"}
+    {"jntxv3q4", "9hdajpiw", "2hmqh0ty", "qcrilcpr", "djrqe0q6"}
 )
 
 # Devices that use legacy key derivation even when the cloud returns a sec_key.

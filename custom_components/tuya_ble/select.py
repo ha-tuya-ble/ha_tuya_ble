@@ -489,6 +489,36 @@ mapping: dict[str, TuyaBLECategorySelectMapping] = {
     ),
     "jtmspro": TuyaBLECategorySelectMapping(
         products={
+            "djrqe0q6": [  # Smart Lock C-014S
+                TuyaBLESelectMapping(
+                    dp_id=31,
+                    description=SelectEntityDescription(
+                        key="beep_volume",
+                        icon="mdi:volume-high",
+                        options=[
+                            "mute",
+                            "low",
+                            "normal",
+                            "high",
+                        ],
+                        entity_category=EntityCategory.CONFIG,
+                    ),
+                    dp_type=TuyaBLEDataPointType.DT_ENUM,
+                ),
+                TuyaBLESelectMapping(
+                    dp_id=34,
+                    description=SelectEntityDescription(
+                        key="unlock_switch",
+                        icon="mdi:shield-lock-outline",
+                        options=[
+                            "single_unlock",
+                            "combination",
+                        ],
+                        entity_category=EntityCategory.CONFIG,
+                    ),
+                    dp_type=TuyaBLEDataPointType.DT_ENUM,
+                ),
+            ],
             "hc7n0urm": [  # A1 Ultra-JM
                 TuyaBLESelectMapping(
                     dp_id=31,
@@ -645,6 +675,20 @@ mapping: dict[str, TuyaBLECategorySelectMapping] = {
     ),
     "szjqr": TuyaBLECategorySelectMapping(
         products={
+            **dict.fromkeys(
+                ["bo25vaxy"],  # CBF02V2 Finger Robot
+                [
+                    TuyaBLESelectMapping(
+                        dp_id=2,
+                        description=SelectEntityDescription(
+                            key="fingerbot_mode",
+                            entity_category=EntityCategory.CONFIG,
+                            # BLE enum 1 is named long_press in the Thing Model.
+                            options=["click", "switch"],
+                        ),
+                    ),
+                ],
+            ),
             **dict.fromkeys(
                 ["3yqdo5yt", "xhf790if", "yn4x5fa7"],  # CubeTouch 1s and II
                 [

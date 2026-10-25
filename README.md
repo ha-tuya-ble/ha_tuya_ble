@@ -55,8 +55,8 @@ See a device marked Experimental you have? We could use real world testing feedb
   </thead>
   <tbody>
     <tr>
-      <td rowspan="8"><strong>Fingerbots</strong></td>
-      <td rowspan="8"><code>szjqr</code></td>
+      <td rowspan="9"><strong>Fingerbots</strong></td>
+      <td rowspan="9"><code>szjqr</code></td>
       <td>Fingerbot</td>
       <td><code>ltak7e1p</code>, <code>y6kttvd6</code>, <code>yrnk7mnn</code>, <code>nvr2rocq</code>, <code>bnt7wajf</code>, <code>rvdceqjh</code>, <code>5xhbk964</code></td>
       <td>Original device, first in category, powered by CR2 battery.</td>
@@ -95,6 +95,11 @@ See a device marked Experimental you have? We could use real world testing feedb
       <td>Nedis SmartLife Finger Robot</td>
       <td><code>yn4x5fa7</code></td>
       <td>—</td>
+    </tr>
+    <tr>
+      <td>Finger Robot CBF02V2</td>
+      <td><code>bo25vaxy</code></td>
+      <td>Click and Switch modes, hold time, 0-30 position controls, battery and reported charge status. Invert switch status adjusts the on/off indication without moving the arm.</td>
     </tr>
     <tr>
       <td rowspan="6"><strong>Temperature and humidity sensors</strong></td>
@@ -136,8 +141,8 @@ See a device marked Experimental you have? We could use real world testing feedb
       <td>—</td>
     </tr>
     <tr>
-      <td rowspan="26"><strong>Smart Locks</strong></td>
-      <td rowspan="25"><code>ms</code>, <code>jtmspro</code></td>
+      <td rowspan="27"><strong>Smart Locks</strong></td>
+      <td rowspan="27"><code>ms</code>, <code>jtmspro</code></td>
       <td>Smart Lock</td>
       <td><code>ludzroix</code>, <code>isk2p555</code>, <code>gumrixyt</code>, <code>uamrw6h3</code>, <code>sidhzylo</code>, <code>mqc2hevy</code>, <code>7a4xvbtt</code></td>
       <td>—</td>
@@ -261,6 +266,11 @@ See a device marked Experimental you have? We could use real world testing feedb
       <td>EL605A Knob Lock</td>
       <td><code>2hmqh0ty</code></td>
       <td>BLE unlock via DP71. Requires the FD50 device-info handshake.</td>
+    </tr>
+    <tr>
+      <td>Smart Lock C-014S</td>
+      <td><code>djrqe0q6</code></td>
+      <td>Experimental. BLE unlock via DP71, lock via DP46, state from DP47 (no separate unlock button; the lock entity covers it). FD50 device-info handshake enabled. Battery, alarm, unlock-method counters, auto-lock, volume, double verification and doorbell exposed.</td>
     </tr>
     <tr>
       <td>Example Product Securosmart lock</td>
@@ -449,6 +459,13 @@ See a device marked Experimental you have? We could use real world testing feedb
       <td>Parkside Robot Mower PAMRC 250 A1 (BT) City</td>
       <td><code>9hdajpiw</code></td>
       <td>Lawn mower entity (start / pause / dock), command and schedule buttons, battery, activity, warning, error and work logs, schedule and zones, running time, rain delay, rain mode, hedgehog protection and blade stop. Experimental</td>
+    </tr>
+    <tr>
+      <td><strong>Cooking thermometers</strong></td>
+      <td><code>swtz</code></td>
+      <td>Lidl GRILLMEISTER Bluetooth Cooking Thermometer</td>
+      <td><code>iv13iqhf</code></td>
+      <td>Two probe temperatures and battery</td>
     </tr>
   </tbody>
 </table>

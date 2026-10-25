@@ -105,6 +105,9 @@
             }
         },
         "button": {
+            "invert_switch_status": {
+                "name": "Invertir estado del interruptor"
+            },
             "push": {
                 "name": "Pulsar"
             },
@@ -156,6 +159,9 @@
             }
         },
         "number": {
+            "auto_lock_time": {
+                "name": "Retardo de bloqueo automático"
+            },
             "ble_unlock_check": {
                 "name": "Desbloquear"
             },
@@ -213,7 +219,20 @@
         },
         "select": {
             "beep_volume": {
-                "name": "Volumen de la cerradura"
+                "name": "Volumen de la cerradura",
+                "state": {
+                    "mute": "Silenciar",
+                    "low": "Bajo",
+                    "normal": "Normal",
+                    "high": "Alto"
+                }
+            },
+            "unlock_switch": {
+                "name": "Doble verificación",
+                "state": {
+                    "single_unlock": "Desbloqueo simple",
+                    "combination": "Combinación"
+                }
             },
             "language": {
                 "name": "Idioma de la cerradura"
@@ -221,6 +240,7 @@
             "fingerbot_mode": {
                 "name": "Modo",
                 "state": {
+                    "click": "Clic",
                     "program": "Programa",
                     "push": "Pulsar",
                     "switch": "Interruptor"
@@ -331,8 +351,19 @@
                 "state": {
                     "wrong_finger": "Huella incorrecta",
                     "wrong_password": "Contraseña incorrecta",
+                    "wrong_card": "Tarjeta incorrecta",
+                    "wrong_face": "Rostro incorrecto",
+                    "tongue_bad": "Pestillo atascado",
+                    "too_hot": "Temperatura elevada",
+                    "unclosed_time": "Puerta abierta",
+                    "tongue_not_out": "Pestillo no extendido",
+                    "pry": "Manipulación",
+                    "key_in": "Llave insertada",
                     "low_battery": "Batería baja",
-                    "power_off": "Apagado"
+                    "power_off": "Apagado",
+                    "shock": "Vibración",
+                    "defense": "Alarma armada",
+                    "wrong_unlock": "Desbloqueo incorrecto"
                 }
             },
             "power_off": {
@@ -344,6 +375,8 @@
             "battery_charging": {
                 "name": "Carga de batería",
                 "state": {
+                    "none": "No cargando",
+                    "charge_done": "Cargada",
                     "charged": "Cargada",
                     "charging": "Cargando",
                     "not_charging": "No cargando"
@@ -473,6 +506,15 @@
             "unlock_fingerprint": {
                 "name": "Última huella utilizada"
             },
+            "unlock_temporary": {
+                "name": "Última contraseña temporal utilizada"
+            },
+            "unlock_voice_remote": {
+                "name": "Última voz remota utilizada"
+            },
+            "unlock_phone_remote": {
+                "name": "Último teléfono remoto utilizado"
+            },
             "unlock_card": {
                 "name": "Última tarjeta utilizada"
             },
@@ -568,6 +610,12 @@
             },
             "zones": {
                 "name": "Zonas"
+            },
+            "probe_1_temperature": {
+                "name": "Temperatura sonda 1"
+            },
+            "probe_2_temperature": {
+                "name": "Temperatura sonda 2"
             }
         },
         "switch": {

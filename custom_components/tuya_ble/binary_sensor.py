@@ -290,6 +290,16 @@ mapping: dict[str, TuyaBLECategoryBinarySensorMapping] = {
     ),
     "jtmspro": TuyaBLECategoryBinarySensorMapping(
         products={
+            "djrqe0q6": [  # Smart Lock C-014S
+                TuyaBLEBinarySensorMapping(
+                    dp_id=47,
+                    description=BinarySensorEntityDescription(
+                        key="lock_motor_state",
+                        device_class=BinarySensorDeviceClass.LOCK,
+                        entity_category=EntityCategory.DIAGNOSTIC,
+                    ),
+                ),
+            ],
             **dict.fromkeys(
                 [
                     "stugc8dl",
