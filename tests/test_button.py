@@ -88,7 +88,7 @@ async def test_button(hass: HomeAssistant) -> None:
     assert entity.available is True
 
     # Call press
-    entity.press()
+    await entity.async_press()
     await hass.async_block_till_done()
 
     # Verify _send_datapoints was called
@@ -175,7 +175,7 @@ async def test_oyqux5vv_raw_unlock(hass: HomeAssistant) -> None:
     assert entity.available is True
 
     # Press the button
-    entity.press()
+    await entity.async_press()
     await hass.async_block_till_done()
 
     # Verify _send_datapoints was called with DP 71
@@ -243,7 +243,7 @@ async def test_button_fixed_enum_value(hass: HomeAssistant) -> None:
     )
     entity.async_write_ha_state = Mock()
 
-    entity.press()
+    await entity.async_press()
     await hass.async_block_till_done()
 
     device._send_datapoints.assert_called_once_with([115])
@@ -257,7 +257,7 @@ async def test_button_fixed_enum_value(hass: HomeAssistant) -> None:
     )
     entity.async_write_ha_state = Mock()
 
-    entity.press()
+    await entity.async_press()
     await hass.async_block_till_done()
 
     assert device.datapoints[115].value == PARKSIDE_MOWER_COMMANDS.index("CancelWork")
@@ -269,6 +269,6 @@ async def test_button_fixed_enum_value(hass: HomeAssistant) -> None:
     entity.async_write_ha_state = Mock()
 
     for _ in range(2):
-        entity.press()
+        await entity.async_press()
         await hass.async_block_till_done()
         assert device.datapoints[107].value is True
