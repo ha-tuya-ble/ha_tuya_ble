@@ -481,6 +481,9 @@ devices_database: dict[str, TuyaBLECategoryInfo] = {
                 ],
                 TuyaBLEProductInfo(name="Drawer Lock CTL20H", lock=1),
             ),
+            # CTL20 SmartLock: CTL20H datapoints, but it unlocks through DP71
+            # (ble_unlock_check), so it gets an unlock button, not a lock.
+            "tkbdvrzr": TuyaBLEProductInfo(name="Drawer Lock CTL20"),
             "hc7n0urm": TuyaBLEProductInfo(  # device product_id
                 name="A1 Ultra-JM",
             ),
@@ -787,6 +790,7 @@ devices_database: dict[str, TuyaBLECategoryInfo] = {
                 TuyaBLEProductInfo(name="Blind Controller"),
             ),
             "kcy0x4pi": TuyaBLEProductInfo(name="Curtain Controller"),
+            "cq7xquhj": TuyaBLEProductInfo(name="Curtain Robot"),
             "dy4dh1q0": TuyaBLEProductInfo(name="AOK AM24 Venetian Blinds Motor"),
             "v3fzfd2y": TuyaBLEProductInfo(name="AOK AM25 Roller Blinds Motor"),
         }

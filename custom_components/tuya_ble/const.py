@@ -18,6 +18,7 @@ SET_DISCONNECTED_DELAY = 10 * 60
 CONF_UUID: Final = "uuid"
 CONF_LOCAL_KEY: Final = "local_key"
 CONF_SEC_KEY: Final = "sec_key"
+CONF_BLE_UNLOCK_CHECK: Final = "ble_unlock_check"
 
 # Connection policy (entry options)
 CONF_KEEP_CONNECTION: Final = "keep_connection"

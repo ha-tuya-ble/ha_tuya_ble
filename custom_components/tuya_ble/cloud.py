@@ -47,6 +47,7 @@ from .const import (
     CONF_PRODUCT_ID,
     CONF_DEVICE_NAME,
     CONF_PRODUCT_NAME,
+    CONF_BLE_UNLOCK_CHECK,
     CONF_FUNCTIONS,
     CONF_STATUS_RANGE,
     DOMAIN,
@@ -214,6 +215,18 @@ class HASSTuyaBLEDeviceManager(AbstaractTuyaBLEDeviceManager):
                                 CONF_PRODUCT_MODEL: device.get("model"),
                                 CONF_PRODUCT_NAME: device.get("product_name"),
                             }
+                            # Locks that unlock through DP71 need the
+                            # per-device check code the app uses; the cloud
+                            # reports it as the ble_unlock_check status.
+                            for status_item in device.get("status") or []:
+                                if (
+                                    isinstance(status_item, dict)
+                                    and status_item.get("code") == CONF_BLE_UNLOCK_CHECK
+                                    and status_item.get("value")
+                                ):
+                                    item.credentials[mac][CONF_BLE_UNLOCK_CHECK] = (
+                                        status_item["value"]
+                                    )
                             sec_key = device.get("sec_key") or device.get("secKey")
                             if sec_key:
                                 item.credentials[mac][CONF_SEC_KEY] = sec_key
@@ -357,6 +370,8 @@ class HASSTuyaBLEDeviceManager(AbstaractTuyaBLEDeviceManager):
                 credentials.get(CONF_FUNCTIONS, []),
                 credentials.get(CONF_STATUS_RANGE, []),
                 sec_key=sec_key,
+                ble_unlock_check=credentials.get(CONF_BLE_UNLOCK_CHECK)
+                or self._data.get(CONF_BLE_UNLOCK_CHECK),
             )
             _LOGGER.debug("Retrieved: %s", result)
             if save_data:

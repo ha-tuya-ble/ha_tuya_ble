@@ -14,6 +14,7 @@ from homeassistant.core import HomeAssistant
 from .const import (
     CONF_ACCESS_ID,
     CONF_ACCESS_SECRET,
+    CONF_BLE_UNLOCK_CHECK,
     CONF_LOCAL_KEY,
     CONF_SEC_KEY,
     CONF_UUID,
@@ -28,6 +29,7 @@ TO_REDACT = {
     CONF_PASSWORD,
     CONF_LOCAL_KEY,
     CONF_SEC_KEY,
+    CONF_BLE_UNLOCK_CHECK,
     CONF_UUID,
     "api_key",
     "token",
