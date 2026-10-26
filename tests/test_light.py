@@ -119,3 +119,63 @@ async def test_light(hass: HomeAssistant) -> None:
     await hass.async_block_till_done()
     device._send_datapoints.assert_any_call([1])
     assert device.datapoints[1].value is True
+
+
+async def test_light_color_temp_kelvin(hass: HomeAssistant) -> None:
+    """Colour temperature maps linearly between the kelvin bounds and the DP."""
+    from homeassistant.components.light import ATTR_COLOR_TEMP_KELVIN, ColorMode
+    from pytest_homeassistant_custom_component.common import MockConfigEntry
+    from custom_components.tuya_ble.const import DOMAIN
+    from custom_components.tuya_ble.cloud import HASSTuyaBLEDeviceManager
+    from custom_components.tuya_ble.devices import TuyaBLEDevice, TuyaBLEProductInfo, TuyaBLECoordinator
+    from bleak.backends.device import BLEDevice
+
+    entry = MockConfigEntry(domain=DOMAIN, data={"address": DEVICE_ADDRESS})
+    entry.add_to_hass(hass)
+
+    manager = HASSTuyaBLEDeviceManager(hass, entry.options.copy())
+    device = TuyaBLEDevice(manager, BLEDevice("11:22:33", "bob", {}))
+    device._send_datapoints = AsyncMock()
+    product_info = TuyaBLEProductInfo("Fake Light Product")
+    coordinator = TuyaBLECoordinator(hass, device)
+
+    description = TuyaLightEntityDescription(
+        key=DPCode.SWITCH_LED,
+        name=None,
+        brightness=DPCode.BRIGHT_VALUE,
+        color_temp=DPCode.TEMP_VALUE,
+        function=[
+            {"code": "switch_led", "dp_id": 1, "type": "Boolean", "values": {}},
+            {
+                "code": "bright_value",
+                "dp_id": 3,
+                "type": "Integer",
+                "values": {"min": 10, "max": 1000, "scale": 0, "step": 1},
+            },
+            {
+                "code": "temp_value",
+                "dp_id": 4,
+                "type": "Integer",
+                "values": {"min": 0, "max": 1000, "scale": 0, "step": 1},
+            },
+        ],
+        status_range=[],
+    )
+    entity = TuyaBLELight(hass, coordinator, device, product_info, description)
+    entity.async_write_ha_state = Mock()
+    coordinator._async_handle_connect()
+
+    # BRIGHTNESS is only valid on its own; COLOR_TEMP already includes it
+    assert entity.supported_color_modes == {ColorMode.COLOR_TEMP}
+
+    warm, cool = entity.min_color_temp_kelvin, entity.max_color_temp_kelvin
+    for kelvin, expected in ((warm, 0), (cool, 1000), ((warm + cool) / 2, 500)):
+        entity.turn_on(**{ATTR_COLOR_TEMP_KELVIN: kelvin})
+        await hass.async_block_till_done()
+        device._send_datapoints.assert_any_call([4])
+        assert device.datapoints[4].value == expected
+
+    device.datapoints._update_from_device(4, 0, 0, TuyaBLEDataPointType.DT_VALUE, 1000)
+    assert entity.color_temp_kelvin == cool
+    device.datapoints._update_from_device(4, 0, 0, TuyaBLEDataPointType.DT_VALUE, 0)
+    assert entity.color_temp_kelvin == warm

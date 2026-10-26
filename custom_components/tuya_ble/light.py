@@ -16,6 +16,8 @@ from homeassistant.components.light import (
     ATTR_BRIGHTNESS,
     ATTR_COLOR_TEMP_KELVIN,
     ATTR_HS_COLOR,
+    DEFAULT_MAX_KELVIN,
+    DEFAULT_MIN_KELVIN,
     ColorMode,
     LightEntity,
     LightEntityDescription,
@@ -554,6 +556,8 @@ class TuyaBLELight(TuyaBLEEntity, LightEntity):
 
     _attr_has_entity_name = True
     _attr_name = None
+    _attr_min_color_temp_kelvin = DEFAULT_MIN_KELVIN
+    _attr_max_color_temp_kelvin = DEFAULT_MAX_KELVIN
 
     def __init__(
         self,
@@ -619,7 +623,9 @@ class TuyaBLELight(TuyaBLEEntity, LightEntity):
             description.brightness, dptype=DPType.INTEGER, prefer_function=True
         ):
             self._brightness = int_type
-            self._attr_supported_color_modes.add(ColorMode.BRIGHTNESS)
+            # BRIGHTNESS is only valid on its own; COLOR_TEMP includes it
+            if not self._attr_supported_color_modes:
+                self._attr_supported_color_modes.add(ColorMode.BRIGHTNESS)
             self._brightness_max = self.find_dpcode(
                 description.brightness_max, dptype=DPType.INTEGER
             )
@@ -640,6 +646,39 @@ class TuyaBLELight(TuyaBLEEntity, LightEntity):
         """Return true if light is on."""
         return self.device.status.get(self.entity_description.key, False)
 
+    def _brightness_to_device(self, brightness: float) -> int:
+        """Convert a 0-255 brightness to the brightness DP value."""
+        # If there is a min/max value, the brightness is actually limited.
+        # Meaning it is actually not on a 0-255 scale.
+        if (
+            self._brightness_max is not None
+            and self._brightness_min is not None
+            and (brightness_max := self.device.status.get(self._brightness_max.dpcode))
+            is not None
+            and (brightness_min := self.device.status.get(self._brightness_min.dpcode))
+            is not None
+        ):
+            # Remap values onto our scale
+            brightness_max = self._brightness_max.remap_value_to(brightness_max)
+            brightness_min = self._brightness_min.remap_value_to(brightness_min)
+
+            # Remap the brightness value from their min-max to our 0-255 scale
+            brightness = remap_value(
+                brightness,
+                to_min=brightness_min,
+                to_max=brightness_max,
+            )
+
+        return round(self._brightness.remap_value_from(brightness))
+
+    def _color_temp_to_device(self, kelvin: float) -> int:
+        """Convert a colour temperature in kelvin to the colour temperature DP value."""
+        return round(
+            self._color_temp.remap_value_from(
+                kelvin, self.min_color_temp_kelvin, self.max_color_temp_kelvin
+            )
+        )
+
     def turn_on(self, **kwargs: Any) -> None:
         """Turn on or control the light."""
         commands = [{"code": self.entity_description.key, "value": True}]
@@ -656,14 +695,7 @@ class TuyaBLELight(TuyaBLEEntity, LightEntity):
             commands += [
                 {
                     "code": self._color_temp.dpcode,
-                    "value": round(
-                        self._color_temp.remap_value_from(
-                            kwargs[ATTR_COLOR_TEMP_KELVIN],
-                            self.min_mireds,
-                            self.max_mireds,
-                            reverse=True,
-                        )
-                    ),
+                    "value": self._color_temp_to_device(kwargs[ATTR_COLOR_TEMP_KELVIN]),
                 },
             ]
 
@@ -721,41 +753,10 @@ class TuyaBLELight(TuyaBLEEntity, LightEntity):
             ]
 
         elif ATTR_BRIGHTNESS in kwargs and self._brightness:
-            brightness = kwargs[ATTR_BRIGHTNESS]
-
-            # If there is a min/max value, the brightness is actually limited.
-            # Meaning it is actually not on a 0-255 scale.
-            if (
-                self._brightness_max is not None
-                and self._brightness_min is not None
-                and (
-                    brightness_max := self.device.status.get(
-                        self._brightness_max.dpcode
-                    )
-                )
-                is not None
-                and (
-                    brightness_min := self.device.status.get(
-                        self._brightness_min.dpcode
-                    )
-                )
-                is not None
-            ):
-                # Remap values onto our scale
-                brightness_max = self._brightness_max.remap_value_to(brightness_max)
-                brightness_min = self._brightness_min.remap_value_to(brightness_min)
-
-                # Remap the brightness value from their min-max to our 0-255 scale
-                brightness = remap_value(
-                    brightness,
-                    to_min=brightness_min,
-                    to_max=brightness_max,
-                )
-
             commands += [
                 {
                     "code": self._brightness.dpcode,
-                    "value": round(self._brightness.remap_value_from(brightness)),
+                    "value": self._brightness_to_device(kwargs[ATTR_BRIGHTNESS]),
                 },
             ]
 
@@ -816,11 +817,9 @@ class TuyaBLELight(TuyaBLEEntity, LightEntity):
         if temperature is None:
             return None
 
-        return color_util.color_temperature_mired_to_kelvin(
-            round(
-                self._color_temp.remap_value_to(
-                    temperature, self.min_mireds, self.max_mireds, reverse=True
-                )
+        return round(
+            self._color_temp.remap_value_to(
+                temperature, self.min_color_temp_kelvin, self.max_color_temp_kelvin
             )
         )
 
