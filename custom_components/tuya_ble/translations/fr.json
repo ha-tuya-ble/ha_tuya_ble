@@ -215,6 +215,12 @@
             },
             "rain_delay_time": {
                 "name": "Durée du délai de pluie"
+            },
+            "step_time": {
+                "name": "Durée par marche"
+            },
+            "off_delay": {
+                "name": "Délai d'extinction"
             }
         },
         "select": {
@@ -342,6 +348,23 @@
                     "smart": "Intelligent",
                     "spot": "Localisé",
                     "goto_charge": "Retour à la base"
+                }
+            },
+            "stair_mode": {
+                "name": "Mode",
+                "state": {
+                    "auto": "Automatique",
+                    "on": "Allumé",
+                    "off": "Éteint"
+                }
+            },
+            "auto_effect": {
+                "name": "Effet automatique",
+                "state": {
+                    "full": "Complet",
+                    "gradual": "Progressif",
+                    "following": "Suivi",
+                    "flowing": "Fluide"
                 }
             }
         },
