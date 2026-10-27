@@ -41,6 +41,7 @@ from .base import IntegerTypeData
 from .util import remap_value
 from .devices import TuyaBLEData, TuyaBLEEntity, TuyaBLEProductInfo
 from .tuya_ble import (
+    TuyaBLEDataPointType,
     TuyaBLEDevice,
     TuyaBLEEntityDescription,
 )
@@ -107,6 +108,11 @@ class TuyaLightEntityDescription(TuyaBLEEntityDescription, LightEntityDescriptio
     default_color_type: ColorTypeData = field(
         default_factory=lambda: DEFAULT_COLOR_TYPE_DATA
     )
+    # Stair controllers, handled by TuyaBLEStairLight: on/off is a mode enum
+    # DP (0 auto, 1 on, 2 off), and brightness and colour temperature are only
+    # applied when sent together with the work mode enum DP set to white (0).
+    stair_mode_dp_id: int | None = None
+    stair_work_mode_dp_id: int | None = None
 
 
 # You can add here description for device for which automatic capabilities setting
@@ -144,6 +150,38 @@ ProductsMapping: dict[str, dict[str, tuple[TuyaLightEntityDescription, ...]]] = 
                 },
             ),
         )
+    },
+    "dj": {
+        # MiBoxer BS64 stair controller. The DPs are declared here because
+        # manual setup has no cloud specification. The device forces DP1 back
+        # on, so on/off is the mode DP 114 instead; brightness is DP3 and
+        # colour temperature DP4 (0 warm, 1000 cool), both sent together with
+        # work_mode DP2.
+        "c2twgywo": (
+            TuyaLightEntityDescription(
+                key=DPCode.SWITCH_LED,
+                name=None,
+                brightness=DPCode.BRIGHT_VALUE,
+                color_temp=DPCode.TEMP_VALUE,
+                stair_mode_dp_id=114,
+                stair_work_mode_dp_id=2,
+                function=[
+                    {
+                        "code": "bright_value",
+                        "dp_id": 3,
+                        "type": "Integer",
+                        "values": {"min": 10, "max": 1000, "scale": 0, "step": 1},
+                    },
+                    {
+                        "code": "temp_value",
+                        "dp_id": 4,
+                        "type": "Integer",
+                        "values": {"min": 0, "max": 1000, "scale": 0, "step": 1},
+                    },
+                ],
+                status_range=[],
+            ),
+        ),
     },
     "jsq": {
         "if1nolcm": (
@@ -945,6 +983,93 @@ class TuyaBLELight(TuyaBLEEntity, LightEntity):
         return len(status_data) > 12
 
 
+# A datapoint write: DP id, type and value
+_DatapointWrite = tuple[int, TuyaBLEDataPointType, int]
+
+
+class TuyaBLEStairLight(TuyaBLELight):
+    """Stair controller light whose on/off state is the controller mode.
+
+    The mode DP is an enum: 0 auto (sensor triggered), 1 on, 2 off. Auto
+    reads as off; turning the light on switches the controller to On mode.
+    The controller acknowledges but ignores brightness and colour temperature
+    writes unless the work mode DP is set to white in the same packet.
+    """
+
+    STAIR_MODE_ON = 1
+    STAIR_MODE_OFF = 2
+    STAIR_WORK_MODE_WHITE = 0
+
+    async def _async_write_datapoints(self, values: list[_DatapointWrite]) -> None:
+        """Write the datapoints in a single packet."""
+        datapoints = self._device.datapoints
+        datapoints.begin_update()
+        try:
+            for dp_id, dp_type, value in values:
+                await datapoints.get_or_create(dp_id, dp_type, value).set_value(value)
+        finally:
+            await datapoints.end_update()
+
+    def _write_datapoints(self, values: list[_DatapointWrite]) -> None:
+        """Schedule writing the datapoints in a single packet."""
+        self._hass.create_task(self._async_write_datapoints(values))
+
+    def _stair_mode(self, mode: int) -> _DatapointWrite:
+        """Return the write that selects a controller mode."""
+        return (
+            self.entity_description.stair_mode_dp_id,
+            TuyaBLEDataPointType.DT_ENUM,
+            mode,
+        )
+
+    @property
+    def is_on(self) -> bool:
+        """Return true if the controller is in On mode."""
+        datapoint = self._device.datapoints[self.entity_description.stair_mode_dp_id]
+        return datapoint is not None and datapoint.value == self.STAIR_MODE_ON
+
+    def turn_on(self, **kwargs: Any) -> None:
+        """Switch to On mode and apply any brightness or colour change."""
+        values: list[_DatapointWrite] = []
+        if not self.is_on:
+            values.append(self._stair_mode(self.STAIR_MODE_ON))
+
+        light_values: list[_DatapointWrite] = []
+        if self._color_temp and ATTR_COLOR_TEMP_KELVIN in kwargs:
+            light_values.append(
+                (
+                    self.find_dpid(self._color_temp.dpcode, prefer_function=True),
+                    TuyaBLEDataPointType.DT_VALUE,
+                    self._color_temp_to_device(kwargs[ATTR_COLOR_TEMP_KELVIN]),
+                )
+            )
+        if self._brightness and ATTR_BRIGHTNESS in kwargs:
+            light_values.append(
+                (
+                    self.find_dpid(self._brightness.dpcode, prefer_function=True),
+                    TuyaBLEDataPointType.DT_VALUE,
+                    self._brightness_to_device(kwargs[ATTR_BRIGHTNESS]),
+                )
+            )
+        work_mode_dp_id = self.entity_description.stair_work_mode_dp_id
+        if light_values and work_mode_dp_id is not None:
+            values.append(
+                (
+                    work_mode_dp_id,
+                    TuyaBLEDataPointType.DT_ENUM,
+                    self.STAIR_WORK_MODE_WHITE,
+                )
+            )
+        values += light_values
+
+        if values:
+            self._write_datapoints(values)
+
+    def turn_off(self, **kwargs: Any) -> None:
+        """Switch to Off mode."""
+        self._write_datapoints([self._stair_mode(self.STAIR_MODE_OFF)])
+
+
 async def async_setup_entry(
     hass: HomeAssistant,
     entry: ConfigEntry,
@@ -960,8 +1085,11 @@ async def async_setup_entry(
     entities: list[TuyaBLELight] = []
 
     for desc in descs:
+        light_class = (
+            TuyaBLELight if desc.stair_mode_dp_id is None else TuyaBLEStairLight
+        )
         entities.append(
-            TuyaBLELight(
+            light_class(
                 hass,
                 data.coordinator,
                 data.device,
