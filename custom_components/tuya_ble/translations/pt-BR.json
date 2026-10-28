@@ -22,7 +22,8 @@
             "invalid_local_key": "A chave local parece inválida (pelo menos 6 caracteres)",
             "invalid_device_id": "O ID do dispositivo é obrigatório",
             "invalid_product_id": "O ID do produto é obrigatório",
-            "invalid_category": "A categoria é obrigatória"
+            "invalid_category": "A categoria é obrigatória",
+            "invalid_ble_unlock_check": "Código de desbloqueio BLE inválido"
         },
         "flow_title": "{name}",
         "step": {
@@ -69,7 +70,8 @@
                     "device_id": "ID do dispositivo",
                     "product_id": "ID do produto (ex.: neq16kgd)",
                     "category": "Categoria (ex.: szjqr para Fingerbots)",
-                    "device_name": "Nome do dispositivo (opcional)"
+                    "device_name": "Nome do dispositivo (opcional)",
+                    "ble_unlock_check": "Código de desbloqueio BLE (somente dappsdq4, opcional)"
                 }
             }
         }
@@ -764,7 +766,8 @@
             "invalid_local_key": "A chave local parece inválida (pelo menos 6 caracteres)",
             "invalid_device_id": "O ID do dispositivo é obrigatório",
             "invalid_product_id": "O ID do produto é obrigatório",
-            "invalid_category": "A categoria é obrigatória"
+            "invalid_category": "A categoria é obrigatória",
+            "invalid_ble_unlock_check": "Código de desbloqueio BLE inválido"
         },
         "step": {
             "login": {
@@ -802,7 +805,8 @@
                     "device_id": "ID do dispositivo",
                     "product_id": "ID do produto (ex.: neq16kgd)",
                     "category": "Categoria (ex.: szjqr para Fingerbots)",
-                    "device_name": "Nome do dispositivo (opcional)"
+                    "device_name": "Nome do dispositivo (opcional)",
+                    "ble_unlock_check": "Código de desbloqueio BLE (somente dappsdq4, opcional)"
                 }
             },
             "settings": {

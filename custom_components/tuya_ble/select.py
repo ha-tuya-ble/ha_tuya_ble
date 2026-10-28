@@ -542,6 +542,28 @@ mapping: dict[str, TuyaBLECategorySelectMapping] = {
                     dp_type=TuyaBLEDataPointType.DT_ENUM,
                 ),
             ],
+            "dappsdq4": [  # 8052F66 Smart Lock
+                TuyaBLESelectMapping(
+                    dp_id=31,
+                    dp_type=TuyaBLEDataPointType.DT_ENUM,
+                    description=SelectEntityDescription(
+                        key="beep_volume",
+                        icon="mdi:volume-high",
+                        options=["mute", "low", "normal", "high"],
+                        entity_category=EntityCategory.CONFIG,
+                    ),
+                ),
+                TuyaBLESelectMapping(
+                    dp_id=34,
+                    dp_type=TuyaBLEDataPointType.DT_ENUM,
+                    description=SelectEntityDescription(
+                        key="unlock_switch",
+                        icon="mdi:shield-lock-outline",
+                        options=["single_unlock", "combination"],
+                        entity_category=EntityCategory.CONFIG,
+                    ),
+                ),
+            ],
             "hc7n0urm": [  # A1 Ultra-JM
                 TuyaBLESelectMapping(
                     dp_id=31,

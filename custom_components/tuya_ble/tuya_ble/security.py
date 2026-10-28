@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass, field
+import base64
 import hashlib
 
 
@@ -66,3 +67,21 @@ class TuyaBLESecurityMaterial:
     def session_flag(self) -> int:
         """Return the Tuya security level for authenticated packets."""
         return 15 if self.protocol_v2 else 5
+
+
+def decode_timestamped_ble_unlock_check(value: str) -> bytes:
+    """Validate and decode timestamped cloud-provided BLE unlock check."""
+    try:
+        payload = base64.b64decode(value, validate=True)
+    except (ValueError, TypeError) as err:
+        raise ValueError("ble_unlock_check must be valid base64") from err
+
+    if (
+        len(payload) != 19
+        or payload[:4] != b"\x00\x01\xff\xff"
+        or not payload[4:12].isdigit()
+        or payload[12] != 1
+        or payload[17:] != b"\x00\x00"
+    ):
+        raise ValueError("ble_unlock_check has an invalid timestamped lock format")
+    return payload

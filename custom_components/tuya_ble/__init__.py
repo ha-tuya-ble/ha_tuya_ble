@@ -24,6 +24,7 @@ from .tuya_ble import TuyaBLEDevice
 from .cloud import HASSTuyaBLEDeviceManager
 from .const import (
     CONF_CATEGORY,
+    CONF_BLE_UNLOCK_CHECK,
     CONF_LOCAL_KEY,
     CONF_PRODUCT_ID,
     CONF_SEC_KEY,
@@ -59,6 +60,7 @@ CREDENTIAL_OPTION_KEYS = (
     CONF_UUID,
     CONF_LOCAL_KEY,
     CONF_SEC_KEY,
+    CONF_BLE_UNLOCK_CHECK,
     CONF_DEVICE_ID,
     CONF_PRODUCT_ID,
     CONF_CATEGORY,

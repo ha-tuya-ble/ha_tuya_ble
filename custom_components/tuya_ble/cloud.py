@@ -35,6 +35,7 @@ from .const import (
     TUYA_DOMAIN,
     CONF_ACCESS_ID,
     CONF_ACCESS_SECRET,
+    CONF_BLE_UNLOCK_CHECK,
     CONF_APP_TYPE,
     CONF_AUTH_TYPE,
     CONF_ENDPOINT,
@@ -53,13 +54,33 @@ from .const import (
     TUYA_API_DEVICES_URL,
     TUYA_API_FACTORY_INFO_URL,
     TUYA_API_DEVICE_SPECIFICATION,
+    TUYA_API_DEVICE_STATUS,
     TUYA_FACTORY_INFO_MAC,
     TUYA_RESPONSE_RESULT,
     TUYA_RESPONSE_SUCCESS,
 )
 from .mobile import get_mobile_endpoint
+from .tuya_ble.security import decode_timestamped_ble_unlock_check
 
 _LOGGER = logging.getLogger(__name__)
+
+
+BLE_UNLOCK_CHECK_STATUS_PRODUCT_IDS = frozenset({"dappsdq4"})
+
+
+def extract_ble_unlock_check(status_values: Any) -> str | None:
+    """Extract the validated lock secret from a Tuya status response."""
+    if not isinstance(status_values, list):
+        return None
+    for status_value in status_values:
+        if status_value.get("code") != CONF_BLE_UNLOCK_CHECK:
+            continue
+        value = status_value.get("value")
+        if isinstance(value, str):
+            decode_timestamped_ble_unlock_check(value)
+            return value
+        break
+    return None
 
 
 @dataclass
@@ -246,6 +267,30 @@ class HASSTuyaBLEDeviceManager(AbstaractTuyaBLEDeviceManager):
                                 if status:
                                     item.credentials[mac][CONF_STATUS_RANGE] = status
 
+                            if (
+                                device.get("product_id")
+                                in BLE_UNLOCK_CHECK_STATUS_PRODUCT_IDS
+                            ):
+                                status_response = (
+                                    await self._hass.async_add_executor_job(
+                                        item.api.get,
+                                        TUYA_API_DEVICE_STATUS % device.get("id"),
+                                    )
+                                )
+                                try:
+                                    value = extract_ble_unlock_check(
+                                        status_response.get(TUYA_RESPONSE_RESULT, [])
+                                    )
+                                except ValueError:
+                                    _LOGGER.warning(
+                                        "Invalid timestamped BLE unlock check from Tuya cloud"
+                                    )
+                                else:
+                                    if value:
+                                        item.credentials[mac][
+                                            CONF_BLE_UNLOCK_CHECK
+                                        ] = value
+
                             spec_response = await self._hass.async_add_executor_job(
                                 item.api.get,
                                 TUYA_API_DEVICE_SPECIFICATION % device.get("id"),
@@ -345,6 +390,9 @@ class HASSTuyaBLEDeviceManager(AbstaractTuyaBLEDeviceManager):
 
         if credentials:
             sec_key = credentials.get(CONF_SEC_KEY) or self._data.get(CONF_SEC_KEY)
+            ble_unlock_check = credentials.get(CONF_BLE_UNLOCK_CHECK) or self._data.get(
+                CONF_BLE_UNLOCK_CHECK
+            )
             result = TuyaBLEDeviceCredentials(
                 credentials.get(CONF_UUID, ""),
                 credentials.get(CONF_LOCAL_KEY, ""),
@@ -357,6 +405,7 @@ class HASSTuyaBLEDeviceManager(AbstaractTuyaBLEDeviceManager):
                 credentials.get(CONF_FUNCTIONS, []),
                 credentials.get(CONF_STATUS_RANGE, []),
                 sec_key=sec_key,
+                ble_unlock_check=ble_unlock_check,
             )
             _LOGGER.debug("Retrieved: %s", result)
             if save_data:
@@ -365,6 +414,8 @@ class HASSTuyaBLEDeviceManager(AbstaractTuyaBLEDeviceManager):
                 self._data.update(credentials)
                 if sec_key:
                     self._data[CONF_SEC_KEY] = sec_key
+                if ble_unlock_check:
+                    self._data[CONF_BLE_UNLOCK_CHECK] = ble_unlock_check
 
         return result
 
