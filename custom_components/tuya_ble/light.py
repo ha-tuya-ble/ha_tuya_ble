@@ -16,6 +16,8 @@ from homeassistant.components.light import (
     ATTR_BRIGHTNESS,
     ATTR_COLOR_TEMP_KELVIN,
     ATTR_HS_COLOR,
+    DEFAULT_MAX_KELVIN,
+    DEFAULT_MIN_KELVIN,
     ColorMode,
     LightEntity,
     LightEntityDescription,
@@ -39,6 +41,7 @@ from .base import IntegerTypeData
 from .util import remap_value
 from .devices import TuyaBLEData, TuyaBLEEntity, TuyaBLEProductInfo
 from .tuya_ble import (
+    TuyaBLEDataPointType,
     TuyaBLEDevice,
     TuyaBLEEntityDescription,
 )
@@ -105,6 +108,11 @@ class TuyaLightEntityDescription(TuyaBLEEntityDescription, LightEntityDescriptio
     default_color_type: ColorTypeData = field(
         default_factory=lambda: DEFAULT_COLOR_TYPE_DATA
     )
+    # Stair controllers, handled by TuyaBLEStairLight: on/off is a mode enum
+    # DP (0 auto, 1 on, 2 off), and brightness and colour temperature are only
+    # applied when sent together with the work mode enum DP set to white (0).
+    stair_mode_dp_id: int | None = None
+    stair_work_mode_dp_id: int | None = None
 
 
 # You can add here description for device for which automatic capabilities setting
@@ -142,6 +150,38 @@ ProductsMapping: dict[str, dict[str, tuple[TuyaLightEntityDescription, ...]]] = 
                 },
             ),
         )
+    },
+    "dj": {
+        # MiBoxer BS64 stair controller. The DPs are declared here because
+        # manual setup has no cloud specification. The device forces DP1 back
+        # on, so on/off is the mode DP 114 instead; brightness is DP3 and
+        # colour temperature DP4 (0 warm, 1000 cool), both sent together with
+        # work_mode DP2.
+        "c2twgywo": (
+            TuyaLightEntityDescription(
+                key=DPCode.SWITCH_LED,
+                name=None,
+                brightness=DPCode.BRIGHT_VALUE,
+                color_temp=DPCode.TEMP_VALUE,
+                stair_mode_dp_id=114,
+                stair_work_mode_dp_id=2,
+                function=[
+                    {
+                        "code": "bright_value",
+                        "dp_id": 3,
+                        "type": "Integer",
+                        "values": {"min": 10, "max": 1000, "scale": 0, "step": 1},
+                    },
+                    {
+                        "code": "temp_value",
+                        "dp_id": 4,
+                        "type": "Integer",
+                        "values": {"min": 0, "max": 1000, "scale": 0, "step": 1},
+                    },
+                ],
+                status_range=[],
+            ),
+        ),
     },
     "jsq": {
         "if1nolcm": (
@@ -554,6 +594,8 @@ class TuyaBLELight(TuyaBLEEntity, LightEntity):
 
     _attr_has_entity_name = True
     _attr_name = None
+    _attr_min_color_temp_kelvin = DEFAULT_MIN_KELVIN
+    _attr_max_color_temp_kelvin = DEFAULT_MAX_KELVIN
 
     def __init__(
         self,
@@ -619,7 +661,9 @@ class TuyaBLELight(TuyaBLEEntity, LightEntity):
             description.brightness, dptype=DPType.INTEGER, prefer_function=True
         ):
             self._brightness = int_type
-            self._attr_supported_color_modes.add(ColorMode.BRIGHTNESS)
+            # BRIGHTNESS is only valid on its own; COLOR_TEMP includes it
+            if not self._attr_supported_color_modes:
+                self._attr_supported_color_modes.add(ColorMode.BRIGHTNESS)
             self._brightness_max = self.find_dpcode(
                 description.brightness_max, dptype=DPType.INTEGER
             )
@@ -640,6 +684,39 @@ class TuyaBLELight(TuyaBLEEntity, LightEntity):
         """Return true if light is on."""
         return self.device.status.get(self.entity_description.key, False)
 
+    def _brightness_to_device(self, brightness: float) -> int:
+        """Convert a 0-255 brightness to the brightness DP value."""
+        # If there is a min/max value, the brightness is actually limited.
+        # Meaning it is actually not on a 0-255 scale.
+        if (
+            self._brightness_max is not None
+            and self._brightness_min is not None
+            and (brightness_max := self.device.status.get(self._brightness_max.dpcode))
+            is not None
+            and (brightness_min := self.device.status.get(self._brightness_min.dpcode))
+            is not None
+        ):
+            # Remap values onto our scale
+            brightness_max = self._brightness_max.remap_value_to(brightness_max)
+            brightness_min = self._brightness_min.remap_value_to(brightness_min)
+
+            # Remap the brightness value from their min-max to our 0-255 scale
+            brightness = remap_value(
+                brightness,
+                to_min=brightness_min,
+                to_max=brightness_max,
+            )
+
+        return round(self._brightness.remap_value_from(brightness))
+
+    def _color_temp_to_device(self, kelvin: float) -> int:
+        """Convert a colour temperature in kelvin to the colour temperature DP value."""
+        return round(
+            self._color_temp.remap_value_from(
+                kelvin, self.min_color_temp_kelvin, self.max_color_temp_kelvin
+            )
+        )
+
     def turn_on(self, **kwargs: Any) -> None:
         """Turn on or control the light."""
         commands = [{"code": self.entity_description.key, "value": True}]
@@ -656,14 +733,7 @@ class TuyaBLELight(TuyaBLEEntity, LightEntity):
             commands += [
                 {
                     "code": self._color_temp.dpcode,
-                    "value": round(
-                        self._color_temp.remap_value_from(
-                            kwargs[ATTR_COLOR_TEMP_KELVIN],
-                            self.min_mireds,
-                            self.max_mireds,
-                            reverse=True,
-                        )
-                    ),
+                    "value": self._color_temp_to_device(kwargs[ATTR_COLOR_TEMP_KELVIN]),
                 },
             ]
 
@@ -721,41 +791,10 @@ class TuyaBLELight(TuyaBLEEntity, LightEntity):
             ]
 
         elif ATTR_BRIGHTNESS in kwargs and self._brightness:
-            brightness = kwargs[ATTR_BRIGHTNESS]
-
-            # If there is a min/max value, the brightness is actually limited.
-            # Meaning it is actually not on a 0-255 scale.
-            if (
-                self._brightness_max is not None
-                and self._brightness_min is not None
-                and (
-                    brightness_max := self.device.status.get(
-                        self._brightness_max.dpcode
-                    )
-                )
-                is not None
-                and (
-                    brightness_min := self.device.status.get(
-                        self._brightness_min.dpcode
-                    )
-                )
-                is not None
-            ):
-                # Remap values onto our scale
-                brightness_max = self._brightness_max.remap_value_to(brightness_max)
-                brightness_min = self._brightness_min.remap_value_to(brightness_min)
-
-                # Remap the brightness value from their min-max to our 0-255 scale
-                brightness = remap_value(
-                    brightness,
-                    to_min=brightness_min,
-                    to_max=brightness_max,
-                )
-
             commands += [
                 {
                     "code": self._brightness.dpcode,
-                    "value": round(self._brightness.remap_value_from(brightness)),
+                    "value": self._brightness_to_device(kwargs[ATTR_BRIGHTNESS]),
                 },
             ]
 
@@ -816,11 +855,9 @@ class TuyaBLELight(TuyaBLEEntity, LightEntity):
         if temperature is None:
             return None
 
-        return color_util.color_temperature_mired_to_kelvin(
-            round(
-                self._color_temp.remap_value_to(
-                    temperature, self.min_mireds, self.max_mireds, reverse=True
-                )
+        return round(
+            self._color_temp.remap_value_to(
+                temperature, self.min_color_temp_kelvin, self.max_color_temp_kelvin
             )
         )
 
@@ -946,6 +983,93 @@ class TuyaBLELight(TuyaBLEEntity, LightEntity):
         return len(status_data) > 12
 
 
+# A datapoint write: DP id, type and value
+_DatapointWrite = tuple[int, TuyaBLEDataPointType, int]
+
+
+class TuyaBLEStairLight(TuyaBLELight):
+    """Stair controller light whose on/off state is the controller mode.
+
+    The mode DP is an enum: 0 auto (sensor triggered), 1 on, 2 off. Auto
+    reads as off; turning the light on switches the controller to On mode.
+    The controller acknowledges but ignores brightness and colour temperature
+    writes unless the work mode DP is set to white in the same packet.
+    """
+
+    STAIR_MODE_ON = 1
+    STAIR_MODE_OFF = 2
+    STAIR_WORK_MODE_WHITE = 0
+
+    async def _async_write_datapoints(self, values: list[_DatapointWrite]) -> None:
+        """Write the datapoints in a single packet."""
+        datapoints = self._device.datapoints
+        datapoints.begin_update()
+        try:
+            for dp_id, dp_type, value in values:
+                await datapoints.get_or_create(dp_id, dp_type, value).set_value(value)
+        finally:
+            await datapoints.end_update()
+
+    def _write_datapoints(self, values: list[_DatapointWrite]) -> None:
+        """Schedule writing the datapoints in a single packet."""
+        self._hass.create_task(self._async_write_datapoints(values))
+
+    def _stair_mode(self, mode: int) -> _DatapointWrite:
+        """Return the write that selects a controller mode."""
+        return (
+            self.entity_description.stair_mode_dp_id,
+            TuyaBLEDataPointType.DT_ENUM,
+            mode,
+        )
+
+    @property
+    def is_on(self) -> bool:
+        """Return true if the controller is in On mode."""
+        datapoint = self._device.datapoints[self.entity_description.stair_mode_dp_id]
+        return datapoint is not None and datapoint.value == self.STAIR_MODE_ON
+
+    def turn_on(self, **kwargs: Any) -> None:
+        """Switch to On mode and apply any brightness or colour change."""
+        values: list[_DatapointWrite] = []
+        if not self.is_on:
+            values.append(self._stair_mode(self.STAIR_MODE_ON))
+
+        light_values: list[_DatapointWrite] = []
+        if self._color_temp and ATTR_COLOR_TEMP_KELVIN in kwargs:
+            light_values.append(
+                (
+                    self.find_dpid(self._color_temp.dpcode, prefer_function=True),
+                    TuyaBLEDataPointType.DT_VALUE,
+                    self._color_temp_to_device(kwargs[ATTR_COLOR_TEMP_KELVIN]),
+                )
+            )
+        if self._brightness and ATTR_BRIGHTNESS in kwargs:
+            light_values.append(
+                (
+                    self.find_dpid(self._brightness.dpcode, prefer_function=True),
+                    TuyaBLEDataPointType.DT_VALUE,
+                    self._brightness_to_device(kwargs[ATTR_BRIGHTNESS]),
+                )
+            )
+        work_mode_dp_id = self.entity_description.stair_work_mode_dp_id
+        if light_values and work_mode_dp_id is not None:
+            values.append(
+                (
+                    work_mode_dp_id,
+                    TuyaBLEDataPointType.DT_ENUM,
+                    self.STAIR_WORK_MODE_WHITE,
+                )
+            )
+        values += light_values
+
+        if values:
+            self._write_datapoints(values)
+
+    def turn_off(self, **kwargs: Any) -> None:
+        """Switch to Off mode."""
+        self._write_datapoints([self._stair_mode(self.STAIR_MODE_OFF)])
+
+
 async def async_setup_entry(
     hass: HomeAssistant,
     entry: ConfigEntry,
@@ -961,8 +1085,11 @@ async def async_setup_entry(
     entities: list[TuyaBLELight] = []
 
     for desc in descs:
+        light_class = (
+            TuyaBLELight if desc.stair_mode_dp_id is None else TuyaBLEStairLight
+        )
         entities.append(
-            TuyaBLELight(
+            light_class(
                 hass,
                 data.coordinator,
                 data.device,

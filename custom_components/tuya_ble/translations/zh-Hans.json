@@ -215,6 +215,12 @@
             },
             "rain_delay_time": {
                 "name": "雨天延迟时长"
+            },
+            "step_time": {
+                "name": "每级时间"
+            },
+            "off_delay": {
+                "name": "延时关灯"
             }
         },
         "select": {
@@ -342,6 +348,23 @@
                     "smart": "智能",
                     "spot": "定点",
                     "goto_charge": "返回充电站"
+                }
+            },
+            "stair_mode": {
+                "name": "模式",
+                "state": {
+                    "auto": "自动",
+                    "on": "开",
+                    "off": "关"
+                }
+            },
+            "auto_effect": {
+                "name": "自动效果",
+                "state": {
+                    "full": "全亮",
+                    "gradual": "渐亮",
+                    "following": "跟随",
+                    "flowing": "流水"
                 }
             }
         },

@@ -215,6 +215,12 @@
             },
             "rain_delay_time": {
                 "name": "Regenverzögerungsdauer"
+            },
+            "step_time": {
+                "name": "Stufenzeit"
+            },
+            "off_delay": {
+                "name": "Ausschaltverzögerung"
             }
         },
         "select": {
@@ -342,6 +348,23 @@
                     "smart": "Smart",
                     "spot": "Punktuell",
                     "goto_charge": "Zur Ladestation"
+                }
+            },
+            "stair_mode": {
+                "name": "Modus",
+                "state": {
+                    "auto": "Automatisch",
+                    "on": "Ein",
+                    "off": "Aus"
+                }
+            },
+            "auto_effect": {
+                "name": "Auto-Effekt",
+                "state": {
+                    "full": "Voll",
+                    "gradual": "Allmählich",
+                    "following": "Folgend",
+                    "flowing": "Fließend"
                 }
             }
         },

@@ -778,6 +778,10 @@ devices_database: dict[str, TuyaBLECategoryInfo] = {
             "bpqbwf8y": TuyaBLEProductInfo(
                 name="LED BULB B509Z2",
             ),
+            "c2twgywo": TuyaBLEProductInfo(
+                name="BS64 Stair Light Controller",
+                manufacturer="MiBoxer",
+            ),
         },
     ),
     "cl": TuyaBLECategoryInfo(

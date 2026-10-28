@@ -399,8 +399,8 @@ See a device marked Experimental you have? We could use real world testing feedb
       <td>Experimental</td>
     </tr>
     <tr>
-      <td rowspan="5"><strong>Lights</strong></td>
-      <td rowspan="5">Multiple (e.g. <code>dd</code>, <code>dj</code>)</td>
+      <td rowspan="6"><strong>Lights</strong></td>
+      <td rowspan="6">Multiple (e.g. <code>dd</code>, <code>dj</code>)</td>
       <td>Strip Lights / Magiacous RGB light bar</td>
       <td><code>nvfrtxlq</code></td>
       <td rowspan="4">Most BLE light products should be supported as the Light class tries to get device description from the cloud when they are added. But only Strip Lights (category_id 'dd') Magiacous RGB light bar (product_id 'nvfrtxlq') has been tested.<br><br>See note on Bluetooth Mesh light compatibility below.</td>
@@ -421,6 +421,11 @@ See a device marked Experimental you have? We could use real world testing feedb
       <td>LED BULB B509Z2</td>
       <td><code>bpqbwf8y</code></td>
       <td>Experimental</td>
+    </tr>
+    <tr>
+      <td>MiBoxer BS64 Stair Light Controller</td>
+      <td><code>c2twgywo</code></td>
+      <td>Experimental. The light switches the controller between On and Off mode (Auto, sensor triggered, reads as off) and sets brightness and colour temperature. Mode and auto effect selects, step time and light off delay numbers. Uses legacy key derivation even when a secKey is issued.</td>
     </tr>
     <tr>
       <td><strong>Wireless switches</strong></td>

@@ -215,6 +215,12 @@
             },
             "rain_delay_time": {
                 "name": "Rain delay time"
+            },
+            "step_time": {
+                "name": "Step time"
+            },
+            "off_delay": {
+                "name": "Light off delay"
             }
         },
         "select": {
@@ -342,6 +348,23 @@
                     "smart": "Smart",
                     "spot": "Spot",
                     "goto_charge": "Return to dock"
+                }
+            },
+            "stair_mode": {
+                "name": "Mode",
+                "state": {
+                    "auto": "Auto",
+                    "on": "On",
+                    "off": "Off"
+                }
+            },
+            "auto_effect": {
+                "name": "Auto effect",
+                "state": {
+                    "full": "Full",
+                    "gradual": "Gradual",
+                    "following": "Following",
+                    "flowing": "Flowing"
                 }
             }
         },

@@ -121,6 +121,29 @@ class TuyaBLETemperatureUnitMapping(TuyaBLESelectMapping):
 
 
 mapping: dict[str, TuyaBLECategorySelectMapping] = {
+    "dj": TuyaBLECategorySelectMapping(
+        products={
+            "c2twgywo": [  # MiBoxer BS64 stair controller
+                TuyaBLESelectMapping(
+                    dp_id=114,
+                    description=SelectEntityDescription(
+                        key="stair_mode",
+                        icon="mdi:stairs",
+                        options=["auto", "on", "off"],
+                    ),
+                ),
+                TuyaBLESelectMapping(
+                    dp_id=104,
+                    description=SelectEntityDescription(
+                        key="auto_effect",
+                        icon="mdi:stairs-up",
+                        options=["full", "gradual", "following", "flowing"],
+                        entity_category=EntityCategory.CONFIG,
+                    ),
+                ),
+            ],
+        },
+    ),
     "sfkzq": TuyaBLECategorySelectMapping(
         products={
             "ojrvmfkk": [

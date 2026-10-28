@@ -215,6 +215,12 @@
             },
             "rain_delay_time": {
                 "name": "Tiempo de retardo por lluvia"
+            },
+            "step_time": {
+                "name": "Tiempo por escalón"
+            },
+            "off_delay": {
+                "name": "Retardo de apagado"
             }
         },
         "select": {
@@ -342,6 +348,23 @@
                     "smart": "Inteligente",
                     "spot": "Localizado",
                     "goto_charge": "Volver a la base"
+                }
+            },
+            "stair_mode": {
+                "name": "Modo",
+                "state": {
+                    "auto": "Automático",
+                    "on": "Encendido",
+                    "off": "Apagado"
+                }
+            },
+            "auto_effect": {
+                "name": "Efecto automático",
+                "state": {
+                    "full": "Completo",
+                    "gradual": "Gradual",
+                    "following": "Seguimiento",
+                    "flowing": "Fluido"
                 }
             }
         },
