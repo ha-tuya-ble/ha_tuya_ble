@@ -10,14 +10,14 @@ This guide is for when:
 
 What could go wrong?
 
-This guide explains how to generate a new PR for a set of **DPIDs** (Device Property IDs) using **Google Jules (Web UI)**, and how to collect the DPIDs from [Tuya IoT](https://iot.tuya.com).
+This guide explains how to generate a new PR for a set of **DPIDs** (Device Property IDs) using **GitHub Copilot Workspace**, and how to collect the DPIDs from [Tuya IoT](https://iot.tuya.com).
 
 ---
 
 ### 1. Prerequisites
 
 - Access to [Tuya IoT Platform](https://iot.tuya.com/) with a developer account.  
-- Access to **Google Jules** in your browser (with permissions to create PRs on this repo).
+- Access to **GitHub Copilot Workspace** (or Claude / your preferred coding agent with permissions to create PRs on this repo).
 
 ---
 
@@ -35,7 +35,7 @@ This guide explains how to generate a new PR for a set of **DPIDs** (Device Prop
    DPID 2 → Brightness (Integer, 0–1000)
    DPID 3 → Mode (Enum: white, colour, scene)
    ```
-6. Whangjangle this into google jules, claude or your preferred agent:
+6. Whangjangle this into GitHub Copilot Workspace, Claude, or your preferred agent:
 
 ```
 Add support for Example Product - SmartLife Finger Robot (category: szjqr - Product ID: yn4x5fa7)
