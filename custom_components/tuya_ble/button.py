@@ -481,15 +481,15 @@ class TuyaBLEButton(TuyaBLEEntity, ButtonEntity):
         if dp71:
             await dp71.set_value(dp71_value)
 
-    def press(self) -> None:
+    async def async_press(self) -> None:
         """Press the button."""
         if self._device.product_id == "kholoaew":
             if self._mapping.description.key == "bluetooth_unlock":
-                self._hass.create_task(self._run_kholoaew_unlock())
+                await self._run_kholoaew_unlock()
                 return
         if self._device.product_id in ("hs21i377", "oyqux5vv"):
             if self._mapping.description.key == "bluetooth_unlock":
-                self._hass.create_task(self._run_hs21i377_unlock())
+                await self._run_hs21i377_unlock()
                 return
 
         if self._mapping.value is not None:
@@ -499,7 +499,7 @@ class TuyaBLEButton(TuyaBLEEntity, ButtonEntity):
                 self._mapping.value,
             )
             if datapoint:
-                self._hass.create_task(datapoint.set_value(self._mapping.value))
+                await datapoint.set_value(self._mapping.value)
             return
 
         datapoint = self._device.datapoints.get_or_create(
@@ -510,9 +510,9 @@ class TuyaBLEButton(TuyaBLEEntity, ButtonEntity):
         if datapoint:
             if self._product.lock:
                 # Lock needs true to activate lock/unlock commands
-                self._hass.create_task(datapoint.set_value(True))
+                await datapoint.set_value(True)
             else:
-                self._hass.create_task(datapoint.set_value(not bool(datapoint.value)))
+                await datapoint.set_value(not bool(datapoint.value))
 
     @property
     def available(self) -> bool:
