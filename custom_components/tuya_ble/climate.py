@@ -52,6 +52,12 @@ class TuyaBLEClimateMapping:
     target_temperature_max: float = 30.0
     target_temperature_min: float = 5
     target_temperature_step: float = 1.0
+    # When set, target temperature is read as value / scale and written as
+    # value * scale. When None, the legacy TRV behaviour is kept unchanged.
+    target_temperature_scale: float | None = None
+    # When True, hvac_action follows the on/off switch only (HEATING / OFF),
+    # for devices without a room temperature reading.
+    hvac_action_from_switch: bool = False
 
     current_humidity_dp_id: int = 0
     current_humidity_coefficient: float = 1.0
@@ -160,6 +166,29 @@ mapping: dict[str, TuyaBLECategoryClimateMapping] = {
             ),
         },
     ),
+    "qn": TuyaBLECategoryClimateMapping(
+        products={
+            "vmdizama": [
+                # Parking diesel heater. DP 3 is the heat exchanger
+                # temperature (up to ~230 C while running), so it is exposed
+                # as a separate sensor and not as the room temperature.
+                TuyaBLEClimateMapping(
+                    description=ClimateEntityDescription(
+                        key="parking_heater",
+                    ),
+                    hvac_switch_dp_id=1,
+                    hvac_switch_mode=HVACMode.HEAT,
+                    hvac_modes=[HVACMode.OFF, HVACMode.HEAT],
+                    target_temperature_dp_id=2,
+                    target_temperature_scale=1.0,
+                    target_temperature_step=1.0,
+                    target_temperature_min=0.0,
+                    target_temperature_max=40.0,
+                    hvac_action_from_switch=True,
+                ),
+            ],
+        },
+    ),
 }
 
 
@@ -229,9 +258,14 @@ class TuyaBLEClimate(TuyaBLEEntity, ClimateEntity):
         if self._mapping.target_temperature_dp_id != 0:
             datapoint = self._device.datapoints[self._mapping.target_temperature_dp_id]
             if datapoint:
-                self._attr_target_temperature = (
-                    datapoint.value * self._mapping.target_temperature_step
-                )
+                if self._mapping.target_temperature_scale:
+                    self._attr_target_temperature = (
+                        datapoint.value / self._mapping.target_temperature_scale
+                    )
+                else:
+                    self._attr_target_temperature = (
+                        datapoint.value * self._mapping.target_temperature_step
+                    )
 
         if self._mapping.current_humidity_dp_id != 0:
             datapoint = self._device.datapoints[self._mapping.current_humidity_dp_id]
@@ -271,6 +305,15 @@ class TuyaBLEClimate(TuyaBLEEntity, ClimateEntity):
                     break
             self._attr_preset_mode = current_preset_mode
 
+        if self._mapping.hvac_action_from_switch:
+            self._attr_hvac_action = (
+                HVACAction.OFF
+                if self._attr_hvac_mode == HVACMode.OFF
+                else HVACAction.HEATING
+            )
+            self.async_write_ha_state()
+            return
+
         try:
             if (
                 self._attr_preset_mode == PRESET_AWAY
@@ -288,8 +331,15 @@ class TuyaBLEClimate(TuyaBLEEntity, ClimateEntity):
     async def async_set_temperature(self, **kwargs) -> None:
         """Set new target temperature."""
         if self._mapping.target_temperature_dp_id != 0:
-            int_value = int(kwargs["temperature"] * 2)
-            _LOGGER.error(int_value)
+            if self._mapping.target_temperature_scale:
+                int_value = int(
+                    round(
+                        kwargs["temperature"] * self._mapping.target_temperature_scale
+                    )
+                )
+            else:
+                int_value = int(kwargs["temperature"] * 2)
+                _LOGGER.error(int_value)
             datapoint = self._device.datapoints.get_or_create(
                 self._mapping.target_temperature_dp_id,
                 TuyaBLEDataPointType.DT_VALUE,

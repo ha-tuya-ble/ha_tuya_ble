@@ -366,6 +366,23 @@
                     "following": "Following",
                     "flowing": "Flowing"
                 }
+            },
+            "heater_mode": {
+                "name": "Heater mode",
+                "state": {
+                    "smart": "Smart",
+                    "auto": "Auto"
+                }
+            },
+            "heater_level": {
+                "name": "Heater level",
+                "state": {
+                    "1": "1",
+                    "2": "2",
+                    "3": "3",
+                    "4": "4",
+                    "5": "5"
+                }
             }
         },
         "sensor": {
@@ -639,6 +656,15 @@
             },
             "probe_2_temperature": {
                 "name": "Probe 2 temperature"
+            },
+            "heat_exchanger_temperature": {
+                "name": "Heat exchanger temperature"
+            },
+            "heater_work_state": {
+                "name": "Heater work state",
+                "state": {
+                    "heating": "Heating"
+                }
             }
         },
         "switch": {

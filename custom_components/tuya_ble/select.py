@@ -14,6 +14,7 @@ from homeassistant.components.select import (
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import UnitOfTemperature, Platform
 from homeassistant.core import HomeAssistant
+from homeassistant.exceptions import HomeAssistantError
 from homeassistant.helpers.entity import EntityCategory
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator
@@ -38,6 +39,8 @@ class TuyaBLESelectMapping:
     description: SelectEntityDescription
     force_add: bool = True
     dp_type: TuyaBLEDataPointType | None = None
+    # When set, only these options can be written; the rest are display-only.
+    settable_options: list[str] | None = None
 
 
 @dataclass
@@ -121,6 +124,31 @@ class TuyaBLETemperatureUnitMapping(TuyaBLESelectMapping):
 
 
 mapping: dict[str, TuyaBLECategorySelectMapping] = {
+    "qn": TuyaBLECategorySelectMapping(
+        products={
+            "vmdizama": [  # Parking diesel heater
+                TuyaBLESelectMapping(
+                    dp_id=4,
+                    dp_type=TuyaBLEDataPointType.DT_ENUM,
+                    description=SelectEntityDescription(
+                        key="heater_mode",
+                        icon="mdi:fire-circle",
+                        options=["smart", "auto"],
+                    ),
+                ),
+                TuyaBLESelectMapping(
+                    dp_id=5,
+                    dp_type=TuyaBLEDataPointType.DT_ENUM,
+                    description=SelectEntityDescription(
+                        key="heater_level",
+                        icon="mdi:speedometer",
+                        options=["1", "2", "3", "4", "5"],
+                    ),
+                    settable_options=["1", "2", "3"],
+                ),
+            ],
+        },
+    ),
     "dj": TuyaBLECategorySelectMapping(
         products={
             "c2twgywo": [  # MiBoxer BS64 stair controller
@@ -956,6 +984,14 @@ class TuyaBLESelect(TuyaBLEEntity, SelectEntity):
 
     def select_option(self, value: str) -> None:
         """Change the selected option."""
+        if (
+            self._mapping.settable_options is not None
+            and value not in self._mapping.settable_options
+        ):
+            raise HomeAssistantError(
+                f"{value} can't be set on this device; "
+                f"choose one of {', '.join(self._mapping.settable_options)}"
+            )
         if value in self._attr_options:
             if self._mapping.dp_type == TuyaBLEDataPointType.DT_STRING:
                 datapoint = self._device.datapoints.get_or_create(

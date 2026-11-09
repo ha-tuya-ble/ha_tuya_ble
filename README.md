@@ -278,7 +278,7 @@ See a device marked Experimental you have? We could use real world testing feedb
       <td>—</td>
     </tr>
     <tr>
-      <td rowspan="2"><strong>Climate</strong></td>
+      <td rowspan="3"><strong>Climate</strong></td>
       <td><code>wk</code></td>
       <td>Thermostatic Radiator Valve</td>
       <td><code>drlajpqc</code>, <code>nhj2j7su</code>, <code>zmachryv</code></td>
@@ -289,6 +289,12 @@ See a device marked Experimental you have? We could use real world testing feedb
       <td>Thermostatic Radiator Valve</td>
       <td><code>llflaywg</code></td>
       <td>—</td>
+    </tr>
+    <tr>
+      <td><code>qn</code></td>
+      <td>MaXpeedingRods Diesel (parking) Heater</td>
+      <td><code>vmdizama</code></td>
+      <td>Experimental. On/off (DP1) and set point (DP2) via climate; heat exchanger temperature (DP3, blank while off), mode (DP4), level (DP5, settable 1-3) and work state (DP11). The heater ignores level while in its thermostat mode.</td>
     </tr>
     <tr>
       <td><strong>Smart water bottle</strong></td>
