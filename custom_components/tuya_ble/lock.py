@@ -72,7 +72,7 @@ class TuyaBLELock(TuyaBLEEntity, LockEntity):
             coordinator,
             device,
             product,
-            LockEntityDescription(key="lock", name=product.name),
+            LockEntityDescription(key="lock", name=None),
         )
         self._attr_supported_features = LockEntityFeature.OPEN
 
