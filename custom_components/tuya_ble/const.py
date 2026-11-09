@@ -18,6 +18,7 @@ SET_DISCONNECTED_DELAY = 10 * 60
 CONF_UUID: Final = "uuid"
 CONF_LOCAL_KEY: Final = "local_key"
 CONF_SEC_KEY: Final = "sec_key"
+CONF_BLE_UNLOCK_CHECK: Final = "ble_unlock_check"
 
 # Connection policy (entry options)
 CONF_KEEP_CONNECTION: Final = "keep_connection"
@@ -61,6 +62,7 @@ TUYA_SMART_APP = "tuyaSmart"
 TUYA_API_DEVICES_URL: Final = "/v1.0/users/%s/devices"
 TUYA_API_FACTORY_INFO_URL: Final = "/v1.0/iot-03/devices/factory-infos?device_ids=%s"
 TUYA_API_DEVICE_SPECIFICATION: Final = "/v1.1/devices/%s/specifications"
+TUYA_API_DEVICE_STATUS: Final = "/v1.0/devices/%s/status"
 TUYA_FACTORY_INFO_MAC: Final = "mac"
 
 BATTERY_STATE_LOW: Final = "low"

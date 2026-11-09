@@ -14,12 +14,15 @@ from homeassistant.core import HomeAssistant
 from .const import (
     CONF_ACCESS_ID,
     CONF_ACCESS_SECRET,
+    CONF_BLE_UNLOCK_CHECK,
     CONF_LOCAL_KEY,
     CONF_SEC_KEY,
     CONF_UUID,
     DOMAIN,
 )
 from .devices import TuyaBLEData
+
+SENSITIVE_DP71_PRODUCT_IDS = frozenset({"dappsdq4"})
 
 TO_REDACT = {
     CONF_ACCESS_ID,
@@ -28,6 +31,7 @@ TO_REDACT = {
     CONF_PASSWORD,
     CONF_LOCAL_KEY,
     CONF_SEC_KEY,
+    CONF_BLE_UNLOCK_CHECK,
     CONF_UUID,
     "api_key",
     "token",
@@ -118,9 +122,13 @@ async def async_get_config_entry_diagnostics(
             "id": dp.id,
             "type": dp.type.name if dp.type else None,
             "value": (
-                dp.value
-                if not isinstance(dp.value, (bytes, bytearray))
-                else dp.value.hex()
+                "**REDACTED**"
+                if device.product_id in SENSITIVE_DP71_PRODUCT_IDS and dp.id == 71
+                else (
+                    dp.value
+                    if not isinstance(dp.value, (bytes, bytearray))
+                    else dp.value.hex()
+                )
             ),
         }
         for dp in _iter_datapoints(device)

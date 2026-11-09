@@ -17,6 +17,7 @@ from custom_components.tuya_ble.config_flow import _try_login
 from custom_components.tuya_ble.const import (
     CONF_ACCESS_ID,
     CONF_ACCESS_SECRET,
+    CONF_BLE_UNLOCK_CHECK,
     CONF_CATEGORY,
     CONF_DEVICE_NAME,
     CONF_LOCAL_KEY,
@@ -196,17 +197,20 @@ def test_credentials_and_diagnostics_redact_both_keys() -> None:
         functions=[],
         status_range=[],
         sec_key=SEC_KEY,
+        ble_unlock_check="secret-ble-unlock-check",
     )
 
     for rendered in (str(credentials), repr(credentials)):
         assert LOCAL_KEY not in rendered
         assert SEC_KEY not in rendered
+        assert "secret-ble-unlock-check" not in rendered
     material = TuyaBLESecurityMaterial(LOCAL_KEY, SEC_KEY)
     for rendered in (str(material), repr(material)):
         assert LOCAL_KEY not in rendered
         assert SEC_KEY not in rendered
     assert CONF_LOCAL_KEY in TO_REDACT
     assert CONF_SEC_KEY in TO_REDACT
+    assert CONF_BLE_UNLOCK_CHECK in TO_REDACT
     assert CONF_ACCESS_SECRET in TO_REDACT
 
 

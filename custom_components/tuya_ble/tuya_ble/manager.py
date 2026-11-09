@@ -20,12 +20,14 @@ class TuyaBLEDeviceCredentials:
     functions: List | None
     status_range: List | None
     sec_key: str | None = field(default=None, repr=False)
+    ble_unlock_check: str | None = field(default=None, repr=False)
 
     def __str__(self):
         return (
             "uuid: %s, "
             "local_key: %s, "
             "sec_key: %s, "
+            "ble_unlock_check: %s, "
             "device_id: %s, "
             "category: %s, "
             "product_id: %s, "
@@ -38,6 +40,7 @@ class TuyaBLEDeviceCredentials:
             self.uuid,
             "**REDACTED**",
             "**REDACTED**" if self.sec_key else None,
+            "**REDACTED**" if self.ble_unlock_check else None,
             self.device_id,
             self.category,
             self.product_id,
@@ -76,6 +79,7 @@ class AbstaractTuyaBLEDeviceManager(ABC):
         functions: List | None,
         status_range: List | None,
         sec_key: str | None = None,
+        ble_unlock_check: str | None = None,
     ) -> TuyaBLEDeviceCredentials | None:
         """Checks and creates credentials of the Tuya BLE device."""
         if uuid and local_key and device_id and category and product_id:
@@ -91,6 +95,7 @@ class AbstaractTuyaBLEDeviceManager(ABC):
                 functions,
                 status_range,
                 sec_key,
+                ble_unlock_check,
             )
 
         return None
