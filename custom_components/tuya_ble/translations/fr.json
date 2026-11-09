@@ -366,6 +366,23 @@
                     "following": "Suivi",
                     "flowing": "Fluide"
                 }
+            },
+            "heater_mode": {
+                "name": "Mode du chauffage",
+                "state": {
+                    "smart": "Intelligent",
+                    "auto": "Auto"
+                }
+            },
+            "heater_level": {
+                "name": "Niveau du chauffage",
+                "state": {
+                    "1": "1",
+                    "2": "2",
+                    "3": "3",
+                    "4": "4",
+                    "5": "5"
+                }
             }
         },
         "sensor": {
@@ -639,6 +656,15 @@
             },
             "probe_2_temperature": {
                 "name": "Température sonde 2"
+            },
+            "heat_exchanger_temperature": {
+                "name": "Température de l'échangeur"
+            },
+            "heater_work_state": {
+                "name": "État du chauffage",
+                "state": {
+                    "heating": "Chauffe"
+                }
             }
         },
         "switch": {

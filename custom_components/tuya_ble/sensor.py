@@ -265,7 +265,85 @@ class TuyaBLEAlarmLockStateMapping(TuyaBLESensorMapping):
     )
 
 
+HEATER_SWITCH_DP_ID = 1
+HEATER_EXCHANGER_TEMP_DP_ID = 3
+HEATER_WORK_STATE_DP_ID = 11
+HEATER_WORK_STATES = ["heating"]
+HEATER_TEMP_MIN_CHANGE = 5.0
+HEATER_TEMP_MAX_INTERVAL = 30.0
+
+
+def heater_exchanger_temperature_getter(self: TuyaBLESensor) -> None:
+    """Heat exchanger temperature of a parking heater.
+
+    Blank while the heater is switched off (the device stops reporting and the
+    last value would otherwise stick). While running the device reports about
+    once a second, so the value is only updated after a change of at least
+    HEATER_TEMP_MIN_CHANGE degrees or HEATER_TEMP_MAX_INTERVAL seconds.
+    """
+    switch = self._device.datapoints[HEATER_SWITCH_DP_ID]
+    if switch is not None and not switch.value:
+        self._attr_native_value = None
+        self._heater_last_update = None
+        return
+
+    datapoint = self._device.datapoints[HEATER_EXCHANGER_TEMP_DP_ID]
+    if not datapoint or datapoint.value is None:
+        return
+
+    value = float(datapoint.value)
+    now = dt_util.utcnow()
+    last_update = getattr(self, "_heater_last_update", None)
+    previous = self._attr_native_value
+    if (
+        previous is None
+        or last_update is None
+        or abs(value - float(previous)) >= HEATER_TEMP_MIN_CHANGE
+        or (now - last_update).total_seconds() >= HEATER_TEMP_MAX_INTERVAL
+    ):
+        self._attr_native_value = value
+        self._heater_last_update = now
+
+
+def heater_work_state_getter(self: TuyaBLESensor) -> None:
+    """Work state of a parking heater; unknown codes are shown as state_<n>."""
+    datapoint = self._device.datapoints[HEATER_WORK_STATE_DP_ID]
+    if not datapoint or datapoint.value is None:
+        return
+    value = datapoint.value
+    if isinstance(value, int) and 0 <= value < len(HEATER_WORK_STATES):
+        self._attr_native_value = HEATER_WORK_STATES[value]
+    else:
+        self._attr_native_value = f"state_{value}"
+
+
 mapping: dict[str, TuyaBLECategorySensorMapping] = {
+    "qn": TuyaBLECategorySensorMapping(
+        products={
+            "vmdizama": [  # Parking diesel heater
+                TuyaBLESensorMapping(
+                    dp_id=HEATER_EXCHANGER_TEMP_DP_ID,
+                    description=SensorEntityDescription(
+                        key="heat_exchanger_temperature",
+                        icon="mdi:fire",
+                        device_class=SensorDeviceClass.TEMPERATURE,
+                        native_unit_of_measurement=UnitOfTemperature.CELSIUS,
+                        state_class=SensorStateClass.MEASUREMENT,
+                    ),
+                    getter=heater_exchanger_temperature_getter,
+                ),
+                TuyaBLESensorMapping(
+                    dp_id=HEATER_WORK_STATE_DP_ID,
+                    description=SensorEntityDescription(
+                        key="heater_work_state",
+                        icon="mdi:state-machine",
+                        entity_category=EntityCategory.DIAGNOSTIC,
+                    ),
+                    getter=heater_work_state_getter,
+                ),
+            ],
+        },
+    ),
     "co2bj": TuyaBLECategorySensorMapping(
         products={
             **dict.fromkeys(

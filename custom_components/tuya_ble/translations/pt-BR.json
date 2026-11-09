@@ -366,6 +366,23 @@
                     "following": "Acompanhando",
                     "flowing": "Fluindo"
                 }
+            },
+            "heater_mode": {
+                "name": "Modo do aquecedor",
+                "state": {
+                    "smart": "Inteligente",
+                    "auto": "Automático"
+                }
+            },
+            "heater_level": {
+                "name": "Nível do aquecedor",
+                "state": {
+                    "1": "1",
+                    "2": "2",
+                    "3": "3",
+                    "4": "4",
+                    "5": "5"
+                }
             }
         },
         "sensor": {
@@ -639,6 +656,15 @@
             },
             "probe_2_temperature": {
                 "name": "Temperatura da sonda 2"
+            },
+            "heat_exchanger_temperature": {
+                "name": "Temperatura do trocador de calor"
+            },
+            "heater_work_state": {
+                "name": "Estado do aquecedor",
+                "state": {
+                    "heating": "Aquecendo"
+                }
             }
         },
         "switch": {

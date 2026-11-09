@@ -366,6 +366,23 @@
                     "following": "跟随",
                     "flowing": "流水"
                 }
+            },
+            "heater_mode": {
+                "name": "加热器模式",
+                "state": {
+                    "smart": "智能",
+                    "auto": "自动"
+                }
+            },
+            "heater_level": {
+                "name": "加热器档位",
+                "state": {
+                    "1": "1",
+                    "2": "2",
+                    "3": "3",
+                    "4": "4",
+                    "5": "5"
+                }
             }
         },
         "sensor": {
@@ -639,6 +656,15 @@
             },
             "probe_2_temperature": {
                 "name": "探针 2 温度"
+            },
+            "heat_exchanger_temperature": {
+                "name": "热交换器温度"
+            },
+            "heater_work_state": {
+                "name": "加热器工作状态",
+                "state": {
+                    "heating": "加热中"
+                }
             }
         },
         "switch": {

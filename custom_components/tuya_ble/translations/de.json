@@ -366,6 +366,23 @@
                     "following": "Folgend",
                     "flowing": "Fließend"
                 }
+            },
+            "heater_mode": {
+                "name": "Heizmodus",
+                "state": {
+                    "smart": "Smart",
+                    "auto": "Auto"
+                }
+            },
+            "heater_level": {
+                "name": "Heizstufe",
+                "state": {
+                    "1": "1",
+                    "2": "2",
+                    "3": "3",
+                    "4": "4",
+                    "5": "5"
+                }
             }
         },
         "sensor": {
@@ -639,6 +656,15 @@
             },
             "probe_2_temperature": {
                 "name": "Temperatur Fühler 2"
+            },
+            "heat_exchanger_temperature": {
+                "name": "Wärmetauschertemperatur"
+            },
+            "heater_work_state": {
+                "name": "Heizungsstatus",
+                "state": {
+                    "heating": "Heizen"
+                }
             }
         },
         "switch": {
