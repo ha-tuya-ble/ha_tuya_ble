@@ -113,3 +113,80 @@ async def test_cover(hass: HomeAssistant) -> None:
     await hass.async_block_till_done()
     device._send_datapoints.assert_any_call([2])
     assert device.datapoints[2].value == 30
+
+
+async def test_cover_inverted(hass: HomeAssistant) -> None:
+    """cover_inverted swaps commands, positions and reported direction."""
+    from pytest_homeassistant_custom_component.common import MockConfigEntry
+    from custom_components.tuya_ble.const import DOMAIN
+    from custom_components.tuya_ble.cloud import HASSTuyaBLEDeviceManager
+    from custom_components.tuya_ble.devices import (
+        TuyaBLEDevice,
+        TuyaBLEProductInfo,
+        TuyaBLECoordinator,
+        TuyaBLEData,
+    )
+    from bleak.backends.device import BLEDevice
+
+    entry = MockConfigEntry(
+        domain=DOMAIN,
+        data={"devices": CONFIG, "address": DEVICE_ADDRESS},
+        title="Mock TuyaBLE",
+    )
+    entry.add_to_hass(hass)
+
+    ble_device = BLEDevice(name="bob", address="11:22:33", details="", rssi=-50)
+    manager = HASSTuyaBLEDeviceManager(hass, entry.options.copy())
+    device = TuyaBLEDevice(manager, ble_device)
+    await device.initialize()
+    product_info = TuyaBLEProductInfo("Curtain Robot")
+    device._send_datapoints = AsyncMock()
+
+    coordinator = TuyaBLECoordinator(hass, device)
+    hass.data.setdefault(DOMAIN, {})[entry.entry_id] = TuyaBLEData(
+        title="Hello",
+        device=device,
+        manager=manager,
+        product=product_info,
+        coordinator=coordinator,
+    )
+
+    mapping = TuyaBLECoverMapping(
+        description=CoverEntityDescription(key="ble_curtain_controller"),
+        cover_state_dp_id=1,
+        cover_position_set_dp=2,
+        cover_position_dp_id=3,
+        cover_inverted=True,
+    )
+    entity = TuyaBLECover(hass, coordinator, device, product_info, mapping)
+    entity.async_write_ha_state = Mock()
+    coordinator._async_handle_connect()
+
+    # Device position is reported as-is (no 100 - x)
+    device.datapoints._update_from_device(3, 0, 0, TuyaBLEDataPointType.DT_VALUE, 20)
+    entity._handle_coordinator_update()
+    assert entity.current_cover_position == 20
+
+    # Device reports "close" (2) while the curtain is opening
+    device.datapoints._update_from_device(1, 0, 0, TuyaBLEDataPointType.DT_VALUE, 2)
+    entity._handle_coordinator_update()
+    assert entity.is_opening is True
+    assert entity.is_closing is False
+
+    # Open sends the device's "close" command and vice versa
+    await entity.async_open_cover()
+    await hass.async_block_till_done()
+    assert device.datapoints[1].value == 2
+
+    await entity.async_close_cover()
+    await hass.async_block_till_done()
+    assert device.datapoints[1].value == 0
+
+    await entity.async_stop_cover()
+    await hass.async_block_till_done()
+    assert device.datapoints[1].value == 1
+
+    # Position is sent without inversion
+    await entity.async_set_cover_position(position=70)
+    await hass.async_block_till_done()
+    assert device.datapoints[2].value == 70
