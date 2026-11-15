@@ -71,7 +71,7 @@
                     "product_id": "Product ID（例如 neq16kgd）",
                     "category": "品类（例如 Fingerbot 为 szjqr）",
                     "device_name": "设备名称（可选）",
-                    "ble_unlock_check": "BLE 解锁校验码（仅限 dappsdq4，可选）"
+                    "ble_unlock_check": "BLE 解锁校验码（仅限 dappsdq4/tkbdvrzr，可选）"
                 }
             }
         }
@@ -832,7 +832,7 @@
                     "product_id": "Product ID（例如 neq16kgd）",
                     "category": "品类（例如 Fingerbot 为 szjqr）",
                     "device_name": "设备名称（可选）",
-                    "ble_unlock_check": "BLE 解锁校验码（仅限 dappsdq4，可选）"
+                    "ble_unlock_check": "BLE 解锁校验码（仅限 dappsdq4/tkbdvrzr，可选）"
                 }
             },
             "settings": {

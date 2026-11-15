@@ -481,6 +481,9 @@ devices_database: dict[str, TuyaBLECategoryInfo] = {
                 ],
                 TuyaBLEProductInfo(name="Drawer Lock CTL20H", lock=1),
             ),
+            # CTL20 SmartLock: CTL20H datapoints, but no manual_lock or
+            # lock_motor_state, so it gets a DP71 unlock button, not a lock.
+            "tkbdvrzr": TuyaBLEProductInfo(name="Drawer Lock CTL20"),
             "hc7n0urm": TuyaBLEProductInfo(  # device product_id
                 name="A1 Ultra-JM",
             ),

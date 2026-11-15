@@ -668,6 +668,7 @@ mapping: dict[str, TuyaBLECategorySwitchMapping] = {
                 [
                     "y2yaegze",
                     "qcrilcpr",
+                    "tkbdvrzr",
                 ],
                 [
                     TuyaBLESwitchMapping(
