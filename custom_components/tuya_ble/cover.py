@@ -8,6 +8,7 @@ from dataclasses import dataclass
 from datetime import datetime, timezone
 from enum import IntEnum
 import logging
+from typing import Any
 
 from homeassistant.components.cover import (
     CoverEntityDescription,
@@ -53,6 +54,9 @@ class TuyaBLECoverMapping:
     cover_factory_reset_dp_id: int = 0
     cover_position_set_dp: int = 0
     cover_tilt_dp_id: int = 0
+    # Swap open/close commands, position and reported direction for motors
+    # that use the opposite convention.
+    cover_inverted: bool = False
 
 
 @dataclass
@@ -127,6 +131,16 @@ mapping: dict[str, TuyaBLECategoryCoverMapping] = {
                     cover_battery_dp_id=13,
                 )
             ],
+            "cq7xquhj": [  # Curtain Robot (rechargeable)
+                TuyaBLECoverMapping(
+                    description=CoverEntityDescription(key="ble_curtain_controller"),
+                    cover_state_dp_id=1,
+                    cover_position_set_dp=2,
+                    cover_position_dp_id=3,
+                    cover_battery_dp_id=13,
+                    cover_inverted=True,
+                )
+            ],
             "dy4dh1q0": [
                 TuyaBLECoverMapping(
                     description=CoverEntityDescription(key="ble_venetian_blind_motor"),
@@ -182,6 +196,25 @@ class TuyaBLECover(TuyaBLEEntity, CoverEntity):
         super().__init__(hass, coordinator, device, product, mapping.description)
         self._mapping = mapping
 
+    def _to_ha_position(self, raw: Any) -> int:
+        """Device position -> HA position (0 = closed, 100 = open)."""
+        return int(raw) if self._mapping.cover_inverted else 100 - int(raw)
+
+    def _to_device_position(self, ha_position: Any) -> int:
+        """HA position -> device position."""
+        if self._mapping.cover_inverted:
+            return int(ha_position)
+        return 100 - int(ha_position)
+
+    def _to_device_state(self, state: TuyaCoverState) -> TuyaCoverState:
+        """HA command -> command the device expects."""
+        if self._mapping.cover_inverted:
+            if state == TuyaCoverState.OPEN:
+                return TuyaCoverState.CLOSE
+            if state == TuyaCoverState.CLOSE:
+                return TuyaCoverState.OPEN
+        return state
+
     @property
     def supported_features(self) -> CoverEntityFeature:
         """Return the supported features of the device."""
@@ -208,21 +241,27 @@ class TuyaBLECover(TuyaBLEEntity, CoverEntity):
             if datapoint:
                 self._attr_is_opening = False
                 self._attr_is_closing = False
-                match datapoint.value:
-                    case 0:
-                        self._attr_is_opening = True
-                    case 1:
-                        # Do nothing as it stopped
-                        pass
-                    case 2:
-                        self._attr_is_closing = True
+                opening_value = (
+                    TuyaCoverState.CLOSE
+                    if self._mapping.cover_inverted
+                    else TuyaCoverState.OPEN
+                )
+                closing_value = (
+                    TuyaCoverState.OPEN
+                    if self._mapping.cover_inverted
+                    else TuyaCoverState.CLOSE
+                )
+                if datapoint.value == opening_value:
+                    self._attr_is_opening = True
+                elif datapoint.value == closing_value:
+                    self._attr_is_closing = True
 
         if self._mapping.cover_position_dp_id != 0:
             datapoint = self._device.datapoints[self._mapping.cover_position_dp_id]
             if datapoint:
-                self._attr_current_cover_position = 100 - int(
+                self._attr_current_cover_position = self._to_ha_position(
                     datapoint.value
-                )  # reverse position
+                )
                 if self._attr_current_cover_position == 0:
                     self._attr_is_closed = True
                     self._attr_is_closing = False
@@ -305,13 +344,14 @@ class TuyaBLECover(TuyaBLEEntity, CoverEntity):
 
     def _update_cover_state_without_validation(self, state: TuyaCoverState) -> None:
         if self._mapping.cover_state_dp_id != 0:
+            device_state = self._to_device_state(state)
             datapoint = self._device.datapoints.get_or_create(
                 self._mapping.cover_state_dp_id,
                 TuyaBLEDataPointType.DT_VALUE,
-                state.value,
+                device_state.value,
             )
             if datapoint:
-                self._hass.create_task(datapoint.set_value(state.value))
+                self._hass.create_task(datapoint.set_value(device_state.value))
 
     async def _validate_data_update_from_device_and_reconnect_if_needed(
         self,
@@ -348,7 +388,7 @@ class TuyaBLECover(TuyaBLEEntity, CoverEntity):
 
     async def async_set_cover_position(self, **kwargs: logging.Any) -> None:
         """Set cover position"""
-        position = 100 - kwargs[ATTR_POSITION]
+        position = self._to_device_position(kwargs[ATTR_POSITION])
         if self._mapping.cover_position_set_dp != 0:
             datapoint = self._device.datapoints.get_or_create(
                 self._mapping.cover_position_set_dp,

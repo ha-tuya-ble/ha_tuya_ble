@@ -78,8 +78,10 @@ SENSITIVE_DP71_PRODUCT_IDS = frozenset({"dappsdq4"})
 
 # Devices that use legacy key derivation even when the cloud returns a sec_key.
 # This is independent of the FD50 payload quirk: mknd4lci uses standard framing.
+# cq7xquhj (curtain robot) does not use the FD50 framing, but ignores the
+# device-info request when it is encrypted with the v2 (SecKey) login key.
 LEGACY_KEY_DERIVATION_PRODUCT_IDS = frozenset(
-    {"qcrilcpr", "mknd4lci", "gvygg3m8", "c2twgywo"}
+    {"qcrilcpr", "mknd4lci", "gvygg3m8", "c2twgywo", "cq7xquhj"}
 )
 
 
