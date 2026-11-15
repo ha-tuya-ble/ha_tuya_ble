@@ -5,6 +5,7 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 
 import logging
+import time
 from typing import Callable
 
 from homeassistant.components.button import (
@@ -15,15 +16,21 @@ from homeassistant.components.button import (
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
 from homeassistant.const import Platform
+from homeassistant.exceptions import HomeAssistantError
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator
 from homeassistant.helpers.entity import EntityCategory
 
 from .const import DOMAIN, PARKSIDE_MOWER_COMMANDS
 from .devices import TuyaBLEData, TuyaBLEEntity, TuyaBLEProductInfo
+from .lock import build_timestamped_unlock_command
 from .tuya_ble import TuyaBLEDataPointType, TuyaBLEDevice
 
 _LOGGER = logging.getLogger(__name__)
+
+# Locks without a lock entity that unlock by writing DP71 with the cloud
+# ble_unlock_check (same command as the dappsdq4 Open action in lock.py).
+DP71_TIMESTAMPED_UNLOCK_BUTTON_PRODUCT_IDS = frozenset({"tkbdvrzr"})
 
 
 TuyaBLEButtonIsAvailable = Callable[["TuyaBLEButton", TuyaBLEProductInfo], bool] | None
@@ -207,6 +214,16 @@ mapping: dict[str, TuyaBLECategoryButtonMapping] = {
                         key="ble_unlock_check",
                         icon="mdi:lock-open-variant-outline",
                     ),
+                ),
+            ],
+            "tkbdvrzr": [  # CTL20 SmartLock
+                TuyaBLEButtonMapping(
+                    dp_id=71,  # ble_unlock_check, built at press time
+                    description=ButtonEntityDescription(
+                        key="bluetooth_unlock",
+                        icon="mdi:lock-open-variant-outline",
+                    ),
+                    dp_type=TuyaBLEDataPointType.DT_RAW,
                 ),
             ],
             "2hmqh0ty": [  # EL605A Knob Lock
@@ -481,8 +498,36 @@ class TuyaBLEButton(TuyaBLEEntity, ButtonEntity):
         if dp71:
             await dp71.set_value(dp71_value)
 
+    def _timestamped_unlock_command(self) -> bytes:
+        """Build the DP71 unlock command from the cloud ble_unlock_check."""
+        check = self._device._device_info.ble_unlock_check
+        if not check:
+            raise HomeAssistantError(
+                "BLE unlock check is missing; unlock once from the Tuya app, then "
+                "refresh Tuya cloud credentials or enter ble_unlock_check in the "
+                "integration options."
+            )
+        try:
+            return build_timestamped_unlock_command(check, int(time.time()))
+        except ValueError as err:
+            raise HomeAssistantError(
+                "BLE unlock check is invalid; refresh Tuya cloud credentials or "
+                "enter ble_unlock_check in the integration options."
+            ) from err
+
     def press(self) -> None:
         """Press the button."""
+        if (
+            self._device.product_id in DP71_TIMESTAMPED_UNLOCK_BUTTON_PRODUCT_IDS
+            and self._mapping.description.key == "bluetooth_unlock"
+        ):
+            command = self._timestamped_unlock_command()
+            datapoint = self._device.datapoints.get_or_create(
+                71, TuyaBLEDataPointType.DT_RAW, command
+            )
+            if datapoint:
+                self._hass.create_task(datapoint.set_value(command))
+            return
         if self._device.product_id == "kholoaew":
             if self._mapping.description.key == "bluetooth_unlock":
                 self._hass.create_task(self._run_kholoaew_unlock())
