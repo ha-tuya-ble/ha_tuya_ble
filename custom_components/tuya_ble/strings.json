@@ -88,7 +88,7 @@
                 "name": "Battery"
             },
             "lock_motor_state": {
-                "name": "Motor State"
+                "name": "Motor state"
             },
             "low_temp": {
                 "name": "Low temperature"
@@ -227,7 +227,7 @@
         },
         "select": {
             "beep_volume": {
-                "name": "Lock Volume",
+                "name": "Lock volume",
                 "state": {
                     "mute": "Mute",
                     "low": "Low",
@@ -243,7 +243,7 @@
                 }
             },
             "language": {
-                "name": "Lock Language"
+                "name": "Lock language"
             },
             "fingerbot_mode": {
                 "name": "Mode",
@@ -391,8 +391,8 @@
             "alarm_lock": {
                 "name": "Alarm",
                 "state": {
-                    "wrong_finger": "Wrong Fingerprint",
-                    "wrong_password": "Wrong Password",
+                    "wrong_finger": "Wrong fingerprint",
+                    "wrong_password": "Wrong password",
                     "wrong_card": "Wrong card",
                     "wrong_face": "Wrong face",
                     "tongue_bad": "Bolt jammed",
@@ -401,7 +401,7 @@
                     "tongue_not_out": "Bolt not extended",
                     "pry": "Tamper",
                     "key_in": "Key inserted",
-                    "low_battery": "Low Battery",
+                    "low_battery": "Low battery",
                     "power_off": "Power off",
                     "shock": "Vibration",
                     "defense": "Armed alarm",
@@ -456,7 +456,7 @@
                 "name": "Humidity"
             },
             "low_battery": {
-                "name": "Low Battery"
+                "name": "Low battery"
             },
             "moisture": {
                 "name": "Moisture"
@@ -476,7 +476,7 @@
                     "manual": "Manual",
                     "idle": "Idle",
                     "working": "Working",
-                    "rain_delay": "Rain Delay"
+                    "rain_delay": "Rain delay"
                 }
             },
             "work_state_z2": {
@@ -486,7 +486,7 @@
                     "manual": "Manual",
                     "idle": "Idle",
                     "working": "Working",
-                    "rain_delay": "Rain Delay"
+                    "rain_delay": "Rain delay"
                 }
             },
             "residual_electricity": {
@@ -532,13 +532,13 @@
                 "name": "Total water usage"
             },
             "wrong_finger": {
-                "name": "Wrong Fingerprint"
+                "name": "Wrong fingerprint"
             },
             "wrong_password": {
-                "name": "Wrong Password"
+                "name": "Wrong password"
             },
             "unlock_fingerprint": {
-                "name": "Last used Fingerprint"
+                "name": "Last used fingerprint"
             },
             "unlock_temporary": {
                 "name": "Last used temporary password"
@@ -547,16 +547,16 @@
                 "name": "Last used remote voice"
             },
             "unlock_card": {
-                "name": "Last used Card"
+                "name": "Last used card"
             },
             "unlock_password": {
-                "name": "Last used Password"
+                "name": "Last used password"
             },
             "unlock_key": {
-                "name": "Last used Key"
+                "name": "Last used key"
             },
             "unlock_dynamic": {
-                "name": "Last used Dynamic Password"
+                "name": "Last used dynamic password"
             },
             "unlock_ble": {
                 "name": "Last used Bluetooth"
@@ -669,10 +669,10 @@
                 "name": "Severely exceed alarm"
             },
             "child_lock": {
-                "name": "Child Lock"
+                "name": "Child lock"
             },
             "lock_motor_state": {
-                "name": "Motor State"
+                "name": "Motor state"
             },
             "low_battery_alarm": {
                 "name": "Low battery alarm"
@@ -687,10 +687,10 @@
                 "name": "Repeat forever"
             },
             "programming_mode": {
-                "name": "Programming Mode"
+                "name": "Programming mode"
             },
             "programming_switch": {
-                "name": "Programming Switch"
+                "name": "Programming switch"
             },
             "reverse_positions": {
                 "name": "Reverse positions"
@@ -714,7 +714,7 @@
                 "name": "Weather switch"
             },
             "window_check": {
-                "name": "Window Check"
+                "name": "Window check"
             },
             "window_cleaner_switch": {
                 "name": "Cleaning"
@@ -748,7 +748,7 @@
         },
         "vacuum": {
             "vacuum": {
-                "name": "Window Cleaner"
+                "name": "Window cleaner"
             },
             "clean_time": {
                 "name": "Clean time"

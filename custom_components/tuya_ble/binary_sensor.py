@@ -224,7 +224,7 @@ mapping: dict[str, TuyaBLECategoryBinarySensorMapping] = {
                     bit=0,
                     description=BinarySensorEntityDescription(
                         key="low_battery",
-                        name="Low Battery",
+                        name="Low battery",
                         device_class=BinarySensorDeviceClass.BATTERY,
                         entity_category=EntityCategory.DIAGNOSTIC,
                     ),
@@ -246,7 +246,7 @@ mapping: dict[str, TuyaBLECategoryBinarySensorMapping] = {
                     bit=2,
                     description=BinarySensorEntityDescription(
                         key="lack_water",
-                        name="Lack of Water",
+                        name="Lack of water",
                         device_class=BinarySensorDeviceClass.PROBLEM,
                         icon="mdi:water-off",
                         entity_category=EntityCategory.DIAGNOSTIC,
@@ -258,7 +258,7 @@ mapping: dict[str, TuyaBLECategoryBinarySensorMapping] = {
                     bit=3,
                     description=BinarySensorEntityDescription(
                         key="sensor_fault",
-                        name="Sensor Fault",
+                        name="Sensor fault",
                         device_class=BinarySensorDeviceClass.PROBLEM,
                         entity_category=EntityCategory.DIAGNOSTIC,
                     ),
@@ -269,7 +269,7 @@ mapping: dict[str, TuyaBLECategoryBinarySensorMapping] = {
                     bit=4,
                     description=BinarySensorEntityDescription(
                         key="motor_fault",
-                        name="Motor Fault",
+                        name="Motor fault",
                         device_class=BinarySensorDeviceClass.PROBLEM,
                         entity_category=EntityCategory.DIAGNOSTIC,
                     ),
@@ -280,7 +280,7 @@ mapping: dict[str, TuyaBLECategoryBinarySensorMapping] = {
                     bit=5,
                     description=BinarySensorEntityDescription(
                         key="low_temp",
-                        name="Low Temperature",
+                        name="Low temperature",
                         device_class=BinarySensorDeviceClass.COLD,
                         entity_category=EntityCategory.DIAGNOSTIC,
                     ),
