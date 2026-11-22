@@ -65,7 +65,7 @@ from .tuya_ble.security import decode_timestamped_ble_unlock_check
 _LOGGER = logging.getLogger(__name__)
 
 
-BLE_UNLOCK_CHECK_STATUS_PRODUCT_IDS = frozenset({"dappsdq4"})
+BLE_UNLOCK_CHECK_STATUS_PRODUCT_IDS = frozenset({"dappsdq4", "y2yaegze"})
 
 
 def extract_ble_unlock_check(status_values: Any) -> str | None:

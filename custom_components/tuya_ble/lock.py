@@ -32,6 +32,12 @@ DP71_RAW_UNLOCK_PRODUCT_IDS = frozenset({"2hmqh0ty", "djrqe0q6"})
 DP33_AUTOMATIC_LOCK_PRODUCT_IDS = frozenset({"dappsdq4"})
 DP71_TIMESTAMPED_UNLOCK_PRODUCT_IDS = frozenset({"dappsdq4"})
 
+# Drawer Lock CTL20H: DP47 (lock_motor_state) reports the physical state,
+# DP46 (manual_lock) locks, and remote unlock is a DP71 write that replays
+# the check code and key stored in the cloud ``ble_unlock_check`` value.
+# The cloud lists neither DP46 nor DP47, so they cannot be looked up by code.
+DP71_STORED_CHECK_UNLOCK_PRODUCT_IDS = frozenset({"y2yaegze"})
+
 
 def build_timestamped_unlock_command(ble_unlock_check: str, timestamp: int) -> bytes:
     """Build a DP71 command using the check code and the current timestamp."""
@@ -43,6 +49,12 @@ def build_timestamped_unlock_command(ble_unlock_check: str, timestamp: int) -> b
         + timestamp.to_bytes(4, "big")
         + b"\x00\x01"
     )
+
+
+def build_stored_check_unlock_command(ble_unlock_check: str) -> bytes:
+    """Build a DP71 command from the check code and key the cloud stores."""
+    check = decode_timestamped_ble_unlock_check(ble_unlock_check)
+    return check[2:4] + b"\x00\x01" + check[4:12] + b"\x01" + check[13:17] + b"\x00\x01"
 
 
 async def async_setup_entry(
@@ -82,6 +94,9 @@ class TuyaBLELock(TuyaBLEEntity, LockEntity):
         if self._device.product_id in DP33_AUTOMATIC_LOCK_PRODUCT_IDS:
             automatic_lock = self._device.datapoints[33]
             return bool(automatic_lock.value) if automatic_lock else None
+        if self._device.product_id in DP71_STORED_CHECK_UNLOCK_PRODUCT_IDS:
+            motor_state = self._device.datapoints[47]
+            return None if motor_state is None else not motor_state.value
         if self._device.product_id == PULIDO_PLD_P130:
             # "Unlocked" on this lock is held by free passage mode (DP33),
             # which the lock re-reports on every connect. DP47 (motor state)
@@ -112,6 +127,12 @@ class TuyaBLELock(TuyaBLEEntity, LockEntity):
                 33, TuyaBLEDataPointType.DT_BOOL, True
             )
             await automatic_lock.set_value(True)
+            return
+        if self._device.product_id in DP71_STORED_CHECK_UNLOCK_PRODUCT_IDS:
+            manual_lock = self._device.datapoints.get_or_create(
+                46, TuyaBLEDataPointType.DT_BOOL, True
+            )
+            await manual_lock.set_value(True)
             return
         if self._device.product_id == PULIDO_PLD_P130:
             # Pulido PLD_P130: DP46 (manual_lock) = True locks and also ends
@@ -153,6 +174,9 @@ class TuyaBLELock(TuyaBLEEntity, LockEntity):
                 33, TuyaBLEDataPointType.DT_BOOL, False
             )
             await automatic_lock.set_value(False)
+            return
+        if self._device.product_id in DP71_STORED_CHECK_UNLOCK_PRODUCT_IDS:
+            await self._async_stored_check_unlock()
             return
         if self._device.product_id == PULIDO_PLD_P130:
             # Pulido PLD_P130 relocks by itself a few seconds after a BLE unlock,
@@ -204,6 +228,26 @@ class TuyaBLELock(TuyaBLEEntity, LockEntity):
                 DPCode.MANUAL_LOCK, TuyaBLEDataPointType.DT_BOOL, False
             ):
                 await manual_lock.set_value(False)
+
+    async def _async_stored_check_unlock(self) -> None:
+        """Unlock by writing the stored check code and key to DP71."""
+        check = self._device._device_info.ble_unlock_check
+        if not check:
+            raise HomeAssistantError(
+                "BLE unlock check is missing; refresh Tuya cloud credentials or "
+                "enter ble_unlock_check in the integration options."
+            )
+        try:
+            command = build_stored_check_unlock_command(check)
+        except ValueError as err:
+            raise HomeAssistantError(
+                "BLE unlock check is invalid; refresh Tuya cloud credentials or "
+                "enter ble_unlock_check in the integration options."
+            ) from err
+        ble_unlock = self._device.datapoints.get_or_create(
+            71, TuyaBLEDataPointType.DT_RAW, command
+        )
+        await ble_unlock.set_value(command)
 
     async def async_open(self, **kwargs: Any) -> None:
         """Open the covering."""

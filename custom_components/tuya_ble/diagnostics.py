@@ -22,7 +22,7 @@ from .const import (
 )
 from .devices import TuyaBLEData
 
-SENSITIVE_DP71_PRODUCT_IDS = frozenset({"dappsdq4"})
+SENSITIVE_DP71_PRODUCT_IDS = frozenset({"dappsdq4", "y2yaegze"})
 
 TO_REDACT = {
     CONF_ACCESS_ID,
