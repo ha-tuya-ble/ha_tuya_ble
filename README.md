@@ -248,6 +248,11 @@ See a device marked Experimental you have? We could use real world testing feedb
       <td>—</td>
     </tr>
     <tr>
+      <td>Drawer Lock CTL20 SmartLock</td>
+      <td><code>tkbdvrzr</code></td>
+      <td>Unlock button via DP71; needs the <code>ble_unlock_check</code> value from the cloud (unlock once from the app, then reload credentials) or entered in the options</td>
+    </tr>
+    <tr>
       <td>Gainsborough Liberty BLE Lock (GGC01HA)</td>
       <td><code>yfqp0shy</code></td>
       <td>—</td>

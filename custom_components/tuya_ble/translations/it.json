@@ -71,7 +71,7 @@
                     "product_id": "ID prodotto (es. neq16kgd)",
                     "category": "Categoria (es. szjqr per Fingerbot)",
                     "device_name": "Nome del dispositivo (opzionale)",
-                    "ble_unlock_check": "Codice di sblocco BLE (solo dappsdq4, facoltativo)"
+                    "ble_unlock_check": "Codice di sblocco BLE (solo dappsdq4/tkbdvrzr, facoltativo)"
                 }
             }
         }
@@ -832,7 +832,7 @@
                     "product_id": "ID prodotto (es. neq16kgd)",
                     "category": "Categoria (es. szjqr per Fingerbot)",
                     "device_name": "Nome del dispositivo (opzionale)",
-                    "ble_unlock_check": "Codice di sblocco BLE (solo dappsdq4, facoltativo)"
+                    "ble_unlock_check": "Codice di sblocco BLE (solo dappsdq4/tkbdvrzr, facoltativo)"
                 }
             },
             "settings": {

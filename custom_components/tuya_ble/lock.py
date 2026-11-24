@@ -42,8 +42,11 @@ DP71_STORED_CHECK_UNLOCK_PRODUCT_IDS = frozenset({"y2yaegze"})
 def build_timestamped_unlock_command(ble_unlock_check: str, timestamp: int) -> bytes:
     """Build a DP71 command using the check code and the current timestamp."""
     check = decode_timestamped_ble_unlock_check(ble_unlock_check)
+    # The app sends 0xFFFF | member id | check code | 0x01 | unix time | 0x0001;
+    # the member id is the one the cloud value was issued for.
     return (
-        b"\xff\xff\x00\x01"
+        b"\xff\xff"
+        + check[:2]
         + check[4:12]
         + b"\x01"
         + timestamp.to_bytes(4, "big")

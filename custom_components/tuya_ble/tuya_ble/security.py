@@ -76,9 +76,12 @@ def decode_timestamped_ble_unlock_check(value: str) -> bytes:
     except (ValueError, TypeError) as err:
         raise ValueError("ble_unlock_check must be valid base64") from err
 
+    # member id (2 bytes, the app user slot: 0x0001 for the first member)
+    # | 0xFFFF | check code (8 ASCII digits) | 0x01 | unix time | 0x0000
     if (
         len(payload) != 19
-        or payload[:4] != b"\x00\x01\xff\xff"
+        or payload[:2] in (b"\x00\x00", b"\xff\xff")
+        or payload[2:4] != b"\xff\xff"
         or not payload[4:12].isdigit()
         or payload[12] != 1
         or payload[17:] != b"\x00\x00"

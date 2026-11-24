@@ -260,6 +260,7 @@ class TuyaBLEAlarmLockStateMapping(TuyaBLESensorMapping):
                 "low_battery",
                 "power_off",
                 "shock",
+                "defense",
             ],
         )
     )
@@ -830,6 +831,7 @@ mapping: dict[str, TuyaBLECategorySensorMapping] = {
                 [
                     "y2yaegze",
                     "qcrilcpr",
+                    "tkbdvrzr",
                 ],
                 [
                     TuyaBLEAlarmLockStateMapping(dp_id=21),
