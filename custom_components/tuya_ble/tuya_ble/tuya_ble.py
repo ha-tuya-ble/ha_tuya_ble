@@ -90,8 +90,19 @@ SENSITIVE_DP71_PRODUCT_IDS = frozenset({"dappsdq4", "y2yaegze"})
 # device-info request when it is encrypted with the v2 (SecKey) login key.
 # y2yaegze (Drawer Lock CTL20H) behaves like its sibling qcrilcpr: it stays
 # silent unless the FD50 framing and the legacy key derivation are combined.
+# vllfabvs and z5ztlw3k (PARKSIDE Smart battery 4Ah) also ignore the
+# v2-encrypted device-info request.
 LEGACY_KEY_DERIVATION_PRODUCT_IDS = frozenset(
-    {"qcrilcpr", "y2yaegze", "mknd4lci", "gvygg3m8", "c2twgywo", "cq7xquhj"}
+    {
+        "qcrilcpr",
+        "y2yaegze",
+        "mknd4lci",
+        "gvygg3m8",
+        "c2twgywo",
+        "cq7xquhj",
+        "vllfabvs",
+        "z5ztlw3k",
+    }
 )
 
 
