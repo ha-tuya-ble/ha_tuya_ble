@@ -77,18 +77,34 @@ FD50_DEVICE_INFO_PRODUCT_IDS = frozenset(
         "djrqe0q6",
         "c2twgywo",
         "tkbdvrzr",
+        "y2yaegze",
     }
 )
 
 # TuyaOS FD50 lock with protocol-v4 framing that advertises its negotiated MTU.
 DEVICE_INFO_PAYLOAD_F4_PRODUCT_IDS = frozenset({"dappsdq4"})
-SENSITIVE_DP71_PRODUCT_IDS = frozenset({"dappsdq4", "tkbdvrzr"})
+
 
 # Devices that use legacy key derivation even when the cloud returns a sec_key.
 # This is independent of the FD50 payload quirk: mknd4lci uses standard framing.
-# tkbdvrzr (CTL20 SmartLock) behaves like qcrilcpr: FD50 framing + v1 keys.
+# cq7xquhj (curtain robot) does not use the FD50 framing, but ignores the
+# device-info request when it is encrypted with the v2 (SecKey) login key.
+# y2yaegze (Drawer Lock CTL20H) behaves like its sibling qcrilcpr: it stays
+# silent unless the FD50 framing and the legacy key derivation are combined.
+# vllfabvs and z5ztlw3k (PARKSIDE Smart battery 4Ah) also ignore the
+# v2-encrypted device-info request.
 LEGACY_KEY_DERIVATION_PRODUCT_IDS = frozenset(
-    {"qcrilcpr", "mknd4lci", "gvygg3m8", "c2twgywo", "tkbdvrzr"}
+    {
+        "qcrilcpr",
+        "y2yaegze",
+        "mknd4lci",
+        "gvygg3m8",
+        "c2twgywo",
+        "cq7xquhj",
+        "vllfabvs",
+        "z5ztlw3k",
+        "tkbdvrzr",
+    }
 )
 
 

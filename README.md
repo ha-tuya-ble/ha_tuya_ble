@@ -348,6 +348,11 @@ See a device marked Experimental you have? We could use real world testing feedb
       <td>—</td>
     </tr>
     <tr>
+      <td>Curtain Robot (rechargeable)</td>
+      <td><code>cq7xquhj</code></td>
+      <td>—</td>
+    </tr>
+    <tr>
       <td>Blinds Drive</td>
       <td><code>qqdxfdht</code></td>
       <td>—</td>

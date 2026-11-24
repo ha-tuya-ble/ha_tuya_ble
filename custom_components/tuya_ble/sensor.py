@@ -2448,6 +2448,9 @@ mapping: dict[str, TuyaBLECategorySensorMapping] = {
             "ousymtkt": [  # Blind Controller
                 TuyaBLEBatteryMapping(dp_id=13),
             ],
+            "cq7xquhj": [  # Curtain Robot (rechargeable)
+                TuyaBLEBatteryMapping(dp_id=13),
+            ],
         }
     ),
     "ccjqr": TuyaBLECategorySensorMapping(
